@@ -1,0 +1,31 @@
+language: php
+php:
+  - 7.0
+sudo: required
+dist: trusty
+services:
+  - mysql
+  - memcached
+before_install:
+  - phpenv config-rm xdebug.ini
+install:
+  - composer create-project fusio/fusio
+  - npm install
+  - node node_modules/grunt-cli/bin/grunt
+  - node node_modules/protractor/bin/webdriver-manager update
+before_script:
+  - if [ $DB = 'mysql' ]; then mysql -e 'create database fusio_ui;'; fi;
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+  - pushd fusio/public
+  - php server.php --warmup
+  - (php -S 127.0.0.1:8008 server.php) &
+  - popd
+  - (node node_modules/protractor/bin/webdriver-manager start > /dev/null 2>&1) &
+  - sleep 8
+script:
+  - node node_modules/protractor/bin/protractor conf.js
+  - mv server.php fusio/public/server.php
+  - pushd fusio/public
+  - php server.php --deploy
+  - popd
