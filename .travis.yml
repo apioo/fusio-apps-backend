@@ -19,12 +19,10 @@ before_script:
   - cp server.php fusio/public/server.php
   - pushd fusio/public
   - php server.php --warmup
+  - php server.php --deploy
   - (php -S 127.0.0.1:8008 server.php) &
   - popd
   - (node node_modules/protractor/bin/webdriver-manager start > /dev/null 2>&1) &
   - sleep 8
 script:
-  - node node_modules/protractor/bin/protractor conf.js
-  - pushd fusio/public
-  - php server.php --deploy
-  - popd
+  - node node_modules/protractor/bin/protractor tests/conf.js
