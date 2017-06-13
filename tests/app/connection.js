@@ -7,7 +7,7 @@ describe('Connection tests', function() {
 
     var routes = element.all(by.repeater('connection in connections'));
     expect(routes.count()).toEqual(1);
-    expect(routes.get(0).getText()).toEqual('Native');
+    expect(routes.get(0).getText()).toEqual('System');
   });
 
   it('Create connection', function() {
