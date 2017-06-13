@@ -71,7 +71,7 @@ describe('Routes tests', function() {
       // make a request to the endpoint
       expect(http({
         method: 'GET',
-        uri: browser.baseUrl.replace('/fusio/index.htm', '/index.php/test'),
+        uri: browser.baseUrl.replace('/fusio/index.htm', '/test'),
         headers: {
           'User-Agent': 'Fusio-Test'
         },
@@ -118,7 +118,7 @@ describe('Routes tests', function() {
       // make a request to the endpoint
       expect(http({
         method: 'GET',
-        uri: browser.baseUrl.replace('/fusio/index.htm', '/index.php/test'),
+        uri: browser.baseUrl.replace('/fusio/index.htm', '/test'),
         headers: {
           'User-Agent': 'Fusio-Test'
         },
@@ -165,7 +165,7 @@ describe('Routes tests', function() {
       // make a request to the endpoint
       expect(http({
         method: 'GET',
-        uri: browser.baseUrl.replace('/fusio/index.htm', '/index.php/test'),
+        uri: browser.baseUrl.replace('/fusio/index.htm', '/test'),
         headers: {
           'User-Agent': 'Fusio-Test'
         },
@@ -212,7 +212,7 @@ describe('Routes tests', function() {
       // make a request to the endpoint
       expect(http({
         method: 'GET',
-        uri: browser.baseUrl.replace('/fusio/index.htm', '/index.php/test'),
+        uri: browser.baseUrl.replace('/fusio/index.htm', '/test'),
         headers: {
           'User-Agent': 'Fusio-Test'
         },

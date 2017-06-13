@@ -82,12 +82,7 @@ describe('Connection tests', function() {
 
     $('a.btn-primary').click();
 
-    var configUrl;
-    if (process.env.DB && process.env.DB == 'mysql') {
-      configUrl = 'mysql://root@localhost/fusio_ui';
-    } else {
-      configUrl = 'sqlite:///../cache/fusio_ui.db';
-    }
+    var configUrl = 'sqlite:///../cache/app-test.db';
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
