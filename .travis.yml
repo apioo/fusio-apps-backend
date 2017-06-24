@@ -3,6 +3,8 @@ php:
   - 7.0
 sudo: required
 dist: trusty
+addons:
+  firefox: "49.0"
 services:
   - mysql
   - memcached
