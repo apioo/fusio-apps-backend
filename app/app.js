@@ -15,6 +15,7 @@ var fusioApp = angular.module('fusioApp', [
   'fusioApp.account',
   'fusioApp.action',
   'fusioApp.app',
+  'fusioApp.audit',
   'fusioApp.config',
   'fusioApp.connection',
   'fusioApp.dashboard',
@@ -45,6 +46,7 @@ require('ng-showdown');
 require('./controller/account');
 require('./controller/action');
 require('./controller/app');
+require('./controller/audit');
 require('./controller/config');
 require('./controller/connection');
 require('./controller/dashboard');
