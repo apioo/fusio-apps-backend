@@ -37,16 +37,17 @@ describe('Audit tests', function() {
 
     $('button.btn-primary').click();
 
-    element.all(by.css('div.fusio-options > a')).get(0).click();
+    element.all(by.css('div.fusio-options a:nth-child(1)')).get(0).click();
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
-    expect(element(by.model('audit.app.name')).getText()).toEqual('');
-    expect(element(by.model('audit.user.name')).getText()).toEqual('');
-    expect(element(by.model('audit.refId')).getText()).toEqual('');
-    expect(element(by.model('audit.event')).getText()).toEqual('');
-    expect(element(by.model('audit.ip')).getText()).toEqual('');
-    expect(element(by.model('audit.message')).getText()).toEqual('');
+    expect(element(by.model('audit.app.name')).getAttribute('value')).toEqual('Backend');
+    expect(element(by.model('audit.user.name')).getAttribute('value')).toEqual('Administrator');
+    expect(element(by.model('audit.refId')).getAttribute('value')).toEqual('1');
+    expect(element(by.model('audit.event')).getAttribute('value')).toEqual('app.update');
+    expect(element(by.model('audit.ip')).getAttribute('value')).toEqual('127.0.0.1');
+    expect(element(by.model('audit.message')).getAttribute('value')).toEqual('Created schema foo');
+    expect(element(by.model('audit.date')).getAttribute('value')).toEqual('2015-06-25T22:49:09Z');
 
     $('button.btn-default').click();
   });
