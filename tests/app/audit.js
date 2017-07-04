@@ -37,7 +37,7 @@ describe('Audit tests', function() {
 
     $('button.btn-primary').click();
 
-    element.all(by.css('div.fusio-options a:nth-child(1)')).get(0).click();
+    element.all(by.css('div.fusio-options > a')).get(0).click();
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
