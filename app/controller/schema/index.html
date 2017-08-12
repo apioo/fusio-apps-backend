@@ -4,12 +4,7 @@
 <div class="fusio-search">
     <form name="schemasSearchForm" ng-submit="doSearch(search)">
         <div class="row">
-            <div class="col-md-2">
-                <select id="routes" ng-model="routeId" ng-change="changeRoute()" ng-options="route.id as route.path for route in routes" class="form-control" aria-describedby="routeHelp">
-                    <option value="">Every route</option>
-                </select>
-            </div>
-            <div class="col-md-10">
+            <div class="col-md-12">
                 <div class="input-group">
                     <input type="text" class="form-control" ng-model="search" placeholder="Search i.e. schema-name" />
                     <div class="input-group-btn">

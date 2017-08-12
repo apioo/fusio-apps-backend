@@ -5,13 +5,11 @@ module.exports = function($scope, $http, $uibModal, $routeParams, $location, fus
   $scope.response = null;
   $scope.search = '';
   $scope.routes = [];
-  $scope.routeId = $routeParams.routeId ? parseInt($routeParams.routeId) : null;
 
   $scope.load = function() {
     var search = encodeURIComponent($scope.search);
-    var routeId = $scope.routeId;
 
-    $http.get(fusio.baseUrl + 'backend/action?search=' + search + '&routeId=' + routeId)
+    $http.get(fusio.baseUrl + 'backend/action?search=' + search)
       .then(function(response) {
         var data = response.data;
         $scope.totalResults = data.totalResults;
@@ -28,10 +26,6 @@ module.exports = function($scope, $http, $uibModal, $routeParams, $location, fus
       });
   };
 
-  $scope.changeRoute = function() {
-    $location.search('routeId', $scope.routeId);
-  };
-
   $scope.pageChanged = function() {
     var startIndex = ($scope.startIndex - 1) * 16;
     var search = encodeURIComponent($scope.search);
@@ -45,9 +39,7 @@ module.exports = function($scope, $http, $uibModal, $routeParams, $location, fus
   };
 
   $scope.doSearch = function(search) {
-    var routeId = $scope.routeId;
-
-    $http.get(fusio.baseUrl + 'backend/action?search=' + encodeURIComponent(search) + '&routeId=' + routeId)
+    $http.get(fusio.baseUrl + 'backend/action?search=' + encodeURIComponent(search))
       .then(function(response) {
         var data = response.data;
         $scope.totalResults = data.totalResults;
