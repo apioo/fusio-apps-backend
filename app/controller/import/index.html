@@ -10,6 +10,11 @@
 </div>
 
 <uib-tabset>
+    <uib-tab heading="OpenAPI">
+        <div ui-ace="{mode: 'json'}" ng-model="source" style="height:400px"></div>
+        <br>
+        <a ng-click="transform(source, 'openapi')" class="btn btn-primary">Preview</a>
+    </uib-tab>
     <uib-tab heading="RAML">
         <div ui-ace="{mode: 'yaml'}" ng-model="source" style="height:400px"></div>
         <br>
