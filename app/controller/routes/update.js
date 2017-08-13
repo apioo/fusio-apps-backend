@@ -116,6 +116,12 @@ module.exports = function($scope, $http, $uibModal, $uibModalInstance, $timeout,
           config.push(ver);
         }
         data.config = config;
+
+        if (config.length > 1) {
+          for (var j = 0; j < config.length - 1; j++) {
+            $scope.indexMethod.push(0);
+          }
+        }
       }
 
       $scope.route = data;
