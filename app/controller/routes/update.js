@@ -1,12 +1,16 @@
 'use strict';
 
-module.exports = function($scope, $http, $uibModalInstance, fusio, route) {
+module.exports = function($scope, $http, $uibModal, $uibModalInstance, $timeout, fusio, route) {
 
   $scope.route = route;
 
   $scope.methods = ['GET', 'POST', 'PUT', 'DELETE'];
   $scope.schemas = [];
   $scope.actions = [];
+
+  $scope.indexVersion = 0;
+  $scope.indexMethod = [0];
+  $scope.responseCode = '200';
 
   $scope.statuuus = [{
     key: 4,
@@ -22,14 +26,59 @@ module.exports = function($scope, $http, $uibModalInstance, fusio, route) {
     value: "Closed"
   }];
 
+  $scope.statusCodes = {
+    '200': 'OK',
+    '201': 'Created',
+    '202': 'Accepted',
+    '204': 'No Content',
+    '205': 'Reset Content',
+    '226': 'IM Used',
+    '300': 'Multiple Choices',
+    '301': 'Moved Permanently',
+    '302': 'Found',
+    '303': 'See Other',
+    '304': 'Not Modified',
+    '307': 'Temporary Redirect',
+    '308': 'Permanent Redirect',
+    '400': 'Bad Request',
+    '402': 'Payment Required',
+    '403': 'Forbidden',
+    '404': 'Not Found',
+    '405': 'Method Not Allowed',
+    '408': 'Request Timeout',
+    '409': 'Conflict',
+    '410': 'Gone',
+    '412': 'Precondition Failed',
+    '417': 'Expectation Failed',
+    '422': 'Unprocessable Entity',
+    '423': 'Locked',
+    '424': 'Failed Dependency',
+    '429': 'Too Many Requests',
+    '500': 'Internal Server Error',
+    '501': 'Not Implemented',
+    '502': 'Bad Gateway',
+    '503': 'Service Unavailable',
+    '504': 'Gateway Timeout',
+    '507': 'Insufficient Storage',
+    '508': 'Loop Detected'
+  };
+
   $scope.update = function(route) {
     var data = angular.copy(route);
 
-    // remove active key
+    // remove empty responses
     if (angular.isObject(data.config)) {
       for (var i = 0; i < data.config.length; i++) {
-        if (data.config[i].hasOwnProperty('active')) {
-          delete data.config[i].active;
+        if (angular.isObject(data.config[i].methods)) {
+          for (var method in data.config[i].methods) {
+            if (data.config[i].methods.hasOwnProperty(method) && angular.isObject(data.config[i].methods[method].responses)) {
+              for (var code in data.config[i].methods[method].responses) {
+                if (data.config[i].methods[method].responses.hasOwnProperty(code) && !data.config[i].methods[method].responses[code]) {
+                  delete data.config[i].methods[method].responses[code];
+                }
+              }
+            }
+          }
         }
       }
     }
@@ -60,7 +109,7 @@ module.exports = function($scope, $http, $uibModalInstance, fusio, route) {
             if (ver.methods.hasOwnProperty($scope.methods[i])) {
               methods[$scope.methods[i]] = ver.methods[$scope.methods[i]];
             } else {
-              methods[$scope.methods[i]] = {};
+              methods[$scope.methods[i]] = $scope.newEmptyMethod();
             }
           }
           ver.methods = methods;
@@ -91,32 +140,46 @@ module.exports = function($scope, $http, $uibModalInstance, fusio, route) {
   };
 
   $scope.addVersion = function() {
-    var versions = [];
-    for (var i = 0; i < $scope.route.config.length; i++) {
-      var version = $scope.route.config[i];
-      version.active = false;
-
-      versions.push(version);
-    }
-
+    var versions = $scope.route.config;
     versions.push($scope.newVersion());
 
     $scope.route.config = versions;
+
+    //$scope.indexVersion = versions.length - 1;
+    $scope.indexMethod.push(0);
   };
 
   $scope.newVersion = function() {
-    var version = {
+    return {
       version: $scope.getLatestVersion() + 1,
-      active: true,
       status: 4,
-      methods: {}
+      methods: {
+        GET: $scope.newMethod(),
+        POST: $scope.newEmptyMethod(),
+        PUT: $scope.newEmptyMethod(),
+        DELETE: $scope.newEmptyMethod()
+      }
     };
+  };
 
-    for (var i = 0; i < $scope.methods.length; i++) {
-      version.methods[$scope.methods[i]] = {};
-    }
+  $scope.newMethod = function() {
+    return {
+      active: true,
+      public: true,
+      parameters: 1,
+      request: 1,
+      responses: {
+        "200": 1
+      },
+      action: 1
+    };
+  };
 
-    return version;
+  $scope.newEmptyMethod = function() {
+    return {
+      active: false,
+      responses: {}
+    };
   };
 
   $scope.getLatestVersion = function() {
@@ -130,4 +193,54 @@ module.exports = function($scope, $http, $uibModalInstance, fusio, route) {
     return version;
   };
 
+  $scope.addResponse = function(code) {
+    var method = $scope.methods[$scope.indexMethod];
+    if (!$scope.route.config[$scope.indexVersion].methods[method].responses[code]) {
+      $scope.route.config[$scope.indexVersion].methods[method].responses[code] = 1;
+    }
+  };
+
+  $scope.removeResponse = function(code) {
+    var method = $scope.methods[$scope.indexMethod];
+    var responses = $scope.route.config[$scope.indexVersion].methods[method].responses;
+    delete responses[code];
+
+    $scope.route.config[$scope.indexVersion].methods[method].responses = responses;
+  };
+
+  $scope.showShema = function(schemaId) {
+    var modalInstance = $uibModal.open({
+      size: 'lg',
+      backdrop: 'static',
+      templateUrl: 'app/controller/schema/update.html',
+      controller: 'SchemaUpdateCtrl',
+      resolve: {
+        schema: function() {
+          return {id: schemaId};
+        }
+      }
+    });
+
+    modalInstance.result.then(function(response) {
+    }, function() {
+    });
+  };
+
+  $scope.showAction = function(actionId) {
+    var modalInstance = $uibModal.open({
+      size: 'lg',
+      backdrop: 'static',
+      templateUrl: 'app/controller/action/update.html',
+      controller: 'ActionUpdateCtrl',
+      resolve: {
+        action: function() {
+          return {id: actionId};
+        }
+      }
+    });
+
+    modalInstance.result.then(function(response) {
+    }, function() {
+    });
+  };
 };

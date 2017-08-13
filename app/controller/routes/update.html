@@ -13,8 +13,8 @@
             <label for="path">Path:</label>
             <input type="text" id="path" ng-model="route.path" ng-disabled="true" class="form-control" value="{{route.path}}">
         </div>
-        <uib-tabset>
-            <uib-tab ng-repeat="version in route.config" heading="v{{version.version}}" active="version.active">
+        <uib-tabset active="indexVersion">
+            <uib-tab ng-repeat="version in route.config" heading="v{{version.version}}">
                 <div class="form-group">
                     <label>Status:</label>
                     <select class="form-control" ng-model="version.status" ng-options="status.key as status.value for status in statuuus" aria-describedby="statusHelp">
@@ -22,7 +22,7 @@
                     <span class="help-block" id="statusHelp">The status of the API endpoint for this version. For more informations about the impact 
                     click <a ng-click="help.showDialog('help/routes.md#status')">here</a></span>
                 </div>
-                <uib-tabset>
+                <uib-tabset active="indexMethod[indexVersion]">
                     <uib-tab ng-repeat="(method, config) in version.methods" heading="{{method}}">
                         <div class="checkbox">
                             <label><input type="checkbox" ng-model="config.active" ng-disabled="version.status != 4" aria-describedby="activeHelp"> <b>Active</b></label>
@@ -33,21 +33,75 @@
                             <span class="help-block" id="publicHelp">Whether the endpoint can be requested without an access token</span>
                         </div>
                         <div class="form-group">
+                            <label>Parameters:</label>
+                            <div class="row">
+                                <div class="col-md-11">
+                                    <select class="form-control" ng-model="config.parameters" ng-options="schema.id as schema.name for schema in schemas" ng-disabled="version.status != 4" aria-describedby="parametersHelp">
+                                        <option value="">No schema</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-1">
+                                    <a ng-if="config.parameters > 1" ng-click="showShema(config.parameters)" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                                    <a ng-if="!(config.parameters > 1)" ng-disabled="true" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                                </div>
+                            </div>
+                            <span class="help-block" id="parametersHelp">Optional a json schema which validates URI query parameters</span>
+                        </div>
+                        <div class="form-group">
                             <label>Request:</label>
-                            <select class="form-control" ng-model="config.request" ng-options="schema.id as schema.name for schema in schemas" ng-disabled="method == 'GET' || version.status != 4" aria-describedby="requestHelp">
-                            </select>
+                            <div class="row">
+                                <div class="col-md-11">
+                                    <select class="form-control" ng-model="config.request" ng-options="schema.id as schema.name for schema in schemas" ng-disabled="method == 'GET' || version.status != 4" aria-describedby="requestHelp">
+                                        <option value="">No schema</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-1">
+                                    <a ng-if="config.request > 1" ng-click="showShema(config.request)" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                                    <a ng-if="!(config.request > 1)" ng-disabled="true" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                                </div>
+                            </div>
                             <span class="help-block" id="requestHelp">The allowed format for incoming requests. The <code>Passthru</code> schema forwards all incoming data unfiltered to the action</span>
                         </div>
                         <div class="form-group">
-                            <label>Response:</label>
-                            <select class="form-control" ng-model="config.response" ng-options="schema.id as schema.name for schema in schemas" ng-disabled="version.status != 4" aria-describedby="responseHelp">
-                            </select>
-                            <span class="help-block" id="responseHelp">The allowed format for outgoing responses. The <code>Passthru</code> schema forwards all outgoing data unfiltered to the client</span>
+                            <label>Responses:</label>
+                            <div ng-repeat="(code, statusTitle) in statusCodes" class="row" style="margin-bottom:6px;" ng-if="config.responses[code]">
+                                <div class="col-md-2">
+                                    <div style="margin-top:8px;"><code>{{code}}</code></div>
+                                </div>
+                                <div class="col-md-9">
+                                    <select class="form-control" ng-model="config.responses[code]" ng-options="schema.id as schema.name for schema in schemas" ng-disabled="version.status != 4" aria-describedby="responsesHelp">
+                                        <option value="">No schema</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-1">
+                                    <a ng-if="config.responses[code] > 1" ng-click="showShema(config.responses[code])" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                                    <a ng-if="!(config.responses[code] > 1)" ng-disabled="true" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <select class="form-control" ng-model="responseCode" ng-options="statusCode as statusTitle for (statusCode, statusTitle) in statusCodes">
+                                    </select>
+                                </div>
+                                <div class="col-md-10">
+                                    <a ng-click="addResponse(responseCode)" ng-disabled="config.responses[responseCode]" class="btn btn-default">Add response</a>
+                                </div>
+                            </div>
+                            <span class="help-block" id="responsesHelp">The allowed format for outgoing responses. The <code>Passthru</code> schema forwards all outgoing data unfiltered to the client</span>
                         </div>
                         <div class="form-group">
                             <label>Action:</label>
-                            <select class="form-control" ng-model="config.action" ng-options="action.id as action.name for action in actions" ng-disabled="version.status != 4" aria-describedby="actionHelp">
-                            </select>
+                            <div class="row">
+                                <div class="col-md-11">
+                                    <select class="form-control" ng-model="config.action" ng-options="action.id as action.name for action in actions" ng-disabled="version.status != 4" aria-describedby="actionHelp">
+                                        <option value="">No action</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-1">
+                                    <a ng-if="config.action > 1" ng-click="showAction(config.action)" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                                    <a ng-if="!(config.action > 1)" ng-disabled="true" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                                </div>
+                            </div>
                             <span class="help-block" id="actionHelp">The action which receives the request and produces a response</span>
                         </div>
                     </uib-tab>
