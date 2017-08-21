@@ -29,6 +29,12 @@ module.exports = function($scope, $http, $uibModal, $compile, fusio) {
   }, {
     name: 'Issued tokens',
     value: 'issued_tokens'
+  }, {
+    name: 'Time average',
+    value: 'time_average'
+  }, {
+    name: 'Time per route',
+    value: 'time_per_route'
   }];
 
   $scope.doFilter = function() {
