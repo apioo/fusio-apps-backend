@@ -172,8 +172,6 @@ module.exports = function($scope, $http, $uibModal, $uibModalInstance, $timeout,
     return {
       active: true,
       public: true,
-      parameters: 1,
-      request: 1,
       responses: {
         "200": 1
       },
