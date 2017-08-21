@@ -19,9 +19,9 @@ module.exports = function($scope, $http, $uibModal, fusio) {
       $scope.mostUsedRoutes = response.data;
     });
 
-  $http.get(fusio.baseUrl + 'backend/statistic/most_used_apps' + query)
+  $http.get(fusio.baseUrl + 'backend/statistic/time_per_route' + query)
     .then(function(response) {
-      $scope.mostUsedApps = response.data;
+      $scope.timePerRoute = response.data;
     });
 
   $http.get(fusio.baseUrl + 'backend/dashboard/latest_requests')
