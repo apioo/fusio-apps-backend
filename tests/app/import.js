@@ -7,34 +7,18 @@ describe('Import tests', function() {
 
     var EC = protractor.ExpectedConditions;
 
-    var raml = '';
-    raml+= 'title: Example API' + '\n';
-    raml+= 'baseUri: /bar' + '\n';
-    raml+= '/foo:' + '\n';
-    raml+= '  get:' + '\n';
-    raml+= '  responses:' + '\n';
-    raml+= '  200:' + '\n';
-    raml+= '  body:' + '\n';
-    raml+= '  application/json:' + '\n';
-    raml+= '  schema: |' + '\n';
-    raml+= '  {"type": "object", "properties": {"success": {"type": "boolean"},"message": {"type": "string"}}}' + '\n';
-    raml+= protractor.Key.BACK_SPACE + protractor.Key.BACK_SPACE + protractor.Key.BACK_SPACE + protractor.Key.BACK_SPACE + protractor.Key.BACK_SPACE;
-    raml+= '  post:' + '\n';
-    raml+= '  body:' + '\n';
-    raml+= '  application/json:' + '\n';
-    raml+= '  schema: |' + '\n';
-    raml+= '  {"type": "object", "properties": {"success": {"type": "boolean"},"message": {"type": "string"}}}' + '\n';
-    raml+= '' + '\n';
+    var openapi = JSON.stringify(getOpenAPI());
 
-    element(by.css('textarea.ace_text-input')).sendKeys(raml);
+    element(by.css('textarea.ace_text-input')).sendKeys(openapi);
 
     $('a.btn-primary').click();
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 50000);
 
     var routes = element.all(by.repeater('route in data.routes'));
-    expect(routes.count()).toEqual(1);
-    expect(routes.get(0).getText()).toEqual('/bar/foo');
+    expect(routes.count()).toEqual(2);
+    expect(routes.get(0).getText()).toEqual('/pets');
+    expect(routes.get(1).getText()).toEqual('/pets/{petId}');
 
     var schemas = element.all(by.repeater('schem in data.schema'));
     expect(schemas.count()).toEqual(2);
@@ -89,5 +73,183 @@ describe('Import tests', function() {
     expect($('div.alert-success > div').getText()).toEqual('You have successfully imported the provided data');
 
   });
+
+  function getOpenAPI() {
+    return {
+      "openapi": "3.0.0",
+      "info": {
+        "version": "1.0.0",
+        "title": "Swagger Petstore",
+        "license": {
+          "name": "MIT"
+        }
+      },
+      "servers": [
+        {
+          "url": "http://petstore.swagger.io/v1"
+        }
+      ],
+      "paths": {
+        "/pets": {
+          "get": {
+            "summary": "List all pets",
+            "operationId": "listPets",
+            "tags": [
+              "pets"
+            ],
+            "parameters": [
+              {
+                "name": "limit",
+                "in": "query",
+                "description": "How many items to return at one time (max 100)",
+                "required": false,
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "An paged array of pets",
+                "headers": {
+                  "x-next": {
+                    "description": "A link to the next page of responses",
+                    "schema": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/Pets"
+                    }
+                  }
+                }
+              },
+              "default": {
+                "description": "unexpected error",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/Error"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "post": {
+            "summary": "Create a pet",
+            "operationId": "createPets",
+            "tags": [
+              "pets"
+            ],
+            "responses": {
+              "201": {
+                "description": "Null response"
+              },
+              "default": {
+                "description": "unexpected error",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/Error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/pets/{petId}": {
+          "get": {
+            "summary": "Info for a specific pet",
+            "operationId": "showPetById",
+            "tags": [
+              "pets"
+            ],
+            "parameters": [
+              {
+                "name": "petId",
+                "in": "path",
+                "required": true,
+                "description": "The id of the pet to retrieve",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Expected response to a valid request",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/Pets"
+                    }
+                  }
+                }
+              },
+              "default": {
+                "description": "unexpected error",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/Error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "components": {
+        "schemas": {
+          "Pet": {
+            "required": [
+              "id",
+              "name"
+            ],
+            "properties": {
+              "id": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "name": {
+                "type": "string"
+              },
+              "tag": {
+                "type": "string"
+              }
+            }
+          },
+          "Pets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Pet"
+            }
+          },
+          "Error": {
+            "required": [
+              "code",
+              "message"
+            ],
+            "properties": {
+              "code": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "message": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 
 });
