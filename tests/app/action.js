@@ -24,11 +24,13 @@ describe('Action tests', function() {
     element(by.model('action.name')).sendKeys('test-action');
 
     var actionOptions = element.all(by.options('action.class as action.name for action in actions'));
-    expect(actionOptions.get(0).getText()).toEqual('SQL-Table');
-    expect(actionOptions.get(1).getText()).toEqual('Util-Static-Response');
-    expect(actionOptions.get(2).getText()).toEqual('V8-Processor');
+    expect(actionOptions.get(0).getText()).toEqual('HTTP-Processor');
+    expect(actionOptions.get(1).getText()).toEqual('PHP-Processor');
+    expect(actionOptions.get(2).getText()).toEqual('SQL-Table');
+    expect(actionOptions.get(3).getText()).toEqual('Util-Static-Response');
+    expect(actionOptions.get(4).getText()).toEqual('V8-Processor');
 
-    actionOptions.get(1).click();
+    actionOptions.get(3).click();
 
     browser.wait(EC.visibilityOf($('#config-statusCode')), 5000);
 
@@ -95,7 +97,7 @@ describe('Action tests', function() {
     element(by.model('action.name')).sendKeys('app-action');
 
     var actionOptions = element.all(by.options('action.class as action.name for action in actions'));
-    actionOptions.get(0).click();
+    actionOptions.get(2).click();
 
     browser.wait(EC.visibilityOf($('#config-connection')), 5000);
 

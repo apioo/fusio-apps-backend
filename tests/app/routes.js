@@ -27,14 +27,14 @@ describe('Routes tests', function() {
     element.all(by.model('config.public')).get(0).click();
 
     var responseOptions = element.all(by.options('schema.id as schema.name for schema in schemas'));
-    expect(responseOptions.get(3).getText()).toEqual('');
-    expect(responseOptions.get(4).getText()).toEqual('Foo-Schema');
-    expect(responseOptions.get(5).getText()).toEqual('Passthru');
+    expect(responseOptions.get(6).getText()).toEqual('No schema');
+    expect(responseOptions.get(7).getText()).toEqual('Foo-Schema');
+    expect(responseOptions.get(8).getText()).toEqual('Passthru');
 
-    responseOptions.get(5).click();
+    responseOptions.get(8).click();
 
     var actionOptions = element.all(by.options('action.id as action.name for action in actions'));
-    expect(actionOptions.get(0).getText()).toEqual('');
+    expect(actionOptions.get(0).getText()).toEqual('No action');
     expect(actionOptions.get(1).getText()).toEqual('app-action');
     expect(actionOptions.get(2).getText()).toEqual('Sql-Table');
     expect(actionOptions.get(3).getText()).toEqual('Util-Static-Response');
@@ -54,7 +54,7 @@ describe('Routes tests', function() {
 
     var EC = protractor.ExpectedConditions;
 
-    element.all(by.css('div.fusio-options a:nth-child(3)')).first().click();
+    element.all(by.css('div.fusio-options a:nth-child(1)')).first().click();
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
@@ -101,7 +101,7 @@ describe('Routes tests', function() {
 
     var EC = protractor.ExpectedConditions;
 
-    element.all(by.css('div.fusio-options a:nth-child(3)')).first().click();
+    element.all(by.css('div.fusio-options a:nth-child(1)')).first().click();
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
@@ -148,7 +148,7 @@ describe('Routes tests', function() {
 
     var EC = protractor.ExpectedConditions;
 
-    element.all(by.css('div.fusio-options a:nth-child(3)')).first().click();
+    element.all(by.css('div.fusio-options a:nth-child(1)')).first().click();
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
@@ -195,7 +195,7 @@ describe('Routes tests', function() {
 
     var EC = protractor.ExpectedConditions;
 
-    element.all(by.css('div.fusio-options a:nth-child(3)')).first().click();
+    element.all(by.css('div.fusio-options a:nth-child(1)')).first().click();
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
@@ -231,14 +231,14 @@ describe('Routes tests', function() {
 
     var EC = protractor.ExpectedConditions;
 
-    element.all(by.css('div.fusio-options a:nth-child(3)')).first().click();
+    element.all(by.css('div.fusio-options a:nth-child(1)')).first().click();
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
     expect(element(by.model('route.path')).getAttribute('value')).toEqual('/test');
     expect(element.all(by.model('config.active')).get(0).getAttribute('value')).toEqual('on');
     expect(element.all(by.model('config.public')).get(0).getAttribute('value')).toEqual('on');
-    expect(element.all(by.model('config.response')).get(0).getAttribute('value')).toEqual('number:1');
+    expect(element.all(by.model('config.responses')).get(0).getAttribute('value')).toEqual('number:1');
     expect(element.all(by.model('config.action')).get(0).getAttribute('value')).toEqual('number:5');
 
     var responseOptions = element.all(by.options('schema.id as schema.name for schema in schemas'));
@@ -263,7 +263,7 @@ describe('Routes tests', function() {
 
     var EC = protractor.ExpectedConditions;
 
-    element.all(by.css('div.fusio-options a:nth-child(4)')).first().click();
+    element.all(by.css('div.fusio-options a:nth-child(2)')).first().click();
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
@@ -274,33 +274,6 @@ describe('Routes tests', function() {
     browser.wait(EC.visibilityOf($('div.alert-success')), 5000);
 
     expect($('div.alert-success > div').getText()).toEqual('Routes successful deleted');
-  });
-
-  it('List route actions', function() {
-    browser.get('#/routes');
-
-    var EC = protractor.ExpectedConditions;
-
-    element.all(by.css('div.fusio-options a:nth-child(1)')).first().click();
-
-    var actions = element.all(by.repeater('action in actions'));
-    expect(actions.count()).toEqual(1);
-    expect(actions.get(0).getText()).toEqual('Sql-Table');
-
-  });
-
-  it('List route schemas', function() {
-    browser.get('#/routes');
-
-    var EC = protractor.ExpectedConditions;
-
-    element.all(by.css('div.fusio-options a:nth-child(2)')).first().click();
-
-    var schemas = element.all(by.repeater('schema in schemas'));
-    expect(schemas.count()).toEqual(2);
-    expect(schemas.get(0).getText()).toEqual('Foo-Schema');
-    expect(schemas.get(1).getText()).toEqual('Passthru');
-
   });
 
 });
