@@ -2,7 +2,10 @@
 
 module.exports = function($scope, $http, $uibModal, fusio) {
 
-  $scope.source = null;
+  $scope.openapi = null;
+  $scope.raml = null;
+  $scope.swagger = null;
+
   $scope.error = null;
   $scope.success = false;
 
