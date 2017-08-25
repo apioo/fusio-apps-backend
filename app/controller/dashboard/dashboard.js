@@ -9,34 +9,14 @@ module.exports = function($scope, $http, $uibModal, fusio) {
 
   var query = '?from=' + fromDate.toISOString() + '&to=' + toDate.toISOString();
 
-  $http.get(fusio.baseUrl + 'backend/statistic/incoming_requests' + query)
+  $http.get(fusio.baseUrl + 'backend/dashboard' + query)
     .then(function(response) {
-      $scope.incomingRequests = response.data;
-    });
-
-  $http.get(fusio.baseUrl + 'backend/statistic/most_used_routes' + query)
-    .then(function(response) {
-      $scope.mostUsedRoutes = response.data;
-    });
-
-  $http.get(fusio.baseUrl + 'backend/statistic/time_per_route' + query)
-    .then(function(response) {
-      $scope.timePerRoute = response.data;
-    });
-
-  $http.get(fusio.baseUrl + 'backend/dashboard/latest_requests')
-    .then(function(response) {
-      $scope.latestRequests = response.data.entry;
-    });
-
-  $http.get(fusio.baseUrl + 'backend/dashboard/latest_apps')
-    .then(function(response) {
-      $scope.latestApps = response.data.entry;
-    });
-
-  $http.get(fusio.baseUrl + 'backend/statistic/errors_per_route' + query)
-    .then(function(response) {
-      $scope.errorsPerRoute = response.data;
+      $scope.incomingRequests = response.data.incomingRequests;
+      $scope.mostUsedRoutes = response.data.mostUsedRoutes;
+      $scope.timePerRoute = response.data.timePerRoute;
+      $scope.latestRequests = response.data.latestRequests.entry;
+      $scope.latestApps = response.data.latestApps.entry;
+      $scope.errorsPerRoute = response.data.errorsPerRoute;
     });
 
 };
