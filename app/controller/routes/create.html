@@ -16,7 +16,7 @@
             <a ng-click="help.showDialog('help/routes.md#path')">here</a> for more informations</span>
         </div>
         <uib-tabset active="indexVersion">
-            <uib-tab ng-repeat="version in route.config" heading="v{{version.version}}">
+            <uib-tab ng-repeat="version in route.config" heading="v{{version.version}}" index="$index">
                 <div class="form-group">
                     <label>Status:</label>
                     <select class="form-control" ng-model="version.status" ng-disabled="true" ng-options="status.key as status.value for status in statuuus" aria-describedby="statusHelp">
@@ -25,7 +25,7 @@
                     click <a ng-click="help.showDialog('help/routes.md#status')">here</a></span>
                 </div>
                 <uib-tabset active="indexMethod[indexVersion]">
-                    <uib-tab ng-repeat="(method, config) in version.methods" heading="{{method}}">
+                    <uib-tab ng-repeat="(method, config) in version.methods" heading="{{method}}" index="$index">
                         <div class="checkbox">
                             <label><input type="checkbox" ng-model="config.active" ng-disabled="version.status != 4" aria-describedby="activeHelp"> <b>Active</b></label>
                             <span class="help-block" id="activeHelp">Whether the request method is allowed</span>

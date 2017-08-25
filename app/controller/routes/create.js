@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function($scope, $http, $uibModalInstance, fusio) {
+module.exports = function($scope, $http, $uibModalInstance, $timeout, fusio) {
 
   $scope.route = {
     path: '',
@@ -11,7 +11,7 @@ module.exports = function($scope, $http, $uibModalInstance, fusio) {
   $scope.schemas = [];
   $scope.actions = [];
 
-  $scope.indexVersion = 0;
+  $scope.indexVersion = -1;
   $scope.indexMethod = [];
   $scope.responseCode = '200';
 
@@ -123,8 +123,10 @@ module.exports = function($scope, $http, $uibModalInstance, fusio) {
 
     $scope.route.config = versions;
 
-    //$scope.indexVersion = versions.length - 1;
-    $scope.indexMethod.push(0);
+    $timeout(function() {
+      $scope.indexVersion = ($scope.route.config.length - 1);
+      $scope.indexMethod.push(0);
+    });
   };
 
   $scope.newVersion = function() {

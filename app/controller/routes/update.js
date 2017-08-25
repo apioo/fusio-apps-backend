@@ -8,8 +8,8 @@ module.exports = function($scope, $http, $uibModal, $uibModalInstance, $timeout,
   $scope.schemas = [];
   $scope.actions = [];
 
-  $scope.indexVersion = 0;
-  $scope.indexMethod = [0];
+  $scope.indexVersion = -1;
+  $scope.indexMethod = [];
   $scope.responseCode = '200';
 
   $scope.statuuus = [{
@@ -116,15 +116,23 @@ module.exports = function($scope, $http, $uibModal, $uibModalInstance, $timeout,
           config.push(ver);
         }
         data.config = config;
-
-        if (config.length > 1) {
-          for (var j = 0; j < config.length - 1; j++) {
-            $scope.indexMethod.push(0);
-          }
-        }
       }
 
       $scope.route = data;
+
+      $timeout(function() {
+        var indexVersion = -1;
+        var indexMethod = [];
+        if ($scope.route.config.length > 0) {
+          for (var i = 0; i < $scope.route.config.length; i++) {
+            indexVersion++;
+            indexMethod.push(0);
+          }
+        }
+
+        $scope.indexVersion = indexVersion;
+        $scope.indexMethod = indexMethod;
+      });
     });
 
   $http.get(fusio.baseUrl + 'backend/action')
@@ -151,8 +159,10 @@ module.exports = function($scope, $http, $uibModal, $uibModalInstance, $timeout,
 
     $scope.route.config = versions;
 
-    //$scope.indexVersion = versions.length - 1;
-    $scope.indexMethod.push(0);
+    $timeout(function() {
+      $scope.indexVersion = ($scope.route.config.length - 1);
+      $scope.indexMethod.push(0);
+    });
   };
 
   $scope.newVersion = function() {
