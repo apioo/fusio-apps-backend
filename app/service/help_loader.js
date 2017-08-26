@@ -6,7 +6,8 @@ module.exports = function($http, $showdown, $q, $uibModal) {
   helper.load = function(path) {
     return $q(function(resolve, reject) {
       $http.get(path)
-        .then(function(data, status) {
+        .then(function(response) {
+          var data = response.data;
           // if the path has an fragment extract the part of the content
           // with the heading
           var parser = document.createElement('a');
