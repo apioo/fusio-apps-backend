@@ -3,7 +3,7 @@
 describe('Connection tests', function() {
 
   it('List connection', function() {
-    browser.get('#/connection');
+    browser.get('#!/connection');
 
     var routes = element.all(by.repeater('connection in connections'));
     expect(routes.count()).toEqual(1);
@@ -11,7 +11,7 @@ describe('Connection tests', function() {
   });
 
   it('Create connection', function() {
-    browser.get('#/connection');
+    browser.get('#!/connection');
 
     var EC = protractor.ExpectedConditions;
 
@@ -39,7 +39,7 @@ describe('Connection tests', function() {
   });
 
   it('Update connection', function() {
-    browser.get('#/connection');
+    browser.get('#!/connection');
 
     var EC = protractor.ExpectedConditions;
 
@@ -58,7 +58,7 @@ describe('Connection tests', function() {
   });
 
   it('Delete connection', function() {
-    browser.get('#/connection');
+    browser.get('#!/connection');
 
     var EC = protractor.ExpectedConditions;
 
@@ -76,7 +76,7 @@ describe('Connection tests', function() {
   });
 
   it('Create connection routes', function() {
-    browser.get('#/connection');
+    browser.get('#!/connection');
 
     var EC = protractor.ExpectedConditions;
 

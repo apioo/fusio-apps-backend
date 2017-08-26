@@ -3,7 +3,7 @@
 describe('Token tests', function() {
 
   it('List token', function() {
-    browser.get('#/token');
+    browser.get('#!/token');
 
     var tokens = element.all(by.repeater('token in tokens').column('scope'));
     expect(tokens.count()).toEqual(2);
@@ -12,7 +12,7 @@ describe('Token tests', function() {
   });
 
   it('Detail token', function() {
-    browser.get('#/token');
+    browser.get('#!/token');
 
     var EC = protractor.ExpectedConditions;
 

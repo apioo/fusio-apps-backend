@@ -3,7 +3,7 @@
 describe('Audit tests', function() {
 
   it('List audit', function() {
-    browser.get('#/audit');
+    browser.get('#!/audit');
 
     var EC = protractor.ExpectedConditions;
 
@@ -23,7 +23,7 @@ describe('Audit tests', function() {
   });
 
   it('Detail audit', function() {
-    browser.get('#/audit');
+    browser.get('#!/audit');
 
     var EC = protractor.ExpectedConditions;
 

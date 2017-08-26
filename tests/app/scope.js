@@ -3,7 +3,7 @@
 describe('Scope tests', function() {
 
   it('List scope', function() {
-    browser.get('#/scope');
+    browser.get('#!/scope');
 
     var routes = element.all(by.repeater('scope in scopes'));
     expect(routes.count()).toEqual(5);
@@ -15,7 +15,7 @@ describe('Scope tests', function() {
   });
 
   it('Create scope', function() {
-    browser.get('#/scope');
+    browser.get('#!/scope');
 
     var EC = protractor.ExpectedConditions;
 
@@ -35,7 +35,7 @@ describe('Scope tests', function() {
   });
 
   it('Update scope', function() {
-    browser.get('#/scope');
+    browser.get('#!/scope');
 
     var EC = protractor.ExpectedConditions;
 
@@ -58,7 +58,7 @@ describe('Scope tests', function() {
   });
 
   it('Delete scope', function() {
-    browser.get('#/scope');
+    browser.get('#!/scope');
 
     var EC = protractor.ExpectedConditions;
 

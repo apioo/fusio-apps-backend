@@ -3,10 +3,9 @@
 describe('Import tests', function() {
 
   it('List import', function() {
-    browser.get('#/import');
+    browser.get('#!/import');
 
     var EC = protractor.ExpectedConditions;
-
     var openapi = JSON.stringify(getOpenAPI());
 
     element(by.css('textarea.ace_text-input')).sendKeys(openapi);

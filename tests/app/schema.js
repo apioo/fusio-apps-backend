@@ -3,7 +3,7 @@
 describe('Schema tests', function() {
 
   it('List schema', function() {
-    browser.get('#/schema');
+    browser.get('#!/schema');
 
     var schemas = element.all(by.repeater('schema in schemas'));
     expect(schemas.count()).toEqual(2);
@@ -12,7 +12,7 @@ describe('Schema tests', function() {
   });
 
   it('Create schema', function() {
-    browser.get('#/schema');
+    browser.get('#!/schema');
 
     var EC = protractor.ExpectedConditions;
 
@@ -31,7 +31,7 @@ describe('Schema tests', function() {
   });
 
   it('Update schema', function() {
-    browser.get('#/schema');
+    browser.get('#!/schema');
 
     var EC = protractor.ExpectedConditions;
 
@@ -49,7 +49,7 @@ describe('Schema tests', function() {
   });
 
   it('Delete schema', function() {
-    browser.get('#/schema');
+    browser.get('#!/schema');
 
     var EC = protractor.ExpectedConditions;
 

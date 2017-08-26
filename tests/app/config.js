@@ -3,7 +3,7 @@
 describe('Config tests', function() {
 
   it('List config', function() {
-    browser.get('#/config');
+    browser.get('#!/config');
 
     var configs = element.all(by.repeater('config in configs'));
     expect(configs.count()).toEqual(11);
@@ -15,7 +15,7 @@ describe('Config tests', function() {
   });
 
   it('Update config', function() {
-    browser.get('#/config');
+    browser.get('#!/config');
 
     var EC = protractor.ExpectedConditions;
 

@@ -3,7 +3,7 @@
 describe('Rate tests', function() {
 
   it('List rate', function() {
-    browser.get('#/rate');
+    browser.get('#!/rate');
 
     var rates = element.all(by.repeater('rate in rates'));
     expect(rates.count()).toEqual(4);
@@ -14,7 +14,7 @@ describe('Rate tests', function() {
   });
 
   it('Create rate', function() {
-    browser.get('#/rate');
+    browser.get('#!/rate');
 
     var EC = protractor.ExpectedConditions;
 
@@ -43,7 +43,7 @@ describe('Rate tests', function() {
   });
 
   it('Update rate', function() {
-    browser.get('#/rate');
+    browser.get('#!/rate');
 
     var EC = protractor.ExpectedConditions;
 
@@ -65,7 +65,7 @@ describe('Rate tests', function() {
   });
 
   it('Delete rate', function() {
-    browser.get('#/rate');
+    browser.get('#!/rate');
 
     var EC = protractor.ExpectedConditions;
 

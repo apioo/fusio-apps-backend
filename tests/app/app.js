@@ -3,7 +3,7 @@
 describe('App tests', function() {
 
   it('List app', function() {
-    browser.get('#/app');
+    browser.get('#!/app');
 
     var routes = element.all(by.repeater('app in apps'));
     expect(routes.count()).toEqual(4);
@@ -14,7 +14,7 @@ describe('App tests', function() {
   });
 
   it('Create app', function() {
-    browser.get('#/app');
+    browser.get('#!/app');
 
     var EC = protractor.ExpectedConditions;
 
@@ -50,7 +50,7 @@ describe('App tests', function() {
   });
 
   it('Update app', function() {
-    browser.get('#/app');
+    browser.get('#!/app');
 
     var EC = protractor.ExpectedConditions;
 
@@ -71,7 +71,7 @@ describe('App tests', function() {
   });
 
   it('Delete app', function() {
-    browser.get('#/app');
+    browser.get('#!/app');
 
     var EC = protractor.ExpectedConditions;
 

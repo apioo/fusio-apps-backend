@@ -3,7 +3,7 @@
 describe('Account tests', function() {
 
   it('Change password', function() {
-    browser.get('#/account/change_password');
+    browser.get('#!/account/change_password');
 
     var EC = protractor.ExpectedConditions;
 

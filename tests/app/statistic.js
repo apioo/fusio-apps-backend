@@ -3,7 +3,7 @@
 describe('Statistic tests', function() {
 
   it('List statistic', function() {
-    browser.get('#/statistic');
+    browser.get('#!/statistic');
 
     var routes = element.all(by.options('statistic.value as statistic.name for statistic in statistics'));
     expect(routes.count()).toEqual(7);

@@ -3,7 +3,7 @@
 describe('Log tests', function() {
 
   it('List log', function() {
-    browser.get('#/log');
+    browser.get('#!/log');
 
     var EC = protractor.ExpectedConditions;
 
@@ -24,7 +24,7 @@ describe('Log tests', function() {
   });
 
   it('Detail log', function() {
-    browser.get('#/log');
+    browser.get('#!/log');
 
     var EC = protractor.ExpectedConditions;
 

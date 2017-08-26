@@ -3,7 +3,7 @@
 describe('Error tests', function() {
 
   it('List error', function() {
-    browser.get('#/error');
+    browser.get('#!/error');
 
     var errors = element.all(by.repeater('error in errors').column('error.message'));
     expect(errors.count()).toEqual(1);
@@ -11,7 +11,7 @@ describe('Error tests', function() {
   });
 
   it('Detail error', function() {
-    browser.get('#/error');
+    browser.get('#!/error');
 
     var EC = protractor.ExpectedConditions;
 

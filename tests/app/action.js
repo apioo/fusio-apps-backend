@@ -3,7 +3,7 @@
 describe('Action tests', function() {
 
   it('List action', function() {
-    browser.get('#/action');
+    browser.get('#!/action');
 
     var actions = element.all(by.repeater('action in actions'));
     expect(actions.count()).toEqual(3);
@@ -13,7 +13,7 @@ describe('Action tests', function() {
   });
 
   it('Create action', function() {
-    browser.get('#/action');
+    browser.get('#!/action');
 
     var EC = protractor.ExpectedConditions;
 
@@ -45,7 +45,7 @@ describe('Action tests', function() {
   });
 
   it('Update action', function() {
-    browser.get('#/action');
+    browser.get('#!/action');
 
     var EC = protractor.ExpectedConditions;
 
@@ -68,7 +68,7 @@ describe('Action tests', function() {
   });
 
   it('Delete action', function() {
-    browser.get('#/action');
+    browser.get('#!/action');
 
     var EC = protractor.ExpectedConditions;
 
@@ -86,7 +86,7 @@ describe('Action tests', function() {
   });
 
   it('Create action routes', function() {
-    browser.get('#/action');
+    browser.get('#!/action');
 
     var EC = protractor.ExpectedConditions;
 

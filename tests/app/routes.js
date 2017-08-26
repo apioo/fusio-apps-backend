@@ -5,7 +5,7 @@ var http = require('request-promise');
 describe('Routes tests', function() {
 
   it('List routes', function() {
-    browser.get('#/routes');
+    browser.get('#!/routes');
 
     var routes = element.all(by.repeater('route in routes'));
     expect(routes.count()).toEqual(2);
@@ -14,7 +14,7 @@ describe('Routes tests', function() {
   });
 
   it('Create route', function() {
-    browser.get('#/routes');
+    browser.get('#!/routes');
 
     var EC = protractor.ExpectedConditions;
 
@@ -50,7 +50,7 @@ describe('Routes tests', function() {
   });
 
   it('Change status to development', function() {
-    browser.get('#/routes');
+    browser.get('#!/routes');
 
     var EC = protractor.ExpectedConditions;
 
@@ -97,7 +97,7 @@ describe('Routes tests', function() {
   });
 
   it('Change status to production', function() {
-    browser.get('#/routes');
+    browser.get('#!/routes');
 
     var EC = protractor.ExpectedConditions;
 
@@ -144,7 +144,7 @@ describe('Routes tests', function() {
   });
 
   it('Change status to deprecated', function() {
-    browser.get('#/routes');
+    browser.get('#!/routes');
 
     var EC = protractor.ExpectedConditions;
 
@@ -191,7 +191,7 @@ describe('Routes tests', function() {
   });
 
   it('Change status to closed', function() {
-    browser.get('#/routes');
+    browser.get('#!/routes');
 
     var EC = protractor.ExpectedConditions;
 
@@ -227,7 +227,7 @@ describe('Routes tests', function() {
   });
 
   it('Update route', function() {
-    browser.get('#/routes');
+    browser.get('#!/routes');
 
     var EC = protractor.ExpectedConditions;
 
@@ -259,7 +259,7 @@ describe('Routes tests', function() {
   });
 
   it('Delete route', function() {
-    browser.get('#/routes');
+    browser.get('#!/routes');
 
     var EC = protractor.ExpectedConditions;
 

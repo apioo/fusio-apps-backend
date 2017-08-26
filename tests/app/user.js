@@ -3,7 +3,7 @@
 describe('User tests', function() {
 
   it('List user', function() {
-    browser.get('#/user');
+    browser.get('#!/user');
 
     var users = element.all(by.repeater('user in users'));
     expect(users.count()).toEqual(4);
@@ -14,7 +14,7 @@ describe('User tests', function() {
   });
 
   it('Create user', function() {
-    browser.get('#/user');
+    browser.get('#!/user');
 
     var EC = protractor.ExpectedConditions;
 
@@ -42,7 +42,7 @@ describe('User tests', function() {
   });
 
   it('Update user', function() {
-    browser.get('#/user');
+    browser.get('#!/user');
 
     var EC = protractor.ExpectedConditions;
 
@@ -71,7 +71,7 @@ describe('User tests', function() {
   });
 
   it('Delete user', function() {
-    browser.get('#/user');
+    browser.get('#!/user');
 
     var EC = protractor.ExpectedConditions;
 
