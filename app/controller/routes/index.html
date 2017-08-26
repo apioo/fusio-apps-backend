@@ -15,13 +15,13 @@
     </form>
 </div>
 
-<uib-alert type="success" close="closeResponse()" ng-if="response.success === true">
+<div uib-alert class="alert-success" close="closeResponse()" ng-if="response.success === true">
     {{response.message}}
-</uib-alert>
+</div>
 
-<uib-alert type="danger" close="closeResponse()" ng-if="response.success === false">
+<div uib-alert class="alert-danger" close="closeResponse()" ng-if="response.success === false">
     {{response.message}}
-</uib-alert>
+</div>
 
 <div class="fusio-grid">
     <table class="table">

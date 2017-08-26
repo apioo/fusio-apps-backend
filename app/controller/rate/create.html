@@ -4,9 +4,9 @@
 </div>
 
 <div class="modal-body">
-    <uib-alert type="danger" close="closeResponse()" ng-if="response.success === false">
+    <div uib-alert class="alert-danger" close="closeResponse()" ng-if="response.success === false">
         {{response.message}}
-    </uib-alert>
+    </div>
     <form name="rateCreateForm" ng-submit="create(rate)">
         <div class="form-group">
             <label for="name">Name:</label>
@@ -38,8 +38,8 @@
             <span class="help-block" id="unitHelp"></span>
         </div>
 
-        <uib-alert type="info">The following table contains criteria which assign the incoming request to this rate. If <code>authenticated</code> is
-        yes it is possible to apply the plan only to apps which have a specific parameter.</uib-alert>
+        <div uib-alert class="alert-info">The following table contains criteria which assign the incoming request to this rate. If <code>authenticated</code> is
+        yes it is possible to apply the plan only to apps which have a specific parameter.</div>
 
         <table class="table">
         <colgroup>

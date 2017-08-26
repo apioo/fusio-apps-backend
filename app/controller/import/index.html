@@ -1,9 +1,9 @@
 
 <h1>Import</h1>
 
-<uib-alert type="danger" ng-if="error">{{ error }}</uib-alert>
+<div uib-alert class="alert-danger" ng-if="error">{{ error }}</div>
 
-<uib-alert type="success" ng-if="success">You have successfully imported the provided data</uib-alert>
+<div uib-alert class="alert-success" ng-if="success">You have successfully imported the provided data</div>
 
 <div class="pull-right">
     <a class="btn btn-default" ng-click="help.showDialog('help/import.md')"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>

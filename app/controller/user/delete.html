@@ -4,9 +4,9 @@
 </div>
 
 <div class="modal-body">
-    <uib-alert type="danger" close="closeResponse()" ng-if="response.success === false">
+    <div uib-alert class="alert-danger" close="closeResponse()" ng-if="response.success === false">
         {{response.message}}
-    </uib-alert>
+    </div>
     <form name="usersDeleteForm" ng-submit="delete(user)">
         <input type="hidden" ng-model="user.id" value="{{user.id}}" />    
         <div class="form-group">

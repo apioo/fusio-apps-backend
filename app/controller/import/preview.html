@@ -4,7 +4,7 @@
 </div>
 
 <div class="modal-body">
-    <uib-alert type="danger" ng-if="error">{{ error }}</uib-alert>
+    <div uib-alert class="alert-danger" ng-if="error">{{ error }}</div>
 
     <div ng-if="data.routes">
         <h4>Routes</h4>
