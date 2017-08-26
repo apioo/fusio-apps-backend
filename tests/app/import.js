@@ -17,12 +17,13 @@ describe('Import tests', function() {
     var routes = element.all(by.repeater('route in data.routes'));
     expect(routes.count()).toEqual(2);
     expect(routes.get(0).getText()).toEqual('/pets');
-    expect(routes.get(1).getText()).toEqual('/pets/{petId}');
+    expect(routes.get(1).getText()).toEqual('/pets/:petId');
 
     var schemas = element.all(by.repeater('schem in data.schema'));
-    expect(schemas.count()).toEqual(2);
-    expect(schemas.get(0).getText()).toEqual('bar-foo-GET-response');
-    expect(schemas.get(1).getText()).toEqual('bar-foo-POST-request');
+    expect(schemas.count()).toEqual(3);
+    expect(schemas.get(0).getText()).toEqual('pets-listPets-GET-query');
+    expect(schemas.get(1).getText()).toEqual('pets-listPets-GET-200-response');
+    expect(schemas.get(2).getText()).toEqual('pets-_petId_-showPetById-GET-200-response');
 
     // click route details
     /*

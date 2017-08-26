@@ -23,15 +23,6 @@ describe('Routes tests', function() {
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
     element(by.model('route.path')).sendKeys('/test');
-    element.all(by.model('config.active')).get(0).click();
-    element.all(by.model('config.public')).get(0).click();
-
-    var responseOptions = element.all(by.options('schema.id as schema.name for schema in schemas'));
-    expect(responseOptions.get(6).getText()).toEqual('No schema');
-    expect(responseOptions.get(7).getText()).toEqual('Foo-Schema');
-    expect(responseOptions.get(8).getText()).toEqual('Passthru');
-
-    responseOptions.get(8).click();
 
     var actionOptions = element.all(by.options('action.id as action.name for action in actions'));
     expect(actionOptions.get(0).getText()).toEqual('No action');
@@ -56,7 +47,7 @@ describe('Routes tests', function() {
 
     element.all(by.css('div.fusio-options a:nth-child(1)')).first().click();
 
-    browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
+    browser.wait(EC.visibilityOf($('select.form-control')), 5000);
 
     var statusOptions = element.all(by.options('status.key as status.value for status in statuuus'));
     statusOptions.get(0).click();
@@ -103,7 +94,7 @@ describe('Routes tests', function() {
 
     element.all(by.css('div.fusio-options a:nth-child(1)')).first().click();
 
-    browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
+    browser.wait(EC.visibilityOf($('select.form-control')), 5000);
 
     var statusOptions = element.all(by.options('status.key as status.value for status in statuuus'));
     statusOptions.get(1).click();
@@ -150,7 +141,7 @@ describe('Routes tests', function() {
 
     element.all(by.css('div.fusio-options a:nth-child(1)')).first().click();
 
-    browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
+    browser.wait(EC.visibilityOf($('select.form-control')), 5000);
 
     var statusOptions = element.all(by.options('status.key as status.value for status in statuuus'));
     statusOptions.get(2).click();
@@ -197,7 +188,7 @@ describe('Routes tests', function() {
 
     element.all(by.css('div.fusio-options a:nth-child(1)')).first().click();
 
-    browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
+    browser.wait(EC.visibilityOf($('select.form-control')), 5000);
 
     var statusOptions = element.all(by.options('status.key as status.value for status in statuuus'));
     statusOptions.get(3).click();
@@ -233,23 +224,14 @@ describe('Routes tests', function() {
 
     element.all(by.css('div.fusio-options a:nth-child(1)')).first().click();
 
-    browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
+    browser.wait(EC.visibilityOf($('select.form-control')), 5000);
 
     expect(element(by.model('route.path')).getAttribute('value')).toEqual('/test');
     expect(element.all(by.model('config.active')).get(0).getAttribute('value')).toEqual('on');
     expect(element.all(by.model('config.public')).get(0).getAttribute('value')).toEqual('on');
-    expect(element.all(by.model('config.responses')).get(0).getAttribute('value')).toEqual('number:1');
+    expect(element.all(by.model('config.parameters')).get(0).getAttribute('value')).toEqual('');
+    expect(element.all(by.model('config.responses[code]')).get(0).getAttribute('value')).toEqual('number:1');
     expect(element.all(by.model('config.action')).get(0).getAttribute('value')).toEqual('number:5');
-
-    var responseOptions = element.all(by.options('schema.id as schema.name for schema in schemas'));
-    expect(responseOptions.get(3).getText()).toEqual('Foo-Schema');
-    expect(responseOptions.get(4).getText()).toEqual('Passthru');
-
-    var actionOptions = element.all(by.options('action.id as action.name for action in actions'));
-    expect(actionOptions.get(0).getText()).toEqual('app-action');
-    expect(actionOptions.get(1).getText()).toEqual('Sql-Table');
-    expect(actionOptions.get(2).getText()).toEqual('Util-Static-Response');
-    expect(actionOptions.get(3).getText()).toEqual('Welcome');
 
     $('button.btn-primary').click();
 
