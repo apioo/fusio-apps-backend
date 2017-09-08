@@ -98,7 +98,7 @@ describe('Action tests', function() {
     element(by.model('action.name')).sendKeys('app-action');
 
     var actionOptions = element.all(by.options('action.class as action.name for action in actions'));
-    actionOptions.get(2).click();
+    actionOptions.get(3).click();
 
     browser.wait(EC.visibilityOf($('#config-connection')), 5000);
 
