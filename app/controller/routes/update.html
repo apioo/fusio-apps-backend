@@ -41,8 +41,8 @@
                                     </select>
                                 </div>
                                 <div class="col-md-1">
-                                    <a ng-if="config.parameters > 1" ng-click="showShema(config.parameters)" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
-                                    <a ng-if="!(config.parameters > 1)" ng-disabled="true" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                                    <a ng-if="config.parameters > 1 && version.status == 4" ng-click="showShema(config.parameters)" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                                    <a ng-if="!(config.parameters > 1 && version.status == 4)" ng-disabled="true" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
                                 </div>
                             </div>
                             <span class="help-block" id="parametersHelp">Optional a json schema which validates URI query parameters</span>
@@ -56,8 +56,8 @@
                                     </select>
                                 </div>
                                 <div class="col-md-1">
-                                    <a ng-if="config.request > 1" ng-click="showShema(config.request)" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
-                                    <a ng-if="!(config.request > 1)" ng-disabled="true" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                                    <a ng-if="config.request > 1 && version.status == 4" ng-click="showShema(config.request)" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                                    <a ng-if="!(config.request > 1 && version.status == 4)" ng-disabled="true" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
                                 </div>
                             </div>
                             <span class="help-block" id="requestHelp">The allowed format for incoming requests. The <code>Passthru</code> schema forwards all incoming data unfiltered to the action</span>
@@ -74,17 +74,17 @@
                                     </select>
                                 </div>
                                 <div class="col-md-1">
-                                    <a ng-if="config.responses[code] > 1" ng-click="showShema(config.responses[code])" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
-                                    <a ng-if="!(config.responses[code] > 1)" ng-disabled="true" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                                    <a ng-if="config.responses[code] > 1 && version.status == 4" ng-click="showShema(config.responses[code])" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                                    <a ng-if="!(config.responses[code] > 1 && version.status == 4)" ng-disabled="true" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-2">
-                                    <select class="form-control" ng-model="responseCode" ng-options="statusCode as statusTitle for (statusCode, statusTitle) in statusCodes">
+                                    <select class="form-control" ng-model="responseCode" ng-options="statusCode as statusTitle for (statusCode, statusTitle) in statusCodes" ng-disabled="config.responses[responseCode] || version.status != 4">
                                     </select>
                                 </div>
                                 <div class="col-md-10">
-                                    <a ng-click="addResponse(responseCode)" ng-disabled="config.responses[responseCode]" class="btn btn-default">Add response</a>
+                                    <a ng-click="addResponse(responseCode)" ng-disabled="config.responses[responseCode] || version.status != 4" class="btn btn-default">Add response</a>
                                 </div>
                             </div>
                             <span class="help-block" id="responsesHelp">The allowed format for outgoing responses. The <code>Passthru</code> schema forwards all outgoing data unfiltered to the client</span>
@@ -98,8 +98,8 @@
                                     </select>
                                 </div>
                                 <div class="col-md-1">
-                                    <a ng-if="config.action > 1" ng-click="showAction(config.action)" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
-                                    <a ng-if="!(config.action > 1)" ng-disabled="true" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                                    <a ng-if="config.action > 1 && version.status == 4" ng-click="showAction(config.action)" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                                    <a ng-if="!(config.action > 1 && version.status == 4)" ng-disabled="true" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
                                 </div>
                             </div>
                             <span class="help-block" id="actionHelp">The action which receives the request and produces a response</span>
