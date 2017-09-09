@@ -4924,33 +4924,36 @@ module.exports = function($http, $showdown, $q, $uibModal) {
 
   helper.load = function(path) {
     return $q(function(resolve, reject) {
-      $http.get(path).success(function(data, status) {
-        // if the path has an fragment extract the part of the content
-        // with the heading
-        var parser = document.createElement('a');
-        parser.href = path;
+      $http.get(path)
+        .then(function(response) {
+          var data = response.data;
+          // if the path has an fragment extract the part of the content
+          // with the heading
+          var parser = document.createElement('a');
+          parser.href = path;
 
-        if (parser.hash) {
-          var heading = parser.hash.substr(1);
-          if (heading !== '') {
-            var regexp = new RegExp('(^###\\s' + heading + '$\\s+([\\s\\S]*?))^###\\s', 'gmi');
-            var matches = regexp.exec(data);
+          if (parser.hash) {
+            var heading = parser.hash.substr(1);
+            if (heading !== '') {
+              var regexp = new RegExp('(^###\\s' + heading + '$\\s+([\\s\\S]*?))^###\\s', 'gmi');
+              var matches = regexp.exec(data);
 
-            data = matches && matches.length > 0 ? matches[1] : 'Could not found chapter';
+              data = matches && matches.length > 0 ? matches[1] : 'Could not found chapter';
+            }
           }
-        }
 
-        var html = $showdown.makeHtml(data);
+          var html = $showdown.makeHtml(data);
 
-        // replace {{ ... }} so that angular does not try to
-        // interpret these values
-        html = html.replace(/{{/g, '{<!-- -->{');
-        html = html.replace(/}}/g, '}<!-- -->}');
+          // replace {{ ... }} so that angular does not try to
+          // interpret these values
+          html = html.replace(/{{/g, '{<!-- -->{');
+          html = html.replace(/}}/g, '}<!-- -->}');
 
-        resolve(html);
-      }).error(function(data) {
-        reject('Could not find help file');
-      });
+          resolve(html);
+        })
+        .catch(function(data) {
+          reject('Could not find help file');
+        });
     });
   };
 
