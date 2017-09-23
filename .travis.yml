@@ -1,8 +1,7 @@
 language: php
 php:
   - 7.0
-sudo: required
-dist: trusty
+sudo: false
 addons:
   firefox: "53.0"
 services:
