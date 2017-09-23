@@ -12,8 +12,8 @@ describe('Audit tests', function() {
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
-    element(by.model('filter.from')).sendKeys('2015-06-01');
-    element(by.model('filter.to')).sendKeys('2015-06-30');
+    element(by.model('filter.from')).sendKeys('01062015');
+    element(by.model('filter.to')).sendKeys('30062015');
 
     $('button.btn-primary').click();
 
@@ -32,8 +32,8 @@ describe('Audit tests', function() {
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
-    element(by.model('filter.from')).sendKeys('2015-06-01');
-    element(by.model('filter.to')).sendKeys('2015-06-30');
+    element(by.model('filter.from')).sendKeys('01062015');
+    element(by.model('filter.to')).sendKeys('30062015');
 
     $('button.btn-primary').click();
 
