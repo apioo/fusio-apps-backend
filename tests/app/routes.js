@@ -8,9 +8,10 @@ describe('Routes tests', function() {
     browser.get('#!/routes');
 
     var routes = element.all(by.repeater('route in routes'));
-    expect(routes.count()).toEqual(2);
-    expect(routes.get(0).getText()).toEqual('/foo');
-    expect(routes.get(1).getText()).toEqual('/');
+    expect(routes.count()).toEqual(3);
+    expect(routes.get(0).getText()).toEqual('/inspect/:foo');
+    expect(routes.get(1).getText()).toEqual('/foo');
+    expect(routes.get(2).getText()).toEqual('/');
   });
 
   it('Create route', function() {
@@ -27,9 +28,10 @@ describe('Routes tests', function() {
     var actionOptions = element.all(by.options('action.id as action.name for action in actions'));
     expect(actionOptions.get(0).getText()).toEqual('No action');
     expect(actionOptions.get(1).getText()).toEqual('app-action');
-    expect(actionOptions.get(2).getText()).toEqual('Sql-Table');
-    expect(actionOptions.get(3).getText()).toEqual('Util-Static-Response');
-    expect(actionOptions.get(4).getText()).toEqual('Welcome');
+    expect(actionOptions.get(2).getText()).toEqual('Inspect-Action');
+    expect(actionOptions.get(3).getText()).toEqual('Sql-Table');
+    expect(actionOptions.get(4).getText()).toEqual('Util-Static-Response');
+    expect(actionOptions.get(5).getText()).toEqual('Welcome');
 
     actionOptions.get(1).click();
 
@@ -231,7 +233,7 @@ describe('Routes tests', function() {
     expect(element.all(by.model('config.public')).get(0).getAttribute('value')).toEqual('on');
     expect(element.all(by.model('config.parameters')).get(0).getAttribute('value')).toEqual('');
     expect(element.all(by.model('config.responses[code]')).get(0).getAttribute('value')).toEqual('number:1');
-    expect(element.all(by.model('config.action')).get(0).getAttribute('value')).toEqual('number:5');
+    expect(element.all(by.model('config.action')).get(0).getAttribute('value')).toEqual('number:6');
 
     $('button.btn-primary').click();
 
