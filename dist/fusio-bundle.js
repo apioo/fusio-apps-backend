@@ -2835,7 +2835,7 @@ module.exports = function($scope, $http, $uibModalInstance, $timeout, fusio) {
     config: []
   };
 
-  $scope.methods = ['GET', 'POST', 'PUT', 'DELETE'];
+  $scope.methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
   $scope.schemas = [];
   $scope.actions = [];
 
@@ -3217,7 +3217,7 @@ module.exports = function($scope, $http, $uibModal, $uibModalInstance, $timeout,
 
   $scope.route = route;
 
-  $scope.methods = ['GET', 'POST', 'PUT', 'DELETE'];
+  $scope.methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
   $scope.schemas = [];
   $scope.actions = [];
 
