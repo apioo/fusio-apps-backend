@@ -218,7 +218,7 @@ module.exports = function($scope, $http, $uibModal, $routeParams, $location, fus
   $scope.routes = [];
 
   $scope.load = function() {
-    var search = encodeURIComponent($scope.search);
+    var search = encodeURIComponent($scope.search ? $scope.search : '');
 
     $http.get(fusio.baseUrl + 'backend/action?search=' + search)
       .then(function(response) {
@@ -239,7 +239,7 @@ module.exports = function($scope, $http, $uibModal, $routeParams, $location, fus
 
   $scope.pageChanged = function() {
     var startIndex = ($scope.startIndex - 1) * 16;
-    var search = encodeURIComponent($scope.search);
+    var search = encodeURIComponent($scope.search ? $scope.search : '');
 
     $http.get(fusio.baseUrl + 'backend/action?startIndex=' + startIndex + '&search=' + search)
       .then(function(response) {
@@ -250,7 +250,7 @@ module.exports = function($scope, $http, $uibModal, $routeParams, $location, fus
   };
 
   $scope.doSearch = function(search) {
-    $http.get(fusio.baseUrl + 'backend/action?search=' + encodeURIComponent(search))
+    $http.get(fusio.baseUrl + 'backend/action?search=' + encodeURIComponent(search ? search : ''))
       .then(function(response) {
         var data = response.data;
         $scope.totalResults = data.totalResults;
@@ -672,7 +672,7 @@ module.exports = function($scope, $http, $uibModal, fusio) {
   $scope.search = '';
 
   $scope.load = function() {
-    var search = encodeURIComponent($scope.search);
+    var search = encodeURIComponent($scope.search ? $scope.search : '');
 
     $http.get(fusio.baseUrl + 'backend/app?search=' + search)
       .then(function(response) {
@@ -685,7 +685,7 @@ module.exports = function($scope, $http, $uibModal, fusio) {
 
   $scope.pageChanged = function() {
     var startIndex = ($scope.startIndex - 1) * 16;
-    var search = encodeURIComponent($scope.search);
+    var search = encodeURIComponent($scope.search ? $scope.search : '');
 
     $http.get(fusio.baseUrl + 'backend/app?startIndex=' + startIndex + '&search=' + search)
       .then(function(response) {
@@ -696,7 +696,7 @@ module.exports = function($scope, $http, $uibModal, fusio) {
   };
 
   $scope.doSearch = function(search) {
-    $http.get(fusio.baseUrl + 'backend/app?search=' + encodeURIComponent(search))
+    $http.get(fusio.baseUrl + 'backend/app?search=' + encodeURIComponent(search ? search : ''))
       .then(function(response) {
         var data = response.data;
         $scope.totalResults = data.totalResults;
@@ -1198,7 +1198,7 @@ module.exports = function($scope, $http, $uibModal, fusio) {
   $scope.search = '';
 
   $scope.load = function() {
-    var search = encodeURIComponent($scope.search);
+    var search = encodeURIComponent($scope.search ? $scope.search : '');
 
     $http.get(fusio.baseUrl + 'backend/config?search=' + search)
       .then(function(response) {
@@ -1211,7 +1211,7 @@ module.exports = function($scope, $http, $uibModal, fusio) {
 
   $scope.pageChanged = function() {
     var startIndex = ($scope.startIndex - 1) * 16;
-    var search = encodeURIComponent($scope.search);
+    var search = encodeURIComponent($scope.search ? $scope.search : '');
 
     $http.get(fusio.baseUrl + 'backend/config?startIndex=' + startIndex + '&search=' + search)
       .then(function(response) {
@@ -1222,7 +1222,7 @@ module.exports = function($scope, $http, $uibModal, fusio) {
   };
 
   $scope.doSearch = function(search) {
-    $http.get(fusio.baseUrl + 'backend/config?search=' + encodeURIComponent(search))
+    $http.get(fusio.baseUrl + 'backend/config?search=' + encodeURIComponent(search ? search : ''))
       .then(function(response) {
         var data = response.data;
         $scope.totalResults = data.totalResults;
@@ -1333,7 +1333,7 @@ module.exports = function($scope, $http, $uibModal, fusio) {
   $scope.search = '';
 
   $scope.load = function() {
-    var search = encodeURIComponent($scope.search);
+    var search = encodeURIComponent($scope.search ? $scope.search : '');
 
     $http.get(fusio.baseUrl + 'backend/connection?search=' + search)
       .then(function(response) {
@@ -1346,7 +1346,7 @@ module.exports = function($scope, $http, $uibModal, fusio) {
 
   $scope.pageChanged = function() {
     var startIndex = ($scope.startIndex - 1) * 16;
-    var search = encodeURIComponent($scope.search);
+    var search = encodeURIComponent($scope.search ? $scope.search : '');
 
     $http.get(fusio.baseUrl + 'backend/connection?startIndex=' + startIndex + '&search=' + search)
       .then(function(response) {
@@ -1357,7 +1357,7 @@ module.exports = function($scope, $http, $uibModal, fusio) {
   };
 
   $scope.doSearch = function(search) {
-    $http.get(fusio.baseUrl + 'backend/connection?search=' + encodeURIComponent(search))
+    $http.get(fusio.baseUrl + 'backend/connection?search=' + encodeURIComponent(search ? search : ''))
       .then(function(response) {
         var data = response.data;
         $scope.totalResults = data.totalResults;
@@ -1690,10 +1690,7 @@ module.exports = function($scope, $http, $uibModal, $timeout, fusio) {
   $scope.errors = [];
 
   $scope.load = function() {
-    var search = '';
-    if ($scope.search) {
-      search = encodeURIComponent($scope.search);
-    }
+    var search = encodeURIComponent($scope.search ? $scope.search : '');
 
     $http.get(fusio.baseUrl + 'backend/log/error?search=' + search)
       .then(function(response) {
@@ -1706,7 +1703,7 @@ module.exports = function($scope, $http, $uibModal, $timeout, fusio) {
 
   $scope.pageChanged = function() {
     var startIndex = ($scope.startIndex - 1) * 16;
-    var search = encodeURIComponent($scope.search);
+    var search = encodeURIComponent($scope.search ? $scope.search : '');
 
     $http.get(fusio.baseUrl + 'backend/log/error?startIndex=' + startIndex + '&search=' + search)
       .then(function(response) {
@@ -1717,7 +1714,7 @@ module.exports = function($scope, $http, $uibModal, $timeout, fusio) {
   };
 
   $scope.doSearch = function(search) {
-    $http.get(fusio.baseUrl + 'backend/log/error?search=' + encodeURIComponent(search))
+    $http.get(fusio.baseUrl + 'backend/log/error?search=' + encodeURIComponent(search ? search : ''))
       .then(function(response) {
         var data = response.data;
         $scope.totalResults = data.totalResults;
@@ -2521,7 +2518,7 @@ module.exports = function($scope, $http, $uibModal, fusio) {
   $scope.search = '';
 
   $scope.load = function() {
-    var search = encodeURIComponent($scope.search);
+    var search = encodeURIComponent($scope.search ? $scope.search : '');
 
     $http.get(fusio.baseUrl + 'backend/rate?search=' + search)
       .then(function(response) {
@@ -2534,7 +2531,7 @@ module.exports = function($scope, $http, $uibModal, fusio) {
 
   $scope.pageChanged = function() {
     var startIndex = ($scope.startIndex - 1) * 16;
-    var search = encodeURIComponent($scope.search);
+    var search = encodeURIComponent($scope.search ? $scope.search : '');
 
     $http.get(fusio.baseUrl + 'backend/rate?startIndex=' + startIndex + '&search=' + search)
       .then(function(response) {
@@ -2545,7 +2542,7 @@ module.exports = function($scope, $http, $uibModal, fusio) {
   };
 
   $scope.doSearch = function(search) {
-    $http.get(fusio.baseUrl + 'backend/rate?search=' + encodeURIComponent(search))
+    $http.get(fusio.baseUrl + 'backend/rate?search=' + encodeURIComponent(search ? search : ''))
       .then(function(response) {
         var data = response.data;
         $scope.totalResults = data.totalResults;
@@ -3114,7 +3111,7 @@ module.exports = function($scope, $http, $uibModal, $routeParams, fusio) {
   $scope.search = '';
 
   $scope.load = function() {
-    var search = encodeURIComponent($scope.search);
+    var search = encodeURIComponent($scope.search ? $scope.search : '');
 
     $http.get(fusio.baseUrl + 'backend/routes?search=' + search)
       .then(function(response) {
@@ -3127,7 +3124,7 @@ module.exports = function($scope, $http, $uibModal, $routeParams, fusio) {
 
   $scope.pageChanged = function() {
     var startIndex = ($scope.startIndex - 1) * 16;
-    var search = encodeURIComponent($scope.search);
+    var search = encodeURIComponent($scope.search ? $scope.search : '');
 
     $http.get(fusio.baseUrl + 'backend/routes?startIndex=' + startIndex + '&search=' + search)
       .then(function(response) {
@@ -3138,7 +3135,7 @@ module.exports = function($scope, $http, $uibModal, $routeParams, fusio) {
   };
 
   $scope.doSearch = function(search) {
-    $http.get(fusio.baseUrl + 'backend/routes?search=' + encodeURIComponent(search))
+    $http.get(fusio.baseUrl + 'backend/routes?search=' + encodeURIComponent(search ? search : ''))
       .then(function(response) {
         var data = response.data;
         $scope.totalResults = data.totalResults;
@@ -3628,7 +3625,7 @@ module.exports = function($scope, $http, $uibModal, $routeParams, $location, fus
   $scope.routes = [];
 
   $scope.load = function() {
-    var search = encodeURIComponent($scope.search);
+    var search = encodeURIComponent($scope.search ? $scope.search : '');
 
     $http.get(fusio.baseUrl + 'backend/schema?search=' + search)
       .then(function(response) {
@@ -3648,7 +3645,7 @@ module.exports = function($scope, $http, $uibModal, $routeParams, $location, fus
 
   $scope.pageChanged = function() {
     var startIndex = ($scope.startIndex - 1) * 16;
-    var search = encodeURIComponent($scope.search);
+    var search = encodeURIComponent($scope.search ? $scope.search : '');
 
     $http.get(fusio.baseUrl + 'backend/schema?startIndex=' + startIndex + '&search=' + search)
       .then(function(response) {
@@ -3659,7 +3656,7 @@ module.exports = function($scope, $http, $uibModal, $routeParams, $location, fus
   };
 
   $scope.doSearch = function(search) {
-    $http.get(fusio.baseUrl + 'backend/schema?search=' + encodeURIComponent(search))
+    $http.get(fusio.baseUrl + 'backend/schema?search=' + encodeURIComponent(search ? search : ''))
       .then(function(response) {
         var data = response.data;
         $scope.totalResults = data.totalResults;
@@ -3905,7 +3902,7 @@ module.exports = function($scope, $http, $uibModal, fusio) {
   $scope.search = '';
 
   $scope.load = function() {
-    var search = encodeURIComponent($scope.search);
+    var search = encodeURIComponent($scope.search ? $scope.search : '');
 
     $http.get(fusio.baseUrl + 'backend/scope?search=' + search)
       .then(function(response) {
@@ -3918,7 +3915,7 @@ module.exports = function($scope, $http, $uibModal, fusio) {
 
   $scope.pageChanged = function() {
     var startIndex = ($scope.startIndex - 1) * 16;
-    var search = encodeURIComponent($scope.search);
+    var search = encodeURIComponent($scope.search ? $scope.search : '');
 
     $http.get(fusio.baseUrl + 'backend/scope?startIndex=' + startIndex + '&search=' + search)
       .then(function(response) {
@@ -3929,7 +3926,7 @@ module.exports = function($scope, $http, $uibModal, fusio) {
   };
 
   $scope.doSearch = function(search) {
-    $http.get(fusio.baseUrl + 'backend/scope?search=' + encodeURIComponent(search))
+    $http.get(fusio.baseUrl + 'backend/scope?search=' + encodeURIComponent(search ? search : ''))
       .then(function(response) {
         var data = response.data;
         $scope.totalResults = data.totalResults;
@@ -4681,7 +4678,7 @@ module.exports = function($scope, $http, $uibModal, fusio) {
   $scope.search = '';
 
   $scope.load = function() {
-    var search = encodeURIComponent($scope.search);
+    var search = encodeURIComponent($scope.search ? $scope.search : '');
 
     $http.get(fusio.baseUrl + 'backend/user?search=' + search)
       .then(function(response) {
@@ -4694,7 +4691,7 @@ module.exports = function($scope, $http, $uibModal, fusio) {
 
   $scope.pageChanged = function() {
     var startIndex = ($scope.startIndex - 1) * 16;
-    var search = encodeURIComponent($scope.search);
+    var search = encodeURIComponent($scope.search ? $scope.search : '');
 
     $http.get(fusio.baseUrl + 'backend/user?startIndex=' + startIndex + '&search=' + search)
       .then(function(response) {
@@ -4705,7 +4702,7 @@ module.exports = function($scope, $http, $uibModal, fusio) {
   };
 
   $scope.doSearch = function(search) {
-    $http.get(fusio.baseUrl + 'backend/user?search=' + encodeURIComponent(search))
+    $http.get(fusio.baseUrl + 'backend/user?search=' + encodeURIComponent(search ? search : ''))
       .then(function(response) {
         var data = response.data;
         $scope.totalResults = data.totalResults;
