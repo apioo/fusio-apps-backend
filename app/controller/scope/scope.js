@@ -6,7 +6,7 @@ module.exports = function($scope, $http, $uibModal, fusio) {
   $scope.search = '';
 
   $scope.load = function() {
-    var search = encodeURIComponent($scope.search);
+    var search = encodeURIComponent($scope.search ? $scope.search : '');
 
     $http.get(fusio.baseUrl + 'backend/scope?search=' + search)
       .then(function(response) {
@@ -19,7 +19,7 @@ module.exports = function($scope, $http, $uibModal, fusio) {
 
   $scope.pageChanged = function() {
     var startIndex = ($scope.startIndex - 1) * 16;
-    var search = encodeURIComponent($scope.search);
+    var search = encodeURIComponent($scope.search ? $scope.search : '');
 
     $http.get(fusio.baseUrl + 'backend/scope?startIndex=' + startIndex + '&search=' + search)
       .then(function(response) {
@@ -30,7 +30,7 @@ module.exports = function($scope, $http, $uibModal, fusio) {
   };
 
   $scope.doSearch = function(search) {
-    $http.get(fusio.baseUrl + 'backend/scope?search=' + encodeURIComponent(search))
+    $http.get(fusio.baseUrl + 'backend/scope?search=' + encodeURIComponent(search ? search : ''))
       .then(function(response) {
         var data = response.data;
         $scope.totalResults = data.totalResults;
