@@ -6,8 +6,18 @@ module.exports = function($scope, $http, $uibModal, $uibModalInstance, fusio, cr
 
   $scope.actions = [];
 
-  $scope.update = function(scope) {
-    var data = angular.copy(scope);
+  $scope.update = function(cronjob) {
+    var data = angular.copy(cronjob);
+
+    if (data.exitCode) {
+      delete data.exitCode;
+    }
+    if (data.executeDate) {
+      delete data.executeDate;
+    }
+    if (data.errors) {
+      delete data.errors;
+    }
 
     $http.put(fusio.baseUrl + 'backend/cronjob/' + cronjob.id, data)
       .then(function(response) {

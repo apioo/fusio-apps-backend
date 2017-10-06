@@ -4,13 +4,24 @@ module.exports = function($scope, $http, $uibModal, $uibModalInstance, fusio) {
 
   $scope.cronjob = {
     name: '',
-    cron: ''
+    cron: '',
+    action: 1
   };
 
   $scope.actions = [];
 
   $scope.create = function(cronjob) {
     var data = angular.copy(cronjob);
+
+    if (data.exitCode) {
+      delete data.exitCode;
+    }
+    if (data.executeDate) {
+      delete data.executeDate;
+    }
+    if (data.errors) {
+      delete data.errors;
+    }
 
     $http.post(fusio.baseUrl + 'backend/cronjob', data)
       .then(function(response) {
