@@ -19,6 +19,7 @@ var fusioApp = angular.module('fusioApp', [
   'fusioApp.audit',
   'fusioApp.config',
   'fusioApp.connection',
+  'fusioApp.cronjob',
   'fusioApp.dashboard',
   'fusioApp.error',
   'fusioApp.import',
@@ -50,6 +51,7 @@ require('./controller/app');
 require('./controller/audit');
 require('./controller/config');
 require('./controller/connection');
+require('./controller/cronjob');
 require('./controller/dashboard');
 require('./controller/import');
 require('./controller/error');
@@ -165,7 +167,7 @@ if (window) {
 
 module.exports = fusioApp;
 
-},{"../package.json":313,"./controller/account":3,"./controller/action":8,"./controller/app":13,"./controller/audit":18,"./controller/config":20,"./controller/connection":25,"./controller/dashboard":28,"./controller/error":31,"./controller/import":34,"./controller/log":39,"./controller/login":41,"./controller/logout":43,"./controller/rate":47,"./controller/routes":52,"./controller/schema":58,"./controller/scope":63,"./controller/statistic":67,"./controller/token":71,"./controller/user":75,"./service/form_builder":78,"./service/help_loader":79,"angular":94,"angular-animate":81,"angular-chart.js":82,"angular-highlightjs":83,"angular-loading-bar":85,"angular-route":87,"angular-sanitize":89,"angular-ui-ace":90,"angular-ui-bootstrap":92,"ng-showdown":310,"ng-tags-input":311}],2:[function(require,module,exports){
+},{"../package.json":320,"./controller/account":3,"./controller/action":8,"./controller/app":13,"./controller/audit":18,"./controller/config":20,"./controller/connection":25,"./controller/cronjob":32,"./controller/dashboard":35,"./controller/error":38,"./controller/import":41,"./controller/log":46,"./controller/login":48,"./controller/logout":50,"./controller/rate":54,"./controller/routes":59,"./controller/schema":65,"./controller/scope":70,"./controller/statistic":74,"./controller/token":78,"./controller/user":82,"./service/form_builder":85,"./service/help_loader":86,"angular":101,"angular-animate":88,"angular-chart.js":89,"angular-highlightjs":90,"angular-loading-bar":92,"angular-route":94,"angular-sanitize":96,"angular-ui-ace":97,"angular-ui-bootstrap":99,"ng-showdown":317,"ng-tags-input":318}],2:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, fusio) {
@@ -208,7 +210,7 @@ angular.module('fusioApp.account', ['ngRoute'])
 
 .controller('ChangePasswordCtrl', require('./change_password'));
 
-},{"./change_password":2,"angular":94}],4:[function(require,module,exports){
+},{"./change_password":2,"angular":101}],4:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModal, $routeParams, $location, fusio) {
@@ -598,7 +600,7 @@ angular.module('fusioApp.action', ['ngRoute', 'ui.ace'])
 
 ;
 
-},{"./action":4,"./create":5,"./delete":6,"./designer":7,"./update":9,"angular":94}],9:[function(require,module,exports){
+},{"./action":4,"./create":5,"./delete":6,"./designer":7,"./update":9,"angular":101}],9:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModalInstance, $uibModal, action, formBuilder, $timeout, fusio) {
@@ -894,7 +896,7 @@ angular.module('fusioApp.app', ['ngRoute', 'ui.bootstrap'])
 ;
 
 
-},{"./app":10,"./create":11,"./delete":12,"./update":14,"angular":94}],14:[function(require,module,exports){
+},{"./app":10,"./create":11,"./delete":12,"./update":14,"angular":101}],14:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModalInstance, app, fusio) {
@@ -1189,7 +1191,7 @@ angular.module('fusioApp.audit', ['ngRoute', 'ui.bootstrap'])
 
 ;
 
-},{"./audit":15,"./detail":16,"./filter":17,"angular":94}],19:[function(require,module,exports){
+},{"./audit":15,"./detail":16,"./filter":17,"angular":101}],19:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModal, fusio) {
@@ -1278,7 +1280,7 @@ angular.module('fusioApp.config', ['ngRoute', 'ui.bootstrap'])
 
 ;
 
-},{"./config":19,"./update":21,"angular":94}],21:[function(require,module,exports){
+},{"./config":19,"./update":21,"angular":101}],21:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModalInstance, config, fusio) {
@@ -1556,7 +1558,7 @@ angular.module('fusioApp.connection', ['ngRoute', 'ui.bootstrap'])
 ;
 
 
-},{"./connection":22,"./create":23,"./delete":24,"./update":26,"angular":94}],26:[function(require,module,exports){
+},{"./connection":22,"./create":23,"./delete":24,"./update":26,"angular":101}],26:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModalInstance, fusio, formBuilder, connection) {
@@ -1625,6 +1627,322 @@ module.exports = function($scope, $http, $uibModalInstance, fusio, formBuilder, 
 },{}],27:[function(require,module,exports){
 'use strict';
 
+module.exports = function($scope, $http, $uibModalInstance, fusio) {
+
+  $scope.cronjob = {
+    name: '',
+    cron: ''
+  };
+
+  $scope.actions = [];
+
+  $scope.create = function(cronjob) {
+    var data = angular.copy(cronjob);
+
+    $http.post(fusio.baseUrl + 'backend/cronjob', data)
+      .then(function(response) {
+        var data = response.data;
+        $scope.response = data;
+        if (data.success === true) {
+          $uibModalInstance.close(data);
+        }
+      })
+      .catch(function(response) {
+        $scope.response = response.data;
+      });
+  };
+
+  $http.get(fusio.baseUrl + 'backend/action')
+    .then(function(response) {
+      $scope.actions = response.data.entry;
+    });
+
+  $scope.close = function() {
+    $uibModalInstance.dismiss('cancel');
+  };
+
+  $scope.closeResponse = function() {
+    $scope.response = null;
+  };
+
+};
+
+},{}],28:[function(require,module,exports){
+'use strict';
+
+module.exports = function($scope, $http, $uibModal, fusio) {
+
+  $scope.response = null;
+  $scope.search = '';
+
+  $scope.load = function() {
+    var search = encodeURIComponent($scope.search ? $scope.search : '');
+
+    $http.get(fusio.baseUrl + 'backend/cronjob?search=' + search)
+      .then(function(response) {
+        var data = response.data;
+        $scope.totalResults = data.totalResults;
+        $scope.startIndex = 0;
+        $scope.cronjobs = data.entry;
+      });
+  };
+
+  $scope.pageChanged = function() {
+    var startIndex = ($scope.startIndex - 1) * 16;
+    var search = encodeURIComponent($scope.search ? $scope.search : '');
+
+    $http.get(fusio.baseUrl + 'backend/cronjob?startIndex=' + startIndex + '&search=' + search)
+      .then(function(response) {
+        var data = response.data;
+        $scope.totalResults = data.totalResults;
+        $scope.cronjobs = data.entry;
+      });
+  };
+
+  $scope.doSearch = function(search) {
+    $http.get(fusio.baseUrl + 'backend/cronjob?search=' + encodeURIComponent(search ? search : ''))
+      .then(function(response) {
+        var data = response.data;
+        $scope.totalResults = data.totalResults;
+        $scope.startIndex = 0;
+        $scope.cronjobs = data.entry;
+      });
+  };
+
+  $scope.openCreateDialog = function() {
+    var modalInstance = $uibModal.open({
+      size: 'lg',
+      backdrop: 'static',
+      templateUrl: 'app/controller/cronjob/create.html',
+      controller: 'CronjobCreateCtrl'
+    });
+
+    modalInstance.result.then(function(response) {
+      $scope.response = response;
+      $scope.load();
+    }, function() {
+    });
+  };
+
+  $scope.openUpdateDialog = function(cronjob) {
+    var modalInstance = $uibModal.open({
+      size: 'lg',
+      backdrop: 'static',
+      templateUrl: 'app/controller/cronjob/update.html',
+      controller: 'CronjobUpdateCtrl',
+      resolve: {
+        cronjob: function() {
+          return cronjob;
+        }
+      }
+    });
+
+    modalInstance.result.then(function(response) {
+      $scope.response = response;
+      $scope.load();
+    }, function() {
+    });
+  };
+
+  $scope.openDeleteDialog = function(cronjob) {
+    var modalInstance = $uibModal.open({
+      size: 'lg',
+      backdrop: 'static',
+      templateUrl: 'app/controller/cronjob/delete.html',
+      controller: 'CronjobDeleteCtrl',
+      resolve: {
+        cronjob: function() {
+          return cronjob;
+        }
+      }
+    });
+
+    modalInstance.result.then(function(response) {
+      $scope.response = response;
+      $scope.load();
+    }, function() {
+    });
+  };
+
+  $scope.openErrorDialog = function(cronjob) {
+    var modalInstance = $uibModal.open({
+      size: 'lg',
+      backdrop: 'static',
+      templateUrl: 'app/controller/cronjob/error.html',
+      controller: 'CronjobErrorCtrl',
+      resolve: {
+        cronjob: function() {
+          return cronjob;
+        }
+      }
+    });
+
+    modalInstance.result.then(function(response) {
+      $scope.response = response;
+      $scope.load();
+    }, function() {
+    });
+  };
+
+  $scope.closeResponse = function() {
+    $scope.response = null;
+  };
+
+  $scope.load();
+
+};
+
+},{}],29:[function(require,module,exports){
+'use strict';
+
+module.exports = function($scope, $http, $uibModalInstance, fusio, cronjob) {
+
+  $scope.cronjob = cronjob;
+
+  $scope.delete = function(cronjob) {
+    $http.delete(fusio.baseUrl + 'backend/cronjob/' + cronjob.id)
+      .then(function(response) {
+        var data = response.data;
+        $scope.response = data;
+        if (data.success === true) {
+          $uibModalInstance.close(data);
+        }
+      })
+      .catch(function(response) {
+        $scope.response = response.data;
+      });
+  };
+
+  $scope.close = function() {
+    $uibModalInstance.dismiss('cancel');
+  };
+
+  $scope.closeResponse = function() {
+    $scope.response = null;
+  };
+
+};
+
+},{}],30:[function(require,module,exports){
+'use strict';
+
+module.exports = function($scope, $http, $uibModal, $uibModalInstance, fusio, cronjob) {
+
+  $scope.cronjob = cronjob;
+
+  $scope.close = function() {
+    $uibModalInstance.dismiss('cancel');
+  };
+
+  $scope.openDetailDialog = function(error) {
+    var modalInstance = $uibModal.open({
+      size: 'lg',
+      backdrop: 'static',
+      templateUrl: 'app/controller/cronjob/error/detail.html',
+      controller: 'CronjobErrorDetailCtrl',
+      resolve: {
+        error: function() {
+          return error;
+        }
+      }
+    });
+
+    modalInstance.result.then(function(response) {
+    }, function() {
+    });
+  };
+
+  $http.get(fusio.baseUrl + 'backend/cronjob/' + cronjob.id)
+    .then(function(response) {
+      $scope.cronjob = response.data;
+    });
+
+};
+
+},{}],31:[function(require,module,exports){
+'use strict';
+
+module.exports = function($scope, $http, $uibModal, $uibModalInstance, fusio, error) {
+
+  $scope.error = error;
+
+  $scope.close = function() {
+    $uibModalInstance.dismiss('cancel');
+  };
+
+};
+
+},{}],32:[function(require,module,exports){
+'use strict';
+
+var angular = require('angular');
+
+angular.module('fusioApp.cronjob', ['ngRoute', 'ui.bootstrap'])
+
+.config(['$routeProvider', function($routeProvider) {
+  $routeProvider.when('/cronjob', {
+    templateUrl: 'app/controller/cronjob/index.html',
+    controller: 'CronjobCtrl'
+  });
+}])
+
+.controller('CronjobCtrl', require('./cronjob'))
+.controller('CronjobCreateCtrl', require('./create'))
+.controller('CronjobUpdateCtrl', require('./update'))
+.controller('CronjobDeleteCtrl', require('./delete'))
+.controller('CronjobErrorCtrl', require('./error'))
+.controller('CronjobErrorDetailCtrl', require('./error/detail'))
+
+;
+
+},{"./create":27,"./cronjob":28,"./delete":29,"./error":30,"./error/detail":31,"./update":33,"angular":101}],33:[function(require,module,exports){
+'use strict';
+
+module.exports = function($scope, $http, $uibModalInstance, fusio, cronjob) {
+
+  $scope.cronjob = cronjob;
+
+  $scope.actions = [];
+
+  $scope.update = function(scope) {
+    var data = angular.copy(scope);
+
+    $http.put(fusio.baseUrl + 'backend/cronjob/' + cronjob.id, data)
+      .then(function(response) {
+        var data = response.data;
+        $scope.response = data;
+        if (data.success === true) {
+          $uibModalInstance.close(data);
+        }
+      })
+      .catch(function(response) {
+        $scope.response = response.data;
+      });
+  };
+
+  $http.get(fusio.baseUrl + 'backend/action')
+    .then(function(response) {
+      $scope.actions = response.data.entry;
+    });
+
+  $scope.close = function() {
+    $uibModalInstance.dismiss('cancel');
+  };
+
+  $scope.closeResponse = function() {
+    $scope.response = null;
+  };
+
+  $http.get(fusio.baseUrl + 'backend/cronjob/' + cronjob.id)
+    .then(function(response) {
+      $scope.cronjob = response.data;
+    });
+
+};
+
+},{}],34:[function(require,module,exports){
+'use strict';
+
 module.exports = function($scope, $http, $uibModal, fusio) {
 
   // set initial date range
@@ -1646,7 +1964,7 @@ module.exports = function($scope, $http, $uibModal, fusio) {
 
 };
 
-},{}],28:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 'use strict';
 
 var angular = require('angular');
@@ -1664,7 +1982,7 @@ angular.module('fusioApp.dashboard', ['ngRoute', 'chart.js'])
 
 ;
 
-},{"./dashboard":27,"angular":94}],29:[function(require,module,exports){
+},{"./dashboard":34,"angular":101}],36:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModal, $uibModalInstance, fusio, error) {
@@ -1682,7 +2000,7 @@ module.exports = function($scope, $http, $uibModal, $uibModalInstance, fusio, er
 
 };
 
-},{}],30:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModal, $timeout, fusio) {
@@ -1745,7 +2063,7 @@ module.exports = function($scope, $http, $uibModal, $timeout, fusio) {
 
 };
 
-},{}],31:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 'use strict';
 
 var angular = require('angular');
@@ -1764,7 +2082,7 @@ angular.module('fusioApp.error', ['ngRoute', 'ui.bootstrap'])
 
 ;
 
-},{"./detail":29,"./error":30,"angular":94}],32:[function(require,module,exports){
+},{"./detail":36,"./error":37,"angular":101}],39:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModalInstance, action) {
@@ -1783,7 +2101,7 @@ module.exports = function($scope, $http, $uibModalInstance, action) {
 
 };
 
-},{}],33:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModal, fusio) {
@@ -1839,7 +2157,7 @@ module.exports = function($scope, $http, $uibModal, fusio) {
 
 };
 
-},{}],34:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 'use strict';
 
 var angular = require('angular');
@@ -1863,7 +2181,7 @@ angular.module('fusioApp.import', ['ngRoute', 'ui.bootstrap'])
 
 
 
-},{"./action":32,"./import":33,"./preview":35,"./route":36,"./schema":37,"angular":94}],35:[function(require,module,exports){
+},{"./action":39,"./import":40,"./preview":42,"./route":43,"./schema":44,"angular":101}],42:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModalInstance, $uibModal, fusio, data) {
@@ -1953,7 +2271,7 @@ module.exports = function($scope, $http, $uibModalInstance, $uibModal, fusio, da
 
 };
 
-},{}],36:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModalInstance, fusio, route) {
@@ -1980,7 +2298,7 @@ module.exports = function($scope, $http, $uibModalInstance, fusio, route) {
 
 };
 
-},{}],37:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModalInstance, schema) {
@@ -2005,7 +2323,7 @@ module.exports = function($scope, $http, $uibModalInstance, schema) {
 
 };
 
-},{}],38:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModal, $uibModalInstance, fusio, log) {
@@ -2041,7 +2359,7 @@ module.exports = function($scope, $http, $uibModal, $uibModalInstance, fusio, lo
 
 };
 
-},{}],39:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 'use strict';
 
 var angular = require('angular');
@@ -2060,7 +2378,7 @@ angular.module('fusioApp.log', ['ngRoute', 'ui.bootstrap'])
 
 ;
 
-},{"./detail":38,"./log":40,"angular":94}],40:[function(require,module,exports){
+},{"./detail":45,"./log":47,"angular":101}],47:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModal, $timeout, fusio) {
@@ -2178,7 +2496,7 @@ module.exports = function($scope, $http, $uibModal, $timeout, fusio) {
 
 };
 
-},{}],41:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 'use strict';
 
 var angular = require('angular');
@@ -2196,7 +2514,7 @@ angular.module('fusioApp.login', ['ngRoute'])
 
 ;
 
-},{"./login":42,"angular":94}],42:[function(require,module,exports){
+},{"./login":49,"angular":101}],49:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $location, $window, $rootScope, fusio) {
@@ -2255,7 +2573,7 @@ module.exports = function($scope, $http, $location, $window, $rootScope, fusio) 
   };
 };
 
-},{}],43:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 'use strict';
 
 var angular = require('angular');
@@ -2273,7 +2591,7 @@ angular.module('fusioApp.logout', ['ngRoute'])
 
 ;
 
-},{"./logout":44,"angular":94}],44:[function(require,module,exports){
+},{"./logout":51,"angular":101}],51:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $location, $window, $rootScope, fusio) {
@@ -2295,7 +2613,7 @@ module.exports = function($scope, $http, $location, $window, $rootScope, fusio) 
 
 };
 
-},{}],45:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModalInstance, fusio) {
@@ -2457,7 +2775,7 @@ module.exports = function($scope, $http, $uibModalInstance, fusio) {
 
 };
 
-},{}],46:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModalInstance, rate, fusio) {
@@ -2488,7 +2806,7 @@ module.exports = function($scope, $http, $uibModalInstance, rate, fusio) {
 
 };
 
-},{}],47:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 'use strict';
 
 var angular = require('angular');
@@ -2509,7 +2827,7 @@ angular.module('fusioApp.rate', ['ngRoute', 'ui.bootstrap'])
 
 ;
 
-},{"./create":45,"./delete":46,"./rate":48,"./update":49,"angular":94}],48:[function(require,module,exports){
+},{"./create":52,"./delete":53,"./rate":55,"./update":56,"angular":101}],55:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModal, fusio) {
@@ -2616,7 +2934,7 @@ module.exports = function($scope, $http, $uibModal, fusio) {
 
 
 
-},{}],49:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModalInstance, rate, fusio) {
@@ -2822,7 +3140,7 @@ module.exports = function($scope, $http, $uibModalInstance, rate, fusio) {
 
 };
 
-},{}],50:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModalInstance, $timeout, fusio) {
@@ -3050,7 +3368,7 @@ module.exports = function($scope, $http, $uibModalInstance, $timeout, fusio) {
   $scope.addVersion();
 };
 
-},{}],51:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModalInstance, fusio, route) {
@@ -3081,7 +3399,7 @@ module.exports = function($scope, $http, $uibModalInstance, fusio, route) {
 
 };
 
-},{}],52:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 'use strict';
 
 var angular = require('angular');
@@ -3102,7 +3420,7 @@ angular.module('fusioApp.routes', ['ngRoute', 'ui.bootstrap'])
 
 ;
 
-},{"./create":50,"./delete":51,"./routes":53,"./update":54,"angular":94}],53:[function(require,module,exports){
+},{"./create":57,"./delete":58,"./routes":60,"./update":61,"angular":101}],60:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModal, $routeParams, fusio) {
@@ -3207,7 +3525,7 @@ module.exports = function($scope, $http, $uibModal, $routeParams, fusio) {
 
 };
 
-},{}],54:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModal, $uibModalInstance, $timeout, fusio, route) {
@@ -3469,7 +3787,7 @@ module.exports = function($scope, $http, $uibModal, $uibModalInstance, $timeout,
   };
 };
 
-},{}],55:[function(require,module,exports){
+},{}],62:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModalInstance, fusio) {
@@ -3510,7 +3828,7 @@ module.exports = function($scope, $http, $uibModalInstance, fusio) {
 
 };
 
-},{}],56:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModalInstance, fusio, schema) {
@@ -3541,7 +3859,7 @@ module.exports = function($scope, $http, $uibModalInstance, fusio, schema) {
 
 };
 
-},{}],57:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $routeParams, fusio) {
@@ -3589,7 +3907,7 @@ module.exports = function($scope, $http, $routeParams, fusio) {
 
 };
 
-},{}],58:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 'use strict';
 
 var angular = require('angular');
@@ -3615,7 +3933,7 @@ angular.module('fusioApp.schema', ['ngRoute', 'ui.bootstrap'])
 
 ;
 
-},{"./create":55,"./delete":56,"./designer":57,"./schema":59,"./update":60,"angular":94}],59:[function(require,module,exports){
+},{"./create":62,"./delete":63,"./designer":64,"./schema":66,"./update":67,"angular":101}],66:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModal, $routeParams, $location, fusio) {
@@ -3729,7 +4047,7 @@ module.exports = function($scope, $http, $uibModal, $routeParams, $location, fus
 
 };
 
-},{}],60:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModalInstance, $uibModal, fusio, schema) {
@@ -3777,7 +4095,7 @@ module.exports = function($scope, $http, $uibModalInstance, $uibModal, fusio, sc
 
 };
 
-},{}],61:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModalInstance, fusio) {
@@ -3841,7 +4159,7 @@ module.exports = function($scope, $http, $uibModalInstance, fusio) {
 
 };
 
-},{}],62:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModalInstance, fusio, scope) {
@@ -3872,7 +4190,7 @@ module.exports = function($scope, $http, $uibModalInstance, fusio, scope) {
 
 };
 
-},{}],63:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 'use strict';
 
 var angular = require('angular');
@@ -3893,7 +4211,7 @@ angular.module('fusioApp.scope', ['ngRoute', 'ui.bootstrap'])
 
 ;
 
-},{"./create":61,"./delete":62,"./scope":64,"./update":65,"angular":94}],64:[function(require,module,exports){
+},{"./create":68,"./delete":69,"./scope":71,"./update":72,"angular":101}],71:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModal, fusio) {
@@ -4006,7 +4324,7 @@ module.exports = function($scope, $http, $uibModal, fusio) {
 
 };
 
-},{}],65:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModalInstance, fusio, scope) {
@@ -4102,7 +4420,7 @@ module.exports = function($scope, $http, $uibModalInstance, fusio, scope) {
 
 };
 
-},{}],66:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModalInstance, fusio, filter) {
@@ -4147,7 +4465,7 @@ module.exports = function($scope, $http, $uibModalInstance, fusio, filter) {
 
 };
 
-},{}],67:[function(require,module,exports){
+},{}],74:[function(require,module,exports){
 'use strict';
 
 var angular = require('angular');
@@ -4166,7 +4484,7 @@ angular.module('fusioApp.statistic', ['ngRoute', 'ui.bootstrap'])
 
 ;
 
-},{"./filter":66,"./statistic":68,"angular":94}],68:[function(require,module,exports){
+},{"./filter":73,"./statistic":75,"angular":101}],75:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModal, $compile, fusio) {
@@ -4261,7 +4579,7 @@ module.exports = function($scope, $http, $uibModal, $compile, fusio) {
 
 };
 
-},{}],69:[function(require,module,exports){
+},{}],76:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModal, $uibModalInstance, fusio, token) {
@@ -4287,7 +4605,7 @@ module.exports = function($scope, $http, $uibModal, $uibModalInstance, fusio, to
 
 };
 
-},{}],70:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModalInstance, fusio, filter) {
@@ -4323,7 +4641,7 @@ module.exports = function($scope, $http, $uibModalInstance, fusio, filter) {
   
 };
 
-},{}],71:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 'use strict';
 
 var angular = require('angular');
@@ -4343,7 +4661,7 @@ angular.module('fusioApp.token', ['ngRoute', 'ui.bootstrap'])
 
 ;
 
-},{"./detail":69,"./filter":70,"./token":72,"angular":94}],72:[function(require,module,exports){
+},{"./detail":76,"./filter":77,"./token":79,"angular":101}],79:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModal, $timeout, fusio) {
@@ -4461,7 +4779,7 @@ module.exports = function($scope, $http, $uibModal, $timeout, fusio) {
 
 };
 
-},{}],73:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModalInstance, fusio) {
@@ -4529,7 +4847,7 @@ module.exports = function($scope, $http, $uibModalInstance, fusio) {
 
 };
 
-},{}],74:[function(require,module,exports){
+},{}],81:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModalInstance, fusio, user) {
@@ -4560,7 +4878,7 @@ module.exports = function($scope, $http, $uibModalInstance, fusio, user) {
 
 };
 
-},{}],75:[function(require,module,exports){
+},{}],82:[function(require,module,exports){
 'use strict';
 
 var angular = require('angular');
@@ -4581,7 +4899,7 @@ angular.module('fusioApp.user', ['ngRoute', 'ui.bootstrap'])
 
 ;
 
-},{"./create":73,"./delete":74,"./update":76,"./user":77,"angular":94}],76:[function(require,module,exports){
+},{"./create":80,"./delete":81,"./update":83,"./user":84,"angular":101}],83:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModalInstance, fusio, user) {
@@ -4669,7 +4987,7 @@ module.exports = function($scope, $http, $uibModalInstance, fusio, user) {
 
 };
 
-},{}],77:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
 'use strict';
 
 module.exports = function($scope, $http, $uibModal, fusio) {
@@ -4774,7 +5092,7 @@ module.exports = function($scope, $http, $uibModal, fusio) {
 
 };
 
-},{}],78:[function(require,module,exports){
+},{}],85:[function(require,module,exports){
 'use strict';
 
 module.exports = function($sce, $compile) {
@@ -4913,7 +5231,7 @@ module.exports = function($sce, $compile) {
   return builder;
 };
 
-},{}],79:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 'use strict';
 
 module.exports = function($http, $showdown, $q, $uibModal) {
@@ -4972,7 +5290,7 @@ module.exports = function($http, $showdown, $q, $uibModal) {
 };
 
 
-},{}],80:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 /**
  * @license AngularJS v1.6.6
  * (c) 2010-2017 Google, Inc. http://angularjs.org
@@ -9128,11 +9446,11 @@ angular.module('ngAnimate', [], function initAngularHelpers() {
 
 })(window, window.angular);
 
-},{}],81:[function(require,module,exports){
+},{}],88:[function(require,module,exports){
 require('./angular-animate');
 module.exports = 'ngAnimate';
 
-},{"./angular-animate":80}],82:[function(require,module,exports){
+},{"./angular-animate":87}],89:[function(require,module,exports){
 /*!
  * angular-chart.js - An angular.js wrapper for Chart.js
  * http://jtblin.github.io/angular-chart.js/
@@ -9534,7 +9852,7 @@ module.exports = 'ngAnimate';
   }
 }));
 
-},{"angular":94,"chart.js":95}],83:[function(require,module,exports){
+},{"angular":101,"chart.js":102}],90:[function(require,module,exports){
 /*! angular-highlightjs
 version: 0.6.3
 build date: 2017-01-04
@@ -10057,7 +10375,7 @@ includeDirFactory = function (dirName) {
 
   return "hljs";
 }));
-},{"angular":94,"highlight.js":139}],84:[function(require,module,exports){
+},{"angular":101,"highlight.js":146}],91:[function(require,module,exports){
 /*! 
  * angular-loading-bar v0.9.0
  * https://chieffancypants.github.io/angular-loading-bar
@@ -10400,11 +10718,11 @@ angular.module('cfp.loadingBar', [])
   });       // wtf javascript. srsly
 })();       //
 
-},{}],85:[function(require,module,exports){
+},{}],92:[function(require,module,exports){
 require('./build/loading-bar');
 module.exports = 'angular-loading-bar';
 
-},{"./build/loading-bar":84}],86:[function(require,module,exports){
+},{"./build/loading-bar":91}],93:[function(require,module,exports){
 /**
  * @license AngularJS v1.6.6
  * (c) 2010-2017 Google, Inc. http://angularjs.org
@@ -11635,11 +11953,11 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
 })(window, window.angular);
 
-},{}],87:[function(require,module,exports){
+},{}],94:[function(require,module,exports){
 require('./angular-route');
 module.exports = 'ngRoute';
 
-},{"./angular-route":86}],88:[function(require,module,exports){
+},{"./angular-route":93}],95:[function(require,module,exports){
 /**
  * @license AngularJS v1.6.6
  * (c) 2010-2017 Google, Inc. http://angularjs.org
@@ -12447,11 +12765,11 @@ angular.module('ngSanitize').filter('linky', ['$sanitize', function($sanitize) {
 
 })(window, window.angular);
 
-},{}],89:[function(require,module,exports){
+},{}],96:[function(require,module,exports){
 require('./angular-sanitize');
 module.exports = 'ngSanitize';
 
-},{"./angular-sanitize":88}],90:[function(require,module,exports){
+},{"./angular-sanitize":95}],97:[function(require,module,exports){
 'use strict';
 
 /**
@@ -12781,7 +13099,7 @@ angular.module('ui.ace', [])
     };
   }]);
 
-},{}],91:[function(require,module,exports){
+},{}],98:[function(require,module,exports){
 /*
  * angular-ui-bootstrap
  * http://angular-ui.github.io/bootstrap/
@@ -20558,12 +20876,12 @@ angular.module('ui.bootstrap.datepickerPopup').run(function() {!angular.$$csp().
 angular.module('ui.bootstrap.tooltip').run(function() {!angular.$$csp().noInlineStyle && !angular.$$uibTooltipCss && angular.element(document).find('head').prepend('<style type="text/css">[uib-tooltip-popup].tooltip.top-left > .tooltip-arrow,[uib-tooltip-popup].tooltip.top-right > .tooltip-arrow,[uib-tooltip-popup].tooltip.bottom-left > .tooltip-arrow,[uib-tooltip-popup].tooltip.bottom-right > .tooltip-arrow,[uib-tooltip-popup].tooltip.left-top > .tooltip-arrow,[uib-tooltip-popup].tooltip.left-bottom > .tooltip-arrow,[uib-tooltip-popup].tooltip.right-top > .tooltip-arrow,[uib-tooltip-popup].tooltip.right-bottom > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.top-left > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.top-right > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.bottom-left > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.bottom-right > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.left-top > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.left-bottom > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.right-top > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.right-bottom > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.top-left > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.top-right > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.bottom-left > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.bottom-right > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.left-top > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.left-bottom > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.right-top > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.right-bottom > .tooltip-arrow,[uib-popover-popup].popover.top-left > .arrow,[uib-popover-popup].popover.top-right > .arrow,[uib-popover-popup].popover.bottom-left > .arrow,[uib-popover-popup].popover.bottom-right > .arrow,[uib-popover-popup].popover.left-top > .arrow,[uib-popover-popup].popover.left-bottom > .arrow,[uib-popover-popup].popover.right-top > .arrow,[uib-popover-popup].popover.right-bottom > .arrow,[uib-popover-html-popup].popover.top-left > .arrow,[uib-popover-html-popup].popover.top-right > .arrow,[uib-popover-html-popup].popover.bottom-left > .arrow,[uib-popover-html-popup].popover.bottom-right > .arrow,[uib-popover-html-popup].popover.left-top > .arrow,[uib-popover-html-popup].popover.left-bottom > .arrow,[uib-popover-html-popup].popover.right-top > .arrow,[uib-popover-html-popup].popover.right-bottom > .arrow,[uib-popover-template-popup].popover.top-left > .arrow,[uib-popover-template-popup].popover.top-right > .arrow,[uib-popover-template-popup].popover.bottom-left > .arrow,[uib-popover-template-popup].popover.bottom-right > .arrow,[uib-popover-template-popup].popover.left-top > .arrow,[uib-popover-template-popup].popover.left-bottom > .arrow,[uib-popover-template-popup].popover.right-top > .arrow,[uib-popover-template-popup].popover.right-bottom > .arrow{top:auto;bottom:auto;left:auto;right:auto;margin:0;}[uib-popover-popup].popover,[uib-popover-html-popup].popover,[uib-popover-template-popup].popover{display:block !important;}</style>'); angular.$$uibTooltipCss = true; });
 angular.module('ui.bootstrap.timepicker').run(function() {!angular.$$csp().noInlineStyle && !angular.$$uibTimepickerCss && angular.element(document).find('head').prepend('<style type="text/css">.uib-time input{width:50px;}</style>'); angular.$$uibTimepickerCss = true; });
 angular.module('ui.bootstrap.typeahead').run(function() {!angular.$$csp().noInlineStyle && !angular.$$uibTypeaheadCss && angular.element(document).find('head').prepend('<style type="text/css">[uib-typeahead-popup].dropdown-menu{display:block;}</style>'); angular.$$uibTypeaheadCss = true; });
-},{}],92:[function(require,module,exports){
+},{}],99:[function(require,module,exports){
 require('./dist/ui-bootstrap-tpls');
 
 module.exports = 'ui.bootstrap';
 
-},{"./dist/ui-bootstrap-tpls":91}],93:[function(require,module,exports){
+},{"./dist/ui-bootstrap-tpls":98}],100:[function(require,module,exports){
 /**
  * @license AngularJS v1.6.6
  * (c) 2010-2017 Google, Inc. http://angularjs.org
@@ -54453,11 +54771,11 @@ $provide.value("$locale", {
 })(window);
 
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
-},{}],94:[function(require,module,exports){
+},{}],101:[function(require,module,exports){
 require('./angular');
 module.exports = angular;
 
-},{"./angular":93}],95:[function(require,module,exports){
+},{"./angular":100}],102:[function(require,module,exports){
 /**
  * @namespace Chart
  */
@@ -54508,7 +54826,7 @@ require('./charts/Chart.Scatter')(Chart);
 
 window.Chart = module.exports = Chart;
 
-},{"./charts/Chart.Bar":96,"./charts/Chart.Bubble":97,"./charts/Chart.Doughnut":98,"./charts/Chart.Line":99,"./charts/Chart.PolarArea":100,"./charts/Chart.Radar":101,"./charts/Chart.Scatter":102,"./controllers/controller.bar":103,"./controllers/controller.bubble":104,"./controllers/controller.doughnut":105,"./controllers/controller.line":106,"./controllers/controller.polarArea":107,"./controllers/controller.radar":108,"./core/core.animation":109,"./core/core.canvasHelpers":110,"./core/core.controller":111,"./core/core.datasetController":112,"./core/core.element":113,"./core/core.helpers":114,"./core/core.js":115,"./core/core.layoutService":116,"./core/core.legend":117,"./core/core.plugin.js":118,"./core/core.scale":119,"./core/core.scaleService":120,"./core/core.title":121,"./core/core.tooltip":122,"./elements/element.arc":123,"./elements/element.line":124,"./elements/element.point":125,"./elements/element.rectangle":126,"./scales/scale.category":127,"./scales/scale.linear":128,"./scales/scale.linearbase.js":129,"./scales/scale.logarithmic":130,"./scales/scale.radialLinear":131,"./scales/scale.time":132}],96:[function(require,module,exports){
+},{"./charts/Chart.Bar":103,"./charts/Chart.Bubble":104,"./charts/Chart.Doughnut":105,"./charts/Chart.Line":106,"./charts/Chart.PolarArea":107,"./charts/Chart.Radar":108,"./charts/Chart.Scatter":109,"./controllers/controller.bar":110,"./controllers/controller.bubble":111,"./controllers/controller.doughnut":112,"./controllers/controller.line":113,"./controllers/controller.polarArea":114,"./controllers/controller.radar":115,"./core/core.animation":116,"./core/core.canvasHelpers":117,"./core/core.controller":118,"./core/core.datasetController":119,"./core/core.element":120,"./core/core.helpers":121,"./core/core.js":122,"./core/core.layoutService":123,"./core/core.legend":124,"./core/core.plugin.js":125,"./core/core.scale":126,"./core/core.scaleService":127,"./core/core.title":128,"./core/core.tooltip":129,"./elements/element.arc":130,"./elements/element.line":131,"./elements/element.point":132,"./elements/element.rectangle":133,"./scales/scale.category":134,"./scales/scale.linear":135,"./scales/scale.linearbase.js":136,"./scales/scale.logarithmic":137,"./scales/scale.radialLinear":138,"./scales/scale.time":139}],103:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -54521,7 +54839,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],97:[function(require,module,exports){
+},{}],104:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -54533,7 +54851,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],98:[function(require,module,exports){
+},{}],105:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -54546,7 +54864,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],99:[function(require,module,exports){
+},{}],106:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -54559,7 +54877,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],100:[function(require,module,exports){
+},{}],107:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -54572,7 +54890,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],101:[function(require,module,exports){
+},{}],108:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -54586,7 +54904,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],102:[function(require,module,exports){
+},{}],109:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -54635,7 +54953,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],103:[function(require,module,exports){
+},{}],110:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -55210,7 +55528,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],104:[function(require,module,exports){
+},{}],111:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -55334,7 +55652,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],105:[function(require,module,exports){
+},{}],112:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -55627,7 +55945,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],106:[function(require,module,exports){
+},{}],113:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -55979,7 +56297,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],107:[function(require,module,exports){
+},{}],114:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -56196,7 +56514,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],108:[function(require,module,exports){
+},{}],115:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -56386,7 +56704,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],109:[function(require,module,exports){
+},{}],116:[function(require,module,exports){
 /* global window: false */
 'use strict';
 
@@ -56519,7 +56837,7 @@ module.exports = function(Chart) {
 	};
 };
 
-},{}],110:[function(require,module,exports){
+},{}],117:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -56625,7 +56943,7 @@ module.exports = function(Chart) {
 	};
 };
 
-},{}],111:[function(require,module,exports){
+},{}],118:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -57317,7 +57635,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],112:[function(require,module,exports){
+},{}],119:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -57483,7 +57801,7 @@ module.exports = function(Chart) {
 	Chart.DatasetController.extend = helpers.inherits;
 };
 
-},{}],113:[function(require,module,exports){
+},{}],120:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -57581,7 +57899,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],114:[function(require,module,exports){
+},{}],121:[function(require,module,exports){
 /* global window: false */
 /* global document: false */
 'use strict';
@@ -58627,7 +58945,7 @@ module.exports = function(Chart) {
 	};
 };
 
-},{"chartjs-color":134}],115:[function(require,module,exports){
+},{"chartjs-color":141}],122:[function(require,module,exports){
 'use strict';
 
 module.exports = function() {
@@ -58739,7 +59057,7 @@ module.exports = function() {
 
 };
 
-},{}],116:[function(require,module,exports){
+},{}],123:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -59062,7 +59380,7 @@ module.exports = function(Chart) {
 	};
 };
 
-},{}],117:[function(require,module,exports){
+},{}],124:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -59548,7 +59866,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],118:[function(require,module,exports){
+},{}],125:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -59679,7 +59997,7 @@ module.exports = function(Chart) {
 	Chart.pluginService = Chart.plugins;
 };
 
-},{}],119:[function(require,module,exports){
+},{}],126:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -60439,7 +60757,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],120:[function(require,module,exports){
+},{}],127:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -60481,7 +60799,7 @@ module.exports = function(Chart) {
 	};
 };
 
-},{}],121:[function(require,module,exports){
+},{}],128:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -60687,7 +61005,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],122:[function(require,module,exports){
+},{}],129:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -61403,7 +61721,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],123:[function(require,module,exports){
+},{}],130:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -61496,7 +61814,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],124:[function(require,module,exports){
+},{}],131:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -61673,7 +61991,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],125:[function(require,module,exports){
+},{}],132:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -61732,7 +62050,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],126:[function(require,module,exports){
+},{}],133:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -61829,7 +62147,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],127:[function(require,module,exports){
+},{}],134:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -61960,7 +62278,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],128:[function(require,module,exports){
+},{}],135:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -62154,7 +62472,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],129:[function(require,module,exports){
+},{}],136:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -62281,7 +62599,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],130:[function(require,module,exports){
+},{}],137:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -62549,7 +62867,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],131:[function(require,module,exports){
+},{}],138:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -62965,7 +63283,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],132:[function(require,module,exports){
+},{}],139:[function(require,module,exports){
 /* global window: false */
 'use strict';
 
@@ -63427,7 +63745,7 @@ module.exports = function(Chart) {
 
 };
 
-},{"moment":309}],133:[function(require,module,exports){
+},{"moment":316}],140:[function(require,module,exports){
 /* MIT license */
 var colorNames = require('color-name');
 
@@ -63650,7 +63968,7 @@ for (var name in colorNames) {
    reverseNames[colorNames[name]] = name;
 }
 
-},{"color-name":137}],134:[function(require,module,exports){
+},{"color-name":144}],141:[function(require,module,exports){
 /* MIT license */
 var convert = require('color-convert');
 var string = require('chartjs-color-string');
@@ -64135,7 +64453,7 @@ if (typeof window !== 'undefined') {
 
 module.exports = Color;
 
-},{"chartjs-color-string":133,"color-convert":136}],135:[function(require,module,exports){
+},{"chartjs-color-string":140,"color-convert":143}],142:[function(require,module,exports){
 /* MIT license */
 
 module.exports = {
@@ -64835,7 +65153,7 @@ for (var key in cssKeywords) {
   reverseKeywords[JSON.stringify(cssKeywords[key])] = key;
 }
 
-},{}],136:[function(require,module,exports){
+},{}],143:[function(require,module,exports){
 var conversions = require("./conversions");
 
 var convert = function() {
@@ -64928,7 +65246,7 @@ Converter.prototype.getValues = function(space) {
 });
 
 module.exports = convert;
-},{"./conversions":135}],137:[function(require,module,exports){
+},{"./conversions":142}],144:[function(require,module,exports){
 module.exports = {
 	"aliceblue": [240, 248, 255],
 	"antiquewhite": [250, 235, 215],
@@ -65079,7 +65397,7 @@ module.exports = {
 	"yellow": [255, 255, 0],
 	"yellowgreen": [154, 205, 50]
 };
-},{}],138:[function(require,module,exports){
+},{}],145:[function(require,module,exports){
 /*
 Syntax highlighting with language autodetection.
 https://highlightjs.org/
@@ -65899,7 +66217,7 @@ https://highlightjs.org/
   return hljs;
 }));
 
-},{}],139:[function(require,module,exports){
+},{}],146:[function(require,module,exports){
 var hljs = require('./highlight');
 
 hljs.registerLanguage('1c', require('./languages/1c'));
@@ -66073,7 +66391,7 @@ hljs.registerLanguage('xquery', require('./languages/xquery'));
 hljs.registerLanguage('zephir', require('./languages/zephir'));
 
 module.exports = hljs;
-},{"./highlight":138,"./languages/1c":140,"./languages/abnf":141,"./languages/accesslog":142,"./languages/actionscript":143,"./languages/ada":144,"./languages/apache":145,"./languages/applescript":146,"./languages/arduino":147,"./languages/armasm":148,"./languages/asciidoc":149,"./languages/aspectj":150,"./languages/autohotkey":151,"./languages/autoit":152,"./languages/avrasm":153,"./languages/awk":154,"./languages/axapta":155,"./languages/bash":156,"./languages/basic":157,"./languages/bnf":158,"./languages/brainfuck":159,"./languages/cal":160,"./languages/capnproto":161,"./languages/ceylon":162,"./languages/clean":163,"./languages/clojure":165,"./languages/clojure-repl":164,"./languages/cmake":166,"./languages/coffeescript":167,"./languages/coq":168,"./languages/cos":169,"./languages/cpp":170,"./languages/crmsh":171,"./languages/crystal":172,"./languages/cs":173,"./languages/csp":174,"./languages/css":175,"./languages/d":176,"./languages/dart":177,"./languages/delphi":178,"./languages/diff":179,"./languages/django":180,"./languages/dns":181,"./languages/dockerfile":182,"./languages/dos":183,"./languages/dsconfig":184,"./languages/dts":185,"./languages/dust":186,"./languages/ebnf":187,"./languages/elixir":188,"./languages/elm":189,"./languages/erb":190,"./languages/erlang":192,"./languages/erlang-repl":191,"./languages/excel":193,"./languages/fix":194,"./languages/flix":195,"./languages/fortran":196,"./languages/fsharp":197,"./languages/gams":198,"./languages/gauss":199,"./languages/gcode":200,"./languages/gherkin":201,"./languages/glsl":202,"./languages/go":203,"./languages/golo":204,"./languages/gradle":205,"./languages/groovy":206,"./languages/haml":207,"./languages/handlebars":208,"./languages/haskell":209,"./languages/haxe":210,"./languages/hsp":211,"./languages/htmlbars":212,"./languages/http":213,"./languages/inform7":214,"./languages/ini":215,"./languages/irpf90":216,"./languages/java":217,"./languages/javascript":218,"./languages/json":219,"./languages/julia":220,"./languages/kotlin":221,"./languages/lasso":222,"./languages/ldif":223,"./languages/less":224,"./languages/lisp":225,"./languages/livecodeserver":226,"./languages/livescript":227,"./languages/llvm":228,"./languages/lsl":229,"./languages/lua":230,"./languages/makefile":231,"./languages/markdown":232,"./languages/mathematica":233,"./languages/matlab":234,"./languages/maxima":235,"./languages/mel":236,"./languages/mercury":237,"./languages/mipsasm":238,"./languages/mizar":239,"./languages/mojolicious":240,"./languages/monkey":241,"./languages/moonscript":242,"./languages/nginx":243,"./languages/nimrod":244,"./languages/nix":245,"./languages/nsis":246,"./languages/objectivec":247,"./languages/ocaml":248,"./languages/openscad":249,"./languages/oxygene":250,"./languages/parser3":251,"./languages/perl":252,"./languages/pf":253,"./languages/php":254,"./languages/pony":255,"./languages/powershell":256,"./languages/processing":257,"./languages/profile":258,"./languages/prolog":259,"./languages/protobuf":260,"./languages/puppet":261,"./languages/purebasic":262,"./languages/python":263,"./languages/q":264,"./languages/qml":265,"./languages/r":266,"./languages/rib":267,"./languages/roboconf":268,"./languages/rsl":269,"./languages/ruby":270,"./languages/ruleslanguage":271,"./languages/rust":272,"./languages/scala":273,"./languages/scheme":274,"./languages/scilab":275,"./languages/scss":276,"./languages/smali":277,"./languages/smalltalk":278,"./languages/sml":279,"./languages/sqf":280,"./languages/sql":281,"./languages/stan":282,"./languages/stata":283,"./languages/step21":284,"./languages/stylus":285,"./languages/subunit":286,"./languages/swift":287,"./languages/taggerscript":288,"./languages/tap":289,"./languages/tcl":290,"./languages/tex":291,"./languages/thrift":292,"./languages/tp":293,"./languages/twig":294,"./languages/typescript":295,"./languages/vala":296,"./languages/vbnet":297,"./languages/vbscript":299,"./languages/vbscript-html":298,"./languages/verilog":300,"./languages/vhdl":301,"./languages/vim":302,"./languages/x86asm":303,"./languages/xl":304,"./languages/xml":305,"./languages/xquery":306,"./languages/yaml":307,"./languages/zephir":308}],140:[function(require,module,exports){
+},{"./highlight":145,"./languages/1c":147,"./languages/abnf":148,"./languages/accesslog":149,"./languages/actionscript":150,"./languages/ada":151,"./languages/apache":152,"./languages/applescript":153,"./languages/arduino":154,"./languages/armasm":155,"./languages/asciidoc":156,"./languages/aspectj":157,"./languages/autohotkey":158,"./languages/autoit":159,"./languages/avrasm":160,"./languages/awk":161,"./languages/axapta":162,"./languages/bash":163,"./languages/basic":164,"./languages/bnf":165,"./languages/brainfuck":166,"./languages/cal":167,"./languages/capnproto":168,"./languages/ceylon":169,"./languages/clean":170,"./languages/clojure":172,"./languages/clojure-repl":171,"./languages/cmake":173,"./languages/coffeescript":174,"./languages/coq":175,"./languages/cos":176,"./languages/cpp":177,"./languages/crmsh":178,"./languages/crystal":179,"./languages/cs":180,"./languages/csp":181,"./languages/css":182,"./languages/d":183,"./languages/dart":184,"./languages/delphi":185,"./languages/diff":186,"./languages/django":187,"./languages/dns":188,"./languages/dockerfile":189,"./languages/dos":190,"./languages/dsconfig":191,"./languages/dts":192,"./languages/dust":193,"./languages/ebnf":194,"./languages/elixir":195,"./languages/elm":196,"./languages/erb":197,"./languages/erlang":199,"./languages/erlang-repl":198,"./languages/excel":200,"./languages/fix":201,"./languages/flix":202,"./languages/fortran":203,"./languages/fsharp":204,"./languages/gams":205,"./languages/gauss":206,"./languages/gcode":207,"./languages/gherkin":208,"./languages/glsl":209,"./languages/go":210,"./languages/golo":211,"./languages/gradle":212,"./languages/groovy":213,"./languages/haml":214,"./languages/handlebars":215,"./languages/haskell":216,"./languages/haxe":217,"./languages/hsp":218,"./languages/htmlbars":219,"./languages/http":220,"./languages/inform7":221,"./languages/ini":222,"./languages/irpf90":223,"./languages/java":224,"./languages/javascript":225,"./languages/json":226,"./languages/julia":227,"./languages/kotlin":228,"./languages/lasso":229,"./languages/ldif":230,"./languages/less":231,"./languages/lisp":232,"./languages/livecodeserver":233,"./languages/livescript":234,"./languages/llvm":235,"./languages/lsl":236,"./languages/lua":237,"./languages/makefile":238,"./languages/markdown":239,"./languages/mathematica":240,"./languages/matlab":241,"./languages/maxima":242,"./languages/mel":243,"./languages/mercury":244,"./languages/mipsasm":245,"./languages/mizar":246,"./languages/mojolicious":247,"./languages/monkey":248,"./languages/moonscript":249,"./languages/nginx":250,"./languages/nimrod":251,"./languages/nix":252,"./languages/nsis":253,"./languages/objectivec":254,"./languages/ocaml":255,"./languages/openscad":256,"./languages/oxygene":257,"./languages/parser3":258,"./languages/perl":259,"./languages/pf":260,"./languages/php":261,"./languages/pony":262,"./languages/powershell":263,"./languages/processing":264,"./languages/profile":265,"./languages/prolog":266,"./languages/protobuf":267,"./languages/puppet":268,"./languages/purebasic":269,"./languages/python":270,"./languages/q":271,"./languages/qml":272,"./languages/r":273,"./languages/rib":274,"./languages/roboconf":275,"./languages/rsl":276,"./languages/ruby":277,"./languages/ruleslanguage":278,"./languages/rust":279,"./languages/scala":280,"./languages/scheme":281,"./languages/scilab":282,"./languages/scss":283,"./languages/smali":284,"./languages/smalltalk":285,"./languages/sml":286,"./languages/sqf":287,"./languages/sql":288,"./languages/stan":289,"./languages/stata":290,"./languages/step21":291,"./languages/stylus":292,"./languages/subunit":293,"./languages/swift":294,"./languages/taggerscript":295,"./languages/tap":296,"./languages/tcl":297,"./languages/tex":298,"./languages/thrift":299,"./languages/tp":300,"./languages/twig":301,"./languages/typescript":302,"./languages/vala":303,"./languages/vbnet":304,"./languages/vbscript":306,"./languages/vbscript-html":305,"./languages/verilog":307,"./languages/vhdl":308,"./languages/vim":309,"./languages/x86asm":310,"./languages/xl":311,"./languages/xml":312,"./languages/xquery":313,"./languages/yaml":314,"./languages/zephir":315}],147:[function(require,module,exports){
 module.exports = function(hljs){
   var IDENT_RE_RU = '[a-zA-Zа-яА-Я][a-zA-Z0-9_а-яА-Я]*';
   var OneS_KEYWORDS = 'возврат дата для если и или иначе иначеесли исключение конецесли ' +
@@ -66152,7 +66470,7 @@ module.exports = function(hljs){
     ]
   };
 };
-},{}],141:[function(require,module,exports){
+},{}],148:[function(require,module,exports){
 module.exports = function(hljs) {
     var regexes = {
         ruleDeclaration: "^[a-zA-Z][a-zA-Z0-9-]*",
@@ -66223,7 +66541,7 @@ module.exports = function(hljs) {
       ]
     };
 };
-},{}],142:[function(require,module,exports){
+},{}],149:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     contains: [
@@ -66261,7 +66579,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],143:[function(require,module,exports){
+},{}],150:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '[a-zA-Z_$][a-zA-Z0-9_$]*';
   var IDENT_FUNC_RETURN_TYPE_RE = '([*]|[a-zA-Z_$][a-zA-Z0-9_$]*)';
@@ -66335,7 +66653,7 @@ module.exports = function(hljs) {
     illegal: /#/
   };
 };
-},{}],144:[function(require,module,exports){
+},{}],151:[function(require,module,exports){
 module.exports = // We try to support full Ada2012
 //
 // We highlight all appearances of types, keywords, literals (string, char, number, bool)
@@ -66508,7 +66826,7 @@ function(hljs) {
         ]
     };
 };
-},{}],145:[function(require,module,exports){
+},{}],152:[function(require,module,exports){
 module.exports = function(hljs) {
   var NUMBER = {className: 'number', begin: '[\\$%]\\d+'};
   return {
@@ -66554,7 +66872,7 @@ module.exports = function(hljs) {
     illegal: /\S/
   };
 };
-},{}],146:[function(require,module,exports){
+},{}],153:[function(require,module,exports){
 module.exports = function(hljs) {
   var STRING = hljs.inherit(hljs.QUOTE_STRING_MODE, {illegal: ''});
   var PARAMS = {
@@ -66640,7 +66958,7 @@ module.exports = function(hljs) {
     illegal: '//|->|=>|\\[\\['
   };
 };
-},{}],147:[function(require,module,exports){
+},{}],154:[function(require,module,exports){
 module.exports = function(hljs) {
   var CPP = hljs.getLanguage('cpp').exports;
 	return {
@@ -66740,7 +67058,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],148:[function(require,module,exports){
+},{}],155:[function(require,module,exports){
 module.exports = function(hljs) {
     //local labels: %?[FB]?[AT]?\d{1,2}\w+
   return {
@@ -66832,7 +67150,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],149:[function(require,module,exports){
+},{}],156:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['adoc'],
@@ -67020,7 +67338,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],150:[function(require,module,exports){
+},{}],157:[function(require,module,exports){
 module.exports = function (hljs) {
   var KEYWORDS =
     'false synchronized int abstract float private char boolean static null if const ' +
@@ -67164,7 +67482,7 @@ module.exports = function (hljs) {
     ]
   };
 };
-},{}],151:[function(require,module,exports){
+},{}],158:[function(require,module,exports){
 module.exports = function(hljs) {
   var BACKTICK_ESCAPE = {
     begin: /`[\s\S]/
@@ -67212,7 +67530,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],152:[function(require,module,exports){
+},{}],159:[function(require,module,exports){
 module.exports = function(hljs) {
     var KEYWORDS = 'ByRef Case Const ContinueCase ContinueLoop ' +
         'Default Dim Do Else ElseIf EndFunc EndIf EndSelect ' +
@@ -67348,7 +67666,7 @@ module.exports = function(hljs) {
         ]
     }
 };
-},{}],153:[function(require,module,exports){
+},{}],160:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: true,
@@ -67410,7 +67728,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],154:[function(require,module,exports){
+},{}],161:[function(require,module,exports){
 module.exports = function(hljs) {
   var VARIABLE = {
     className: 'variable',
@@ -67463,7 +67781,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],155:[function(require,module,exports){
+},{}],162:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: 'false int abstract private char boolean static null if for true ' +
@@ -67494,7 +67812,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],156:[function(require,module,exports){
+},{}],163:[function(require,module,exports){
 module.exports = function(hljs) {
   var VAR = {
     className: 'variable',
@@ -67569,7 +67887,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],157:[function(require,module,exports){
+},{}],164:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: true,
@@ -67620,7 +67938,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],158:[function(require,module,exports){
+},{}],165:[function(require,module,exports){
 module.exports = function(hljs){
   return {
     contains: [
@@ -67649,7 +67967,7 @@ module.exports = function(hljs){
     ]
   };
 };
-},{}],159:[function(require,module,exports){
+},{}],166:[function(require,module,exports){
 module.exports = function(hljs){
   var LITERAL = {
     className: 'literal',
@@ -67686,7 +68004,7 @@ module.exports = function(hljs){
     ]
   };
 };
-},{}],160:[function(require,module,exports){
+},{}],167:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS =
     'div mod in and or not xor asserterror begin case do downto else end exit for if of repeat then to ' +
@@ -67766,7 +68084,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],161:[function(require,module,exports){
+},{}],168:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['capnp'],
@@ -67815,7 +68133,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],162:[function(require,module,exports){
+},{}],169:[function(require,module,exports){
 module.exports = function(hljs) {
   // 2.3. Identifiers and keywords
   var KEYWORDS =
@@ -67882,7 +68200,7 @@ module.exports = function(hljs) {
     ].concat(EXPRESSIONS)
   };
 };
-},{}],163:[function(require,module,exports){
+},{}],170:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['clean','icl','dcl'],
@@ -67907,7 +68225,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],164:[function(require,module,exports){
+},{}],171:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     contains: [
@@ -67922,7 +68240,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],165:[function(require,module,exports){
+},{}],172:[function(require,module,exports){
 module.exports = function(hljs) {
   var keywords = {
     'builtin-name':
@@ -68017,7 +68335,7 @@ module.exports = function(hljs) {
     contains: [LIST, STRING, HINT, HINT_COL, COMMENT, KEY, COLLECTION, NUMBER, LITERAL]
   }
 };
-},{}],166:[function(require,module,exports){
+},{}],173:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['cmake.in'],
@@ -68055,7 +68373,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],167:[function(require,module,exports){
+},{}],174:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -68201,7 +68519,7 @@ module.exports = function(hljs) {
     ])
   };
 };
-},{}],168:[function(require,module,exports){
+},{}],175:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -68268,7 +68586,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],169:[function(require,module,exports){
+},{}],176:[function(require,module,exports){
 module.exports = function cos (hljs) {
 
   var STRINGS = {
@@ -68392,7 +68710,7 @@ module.exports = function cos (hljs) {
     ]
   };
 };
-},{}],170:[function(require,module,exports){
+},{}],177:[function(require,module,exports){
 module.exports = function(hljs) {
   var CPP_PRIMITIVE_TYPES = {
     className: 'keyword',
@@ -68558,7 +68876,7 @@ module.exports = function(hljs) {
     }
   };
 };
-},{}],171:[function(require,module,exports){
+},{}],178:[function(require,module,exports){
 module.exports = function(hljs) {
   var RESOURCES = 'primitive rsc_template';
 
@@ -68652,7 +68970,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],172:[function(require,module,exports){
+},{}],179:[function(require,module,exports){
 module.exports = function(hljs) {
   var NUM_SUFFIX = '(_[uif](8|16|32|64))?';
   var CRYSTAL_IDENT_RE = '[a-zA-Z_]\\w*[!?=]?';
@@ -68829,7 +69147,7 @@ module.exports = function(hljs) {
     contains: CRYSTAL_DEFAULT_CONTAINS
   };
 };
-},{}],173:[function(require,module,exports){
+},{}],180:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -68996,7 +69314,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],174:[function(require,module,exports){
+},{}],181:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: false,
@@ -69018,7 +69336,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],175:[function(require,module,exports){
+},{}],182:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '[a-zA-Z-][a-zA-Z0-9_-]*';
   var RULE = {
@@ -69123,7 +69441,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],176:[function(require,module,exports){
+},{}],183:[function(require,module,exports){
 module.exports = /**
  * Known issues:
  *
@@ -69381,7 +69699,7 @@ function(hljs) {
     ]
   };
 };
-},{}],177:[function(require,module,exports){
+},{}],184:[function(require,module,exports){
 module.exports = function (hljs) {
   var SUBST = {
     className: 'subst',
@@ -69482,7 +69800,7 @@ module.exports = function (hljs) {
     ]
   }
 };
-},{}],178:[function(require,module,exports){
+},{}],185:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS =
     'exports register file shl array record property for mod while set ally label uses raise not ' +
@@ -69551,7 +69869,7 @@ module.exports = function(hljs) {
     ].concat(COMMENT_MODES)
   };
 };
-},{}],179:[function(require,module,exports){
+},{}],186:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['patch'],
@@ -69591,7 +69909,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],180:[function(require,module,exports){
+},{}],187:[function(require,module,exports){
 module.exports = function(hljs) {
   var FILTER = {
     begin: /\|[A-Za-z]+:?/,
@@ -69655,7 +69973,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],181:[function(require,module,exports){
+},{}],188:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['bind', 'zone'],
@@ -69684,7 +70002,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],182:[function(require,module,exports){
+},{}],189:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['docker'],
@@ -69706,7 +70024,7 @@ module.exports = function(hljs) {
     illegal: '</'
   }
 };
-},{}],183:[function(require,module,exports){
+},{}],190:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMENT = hljs.COMMENT(
     /^\s*@?rem\b/, /$/,
@@ -69758,7 +70076,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],184:[function(require,module,exports){
+},{}],191:[function(require,module,exports){
 module.exports = function(hljs) {
   var QUOTED_PROPERTY = {
     className: 'string',
@@ -69805,7 +70123,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],185:[function(require,module,exports){
+},{}],192:[function(require,module,exports){
 module.exports = function(hljs) {
   var STRINGS = {
     className: 'string',
@@ -69929,7 +70247,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],186:[function(require,module,exports){
+},{}],193:[function(require,module,exports){
 module.exports = function(hljs) {
   var EXPRESSION_KEYWORDS = 'if eq ne lt lte gt gte select default math sep';
   return {
@@ -69961,7 +70279,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],187:[function(require,module,exports){
+},{}],194:[function(require,module,exports){
 module.exports = function(hljs) {
     var commentMode = hljs.COMMENT(/\(\*/, /\*\)/);
 
@@ -69994,7 +70312,7 @@ module.exports = function(hljs) {
         ]
     };
 };
-},{}],188:[function(require,module,exports){
+},{}],195:[function(require,module,exports){
 module.exports = function(hljs) {
   var ELIXIR_IDENT_RE = '[a-zA-Z_][a-zA-Z0-9_]*(\\!|\\?)?';
   var ELIXIR_METHOD_RE = '[a-zA-Z_]\\w*[!?=]?|[-+~]\\@|<<|>>|=~|===?|<=>|[<>]=?|\\*\\*|[-/+%^&*~`|]|\\[\\]=?';
@@ -70091,7 +70409,7 @@ module.exports = function(hljs) {
     contains: ELIXIR_DEFAULT_CONTAINS
   };
 };
-},{}],189:[function(require,module,exports){
+},{}],196:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMENT = {
     variants: [
@@ -70174,7 +70492,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],190:[function(require,module,exports){
+},{}],197:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     subLanguage: 'xml',
@@ -70189,7 +70507,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],191:[function(require,module,exports){
+},{}],198:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -70235,7 +70553,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],192:[function(require,module,exports){
+},{}],199:[function(require,module,exports){
 module.exports = function(hljs) {
   var BASIC_ATOM_RE = '[a-z\'][a-zA-Z0-9_\']*';
   var FUNCTION_NAME_RE = '(' + BASIC_ATOM_RE + ':' + BASIC_ATOM_RE + '|' + BASIC_ATOM_RE + ')';
@@ -70381,7 +70699,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],193:[function(require,module,exports){
+},{}],200:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['xlsx', 'xls'],
@@ -70429,7 +70747,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],194:[function(require,module,exports){
+},{}],201:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     contains: [
@@ -70458,7 +70776,7 @@ module.exports = function(hljs) {
     case_insensitive: true
   };
 };
-},{}],195:[function(require,module,exports){
+},{}],202:[function(require,module,exports){
 module.exports = function (hljs) {
 
     var CHAR = {
@@ -70503,7 +70821,7 @@ module.exports = function (hljs) {
         ]
     };
 };
-},{}],196:[function(require,module,exports){
+},{}],203:[function(require,module,exports){
 module.exports = function(hljs) {
   var PARAMS = {
     className: 'params',
@@ -70574,7 +70892,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],197:[function(require,module,exports){
+},{}],204:[function(require,module,exports){
 module.exports = function(hljs) {
   var TYPEPARAM = {
     begin: '<', end: '>',
@@ -70633,7 +70951,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],198:[function(require,module,exports){
+},{}],205:[function(require,module,exports){
 module.exports = function (hljs) {
   var KEYWORDS = {
     'keyword':
@@ -70787,7 +71105,7 @@ module.exports = function (hljs) {
     ]
   };
 };
-},{}],199:[function(require,module,exports){
+},{}],206:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword: 'and bool break call callexe checkinterrupt clear clearg closeall cls comlog compile ' +
@@ -71009,7 +71327,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],200:[function(require,module,exports){
+},{}],207:[function(require,module,exports){
 module.exports = function(hljs) {
     var GCODE_IDENT_RE = '[A-Z_][A-Z0-9_.]*';
     var GCODE_CLOSE_RE = '\\%';
@@ -71076,7 +71394,7 @@ module.exports = function(hljs) {
         ].concat(GCODE_CODE)
     };
 };
-},{}],201:[function(require,module,exports){
+},{}],208:[function(require,module,exports){
 module.exports = function (hljs) {
   return {
     aliases: ['feature'],
@@ -71113,7 +71431,7 @@ module.exports = function (hljs) {
     ]
   };
 };
-},{}],202:[function(require,module,exports){
+},{}],209:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -71230,7 +71548,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],203:[function(require,module,exports){
+},{}],210:[function(require,module,exports){
 module.exports = function(hljs) {
   var GO_KEYWORDS = {
     keyword:
@@ -71284,7 +71602,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],204:[function(require,module,exports){
+},{}],211:[function(require,module,exports){
 module.exports = function(hljs) {
     return {
       keywords: {
@@ -71307,7 +71625,7 @@ module.exports = function(hljs) {
       ]
     }
 };
-},{}],205:[function(require,module,exports){
+},{}],212:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: true,
@@ -71342,7 +71660,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],206:[function(require,module,exports){
+},{}],213:[function(require,module,exports){
 module.exports = function(hljs) {
     return {
         keywords: {
@@ -71436,7 +71754,7 @@ module.exports = function(hljs) {
         illegal: /#|<\//
     }
 };
-},{}],207:[function(require,module,exports){
+},{}],214:[function(require,module,exports){
 module.exports = // TODO support filter tags like :javascript, support inline HTML
 function(hljs) {
   return {
@@ -71543,7 +71861,7 @@ function(hljs) {
     ]
   };
 };
-},{}],208:[function(require,module,exports){
+},{}],215:[function(require,module,exports){
 module.exports = function(hljs) {
   var BUILT_INS = {'builtin-name': 'each in with if else unless bindattr action collection debugger log outlet template unbound view yield'};
   return {
@@ -71577,7 +71895,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],209:[function(require,module,exports){
+},{}],216:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMENT = {
     variants: [
@@ -71699,7 +72017,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],210:[function(require,module,exports){
+},{}],217:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '[a-zA-Z_$][a-zA-Z0-9_$]*';
   var IDENT_FUNC_RETURN_TYPE_RE = '([*]|[a-zA-Z_$][a-zA-Z0-9_$]*)';
@@ -71811,7 +72129,7 @@ module.exports = function(hljs) {
     illegal: /<\//
   };
 };
-},{}],211:[function(require,module,exports){
+},{}],218:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: true,
@@ -71857,7 +72175,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],212:[function(require,module,exports){
+},{}],219:[function(require,module,exports){
 module.exports = function(hljs) {
   var BUILT_INS = 'action collection component concat debugger each each-in else get hash if input link-to loc log mut outlet partial query-params render textarea unbound unless with yield view';
 
@@ -71928,7 +72246,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],213:[function(require,module,exports){
+},{}],220:[function(require,module,exports){
 module.exports = function(hljs) {
   var VERSION = 'HTTP/[0-9\\.]+';
   return {
@@ -71969,7 +72287,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],214:[function(require,module,exports){
+},{}],221:[function(require,module,exports){
 module.exports = function(hljs) {
   var START_BRACKET = '\\[';
   var END_BRACKET = '\\]';
@@ -72026,7 +72344,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],215:[function(require,module,exports){
+},{}],222:[function(require,module,exports){
 module.exports = function(hljs) {
   var STRING = {
     className: "string",
@@ -72092,7 +72410,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],216:[function(require,module,exports){
+},{}],223:[function(require,module,exports){
 module.exports = function(hljs) {
   var PARAMS = {
     className: 'params',
@@ -72168,7 +72486,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],217:[function(require,module,exports){
+},{}],224:[function(require,module,exports){
 module.exports = function(hljs) {
   var JAVA_IDENT_RE = '[\u00C0-\u02B8a-zA-Z_$][\u00C0-\u02B8a-zA-Z_$0-9]*';
   var GENERIC_IDENT_RE = JAVA_IDENT_RE + '(<' + JAVA_IDENT_RE + '(\\s*,\\s*' + JAVA_IDENT_RE + ')*>)?';
@@ -72276,7 +72594,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],218:[function(require,module,exports){
+},{}],225:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '[A-Za-z$_][0-9A-Za-z$_]*';
   var KEYWORDS = {
@@ -72447,7 +72765,7 @@ module.exports = function(hljs) {
     illegal: /#(?!!)/
   };
 };
-},{}],219:[function(require,module,exports){
+},{}],226:[function(require,module,exports){
 module.exports = function(hljs) {
   var LITERALS = {literal: 'true false null'};
   var TYPES = [
@@ -72484,7 +72802,7 @@ module.exports = function(hljs) {
     illegal: '\\S'
   };
 };
-},{}],220:[function(require,module,exports){
+},{}],227:[function(require,module,exports){
 module.exports = function(hljs) {
   // Since there are numerous special names in Julia, it is too much trouble
   // to maintain them by hand. Hence these names (i.e. keywords, literals and
@@ -72662,7 +72980,7 @@ module.exports = function(hljs) {
 
   return DEFAULT;
 };
-},{}],221:[function(require,module,exports){
+},{}],228:[function(require,module,exports){
 module.exports = function (hljs) {
   var KEYWORDS = {
     keyword:
@@ -72836,7 +73154,7 @@ module.exports = function (hljs) {
     ]
   };
 };
-},{}],222:[function(require,module,exports){
+},{}],229:[function(require,module,exports){
 module.exports = function(hljs) {
   var LASSO_IDENT_RE = '[a-zA-Z_][\\w.]*';
   var LASSO_ANGLE_RE = '<\\?(lasso(script)?|=)';
@@ -72999,7 +73317,7 @@ module.exports = function(hljs) {
     ].concat(LASSO_CODE)
   };
 };
-},{}],223:[function(require,module,exports){
+},{}],230:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     contains: [
@@ -73022,7 +73340,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],224:[function(require,module,exports){
+},{}],231:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE        = '[\\w-]+'; // yes, Less identifiers may begin with a digit
   var INTERP_IDENT_RE = '(' + IDENT_RE + '|@{' + IDENT_RE + '})';
@@ -73162,7 +73480,7 @@ module.exports = function(hljs) {
     contains: RULES
   };
 };
-},{}],225:[function(require,module,exports){
+},{}],232:[function(require,module,exports){
 module.exports = function(hljs) {
   var LISP_IDENT_RE = '[a-zA-Z_\\-\\+\\*\\/\\<\\=\\>\\&\\#][a-zA-Z0-9_\\-\\+\\*\\/\\<\\=\\>\\&\\#!]*';
   var MEC_RE = '\\|[^]*?\\|';
@@ -73265,7 +73583,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],226:[function(require,module,exports){
+},{}],233:[function(require,module,exports){
 module.exports = function(hljs) {
   var VARIABLE = {
     begin: '\\b[gtps][A-Z]+[A-Za-z0-9_\\-]*\\b|\\$_[A-Z]+',
@@ -73422,7 +73740,7 @@ module.exports = function(hljs) {
     illegal: ';$|^\\[|^=|&|{'
   };
 };
-},{}],227:[function(require,module,exports){
+},{}],234:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -73571,7 +73889,7 @@ module.exports = function(hljs) {
     ])
   };
 };
-},{}],228:[function(require,module,exports){
+},{}],235:[function(require,module,exports){
 module.exports = function(hljs) {
   var identifier = '([-a-zA-Z$._][\\w\\-$.]*)';
   return {
@@ -73660,7 +73978,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],229:[function(require,module,exports){
+},{}],236:[function(require,module,exports){
 module.exports = function(hljs) {
 
     var LSL_STRING_ESCAPE_CHARS = {
@@ -73743,7 +74061,7 @@ module.exports = function(hljs) {
         ]
     };
 };
-},{}],230:[function(require,module,exports){
+},{}],237:[function(require,module,exports){
 module.exports = function(hljs) {
   var OPENING_LONG_BRACKET = '\\[=*\\[';
   var CLOSING_LONG_BRACKET = '\\]=*\\]';
@@ -73799,7 +74117,7 @@ module.exports = function(hljs) {
     ])
   };
 };
-},{}],231:[function(require,module,exports){
+},{}],238:[function(require,module,exports){
 module.exports = function(hljs) {
   var VARIABLE = {
     className: 'variable',
@@ -73844,7 +74162,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],232:[function(require,module,exports){
+},{}],239:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['md', 'mkdown', 'mkd'],
@@ -73952,7 +74270,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],233:[function(require,module,exports){
+},{}],240:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['mma'],
@@ -74010,7 +74328,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],234:[function(require,module,exports){
+},{}],241:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMON_CONTAINS = [
     hljs.C_NUMBER_MODE,
@@ -74098,7 +74416,7 @@ module.exports = function(hljs) {
     ].concat(COMMON_CONTAINS)
   };
 };
-},{}],235:[function(require,module,exports){
+},{}],242:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = 'if then else elseif for thru do while unless step in and or not';
   var LITERALS = 'true false unknown inf minf ind und %e %i %pi %phi %gamma';
@@ -74504,7 +74822,7 @@ module.exports = function(hljs) {
     illegal: /@/
   }
 };
-},{}],236:[function(require,module,exports){
+},{}],243:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords:
@@ -74729,7 +75047,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],237:[function(require,module,exports){
+},{}],244:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -74811,7 +75129,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],238:[function(require,module,exports){
+},{}],245:[function(require,module,exports){
 module.exports = function(hljs) {
     //local labels: %?[FB]?[AT]?\d{1,2}\w+
   return {
@@ -74897,7 +75215,7 @@ module.exports = function(hljs) {
     illegal: '\/'
   };
 };
-},{}],239:[function(require,module,exports){
+},{}],246:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords:
@@ -74916,7 +75234,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],240:[function(require,module,exports){
+},{}],247:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     subLanguage: 'xml',
@@ -74941,7 +75259,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],241:[function(require,module,exports){
+},{}],248:[function(require,module,exports){
 module.exports = function(hljs) {
   var NUMBER = {
     className: 'number', relevance: 0,
@@ -75016,7 +75334,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],242:[function(require,module,exports){
+},{}],249:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -75128,7 +75446,7 @@ module.exports = function(hljs) {
     ])
   };
 };
-},{}],243:[function(require,module,exports){
+},{}],250:[function(require,module,exports){
 module.exports = function(hljs) {
   var VAR = {
     className: 'variable',
@@ -75221,7 +75539,7 @@ module.exports = function(hljs) {
     illegal: '[^\\s\\}]'
   };
 };
-},{}],244:[function(require,module,exports){
+},{}],251:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['nim'],
@@ -75276,7 +75594,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],245:[function(require,module,exports){
+},{}],252:[function(require,module,exports){
 module.exports = function(hljs) {
   var NIX_KEYWORDS = {
     keyword:
@@ -75325,7 +75643,7 @@ module.exports = function(hljs) {
     contains: EXPRESSIONS
   };
 };
-},{}],246:[function(require,module,exports){
+},{}],253:[function(require,module,exports){
 module.exports = function(hljs) {
   var CONSTANTS = {
     className: 'variable',
@@ -75431,7 +75749,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],247:[function(require,module,exports){
+},{}],254:[function(require,module,exports){
 module.exports = function(hljs) {
   var API_CLASS = {
     className: 'built_in',
@@ -75522,7 +75840,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],248:[function(require,module,exports){
+},{}],255:[function(require,module,exports){
 module.exports = function(hljs) {
   /* missing support for heredoc-like string (OCaml 4.0.2+) */
   return {
@@ -75593,7 +75911,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],249:[function(require,module,exports){
+},{}],256:[function(require,module,exports){
 module.exports = function(hljs) {
 	var SPECIAL_VARS = {
 		className: 'keyword',
@@ -75650,7 +75968,7 @@ module.exports = function(hljs) {
 		]
 	}
 };
-},{}],250:[function(require,module,exports){
+},{}],257:[function(require,module,exports){
 module.exports = function(hljs) {
   var OXYGENE_KEYWORDS = 'abstract add and array as asc aspect assembly async begin break block by case class concat const copy constructor continue '+
     'create default delegate desc distinct div do downto dynamic each else empty end ensure enum equals event except exit extension external false '+
@@ -75720,7 +76038,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],251:[function(require,module,exports){
+},{}],258:[function(require,module,exports){
 module.exports = function(hljs) {
   var CURLY_SUBCOMMENT = hljs.COMMENT(
     '{',
@@ -75768,7 +76086,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],252:[function(require,module,exports){
+},{}],259:[function(require,module,exports){
 module.exports = function(hljs) {
   var PERL_KEYWORDS = 'getpwent getservent quotemeta msgrcv scalar kill dbmclose undef lc ' +
     'ma syswrite tr send umask sysopen shmwrite vec qx utime local oct semctl localtime ' +
@@ -75925,7 +76243,7 @@ module.exports = function(hljs) {
     contains: PERL_DEFAULT_CONTAINS
   };
 };
-},{}],253:[function(require,module,exports){
+},{}],260:[function(require,module,exports){
 module.exports = function(hljs) {
   var MACRO = {
     className: 'variable',
@@ -75977,7 +76295,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],254:[function(require,module,exports){
+},{}],261:[function(require,module,exports){
 module.exports = function(hljs) {
   var VARIABLE = {
     begin: '\\$+[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*'
@@ -76104,7 +76422,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],255:[function(require,module,exports){
+},{}],262:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -76195,7 +76513,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],256:[function(require,module,exports){
+},{}],263:[function(require,module,exports){
 module.exports = function(hljs) {
   var BACKTICK_ESCAPE = {
     begin: '`[\\s\\S]',
@@ -76276,7 +76594,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],257:[function(require,module,exports){
+},{}],264:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -76324,7 +76642,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],258:[function(require,module,exports){
+},{}],265:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     contains: [
@@ -76354,7 +76672,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],259:[function(require,module,exports){
+},{}],266:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var ATOM = {
@@ -76442,7 +76760,7 @@ module.exports = function(hljs) {
     ])
   };
 };
-},{}],260:[function(require,module,exports){
+},{}],267:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -76478,7 +76796,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],261:[function(require,module,exports){
+},{}],268:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var PUPPET_KEYWORDS = {
@@ -76593,7 +76911,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],262:[function(require,module,exports){
+},{}],269:[function(require,module,exports){
 module.exports = // Base deafult colors in PB IDE: background: #FFFFDF; foreground: #000000;
 
 function(hljs) {
@@ -76651,7 +76969,7 @@ function(hljs) {
     ]
   };
 };
-},{}],263:[function(require,module,exports){
+},{}],270:[function(require,module,exports){
 module.exports = function(hljs) {
   var PROMPT = {
     className: 'meta',  begin: /^(>>>|\.\.\.) /
@@ -76743,7 +77061,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],264:[function(require,module,exports){
+},{}],271:[function(require,module,exports){
 module.exports = function(hljs) {
   var Q_KEYWORDS = {
   keyword:
@@ -76766,7 +77084,7 @@ module.exports = function(hljs) {
      ]
   };
 };
-},{}],265:[function(require,module,exports){
+},{}],272:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
       keyword:
@@ -76935,7 +77253,7 @@ module.exports = function(hljs) {
     illegal: /#/
   };
 };
-},{}],266:[function(require,module,exports){
+},{}],273:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '([a-zA-Z]|\\.[a-zA-Z.])[a-zA-Z0-9._]*';
 
@@ -77005,7 +77323,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],267:[function(require,module,exports){
+},{}],274:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords:
@@ -77032,7 +77350,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],268:[function(require,module,exports){
+},{}],275:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENTIFIER = '[a-zA-Z-_][^\\n{]+\\{';
 
@@ -77099,7 +77417,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],269:[function(require,module,exports){
+},{}],276:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -77135,7 +77453,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],270:[function(require,module,exports){
+},{}],277:[function(require,module,exports){
 module.exports = function(hljs) {
   var RUBY_METHOD_RE = '[a-zA-Z_]\\w*[!?=]?|[-+~]\\@|<<|>>|=~|===?|<=>|[<>]=?|\\*\\*|[-/+%^&*~`|]|\\[\\]=?';
   var RUBY_KEYWORDS = {
@@ -77311,7 +77629,7 @@ module.exports = function(hljs) {
     contains: COMMENT_MODES.concat(IRB_DEFAULT).concat(RUBY_DEFAULT_CONTAINS)
   };
 };
-},{}],271:[function(require,module,exports){
+},{}],278:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -77372,7 +77690,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],272:[function(require,module,exports){
+},{}],279:[function(require,module,exports){
 module.exports = function(hljs) {
   var NUM_SUFFIX = '([uif](8|16|32|64|size))\?';
   var KEYWORDS =
@@ -77476,7 +77794,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],273:[function(require,module,exports){
+},{}],280:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var ANNOTATION = { className: 'meta', begin: '@[A-Za-z]+' };
@@ -77591,7 +77909,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],274:[function(require,module,exports){
+},{}],281:[function(require,module,exports){
 module.exports = function(hljs) {
   var SCHEME_IDENT_RE = '[^\\(\\)\\[\\]\\{\\}",\'`;#|\\\\\\s]+';
   var SCHEME_SIMPLE_NUMBER_RE = '(\\-|\\+)?\\d+([./]\\d+)?';
@@ -77732,7 +78050,7 @@ module.exports = function(hljs) {
     contains: [SHEBANG, NUMBER, STRING, QUOTED_IDENT, QUOTED_LIST, LIST].concat(COMMENT_MODES)
   };
 };
-},{}],275:[function(require,module,exports){
+},{}],282:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var COMMON_CONTAINS = [
@@ -77786,7 +78104,7 @@ module.exports = function(hljs) {
     ].concat(COMMON_CONTAINS)
   };
 };
-},{}],276:[function(require,module,exports){
+},{}],283:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '[a-zA-Z-][a-zA-Z0-9_-]*';
   var VARIABLE = {
@@ -77884,7 +78202,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],277:[function(require,module,exports){
+},{}],284:[function(require,module,exports){
 module.exports = function(hljs) {
   var smali_instr_low_prio = ['add', 'and', 'cmp', 'cmpg', 'cmpl', 'const', 'div', 'double', 'float', 'goto', 'if', 'int', 'long', 'move', 'mul', 'neg', 'new', 'nop', 'not', 'or', 'rem', 'return', 'shl', 'shr', 'sput', 'sub', 'throw', 'ushr', 'xor'];
   var smali_instr_high_prio = ['aget', 'aput', 'array', 'check', 'execute', 'fill', 'filled', 'goto/16', 'goto/32', 'iget', 'instance', 'invoke', 'iput', 'monitor', 'packed', 'sget', 'sparse'];
@@ -77940,7 +78258,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],278:[function(require,module,exports){
+},{}],285:[function(require,module,exports){
 module.exports = function(hljs) {
   var VAR_IDENT_RE = '[a-z][a-zA-Z0-9_]*';
   var CHAR = {
@@ -77990,7 +78308,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],279:[function(require,module,exports){
+},{}],286:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['ml'],
@@ -78056,7 +78374,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],280:[function(require,module,exports){
+},{}],287:[function(require,module,exports){
 module.exports = function(hljs) {
   var CPP = hljs.getLanguage('cpp').exports;
 
@@ -78427,7 +78745,7 @@ module.exports = function(hljs) {
     illegal: /#/
   };
 };
-},{}],281:[function(require,module,exports){
+},{}],288:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMENT_MODE = hljs.COMMENT('--', '$');
   return {
@@ -78587,7 +78905,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],282:[function(require,module,exports){
+},{}],289:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     contains: [
@@ -78670,7 +78988,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],283:[function(require,module,exports){
+},{}],290:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['do', 'ado'],
@@ -78708,7 +79026,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],284:[function(require,module,exports){
+},{}],291:[function(require,module,exports){
 module.exports = function(hljs) {
   var STEP21_IDENT_RE = '[A-Z_][A-Z0-9_.]*';
   var STEP21_KEYWORDS = {
@@ -78755,7 +79073,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],285:[function(require,module,exports){
+},{}],292:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var VARIABLE = {
@@ -79209,7 +79527,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],286:[function(require,module,exports){
+},{}],293:[function(require,module,exports){
 module.exports = function(hljs) {
   var DETAILS = {
     className: 'string',
@@ -79243,7 +79561,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],287:[function(require,module,exports){
+},{}],294:[function(require,module,exports){
 module.exports = function(hljs) {
   var SWIFT_KEYWORDS = {
       keyword: '__COLUMN__ __FILE__ __FUNCTION__ __LINE__ as as! as? associativity ' +
@@ -79360,7 +79678,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],288:[function(require,module,exports){
+},{}],295:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var COMMENT = {
@@ -79404,7 +79722,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],289:[function(require,module,exports){
+},{}],296:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: true,
@@ -79440,7 +79758,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],290:[function(require,module,exports){
+},{}],297:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['tk'],
@@ -79501,7 +79819,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],291:[function(require,module,exports){
+},{}],298:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMAND = {
     className: 'tag',
@@ -79563,7 +79881,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],292:[function(require,module,exports){
+},{}],299:[function(require,module,exports){
 module.exports = function(hljs) {
   var BUILT_IN_TYPES = 'bool byte i16 i32 i64 double string binary';
   return {
@@ -79598,7 +79916,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],293:[function(require,module,exports){
+},{}],300:[function(require,module,exports){
 module.exports = function(hljs) {
   var TPID = {
     className: 'number',
@@ -79682,7 +80000,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],294:[function(require,module,exports){
+},{}],301:[function(require,module,exports){
 module.exports = function(hljs) {
   var PARAMS = {
     className: 'params',
@@ -79748,7 +80066,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],295:[function(require,module,exports){
+},{}],302:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -79875,7 +80193,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],296:[function(require,module,exports){
+},{}],303:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -79925,7 +80243,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],297:[function(require,module,exports){
+},{}],304:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['vb'],
@@ -79981,7 +80299,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],298:[function(require,module,exports){
+},{}],305:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     subLanguage: 'xml',
@@ -79993,7 +80311,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],299:[function(require,module,exports){
+},{}],306:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['vbs'],
@@ -80032,7 +80350,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],300:[function(require,module,exports){
+},{}],307:[function(require,module,exports){
 module.exports = function(hljs) {
   var SV_KEYWORDS = {
     keyword:
@@ -80131,7 +80449,7 @@ module.exports = function(hljs) {
     ]
   }; // return
 };
-},{}],301:[function(require,module,exports){
+},{}],308:[function(require,module,exports){
 module.exports = function(hljs) {
   // Regular expression for VHDL numeric literals.
 
@@ -80192,7 +80510,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],302:[function(require,module,exports){
+},{}],309:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     lexemes: /[!#@\w]+/,
@@ -80298,7 +80616,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],303:[function(require,module,exports){
+},{}],310:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: true,
@@ -80434,7 +80752,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],304:[function(require,module,exports){
+},{}],311:[function(require,module,exports){
 module.exports = function(hljs) {
   var BUILTIN_MODULES =
     'ObjectLoader Animate MovieCredits Slides Filters Shading Materials LensFlare Mapping VLCAudioVideo ' +
@@ -80507,7 +80825,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],305:[function(require,module,exports){
+},{}],312:[function(require,module,exports){
 module.exports = function(hljs) {
   var XML_IDENT_RE = '[A-Za-z0-9\\._:-]+';
   var TAG_INTERNALS = {
@@ -80610,7 +80928,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],306:[function(require,module,exports){
+},{}],313:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = 'for let if while then else return where group by xquery encoding version' +
     'module namespace boundary-space preserve strip default collation base-uri ordering' +
@@ -80681,7 +80999,7 @@ module.exports = function(hljs) {
     contains: CONTAINS
   };
 };
-},{}],307:[function(require,module,exports){
+},{}],314:[function(require,module,exports){
 module.exports = function(hljs) {
   var LITERALS = {literal: '{ } true false yes no Yes No True False null'};
 
@@ -80765,7 +81083,7 @@ module.exports = function(hljs) {
     keywords: LITERALS
   };
 };
-},{}],308:[function(require,module,exports){
+},{}],315:[function(require,module,exports){
 module.exports = function(hljs) {
   var STRING = {
     className: 'string',
@@ -80872,7 +81190,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],309:[function(require,module,exports){
+},{}],316:[function(require,module,exports){
 //! moment.js
 //! version : 2.17.1
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -85175,7 +85493,7 @@ return hooks;
 
 })));
 
-},{}],310:[function(require,module,exports){
+},{}],317:[function(require,module,exports){
 ;/*! ng-showdown 19-10-2015 */
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
@@ -85389,9 +85707,9 @@ return hooks;
 }));
 
 
-},{"angular":94,"showdown":312}],311:[function(require,module,exports){
+},{"angular":101,"showdown":319}],318:[function(require,module,exports){
 /*! ngTagsInput v3.2.0 License: MIT */!function(){"use strict";var a={backspace:8,tab:9,enter:13,escape:27,space:32,up:38,down:40,left:37,right:39,"delete":46,comma:188},b=9007199254740991,c=["text","email","url"],d=angular.module("ngTagsInput",[]);d.directive("tagsInput",["$timeout","$document","$window","$q","tagsInputConfig","tiUtil",function(d,e,f,g,h,i){function j(a,b,c,d){var e,f,h,j,k={};return e=function(b){return i.safeToString(b[a.displayProperty])},f=function(b,c){b[a.displayProperty]=c},h=function(b){var d=e(b),f=d&&d.length>=a.minLength&&d.length<=a.maxLength&&a.allowedTagsPattern.test(d)&&!i.findInObjectArray(k.items,b,a.keyProperty||a.displayProperty);return g.when(f&&c({$tag:b})).then(i.promisifyValue)},j=function(a){return g.when(d({$tag:a})).then(i.promisifyValue)},k.items=[],k.addText=function(a){var b={};return f(b,a),k.add(b)},k.add=function(c){var d=e(c);return a.replaceSpacesWithDashes&&(d=i.replaceSpacesWithDashes(d)),f(c,d),h(c).then(function(){k.items.push(c),b.trigger("tag-added",{$tag:c})})["catch"](function(){d&&b.trigger("invalid-tag",{$tag:c})})},k.remove=function(a){var c=k.items[a];return j(c).then(function(){return k.items.splice(a,1),k.clearSelection(),b.trigger("tag-removed",{$tag:c}),c})},k.select=function(a){0>a?a=k.items.length-1:a>=k.items.length&&(a=0),k.index=a,k.selected=k.items[a]},k.selectPrior=function(){k.select(--k.index)},k.selectNext=function(){k.select(++k.index)},k.removeSelected=function(){return k.remove(k.index)},k.clearSelection=function(){k.selected=null,k.index=-1},k.getItems=function(){return a.useStrings?k.items.map(e):k.items},k.clearSelection(),k}function k(a){return-1!==c.indexOf(a)}return{restrict:"E",require:"ngModel",scope:{tags:"=ngModel",text:"=?",templateScope:"=?",tagClass:"&",onTagAdding:"&",onTagAdded:"&",onInvalidTag:"&",onTagRemoving:"&",onTagRemoved:"&",onTagClicked:"&"},replace:!1,transclude:!0,templateUrl:"ngTagsInput/tags-input.html",controller:["$scope","$attrs","$element",function(a,c,d){a.events=i.simplePubSub(),h.load("tagsInput",a,c,{template:[String,"ngTagsInput/tag-item.html"],type:[String,"text",k],placeholder:[String,"Add a tag"],tabindex:[Number,null],removeTagSymbol:[String,String.fromCharCode(215)],replaceSpacesWithDashes:[Boolean,!0],minLength:[Number,3],maxLength:[Number,b],addOnEnter:[Boolean,!0],addOnSpace:[Boolean,!1],addOnComma:[Boolean,!0],addOnBlur:[Boolean,!0],addOnPaste:[Boolean,!1],pasteSplitPattern:[RegExp,/,/],allowedTagsPattern:[RegExp,/.+/],enableEditingLastTag:[Boolean,!1],minTags:[Number,0],maxTags:[Number,b],displayProperty:[String,"text"],keyProperty:[String,""],allowLeftoverText:[Boolean,!1],addFromAutocompleteOnly:[Boolean,!1],spellcheck:[Boolean,!0],useStrings:[Boolean,!1]}),a.tagList=new j(a.options,a.events,i.handleUndefinedResult(a.onTagAdding,!0),i.handleUndefinedResult(a.onTagRemoving,!0)),this.registerAutocomplete=function(){d.find("input");return{addTag:function(b){return a.tagList.add(b)},getTags:function(){return a.tagList.items},getCurrentTagText:function(){return a.newTag.text()},getOptions:function(){return a.options},getTemplateScope:function(){return a.templateScope},on:function(b,c){return a.events.on(b,c,!0),this}}},this.registerTagItem=function(){return{getOptions:function(){return a.options},removeTag:function(b){a.disabled||a.tagList.remove(b)}}}}],link:function(b,c,g,h){var j,k,l=[a.enter,a.comma,a.space,a.backspace,a["delete"],a.left,a.right],m=b.tagList,n=b.events,o=b.options,p=c.find("input"),q=["minTags","maxTags","allowLeftoverText"];j=function(){h.$setValidity("maxTags",m.items.length<=o.maxTags),h.$setValidity("minTags",m.items.length>=o.minTags),h.$setValidity("leftoverText",b.hasFocus||o.allowLeftoverText?!0:!b.newTag.text())},k=function(){d(function(){p[0].focus()})},h.$isEmpty=function(a){return!a||!a.length},b.newTag={text:function(a){return angular.isDefined(a)?(b.text=a,void n.trigger("input-change",a)):b.text||""},invalid:null},b.track=function(a){return a[o.keyProperty||o.displayProperty]},b.getTagClass=function(a,c){var d=a===m.selected;return[b.tagClass({$tag:a,$index:c,$selected:d}),{selected:d}]},b.$watch("tags",function(a){if(a){if(m.items=i.makeObjectArray(a,o.displayProperty),o.useStrings)return;b.tags=m.items}else m.items=[]}),b.$watch("tags.length",function(){j(),h.$validate()}),g.$observe("disabled",function(a){b.disabled=a}),b.eventHandlers={input:{keydown:function(a){n.trigger("input-keydown",a)},focus:function(){b.hasFocus||(b.hasFocus=!0,n.trigger("input-focus"))},blur:function(){d(function(){var a=e.prop("activeElement"),d=a===p[0],f=c[0].contains(a);(d||!f)&&(b.hasFocus=!1,n.trigger("input-blur"))})},paste:function(a){a.getTextData=function(){var b=a.clipboardData||a.originalEvent&&a.originalEvent.clipboardData;return b?b.getData("text/plain"):f.clipboardData.getData("Text")},n.trigger("input-paste",a)}},host:{click:function(){b.disabled||k()}},tag:{click:function(a){n.trigger("tag-clicked",{$tag:a})}}},n.on("tag-added",b.onTagAdded).on("invalid-tag",b.onInvalidTag).on("tag-removed",b.onTagRemoved).on("tag-clicked",b.onTagClicked).on("tag-added",function(){b.newTag.text("")}).on("tag-added tag-removed",function(){b.tags=m.getItems(),h.$setDirty(),k()}).on("invalid-tag",function(){b.newTag.invalid=!0}).on("option-change",function(a){-1!==q.indexOf(a.name)&&j()}).on("input-change",function(){m.clearSelection(),b.newTag.invalid=null}).on("input-focus",function(){c.triggerHandler("focus"),h.$setValidity("leftoverText",!0)}).on("input-blur",function(){o.addOnBlur&&!o.addFromAutocompleteOnly&&m.addText(b.newTag.text()),c.triggerHandler("blur"),j()}).on("input-keydown",function(c){var d,e,f,g,h=c.keyCode,j={};i.isModifierOn(c)||-1===l.indexOf(h)||(j[a.enter]=o.addOnEnter,j[a.comma]=o.addOnComma,j[a.space]=o.addOnSpace,d=!o.addFromAutocompleteOnly&&j[h],e=(h===a.backspace||h===a["delete"])&&m.selected,g=h===a.backspace&&0===b.newTag.text().length&&o.enableEditingLastTag,f=(h===a.backspace||h===a.left||h===a.right)&&0===b.newTag.text().length&&!o.enableEditingLastTag,d?m.addText(b.newTag.text()):g?(m.selectPrior(),m.removeSelected().then(function(a){a&&b.newTag.text(a[o.displayProperty])})):e?m.removeSelected():f&&(h===a.left||h===a.backspace?m.selectPrior():h===a.right&&m.selectNext()),(d||f||e||g)&&c.preventDefault())}).on("input-paste",function(a){if(o.addOnPaste){var b=a.getTextData(),c=b.split(o.pasteSplitPattern);c.length>1&&(c.forEach(function(a){m.addText(a)}),a.preventDefault())}})}}}]),d.directive("tiTagItem",["tiUtil",function(a){return{restrict:"E",require:"^tagsInput",template:'<ng-include src="$$template"></ng-include>',scope:{$scope:"=scope",data:"="},link:function(b,c,d,e){var f=e.registerTagItem(),g=f.getOptions();b.$$template=g.template,b.$$removeTagSymbol=g.removeTagSymbol,b.$getDisplayText=function(){return a.safeToString(b.data[g.displayProperty])},b.$removeTag=function(){f.removeTag(b.$index)},b.$watch("$parent.$index",function(a){b.$index=a})}}}]),d.directive("autoComplete",["$document","$timeout","$sce","$q","tagsInputConfig","tiUtil",function(b,c,d,e,f,g){function h(a,b,c){var d,f,h,i={};return h=function(){return b.tagsInput.keyProperty||b.tagsInput.displayProperty},d=function(a,c){return a.filter(function(a){return!g.findInObjectArray(c,a,h(),function(a,c){return b.tagsInput.replaceSpacesWithDashes&&(a=g.replaceSpacesWithDashes(a),c=g.replaceSpacesWithDashes(c)),g.defaultComparer(a,c)})})},i.reset=function(){f=null,i.items=[],i.visible=!1,i.index=-1,i.selected=null,i.query=null},i.show=function(){b.selectFirstMatch?i.select(0):i.selected=null,i.visible=!0},i.load=g.debounce(function(c,j){i.query=c;var k=e.when(a({$query:c}));f=k,k.then(function(a){k===f&&(a=g.makeObjectArray(a.data||a,h()),a=d(a,j),i.items=a.slice(0,b.maxResultsToShow),i.items.length>0?i.show():i.reset())})},b.debounceDelay),i.selectNext=function(){i.select(++i.index)},i.selectPrior=function(){i.select(--i.index)},i.select=function(a){0>a?a=i.items.length-1:a>=i.items.length&&(a=0),i.index=a,i.selected=i.items[a],c.trigger("suggestion-selected",a)},i.reset(),i}function i(a,b){var c=a.find("li").eq(b),d=c.parent(),e=c.prop("offsetTop"),f=c.prop("offsetHeight"),g=d.prop("clientHeight"),h=d.prop("scrollTop");h>e?d.prop("scrollTop",e):e+f>g+h&&d.prop("scrollTop",e+f-g)}return{restrict:"E",require:"^tagsInput",scope:{source:"&",matchClass:"&"},templateUrl:"ngTagsInput/auto-complete.html",controller:["$scope","$element","$attrs",function(a,b,c){a.events=g.simplePubSub(),f.load("autoComplete",a,c,{template:[String,"ngTagsInput/auto-complete-match.html"],debounceDelay:[Number,100],minLength:[Number,3],highlightMatchedText:[Boolean,!0],maxResultsToShow:[Number,10],loadOnDownArrow:[Boolean,!1],loadOnEmpty:[Boolean,!1],loadOnFocus:[Boolean,!1],selectFirstMatch:[Boolean,!0],displayProperty:[String,""]}),a.suggestionList=new h(a.source,a.options,a.events),this.registerAutocompleteMatch=function(){return{getOptions:function(){return a.options},getQuery:function(){return a.suggestionList.query}}}}],link:function(b,c,d,e){var f,h=[a.enter,a.tab,a.escape,a.up,a.down],j=b.suggestionList,k=e.registerAutocomplete(),l=b.options,m=b.events;l.tagsInput=k.getOptions(),f=function(a){return a&&a.length>=l.minLength||!a&&l.loadOnEmpty},b.templateScope=k.getTemplateScope(),b.addSuggestionByIndex=function(a){j.select(a),b.addSuggestion()},b.addSuggestion=function(){var a=!1;return j.selected&&(k.addTag(angular.copy(j.selected)),j.reset(),a=!0),a},b.track=function(a){return a[l.tagsInput.keyProperty||l.tagsInput.displayProperty]},b.getSuggestionClass=function(a,c){var d=a===j.selected;return[b.matchClass({$match:a,$index:c,$selected:d}),{selected:d}]},k.on("tag-added tag-removed invalid-tag input-blur",function(){j.reset()}).on("input-change",function(a){f(a)?j.load(a,k.getTags()):j.reset()}).on("input-focus",function(){var a=k.getCurrentTagText();l.loadOnFocus&&f(a)&&j.load(a,k.getTags())}).on("input-keydown",function(c){var d=c.keyCode,e=!1;if(!g.isModifierOn(c)&&-1!==h.indexOf(d))return j.visible?d===a.down?(j.selectNext(),e=!0):d===a.up?(j.selectPrior(),e=!0):d===a.escape?(j.reset(),e=!0):(d===a.enter||d===a.tab)&&(e=b.addSuggestion()):d===a.down&&b.options.loadOnDownArrow&&(j.load(k.getCurrentTagText(),k.getTags()),e=!0),e?(c.preventDefault(),c.stopImmediatePropagation(),!1):void 0}),m.on("suggestion-selected",function(a){i(c,a)})}}}]),d.directive("tiAutocompleteMatch",["$sce","tiUtil",function(a,b){return{restrict:"E",require:"^autoComplete",template:'<ng-include src="$$template"></ng-include>',scope:{$scope:"=scope",data:"="},link:function(c,d,e,f){var g=f.registerAutocompleteMatch(),h=g.getOptions();c.$$template=h.template,c.$index=c.$parent.$index,c.$highlight=function(c){return h.highlightMatchedText&&(c=b.safeHighlight(c,g.getQuery())),a.trustAsHtml(c)},c.$getDisplayText=function(){return b.safeToString(c.data[h.displayProperty||h.tagsInput.displayProperty])}}}}]),d.directive("tiTranscludeAppend",function(){return function(a,b,c,d,e){e(function(a){b.append(a)})}}),d.directive("tiAutosize",["tagsInputConfig",function(a){return{restrict:"A",require:"ngModel",link:function(b,c,d,e){var f,g,h=a.getTextAutosizeThreshold();f=angular.element('<span class="input"></span>'),f.css("display","none").css("visibility","hidden").css("width","auto").css("white-space","pre"),c.parent().append(f),g=function(a){var b,e=a;return angular.isString(e)&&0===e.length&&(e=d.placeholder),e&&(f.text(e),f.css("display",""),b=f.prop("offsetWidth"),f.css("display","none")),c.css("width",b?b+h+"px":""),a},e.$parsers.unshift(g),e.$formatters.unshift(g),d.$observe("placeholder",function(a){e.$modelValue||g(a)})}}}]),d.directive("tiBindAttrs",function(){return function(a,b,c){a.$watch(c.tiBindAttrs,function(a){angular.forEach(a,function(a,b){c.$set(b,a)})},!0)}}),d.provider("tagsInputConfig",function(){var a={},b={},c=3;this.setDefaults=function(b,c){return a[b]=c,this},this.setActiveInterpolation=function(a,c){return b[a]=c,this},this.setTextAutosizeThreshold=function(a){return c=a,this},this.$get=["$interpolate",function(d){var e={};return e[String]=function(a){return a},e[Number]=function(a){return parseInt(a,10)},e[Boolean]=function(a){return"true"===a.toLowerCase()},e[RegExp]=function(a){return new RegExp(a)},{load:function(c,f,g,h){var i=function(){return!0};f.options={},angular.forEach(h,function(h,j){var k,l,m,n,o,p;k=h[0],l=h[1],m=h[2]||i,n=e[k],o=function(){var b=a[c]&&a[c][j];return angular.isDefined(b)?b:l},p=function(a){f.options[j]=a&&m(a)?n(a):o()},b[c]&&b[c][j]?g.$observe(j,function(a){p(a),f.events.trigger("option-change",{name:j,newValue:a})}):p(g[j]&&d(g[j])(f.$parent))})},getTextAutosizeThreshold:function(){return c}}}]}),d.factory("tiUtil",["$timeout","$q",function(a,b){var c={};return c.debounce=function(b,c){var d;return function(){var e=arguments;a.cancel(d),d=a(function(){b.apply(null,e)},c)}},c.makeObjectArray=function(a,b){if(!angular.isArray(a)||0===a.length||angular.isObject(a[0]))return a;var c=[];return a.forEach(function(a){var d={};d[b]=a,c.push(d)}),c},c.findInObjectArray=function(a,b,d,e){var f=null;return e=e||c.defaultComparer,a.some(function(a){return e(a[d],b[d])?(f=a,!0):void 0}),f},c.defaultComparer=function(a,b){return c.safeToString(a).toLowerCase()===c.safeToString(b).toLowerCase()},c.safeHighlight=function(a,b){function d(a){return a.replace(/([.?*+^$[\]\\(){}|-])/g,"\\$1")}if(a=c.encodeHTML(a),b=c.encodeHTML(b),!b)return a;var e=new RegExp("&[^;]+;|"+d(b),"gi");return a.replace(e,function(a){return a.toLowerCase()===b.toLowerCase()?"<em>"+a+"</em>":a})},c.safeToString=function(a){return angular.isUndefined(a)||null==a?"":a.toString().trim()},c.encodeHTML=function(a){return c.safeToString(a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")},c.handleUndefinedResult=function(a,b){return function(){var c=a.apply(null,arguments);return angular.isUndefined(c)?b:c}},c.replaceSpacesWithDashes=function(a){return c.safeToString(a).replace(/\s/g,"-")},c.isModifierOn=function(a){return a.shiftKey||a.ctrlKey||a.altKey||a.metaKey},c.promisifyValue=function(a){return a=angular.isUndefined(a)?!0:a,b[a?"when":"reject"]()},c.simplePubSub=function(){var a={};return{on:function(b,c,d){return b.split(" ").forEach(function(b){a[b]||(a[b]=[]);var e=d?[].unshift:[].push;e.call(a[b],c)}),this},trigger:function(b,d){var e=a[b]||[];return e.every(function(a){return c.handleUndefinedResult(a,!0)(d)}),this}}},c}]),d.run(["$templateCache",function(a){a.put("ngTagsInput/tags-input.html",'<div class="host" tabindex="-1" ng-click="eventHandlers.host.click()" ti-transclude-append><div class="tags" ng-class="{focused: hasFocus}"><ul class="tag-list"><li class="tag-item" ng-repeat="tag in tagList.items track by track(tag)" ng-class="getTagClass(tag, $index)" ng-click="eventHandlers.tag.click(tag)"><ti-tag-item scope="templateScope" data="::tag"></ti-tag-item></li></ul><input class="input" autocomplete="off" ng-model="newTag.text" ng-model-options="{getterSetter: true}" ng-keydown="eventHandlers.input.keydown($event)" ng-focus="eventHandlers.input.focus($event)" ng-blur="eventHandlers.input.blur($event)" ng-paste="eventHandlers.input.paste($event)" ng-trim="false" ng-class="{\'invalid-tag\': newTag.invalid}" ng-disabled="disabled" ti-bind-attrs="{type: options.type, placeholder: options.placeholder, tabindex: options.tabindex, spellcheck: options.spellcheck}" ti-autosize></div></div>'),a.put("ngTagsInput/tag-item.html",'<span ng-bind="$getDisplayText()"></span> <a class="remove-button" ng-click="$removeTag()" ng-bind="::$$removeTagSymbol"></a>'),a.put("ngTagsInput/auto-complete.html",'<div class="autocomplete" ng-if="suggestionList.visible"><ul class="suggestion-list"><li class="suggestion-item" ng-repeat="item in suggestionList.items track by track(item)" ng-class="getSuggestionClass(item, $index)" ng-click="addSuggestionByIndex($index)" ng-mouseenter="suggestionList.select($index)"><ti-autocomplete-match scope="templateScope" data="::item"></ti-autocomplete-match></li></ul></div>'),a.put("ngTagsInput/auto-complete-match.html",'<span ng-bind-html="$highlight($getDisplayText())"></span>')}])}();
-},{}],312:[function(require,module,exports){
+},{}],319:[function(require,module,exports){
 ;/*! showdown 09-01-2017 */
 (function(){
 /**
@@ -87995,7 +88313,7 @@ if (typeof module !== 'undefined' && module.exports) {
 
 
 
-},{}],313:[function(require,module,exports){
+},{}],320:[function(require,module,exports){
 module.exports={
   "name": "fusio",
   "version": "0.5.0",
