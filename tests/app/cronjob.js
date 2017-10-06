@@ -7,7 +7,7 @@ describe('Cronjob tests', function() {
 
     var routes = element.all(by.repeater('cronjob in cronjobs'));
     expect(routes.count()).toEqual(1);
-    expect(routes.get(0).getText()).toEqual('Test-Cron');
+    expect(routes.get(0).getText()).toEqual('Test-Cron */30 * * * *');
   });
 
   it('Create cronjob', function() {
@@ -50,7 +50,7 @@ describe('Cronjob tests', function() {
 
     expect(element(by.model('cronjob.name')).getAttribute('value')).toEqual('New-Cron');
     expect(element(by.model('cronjob.cron')).getAttribute('value')).toEqual('5 * * * *');
-    expect(element.all(by.model('cronjob.action')).get(0).getAttribute('value')).toEqual('number:6');
+    expect(element(by.model('cronjob.action')).getAttribute('value')).toEqual('number:6');
 
     $('button.btn-primary').click();
 
