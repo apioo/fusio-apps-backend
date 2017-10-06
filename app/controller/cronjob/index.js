@@ -15,5 +15,7 @@ angular.module('fusioApp.cronjob', ['ngRoute', 'ui.bootstrap'])
 .controller('CronjobCreateCtrl', require('./create'))
 .controller('CronjobUpdateCtrl', require('./update'))
 .controller('CronjobDeleteCtrl', require('./delete'))
+.controller('CronjobErrorCtrl', require('./error'))
+.controller('CronjobErrorDetailCtrl', require('./error/detail'))
 
 ;

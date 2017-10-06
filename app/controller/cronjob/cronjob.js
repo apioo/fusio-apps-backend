@@ -21,7 +21,7 @@ module.exports = function($scope, $http, $uibModal, fusio) {
     var startIndex = ($scope.startIndex - 1) * 16;
     var search = encodeURIComponent($scope.search ? $scope.search : '');
 
-    $http.get(fusio.baseUrl + 'backend/scope?startIndex=' + startIndex + '&search=' + search)
+    $http.get(fusio.baseUrl + 'backend/cronjob?startIndex=' + startIndex + '&search=' + search)
       .then(function(response) {
         var data = response.data;
         $scope.totalResults = data.totalResults;
@@ -30,7 +30,7 @@ module.exports = function($scope, $http, $uibModal, fusio) {
   };
 
   $scope.doSearch = function(search) {
-    $http.get(fusio.baseUrl + 'backend/scope?search=' + encodeURIComponent(search ? search : ''))
+    $http.get(fusio.baseUrl + 'backend/cronjob?search=' + encodeURIComponent(search ? search : ''))
       .then(function(response) {
         var data = response.data;
         $scope.totalResults = data.totalResults;
@@ -80,6 +80,26 @@ module.exports = function($scope, $http, $uibModal, fusio) {
       backdrop: 'static',
       templateUrl: 'app/controller/cronjob/delete.html',
       controller: 'CronjobDeleteCtrl',
+      resolve: {
+        cronjob: function() {
+          return cronjob;
+        }
+      }
+    });
+
+    modalInstance.result.then(function(response) {
+      $scope.response = response;
+      $scope.load();
+    }, function() {
+    });
+  };
+
+  $scope.openErrorDialog = function(cronjob) {
+    var modalInstance = $uibModal.open({
+      size: 'lg',
+      backdrop: 'static',
+      templateUrl: 'app/controller/cronjob/error.html',
+      controller: 'CronjobErrorCtrl',
       resolve: {
         cronjob: function() {
           return cronjob;
