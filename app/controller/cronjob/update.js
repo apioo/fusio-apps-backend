@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function($scope, $http, $uibModalInstance, fusio, cronjob) {
+module.exports = function($scope, $http, $uibModal, $uibModalInstance, fusio, cronjob) {
 
   $scope.cronjob = cronjob;
 
@@ -33,6 +33,24 @@ module.exports = function($scope, $http, $uibModalInstance, fusio, cronjob) {
 
   $scope.closeResponse = function() {
     $scope.response = null;
+  };
+
+  $scope.showAction = function(actionId) {
+    var modalInstance = $uibModal.open({
+      size: 'lg',
+      backdrop: 'static',
+      templateUrl: 'app/controller/action/update.html',
+      controller: 'ActionUpdateCtrl',
+      resolve: {
+        action: function() {
+          return {id: actionId};
+        }
+      }
+    });
+
+    modalInstance.result.then(function(response) {
+    }, function() {
+    });
   };
 
   $http.get(fusio.baseUrl + 'backend/cronjob/' + cronjob.id)

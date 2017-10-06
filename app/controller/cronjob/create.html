@@ -27,8 +27,8 @@
                     </select>
                 </div>
                 <div class="col-md-1">
-                    <a ng-if="cronjob.action > 1" ng-click="showAction(cronjob.action)" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
-                    <a ng-if="!(cronjob.action > 1)" ng-disabled="true" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                    <a ng-if="cronjob.action > 0" ng-click="showAction(cronjob.action)" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                    <a ng-if="!(cronjob.action > 0)" ng-disabled="true" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
                 </div>
             </div>
             <span class="help-block" id="actionHelp">The action which gets executed</span>
