@@ -28,12 +28,14 @@
     <colgroup>
         <col width="*" />
         <col width="300" />
+        <col width="150" />
         <col width="100" />
     </colgroup>
     <thead>
     <tr>
         <th>Name</th>
         <th>Cron</th>
+        <th>Last execution</th>
         <th></th>
     </tr>
     </thead>
@@ -41,6 +43,7 @@
     <tr ng-repeat="cronjob in cronjobs">
         <td>{{cronjob.name}}</td>
         <td>{{cronjob.cron}}</td>
+        <td>{{cronjob.executionDate | date: 'short'}}</td>
         <td>
             <div class="fusio-options">
                 <a ng-click="openUpdateDialog(cronjob)" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
