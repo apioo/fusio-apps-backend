@@ -1627,17 +1627,28 @@ module.exports = function($scope, $http, $uibModalInstance, fusio, formBuilder, 
 },{}],27:[function(require,module,exports){
 'use strict';
 
-module.exports = function($scope, $http, $uibModalInstance, fusio) {
+module.exports = function($scope, $http, $uibModal, $uibModalInstance, fusio) {
 
   $scope.cronjob = {
     name: '',
-    cron: ''
+    cron: '',
+    action: 1
   };
 
   $scope.actions = [];
 
   $scope.create = function(cronjob) {
     var data = angular.copy(cronjob);
+
+    if (data.exitCode) {
+      delete data.exitCode;
+    }
+    if (data.executeDate) {
+      delete data.executeDate;
+    }
+    if (data.errors) {
+      delete data.errors;
+    }
 
     $http.post(fusio.baseUrl + 'backend/cronjob', data)
       .then(function(response) {
@@ -1663,6 +1674,24 @@ module.exports = function($scope, $http, $uibModalInstance, fusio) {
 
   $scope.closeResponse = function() {
     $scope.response = null;
+  };
+
+  $scope.showAction = function(actionId) {
+    var modalInstance = $uibModal.open({
+      size: 'lg',
+      backdrop: 'static',
+      templateUrl: 'app/controller/action/update.html',
+      controller: 'ActionUpdateCtrl',
+      resolve: {
+        action: function() {
+          return {id: actionId};
+        }
+      }
+    });
+
+    modalInstance.result.then(function(response) {
+    }, function() {
+    });
   };
 
 };
@@ -1898,14 +1927,24 @@ angular.module('fusioApp.cronjob', ['ngRoute', 'ui.bootstrap'])
 },{"./create":27,"./cronjob":28,"./delete":29,"./error":30,"./error/detail":31,"./update":33,"angular":101}],33:[function(require,module,exports){
 'use strict';
 
-module.exports = function($scope, $http, $uibModalInstance, fusio, cronjob) {
+module.exports = function($scope, $http, $uibModal, $uibModalInstance, fusio, cronjob) {
 
   $scope.cronjob = cronjob;
 
   $scope.actions = [];
 
-  $scope.update = function(scope) {
-    var data = angular.copy(scope);
+  $scope.update = function(cronjob) {
+    var data = angular.copy(cronjob);
+
+    if (data.exitCode) {
+      delete data.exitCode;
+    }
+    if (data.executeDate) {
+      delete data.executeDate;
+    }
+    if (data.errors) {
+      delete data.errors;
+    }
 
     $http.put(fusio.baseUrl + 'backend/cronjob/' + cronjob.id, data)
       .then(function(response) {
@@ -1931,6 +1970,24 @@ module.exports = function($scope, $http, $uibModalInstance, fusio, cronjob) {
 
   $scope.closeResponse = function() {
     $scope.response = null;
+  };
+
+  $scope.showAction = function(actionId) {
+    var modalInstance = $uibModal.open({
+      size: 'lg',
+      backdrop: 'static',
+      templateUrl: 'app/controller/action/update.html',
+      controller: 'ActionUpdateCtrl',
+      resolve: {
+        action: function() {
+          return {id: actionId};
+        }
+      }
+    });
+
+    modalInstance.result.then(function(response) {
+    }, function() {
+    });
   };
 
   $http.get(fusio.baseUrl + 'backend/cronjob/' + cronjob.id)
