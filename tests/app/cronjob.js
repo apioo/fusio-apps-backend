@@ -46,10 +46,11 @@ describe('Cronjob tests', function() {
 
     element.all(by.css('div.fusio-options a:nth-child(1)')).first().click();
 
-    browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
+    browser.wait(EC.visibilityOf($('select.form-control')), 5000);
 
     expect(element(by.model('cronjob.name')).getAttribute('value')).toEqual('New-Cron');
     expect(element(by.model('cronjob.cron')).getAttribute('value')).toEqual('5 * * * *');
+    expect(element(by.model('config.action')).getAttribute('value')).toEqual('number:6');
 
     $('button.btn-primary').click();
 
