@@ -50,7 +50,7 @@ describe('Cronjob tests', function() {
 
     expect(element(by.model('cronjob.name')).getAttribute('value')).toEqual('New-Cron');
     expect(element(by.model('cronjob.cron')).getAttribute('value')).toEqual('5 * * * *');
-    expect(element(by.model('config.action')).getAttribute('value')).toEqual('number:6');
+    expect(element(by.model('cronjob.action')).getAttribute('value')).toEqual('number:5');
 
     $('button.btn-primary').click();
 
