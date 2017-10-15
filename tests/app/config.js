@@ -6,7 +6,7 @@ describe('Config tests', function() {
     browser.get('#!/config');
 
     var configs = element.all(by.repeater('config in configs'));
-    expect(configs.count()).toEqual(11);
+    expect(configs.count()).toEqual(12);
     expect(configs.get(0).getText()).toMatch('app_approval');
     expect(configs.get(1).getText()).toMatch('app_consumer');
     expect(configs.get(2).getText()).toMatch('cors_allow_origin');
