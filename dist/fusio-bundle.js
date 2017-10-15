@@ -2590,7 +2590,8 @@ module.exports = function($scope, $http, $location, $window, $rootScope, fusio) 
       method: 'POST',
       url: fusio.baseUrl + 'backend/token',
       headers: {
-        authorization: 'Basic ' + btoa(credentials.username + ':' + credentials.password)
+        'Authorization': 'Basic ' + btoa(credentials.username + ':' + credentials.password),
+        'Content-Type': 'application/x-www-form-urlencoded'
       },
       data: 'grant_type=client_credentials'
     };
