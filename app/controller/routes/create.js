@@ -99,12 +99,12 @@ module.exports = function($scope, $http, $uibModalInstance, $timeout, fusio) {
       });
   };
 
-  $http.get(fusio.baseUrl + 'backend/action')
+  $http.get(fusio.baseUrl + 'backend/action?count=1024')
     .then(function(response) {
       $scope.actions = response.data.entry;
     });
 
-  $http.get(fusio.baseUrl + 'backend/schema')
+  $http.get(fusio.baseUrl + 'backend/schema?count=1024')
     .then(function(response) {
       $scope.schemas = response.data.entry;
     });

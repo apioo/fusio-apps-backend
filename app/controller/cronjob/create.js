@@ -36,7 +36,7 @@ module.exports = function($scope, $http, $uibModal, $uibModalInstance, fusio) {
       });
   };
 
-  $http.get(fusio.baseUrl + 'backend/action')
+  $http.get(fusio.baseUrl + 'backend/action?count=1024')
     .then(function(response) {
       $scope.actions = response.data.entry;
     });
