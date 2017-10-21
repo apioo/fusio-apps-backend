@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function($scope, $http, $uibModalInstance, $timeout, fusio) {
+module.exports = function($scope, $http, $uibModal, $uibModalInstance, $timeout, fusio) {
 
   $scope.route = {
     path: '',
