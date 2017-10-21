@@ -137,6 +137,7 @@ module.exports = function($scope, $http, $uibModal, $uibModalInstance, $timeout,
         GET: $scope.newMethod(),
         POST: $scope.newEmptyMethod(),
         PUT: $scope.newEmptyMethod(),
+        PATCH: $scope.newEmptyMethod(),
         DELETE: $scope.newEmptyMethod()
       }
     };
