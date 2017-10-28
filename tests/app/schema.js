@@ -6,9 +6,10 @@ describe('Schema tests', function() {
     browser.get('#!/schema');
 
     var schemas = element.all(by.repeater('schema in schemas'));
-    expect(schemas.count()).toEqual(2);
-    expect(schemas.get(0).getText()).toEqual('Foo-Schema');
-    expect(schemas.get(1).getText()).toEqual('Passthru');
+    expect(schemas.count()).toEqual(3);
+    expect(schemas.get(0).getText()).toEqual('Entry-Schema');
+    expect(schemas.get(1).getText()).toEqual('Collection-Schema');
+    expect(schemas.get(2).getText()).toEqual('Passthru');
   });
 
   it('Create schema', function() {
