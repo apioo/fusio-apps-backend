@@ -1663,7 +1663,7 @@ module.exports = function($scope, $http, $uibModal, $uibModalInstance, fusio) {
       });
   };
 
-  $http.get(fusio.baseUrl + 'backend/action')
+  $http.get(fusio.baseUrl + 'backend/action?count=1024')
     .then(function(response) {
       $scope.actions = response.data.entry;
     });
@@ -1959,7 +1959,7 @@ module.exports = function($scope, $http, $uibModal, $uibModalInstance, fusio, cr
       });
   };
 
-  $http.get(fusio.baseUrl + 'backend/action')
+  $http.get(fusio.baseUrl + 'backend/action?count=1024')
     .then(function(response) {
       $scope.actions = response.data.entry;
     });
@@ -3201,7 +3201,7 @@ module.exports = function($scope, $http, $uibModalInstance, rate, fusio) {
 },{}],57:[function(require,module,exports){
 'use strict';
 
-module.exports = function($scope, $http, $uibModalInstance, $timeout, fusio) {
+module.exports = function($scope, $http, $uibModal, $uibModalInstance, $timeout, fusio) {
 
   $scope.route = {
     path: '',
@@ -3300,12 +3300,12 @@ module.exports = function($scope, $http, $uibModalInstance, $timeout, fusio) {
       });
   };
 
-  $http.get(fusio.baseUrl + 'backend/action')
+  $http.get(fusio.baseUrl + 'backend/action?count=1024')
     .then(function(response) {
       $scope.actions = response.data.entry;
     });
 
-  $http.get(fusio.baseUrl + 'backend/schema')
+  $http.get(fusio.baseUrl + 'backend/schema?count=1024')
     .then(function(response) {
       $scope.schemas = response.data.entry;
     });
@@ -3338,6 +3338,7 @@ module.exports = function($scope, $http, $uibModalInstance, $timeout, fusio) {
         GET: $scope.newMethod(),
         POST: $scope.newEmptyMethod(),
         PUT: $scope.newEmptyMethod(),
+        PATCH: $scope.newEmptyMethod(),
         DELETE: $scope.newEmptyMethod()
       }
     };
@@ -3374,6 +3375,9 @@ module.exports = function($scope, $http, $uibModalInstance, $timeout, fusio) {
 
   $scope.addResponse = function(code) {
     var method = $scope.methods[$scope.indexMethod];
+    if (!$scope.route.config[$scope.indexVersion].methods[method].responses) {
+      $scope.route.config[$scope.indexVersion].methods[method].responses = {};
+    }
     if (!$scope.route.config[$scope.indexVersion].methods[method].responses[code]) {
       $scope.route.config[$scope.indexVersion].methods[method].responses[code] = 1;
     }
@@ -3721,12 +3725,12 @@ module.exports = function($scope, $http, $uibModal, $uibModalInstance, $timeout,
       });
     });
 
-  $http.get(fusio.baseUrl + 'backend/action')
+  $http.get(fusio.baseUrl + 'backend/action?count=1024')
     .then(function(response) {
       $scope.actions = response.data.entry;
     });
 
-  $http.get(fusio.baseUrl + 'backend/schema')
+  $http.get(fusio.baseUrl + 'backend/schema?count=1024')
     .then(function(response) {
       $scope.schemas = response.data.entry;
     });
@@ -3759,6 +3763,7 @@ module.exports = function($scope, $http, $uibModal, $uibModalInstance, $timeout,
         GET: $scope.newMethod(),
         POST: $scope.newEmptyMethod(),
         PUT: $scope.newEmptyMethod(),
+        PATCH: $scope.newEmptyMethod(),
         DELETE: $scope.newEmptyMethod()
       }
     };
@@ -3795,6 +3800,9 @@ module.exports = function($scope, $http, $uibModal, $uibModalInstance, $timeout,
 
   $scope.addResponse = function(code) {
     var method = $scope.methods[$scope.indexMethod];
+    if (!$scope.route.config[$scope.indexVersion].methods[method].responses) {
+      $scope.route.config[$scope.indexVersion].methods[method].responses = {};
+    }
     if (!$scope.route.config[$scope.indexVersion].methods[method].responses[code]) {
       $scope.route.config[$scope.indexVersion].methods[method].responses[code] = 1;
     }
