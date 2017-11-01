@@ -210,6 +210,9 @@ module.exports = function($scope, $http, $uibModal, $uibModalInstance, $timeout,
 
   $scope.addResponse = function(code) {
     var method = $scope.methods[$scope.indexMethod];
+    if (!$scope.route.config[$scope.indexVersion].methods[method].responses) {
+      $scope.route.config[$scope.indexVersion].methods[method].responses = {};
+    }
     if (!$scope.route.config[$scope.indexVersion].methods[method].responses[code]) {
       $scope.route.config[$scope.indexVersion].methods[method].responses[code] = 1;
     }
