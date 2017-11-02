@@ -34,6 +34,11 @@
                         <span class="help-block" id="requestParametersHelp">Optional the available parameters i.e. <code>count=10</code></span>
                     </div>
                     <div class="form-group">
+                        <label for="requestHeaders">Headers:</label>
+                        <input type="text" id="requestHeaders" ng-model="request.headers" aria-describedby="requestHeadersHelp" class="form-control">
+                        <span class="help-block" id="requestHeadersHelp">Optional request headers i.e. <code>Content-Type=application/json</code></span>
+                    </div>
+                    <div class="form-group">
                         <label for="requestBody">Body:</label>
                         <div ui-ace="{mode: 'json'}" id="requestBody" ng-model="request.body" aria-describedby="requestBodyHelp"></div>
                         <span class="help-block" id="requestBodyHelp">The JSON data of the request body</span>

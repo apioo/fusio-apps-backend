@@ -315,7 +315,7 @@ pre
 
 .fusio-action-designer-config
 {
-    height:530px;
+    height:630px;
     overflow:auto;
 }
 
@@ -325,7 +325,7 @@ pre
 
 .fusio-action-designer-request
 {
-    height:530px;
+    height:630px;
     overflow:auto;
 }
 
@@ -342,18 +342,18 @@ pre
 
 .fusio-schema-designer-config
 {
-    height:550px;
+    height:630px;
     overflow:auto;
 }
 
 .fusio-schema-designer-config .ace_editor
 {
-    height:430px;
+    height:529px;
 }
 
 .fusio-schema-designer-preview
 {
-    height:550px;
+    height:630px;
     overflow:auto;
 }
 
