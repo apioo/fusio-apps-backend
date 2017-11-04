@@ -80,7 +80,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-2">
-                                    <select class="form-control" ng-model="responseCode" ng-options="statusCode as statusTitle for (statusCode, statusTitle) in statusCodes" ng-disabled="config.responses[responseCode] || version.status != 4">
+                                    <select class="form-control" ng-model="responseCode" ng-options="statusCode as statusTitle for (statusCode, statusTitle) in statusCodes" ng-disabled="version.status != 4">
                                     </select>
                                 </div>
                                 <div class="col-md-10">
