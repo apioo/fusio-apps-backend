@@ -75,7 +75,7 @@ module.exports = function($scope, $http, $uibModalInstance, rate, fusio) {
   };
 
   $scope.getRoutes = function() {
-    $http.get(fusio.baseUrl + 'backend/routes')
+    $http.get(fusio.baseUrl + 'backend/routes?count=1024')
       .then(function(response) {
         var data = response.data;
         if (angular.isArray(data.entry)) {
@@ -85,21 +85,6 @@ module.exports = function($scope, $http, $uibModalInstance, rate, fusio) {
             path: 'Every route'
           });
           $scope.routes = routes;
-        }
-      });
-  };
-
-  $scope.getApps = function() {
-    $http.get(fusio.baseUrl + 'backend/app')
-      .then(function(response) {
-        var data = response.data;
-        if (angular.isArray(data.entry)) {
-          var apps = data.entry;
-          apps.unshift({
-            id: null,
-            name: 'Every app'
-          });
-          $scope.apps = apps;
         }
       });
   };
