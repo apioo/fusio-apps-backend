@@ -49,7 +49,7 @@
             <a ng-if="cronjob.exitCode == 0"><span class="glyphicon glyphicon-ok" style="color:green" aria-hidden="true"></span></a>
             <a ng-if="cronjob.exitCode == 1" ng-click="openErrorDialog(cronjob)" style="cursor:pointer"><span class="glyphicon glyphicon-remove" style="color:red" aria-hidden="true"></span></a>
         </td>
-        <td>{{cronjob.executionDate | date: 'short'}}</td>
+        <td>{{cronjob.executeDate | date: 'short'}}</td>
         <td>
             <div class="fusio-options">
                 <a ng-click="openUpdateDialog(cronjob)" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
