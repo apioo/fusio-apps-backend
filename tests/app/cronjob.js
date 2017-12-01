@@ -7,7 +7,7 @@ describe('Cronjob tests', function() {
 
     var routes = element.all(by.repeater('cronjob in cronjobs'));
     expect(routes.count()).toEqual(1);
-    expect(routes.get(0).getText()).toEqual('Test-Cron */30 * * * *');
+    expect(routes.get(0).getText()).toEqual('Test-Cron */30 * * * * 2/27/15 7:59 PM');
   });
 
   it('Create cronjob', function() {
