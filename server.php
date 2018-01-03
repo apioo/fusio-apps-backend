@@ -42,8 +42,6 @@ if (isset($_SERVER['REQUEST_URI'])) {
 $loader    = require(__DIR__ . '/../vendor/autoload.php');
 $container = require_once(__DIR__ . '/../tests/container.php');
 
-PSX\Framework\Bootstrap::setupEnvironment($container->get('config'));
-
 if (isset($_SERVER['argv']) && in_array('--warmup', $_SERVER['argv'])) {
     // warmup
     $loader->addClassMap([
@@ -80,9 +78,8 @@ if (isset($_SERVER['argv']) && in_array('--warmup', $_SERVER['argv'])) {
 
     $command->run($input, $output);
 } else {
-    // run
-    $request  = $container->get('request_factory')->createRequest();
-    $response = $container->get('response_factory')->createResponse();
+    $engine      = new \PSX\Framework\Environment\WebServer\Engine();
+    $environment = new \PSX\Framework\Environment\Environment($container, $engine);
 
-    $container->get('dispatch')->route($request, $response);
+    return $environment->serve();
 }
