@@ -1,9 +1,9 @@
 language: php
 php:
   - 7.0
-sudo: false
+sudo: required
+dist: trusty
 addons:
-  firefox: "53.0"
   apt:
     sources:
       - google-chrome
