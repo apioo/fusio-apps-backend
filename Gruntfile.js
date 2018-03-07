@@ -16,8 +16,6 @@ module.exports = function(grunt){
           './node_modules/ace-builds/src-min-noconflict/mode-sql.js',
           './node_modules/ace-builds/src-min-noconflict/mode-xml.js',
           './node_modules/ace-builds/src-min-noconflict/mode-yaml.js',
-          './node_modules/ace-builds/src-min-noconflict/worker-javascript.js',
-          './node_modules/ace-builds/src-min-noconflict/worker-json.js',
           './dist/fusio-bundle.min.js',
           './dist/fusio-templates.js'
         ],
@@ -45,7 +43,7 @@ module.exports = function(grunt){
     },
     uglify: {
       options: {
-        banner: '/*\n fusio\n Copyright (C) 2015-2017 Christoph Kappestein\n License: AGPLv3\n*/\n',
+        banner: '/*\n fusio\n Copyright (C) 2015-2018 Christoph Kappestein\n License: AGPLv3\n*/\n',
         mangle: false
       },
       dist: {

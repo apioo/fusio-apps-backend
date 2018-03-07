@@ -24,7 +24,7 @@ module.exports = function($sce, $compile) {
 
       if (el.element == 'http://fusio-project.org/ns/2015/form/textarea') {
         form += '<label for="config-' + el.name + '">' + el.title + ':</label>';
-        form += '<div ui-ace="{mode: \'' + el.mode + '\', workerPath: \'./node_modules/ace-builds/src-min-noconflict\'}" ng-model="' + propertyName + '.' + el.name + '" id="config-' + el.name + '" aria-describedby="' + helpId + '"></div>';
+        form += '<div ui-ace="{mode: \'' + el.mode + '\', workerPath: \'./dist\'}" ng-model="' + propertyName + '.' + el.name + '" id="config-' + el.name + '" aria-describedby="' + helpId + '"></div>';
       } else if (el.element == 'http://fusio-project.org/ns/2015/form/input') {
         form += '<label for="config-' + el.name + '">' + el.title + ':</label>';
         form += '<input type="' + el.type + '" name="config-' + el.name + '" id="config-' + el.name + '" ng-model="' + propertyName + '.' + el.name + '" aria-describedby="' + helpId + '" class="form-control" />';
