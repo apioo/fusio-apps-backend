@@ -15,7 +15,7 @@
         </div>
         <div class="form-group">
             <label for="class">Class:</label>
-            <select id="class" ng-model="action.class" ng-click="loadConfig()" ng-options="action.class as action.name for action in actions" aria-describedby="classHelp" class="form-control">
+            <select id="class" ng-model="action.class" ng-change="loadConfig()" ng-options="action.class as action.name for action in actions" aria-describedby="classHelp" class="form-control">
             </select>
             <span class="help-block" id="classHelp">Action class which gets executed. Each action can provide aditional configuration parameters which are loaded if an class was selected</span>
         </div>

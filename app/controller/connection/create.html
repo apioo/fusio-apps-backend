@@ -15,7 +15,7 @@
         </div>
         <div class="form-group">
             <label for="class">Class:</label>
-            <select id="class" ng-model="connection.class" ng-click="loadConfig()" ng-options="conn.class as conn.name for conn in connections" aria-describedby="classHelp" class="form-control">
+            <select id="class" ng-model="connection.class" ng-change="loadConfig()" ng-options="conn.class as conn.name for conn in connections" aria-describedby="classHelp" class="form-control">
             </select>
             <span class="help-block" id="classHelp">Connection class which gets executed. Each connection can provide aditional configuration parameters which are loaded if an class was selected</span>
         </div>
