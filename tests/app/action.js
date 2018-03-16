@@ -35,6 +35,7 @@ describe('Action tests', function() {
     actionOptions.get(4).click();
 
     browser.wait(EC.visibilityOf($('#config-statusCode')), 5000);
+    browser.wait(EC.visibilityOf($('textarea.ace_text-input')), 5000);
 
     element(by.cssContainingText('#config-statusCode option', 'OK')).click();
     element(by.css('textarea.ace_text-input')).sendKeys('{"foo": "bar"}');
