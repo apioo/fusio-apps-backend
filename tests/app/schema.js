@@ -20,6 +20,8 @@ describe('Schema tests', function() {
     $('a.btn-primary').click();
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
+    browser.wait(EC.visibilityOf($('.ace_editor')), 5000);
+    browser.actions().doubleClick($('div.ace_content')).perform();
 
     element(by.model('schema.name')).sendKeys('test-schema');
     element(by.css('textarea.ace_text-input')).sendKeys('{ "id": "http://acme.com/schema", "type": "object", "title": "schema", "properties": { "name": { "type": "string" }, "date": { "type": "string", "format": "date-time" } } }');
