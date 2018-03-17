@@ -36,9 +36,10 @@ describe('Action tests', function() {
 
     browser.wait(EC.visibilityOf($('#config-statusCode')), 5000);
     browser.wait(EC.visibilityOf($('.ace_editor')), 5000);
+    browser.actions().doubleClick($('div.ace_content')).perform();
 
     element(by.cssContainingText('#config-statusCode option', 'OK')).click();
-    element(by.css('.ace_editor')).sendKeys('{"foo": "bar"}');
+    element(by.css('textarea.ace_text-input')).sendKeys('{"foo": "bar"}');
 
     $('button.btn-primary').click();
 
