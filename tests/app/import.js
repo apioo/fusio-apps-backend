@@ -8,6 +8,9 @@ describe('Import tests', function() {
     var EC = protractor.ExpectedConditions;
     var openapi = JSON.stringify(getOpenAPI());
 
+    browser.wait(EC.visibilityOf($('.ace_editor')), 5000);
+    browser.actions().doubleClick($('div.ace_content')).perform();
+
     element(by.css('textarea.ace_text-input')).sendKeys(openapi);
 
     $('a.btn-primary').click();
