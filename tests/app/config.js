@@ -6,12 +6,12 @@ describe('Config tests', function() {
     browser.get('#!/config');
 
     var configs = element.all(by.repeater('config in configs'));
-    expect(configs.count()).toEqual(13);
+    expect(configs.count()).toEqual(16);
     expect(configs.get(0).getText()).toMatch('app_approval');
     expect(configs.get(1).getText()).toMatch('app_consumer');
     expect(configs.get(2).getText()).toMatch('authorization_url');
-    expect(configs.get(3).getText()).toMatch('mail_register_body');
-    expect(configs.get(4).getText()).toMatch('mail_register_subject');
+    expect(configs.get(3).getText()).toMatch('info_contact_email');
+    expect(configs.get(4).getText()).toMatch('info_contact_name');
   });
 
   it('Update config', function() {
