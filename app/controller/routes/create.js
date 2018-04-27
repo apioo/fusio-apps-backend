@@ -4,6 +4,7 @@ module.exports = function($scope, $http, $uibModal, $uibModalInstance, $timeout,
 
   $scope.route = {
     path: '',
+    scopes: [],
     config: []
   };
 
