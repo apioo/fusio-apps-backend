@@ -70,6 +70,14 @@ module.exports = function($scope, $http, $uibModal, $uibModalInstance, $timeout,
   $scope.create = function(route) {
     var data = angular.copy(route);
 
+    if (angular.isArray(data.scopes)) {
+      var scopes = [];
+      for (var i = 0; i < data.scopes.length; i++) {
+        scopes.push(data.scopes[i].text);
+      }
+      data.scopes = scopes;
+    }
+
     // remove empty responses
     if (angular.isObject(data.config)) {
       for (var i = 0; i < data.config.length; i++) {
