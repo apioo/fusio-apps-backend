@@ -21,6 +21,7 @@ var fusioApp = angular.module('fusioApp', [
   'fusioApp.cronjob',
   'fusioApp.dashboard',
   'fusioApp.error',
+  'fusioApp.event',
   'fusioApp.import',
   'fusioApp.log',
   'fusioApp.login',
@@ -54,6 +55,7 @@ require('./controller/cronjob');
 require('./controller/dashboard');
 require('./controller/import');
 require('./controller/error');
+require('./controller/event');
 require('./controller/log');
 require('./controller/login');
 require('./controller/logout');
