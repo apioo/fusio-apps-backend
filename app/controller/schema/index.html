@@ -41,7 +41,7 @@
     </thead>
     <tbody>
     <tr ng-repeat="schema in schemas">
-        <td><span class="label label-default" ng-if="schema.status == 2">Locked</span> {{schema.name}}</td>
+        <td>{{schema.name}}</td>
         <td>
             <div class="fusio-options">
                 <a ng-href="#!/schema/designer/{{schema.id}}" class="btn btn-default"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span></a>
