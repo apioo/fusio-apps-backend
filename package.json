@@ -6,14 +6,14 @@
   "author": "Christoph Kappestein",
   "license": "AGPLv3",
   "dependencies": {
-    "ace-builds": "^1.2.9",
-    "angular": "^1.6.9",
-    "angular-animate": "^1.6.9",
+    "ace-builds": "^1.3.3",
+    "angular": "^1.7.0",
+    "angular-animate": "^1.7.0",
     "angular-chart.js": "1.1.*",
     "angular-highlightjs": "0.6.*",
     "angular-loading-bar": "0.9.*",
-    "angular-route": "^1.6.9",
-    "angular-sanitize": "^1.6.9",
+    "angular-route": "^1.7.0",
+    "angular-sanitize": "^1.7.0",
     "angular-ui-ace": "0.2.*",
     "angular-ui-bootstrap": "^2.5.6",
     "ng-showdown": "1.1.*",
@@ -22,14 +22,14 @@
   "devDependencies": {
     "grunt": "^1.0.2",
     "grunt-angular-templates": "^1.1.0",
-    "grunt-browserify": "^5.0.0",
+    "grunt-browserify": "^5.3.0",
     "grunt-cli": "^1.2.0",
     "grunt-contrib-concat": "^1.0.0",
     "grunt-contrib-uglify": "^2.0.0",
     "jscs": "^3.0.7",
     "jshint": "^2.9.2",
-    "protractor": "^5.3.0",
-    "request": "^2.83.0",
+    "protractor": "^5.3.2",
+    "request": "^2.87.0",
     "request-promise": "^4.1.1"
   }
 }
