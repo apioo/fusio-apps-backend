@@ -1,0 +1,25 @@
+
+<div class="modal-header">
+    <h3 class="modal-title">Create</h3>
+</div>
+
+<div class="modal-body">
+    <div uib-alert class="alert-danger" close="closeResponse()" ng-if="response.success === false">
+        {{response.message}}
+    </div>
+    <form name="eventCreateForm" ng-submit="create(event)">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" ng-model="event.name" aria-describedby="nameHelp" class="form-control">
+            <span class="help-block" id="nameHelp">Name of the event must match the following regexp <code>[A-z0-9\-\_]{3,64}</code></span>
+        </div>
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea type="text" id="description" ng-model="event.description" rows="3" aria-describedby="descriptionHelp" class="form-control"></textarea>
+            <span class="help-block" id="descriptionHelp">General description of this event</span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" ng-click="close()" class="btn btn-default">Cancel</button>
+    </form>
+</div>
