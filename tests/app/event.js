@@ -38,7 +38,7 @@ describe('Event tests', function() {
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
-    expect(element(by.model('event.name')).getAttribute('value')).toEqual('test-event');
+    expect(element(by.model('event.name')).getAttribute('value')).toEqual('foo-event');
 
     $('button.btn-primary').click();
 
@@ -56,7 +56,7 @@ describe('Event tests', function() {
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
-    expect(element(by.model('event.name')).getAttribute('value')).toEqual('test-event');
+    expect(element(by.model('event.name')).getAttribute('value')).toEqual('foo-event');
 
     $('button.btn-primary').click();
 
