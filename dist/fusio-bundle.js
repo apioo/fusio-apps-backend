@@ -341,6 +341,7 @@ module.exports = function($scope, $http, $uibModalInstance, formBuilder, fusio) 
   $scope.elements = [];
   $scope.config = {};
   $scope.actions = [];
+  $scope.custom = false;
 
   $scope.create = function(action) {
     var data = angular.copy(action);
