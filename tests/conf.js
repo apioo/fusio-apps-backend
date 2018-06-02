@@ -10,6 +10,7 @@ exports.config = {
     'app/audit.js',
     'app/config.js',
     'app/cronjob.js',
+    'app/event.js',
     'app/error.js',
     'app/log.js',
     'app/rate.js',
