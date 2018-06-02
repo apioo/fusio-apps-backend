@@ -11,7 +11,7 @@ describe('Config tests', function() {
     expect(configs.get(1).getText()).toMatch('app_consumer');
     expect(configs.get(2).getText()).toMatch('authorization_url');
     expect(configs.get(3).getText()).toMatch('consumer_subscription');
-    expect(configs.get(4).getText()).toMatch('info_contact_name');
+    expect(configs.get(4).getText()).toMatch('info_contact_email');
   });
 
   it('Update config', function() {

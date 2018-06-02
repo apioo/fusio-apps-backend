@@ -5,13 +5,9 @@ describe('Event tests', function() {
   it('List event', function() {
     browser.get('#!/event');
 
-    var routes = element.all(by.repeater('event in events'));
-    expect(routes.count()).toEqual(5);
-    expect(routes.get(0).getText()).toEqual('bar');
-    expect(routes.get(1).getText()).toEqual('foo');
-    expect(routes.get(2).getText()).toEqual('authorization');
-    expect(routes.get(3).getText()).toEqual('consumer');
-    expect(routes.get(4).getText()).toEqual('backend');
+    var events = element.all(by.repeater('event in events'));
+    expect(events.count()).toEqual(1);
+    expect(events.get(0).getText()).toEqual('foo-event');
   });
 
   it('Create event', function() {
@@ -43,11 +39,6 @@ describe('Event tests', function() {
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
     expect(element(by.model('event.name')).getAttribute('value')).toEqual('test-event');
-
-    var routes = element.all(by.model('route.allowedMethods.get'));
-
-    expect(routes.get(0).getAttribute('checked')).toBeTruthy();
-    expect(routes.get(1).getAttribute('checked')).toBeTruthy();
 
     $('button.btn-primary').click();
 
