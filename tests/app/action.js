@@ -28,11 +28,12 @@ describe('Action tests', function() {
     expect(actionOptions.get(0).getText()).toEqual('File-Processor');
     expect(actionOptions.get(1).getText()).toEqual('HTTP-Processor');
     expect(actionOptions.get(2).getText()).toEqual('PHP-Processor');
-    expect(actionOptions.get(3).getText()).toEqual('SQL-Table');
-    expect(actionOptions.get(4).getText()).toEqual('Util-Static-Response');
-    expect(actionOptions.get(5).getText()).toEqual('V8-Processor');
+    expect(actionOptions.get(3).getText()).toEqual('PHP-Sandbox');
+    expect(actionOptions.get(4).getText()).toEqual('SQL-Table');
+    expect(actionOptions.get(5).getText()).toEqual('Util-Static-Response');
+    expect(actionOptions.get(6).getText()).toEqual('V8-Processor');
 
-    actionOptions.get(4).click();
+    actionOptions.get(5).click();
 
     browser.wait(EC.visibilityOf($('#config-statusCode')), 5000);
     browser.wait(EC.visibilityOf($('.ace_editor')), 5000);
