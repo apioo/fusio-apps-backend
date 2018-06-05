@@ -33,6 +33,7 @@ module.exports = function($scope, $http, $routeParams, fusio, formBuilder) {
           }
         })
         .catch(function(response) {
+          $scope.response = response.data;
         });
     } else {
       $scope.execute(action, request);
@@ -132,6 +133,10 @@ module.exports = function($scope, $http, $routeParams, fusio, formBuilder) {
         editorEl.css('height', (baseHeight + (blockFree * 99)) + 'px');
       }
     }
+  };
+
+  $scope.closeResponse = function() {
+    $scope.response = null;
   };
 
   $http.get(fusio.baseUrl + 'backend/action/' + $routeParams.action_id)

@@ -19,6 +19,7 @@ module.exports = function($scope, $http, $routeParams, fusio) {
         }
       })
       .catch(function(response) {
+        $scope.response = response.data;
       });
   };
 
@@ -29,6 +30,10 @@ module.exports = function($scope, $http, $routeParams, fusio) {
         data.preview = data.preview.replace(/href=\"\#([A-z0-9_]+)\"/g, "href=\"#!/schema/designer/" + schemaId + "\"");
         $scope.response = data;
       });
+  };
+
+  $scope.closeResponse = function() {
+    $scope.response = null;
   };
 
   $http.get(fusio.baseUrl + 'backend/schema/' + $routeParams.schema_id)
