@@ -109,7 +109,7 @@ fusioApp.provider('fusio', function() {
 fusioApp.factory('fusioIsAuthenticated', ['$location', '$window', '$q', function($location, $window, $q) {
   return {
     responseError: function(response) {
-      if (response.status == 400 && response.data.message && response.data.message.indexOf('Invalid access token') !== -1) {
+      if ((response.status == 400 || response.status == 401) && response.data.message && response.data.message.indexOf('Invalid access token') !== -1) {
         $window.sessionStorage.removeItem('fusio_access_token');
 
         $location.path('/login');
