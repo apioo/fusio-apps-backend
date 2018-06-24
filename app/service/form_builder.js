@@ -23,8 +23,21 @@ module.exports = function($sce, $compile) {
       form += '<div class="form-group">';
 
       if (el.element == 'http://fusio-project.org/ns/2015/form/textarea') {
+        var aceConfig = {
+          mode: el.mode,
+          workerPath: './dist'
+        };
+        if (el.mode === 'php') {
+          aceConfig.require = ['ace/ext/language_tools'];
+          aceConfig.advanced = {
+            enableSnippets: true,
+            enableBasicAutocompletion: true,
+            enableLiveAutocompletion: false
+          };
+        }
+
         form += '<label for="config-' + el.name + '">' + el.title + ':</label>';
-        form += '<div ui-ace="{mode: \'' + el.mode + '\', workerPath: \'./dist\'}" ng-model="' + propertyName + '.' + el.name + '" id="config-' + el.name + '" aria-describedby="' + helpId + '"></div>';
+        form += '<div ui-ace=\'' + JSON.stringify(aceConfig) + '\' ng-model="' + propertyName + '.' + el.name + '" id="config-' + el.name + '" aria-describedby="' + helpId + '"></div>';
       } else if (el.element == 'http://fusio-project.org/ns/2015/form/input') {
         form += '<label for="config-' + el.name + '">' + el.title + ':</label>';
         form += '<input type="' + el.type + '" name="config-' + el.name + '" id="config-' + el.name + '" ng-model="' + propertyName + '.' + el.name + '" aria-describedby="' + helpId + '" class="form-control" />';
