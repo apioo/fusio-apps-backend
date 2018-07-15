@@ -52,7 +52,7 @@ if (isset($_SERVER['argv']) && in_array('--warmup', $_SERVER['argv'])) {
 
     // run migrations
     $configuration = \Fusio\Impl\Migrations\ConfigurationBuilder::fromSystem(
-        \PSX\Framework\Test\Environment::getService('connection')
+        $container->get('connection')
     );
 
     $versions = $configuration->getAvailableVersions();
