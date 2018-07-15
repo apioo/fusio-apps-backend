@@ -43,23 +43,23 @@ $loader    = require(__DIR__ . '/../vendor/autoload.php');
 $container = require_once(__DIR__ . '/../tests/container.php');
 
 if (isset($_SERVER['argv']) && in_array('--warmup', $_SERVER['argv'])) {
+    define('FUSIO_IN_TEST', true);
+
     // warmup
     $loader->addClassMap([
         'Fusio\Impl\Tests\Fixture' => __DIR__ . '/../vendor/fusio/impl/tests/Fixture.php',
-        'Fusio\Impl\Tests\TestSchema' => __DIR__ . '/../vendor/fusio/impl/tests/TestSchema.php',
     ]);
 
-    // create schema
-    /** @var \Doctrine\DBAL\Connection $connection */
-    $connection = $container->get('connection');
-    $fromSchema = $connection->getSchemaManager()->createSchema();
-    $version = \Fusio\Impl\Database\Installer::getLatestVersion();
-    $toSchema = $version->getSchema();
-    Fusio\Impl\Tests\TestSchema::appendSchema($toSchema);
+    // run migrations
+    $configuration = \Fusio\Impl\Migrations\ConfigurationBuilder::fromSystem(
+        \PSX\Framework\Test\Environment::getService('connection')
+    );
 
-    $queries = $fromSchema->getMigrateToSql($toSchema, $connection->getDatabasePlatform());
-    foreach ($queries as $query) {
-        $connection->query($query);
+    $versions = $configuration->getAvailableVersions();
+
+    foreach ($versions as $versionNumber) {
+        $version = $configuration->getVersion($versionNumber);
+        $version->execute(\Doctrine\DBAL\Migrations\Version::DIRECTION_UP);
     }
 
     // insert fixtures
