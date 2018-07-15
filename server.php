@@ -52,7 +52,10 @@ if (isset($_SERVER['argv']) && in_array('--warmup', $_SERVER['argv'])) {
 
     // run migrations
     $configuration = \Fusio\Impl\Migrations\ConfigurationBuilder::fromSystem(
-        $container->get('connection')
+        $container->get('connection'),
+        new \Doctrine\DBAL\Migrations\OutputWriter(function($message){
+            echo $message . "\n";
+        })
     );
 
     $versions = $configuration->getAvailableVersions();
