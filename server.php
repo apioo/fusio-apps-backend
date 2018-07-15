@@ -40,46 +40,30 @@ if (isset($_SERVER['REQUEST_URI'])) {
 }
 
 $loader    = require(__DIR__ . '/../vendor/autoload.php');
-$container = require_once(__DIR__ . '/../tests/container.php');
+$container = require_once(__DIR__ . '/../container.php');
 
 if (isset($_SERVER['argv']) && in_array('--warmup', $_SERVER['argv'])) {
+    // run migrations
     define('FUSIO_IN_TEST', true);
 
-    // warmup
+    /** @var \Symfony\Component\Console\Command\Command $command */
+    $command = $container->get('console')->find('migration:migrate');
+
+    $input  = new \Symfony\Component\Console\Input\ArrayInput([]);
+    $input->setInteractive(false);
+    $output = new \Symfony\Component\Console\Output\ConsoleOutput();
+
+    $command->run($input, $output);
+
+    // insert fixtures
     $loader->addClassMap([
         'Fusio\Impl\Tests\Fixture' => __DIR__ . '/../vendor/fusio/impl/tests/Fixture.php',
     ]);
 
-    // run migrations
-    $configuration = \Fusio\Impl\Migrations\ConfigurationBuilder::fromSystem(
-        $container->get('connection'),
-        new \Doctrine\DBAL\Migrations\OutputWriter(function($message){
-            echo $message . "\n";
-        })
-    );
-
-    $versions = $configuration->getAvailableVersions();
-
-    foreach ($versions as $versionNumber) {
-        $version = $configuration->getVersion($versionNumber);
-        $version->execute(\Doctrine\DBAL\Migrations\Version::DIRECTION_UP);
-    }
-
-    // insert fixtures
     $connection = new PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection($container->get('connection')->getWrappedConnection());
     PHPUnit_Extensions_Database_Operation_Factory::CLEAN_INSERT()->execute($connection, Fusio\Impl\Tests\Fixture::getDataSet());
 
     echo 'Warmup successful' . "\n";
-} elseif (isset($_SERVER['argv']) && in_array('--deploy', $_SERVER['argv'])) {
-    /** @var \Symfony\Component\Console\Application $console */
-    $console = $container->get('console');
-    /** @var \Symfony\Component\Console\Command\Command $command */
-    $command = $container->get('console')->find('system:deploy');
-
-    $input  = new \Symfony\Component\Console\Input\ArrayInput(['file' => __DIR__ . '/../.fusio.yml']);
-    $output = new \Symfony\Component\Console\Output\ConsoleOutput();
-
-    $command->run($input, $output);
 } else {
     $engine      = new \PSX\Framework\Environment\WebServer\Engine();
     $environment = new \PSX\Framework\Environment\Environment($container, $engine);

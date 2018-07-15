@@ -14,6 +14,7 @@ services:
   - memcached
 before_install:
   - phpenv config-rm xdebug.ini
+  - mysql -e 'create database fusio;'
 install:
   - composer create-project fusio/fusio fusio dev-master
   - npm install
@@ -22,6 +23,7 @@ install:
 before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
+  - cp .env fusio/.env
   - cp server.php fusio/public/server.php
   - cp -r dist fusio/public/fusio/
   - cp index.htm fusio/public/fusio/index.htm
