@@ -6,8 +6,9 @@ describe('Connection tests', function() {
     browser.get('#!/connection');
 
     var routes = element.all(by.repeater('connection in connections'));
-    expect(routes.count()).toEqual(1);
-    expect(routes.get(0).getText()).toEqual('System');
+    expect(routes.count()).toEqual(2);
+    expect(routes.get(0).getText()).toEqual('Test');
+    expect(routes.get(1).getText()).toEqual('System');
   });
 
   it('Create connection', function() {
