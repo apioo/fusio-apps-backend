@@ -5,10 +5,10 @@ describe('Connection tests', function() {
   it('List connection', function() {
     browser.get('#!/connection');
 
-    var routes = element.all(by.repeater('connection in connections'));
-    expect(routes.count()).toEqual(2);
-    expect(routes.get(0).getText()).toEqual('Test');
-    expect(routes.get(1).getText()).toEqual('System');
+    var connections = element.all(by.repeater('connection in connections'));
+    expect(connections.count()).toEqual(2);
+    expect(connections.get(0).getText()).toEqual('Test');
+    expect(connections.get(1).getText()).toEqual('System');
   });
 
   it('Create connection', function() {
