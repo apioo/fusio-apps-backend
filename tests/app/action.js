@@ -106,7 +106,7 @@ describe('Action tests', function() {
 
     browser.wait(EC.visibilityOf($('#config-connection')), 5000);
 
-    element(by.cssContainingText('#config-connection option', 'app-connection')).click();
+    element(by.cssContainingText('#config-connection option', 'System')).click();
     element(by.css('#config-table')).sendKeys('app_news');
 
     $('button.btn-primary').click();

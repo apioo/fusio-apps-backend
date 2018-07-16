@@ -75,31 +75,4 @@ describe('Connection tests', function() {
     expect($('div.alert-success > div').getText()).toEqual('Connection successful deleted');
   });
 
-  it('Create connection routes', function() {
-    browser.get('#!/connection');
-
-    var EC = protractor.ExpectedConditions;
-
-    $('a.btn-primary').click();
-
-    var configUrl = 'sqlite:///../cache/app-test.db';
-
-    browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
-
-    element(by.model('connection.name')).sendKeys('app-connection');
-
-    var connectionOptions = element.all(by.options('conn.class as conn.name for conn in connections'));
-    connectionOptions.get(2).click();
-
-    browser.wait(EC.visibilityOf($('#config-url')), 5000);
-
-    element(by.css('#config-url')).sendKeys(configUrl);
-
-    $('button.btn-primary').click();
-
-    browser.wait(EC.visibilityOf($('div.alert-success')), 5000);
-
-    expect($('div.alert-success > div').getText()).toEqual('Connection successful created');
-  });
-
 });
