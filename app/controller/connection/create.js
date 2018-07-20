@@ -10,6 +10,7 @@ module.exports = function($scope, $http, $uibModalInstance, fusio, formBuilder) 
   $scope.elements = [];
   $scope.config = {};
   $scope.connections = [];
+  $scope.custom = false;
 
   $scope.create = function(connection) {
     var data = angular.copy(connection);
