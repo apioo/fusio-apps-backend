@@ -32,7 +32,7 @@
     <tr ng-repeat="transaction in transactions">
         <td>{{transaction.transactionId}}</td>
         <td>{{transaction.amount | currency : symbol : 2}}</td>
-        <td>{{log.date | date: 'short'}}</td>
+        <td>{{transaction.insertDate | date: 'short'}}</td>
         <td>
             <div class="fusio-options">
                 <a ng-click="openDetailDialog(transaction)" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>

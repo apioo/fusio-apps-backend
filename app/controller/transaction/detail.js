@@ -1,34 +1,16 @@
 'use strict';
 
-module.exports = function($scope, $http, $uibModal, $uibModalInstance, fusio, log) {
+module.exports = function($scope, $http, $uibModal, $uibModalInstance, fusio, transaction) {
 
-  $scope.log = log;
+  $scope.transaction = transaction;
 
   $scope.close = function() {
     $uibModalInstance.dismiss('cancel');
   };
 
-  $scope.openDetailDialog = function(error) {
-    var modalInstance = $uibModal.open({
-      size: 'lg',
-      backdrop: 'static',
-      templateUrl: 'app/controller/error/detail.html',
-      controller: 'ErrorDetailCtrl',
-      resolve: {
-        error: function() {
-          return error;
-        }
-      }
-    });
-
-    modalInstance.result.then(function(response) {
-    }, function() {
-    });
-  };
-
-  $http.get(fusio.baseUrl + 'backend/log/' + log.id)
+  $http.get(fusio.baseUrl + 'backend/transaction/' + transaction.id)
     .then(function(response) {
-      $scope.log = response.data;
+      $scope.transaction = response.data;
     });
 
 };
