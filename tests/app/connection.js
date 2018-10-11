@@ -6,9 +6,10 @@ describe('Connection tests', function() {
     browser.get('#!/connection');
 
     var connections = element.all(by.repeater('connection in connections'));
-    expect(connections.count()).toEqual(2);
-    expect(connections.get(0).getText()).toEqual('Test');
-    expect(connections.get(1).getText()).toEqual('System');
+    expect(connections.count()).toEqual(3);
+    expect(connections.get(0).getText()).toEqual('paypal');
+    expect(connections.get(1).getText()).toEqual('Test');
+    expect(connections.get(2).getText()).toEqual('System');
   });
 
   it('Create connection', function() {
