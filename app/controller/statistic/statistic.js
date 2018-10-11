@@ -15,26 +15,32 @@ module.exports = function($scope, $http, $uibModal, $compile, fusio) {
   $scope.statistic = 'incoming_requests';
 
   $scope.statistics = [{
+    name: 'Errors per route',
+    value: 'errors_per_route'
+  }, {
     name: 'Incoming requests',
     value: 'incoming_requests'
   }, {
-    name: 'Most used routes',
-    value: 'most_used_routes'
+    name: 'Incoming transactions',
+    value: 'incoming_transactions'
+  }, {
+    name: 'Issued tokens',
+    value: 'issued_tokens'
   }, {
     name: 'Most used apps',
     value: 'most_used_apps'
   }, {
-    name: 'Errors per route',
-    value: 'errors_per_route'
-  }, {
-    name: 'Issued tokens',
-    value: 'issued_tokens'
+    name: 'Most used routes',
+    value: 'most_used_routes'
   }, {
     name: 'Time average',
     value: 'time_average'
   }, {
     name: 'Time per route',
     value: 'time_per_route'
+  }, {
+    name: 'Used points',
+    value: 'used_points'
   }];
 
   $scope.doFilter = function() {
