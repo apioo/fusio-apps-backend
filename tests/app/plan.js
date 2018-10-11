@@ -40,7 +40,7 @@ describe('Plan tests', function() {
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
-    expect(element(by.model('plan.name')).getAttribute('value')).toEqual('test-plan');
+    expect(element(by.model('plan.name')).getAttribute('value')).toEqual('Plan A');
 
     $('button.btn-primary').click();
 
@@ -58,7 +58,7 @@ describe('Plan tests', function() {
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
-    expect(element(by.model('plan.name')).getAttribute('value')).toEqual('test-plan');
+    expect(element(by.model('plan.name')).getAttribute('value')).toEqual('Plan A');
 
     $('button.btn-primary').click();
 
