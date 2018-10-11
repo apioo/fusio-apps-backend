@@ -26,12 +26,14 @@ var fusioApp = angular.module('fusioApp', [
   'fusioApp.log',
   'fusioApp.login',
   'fusioApp.logout',
+  'fusioApp.plan',
   'fusioApp.rate',
   'fusioApp.routes',
   'fusioApp.schema',
   'fusioApp.scope',
   'fusioApp.statistic',
   'fusioApp.token',
+  'fusioApp.transaction',
   'fusioApp.user'
 ]);
 
@@ -59,12 +61,14 @@ require('./controller/event');
 require('./controller/log');
 require('./controller/login');
 require('./controller/logout');
+require('./controller/plan');
 require('./controller/rate');
 require('./controller/routes');
 require('./controller/schema');
 require('./controller/scope');
 require('./controller/statistic');
 require('./controller/token');
+require('./controller/transaction');
 require('./controller/user');
 
 fusioApp.value('version', require('../package.json').version);
