@@ -18,9 +18,8 @@ describe('Transaction tests', function() {
     $('button.btn-primary').click();
 
     var transactions = element.all(by.repeater('transaction in transactions').column('transaction.path'));
-    expect(transactions.count()).toEqual(2);
-    expect(transactions.get(0).getText()).toMatch('/bar');
-    expect(transactions.get(1).getText()).toMatch('/bar');
+    expect(transactions.count()).toEqual(1);
+    expect(transactions.get(0).getText()).toMatch('07bdced2-5307-4a31-bfd5-fc71ed9aa499');
   });
 
   it('Detail transaction', function() {
@@ -44,7 +43,7 @@ describe('Transaction tests', function() {
 
     expect(element(by.model('transaction.provider')).getAttribute('value')).toEqual('paypal');
     expect(element(by.model('transaction.transactionId')).getAttribute('value')).toEqual('9e239bb3-cfb4-4783-92e0-18ce187041bc');
-    expect(element(by.model('transaction.amount')).getAttribute('value')).toEqual(39.99);
+    expect(element(by.model('transaction.amount')).getAttribute('value')).toEqual('39.99');
     expect(element(by.model('transaction.insertDate')).getAttribute('value')).toEqual('2018-10-05T18:18:00Z');
 
     $('button.btn-default').click();
