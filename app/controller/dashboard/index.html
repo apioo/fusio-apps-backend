@@ -31,6 +31,39 @@
 <div class="row">
     <div class="col-md-4">
         <div class="panel panel-default fusio-panel">
+            <div class="panel-heading">Latest users</div>
+            <div class="panel-body">
+                <table class="table">
+                    <tbody>
+                    <tr ng-repeat="user in latestUsers">
+                        <td><a ng-href="">{{user.name}}</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-default fusio-panel">
+            <div class="panel-heading">Errors per route</div>
+            <div class="panel-body">
+                <canvas class="chart chart-line" height="220" chart-options="{'responsive':true,'maintainAspectRatio':false}" chart-data="errorsPerRoute.data" chart-labels="errorsPerRoute.labels" chart-series="errorsPerRoute.series"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-default fusio-panel">
+            <div class="panel-heading">Incoming transactions</div>
+            <div class="panel-body">
+                <canvas class="chart chart-line" height="220" chart-options="{'responsive':true,'maintainAspectRatio':false}" chart-data="incomingTransactions.data" chart-labels="incomingTransactions.labels" chart-series="incomingTransactions.series"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="panel panel-default fusio-panel">
             <div class="panel-heading">Latest requests</div>
             <div class="panel-body">
                 <table class="table">
@@ -59,9 +92,16 @@
     </div>
     <div class="col-md-4">
         <div class="panel panel-default fusio-panel">
-            <div class="panel-heading">Errors per route</div>
+            <div class="panel-heading">Latest transactions</div>
             <div class="panel-body">
-                <canvas class="chart chart-line" height="220" chart-options="{'responsive':true,'maintainAspectRatio':false}" chart-data="errorsPerRoute.data" chart-labels="errorsPerRoute.labels" chart-series="errorsPerRoute.series"></canvas>
+                <table class="table">
+                    <tbody>
+                    <tr ng-repeat="transaction in latestTransactions">
+                        <td>{{transaction.transactionId}}</td>
+                        <td>{{transaction.amount | currency : symbol : 2}}</td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

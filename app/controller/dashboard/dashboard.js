@@ -11,12 +11,15 @@ module.exports = function($scope, $http, $uibModal, fusio) {
 
   $http.get(fusio.baseUrl + 'backend/dashboard' + query)
     .then(function(response) {
+      $scope.errorsPerRoute = response.data.errorsPerRoute;
       $scope.incomingRequests = response.data.incomingRequests;
+      $scope.incomingTransactions = response.data.incomingTransactions;
+      $scope.latestApps = response.data.latestApps.entry;
+      $scope.latestRequests = response.data.latestRequests.entry;
+      $scope.latestTransactions = response.data.latestTransactions.entry;
+      $scope.latestUsers = response.data.latestUsers.entry;
       $scope.mostUsedRoutes = response.data.mostUsedRoutes;
       $scope.timePerRoute = response.data.timePerRoute;
-      $scope.latestRequests = response.data.latestRequests.entry;
-      $scope.latestApps = response.data.latestApps.entry;
-      $scope.errorsPerRoute = response.data.errorsPerRoute;
     });
 
 };
