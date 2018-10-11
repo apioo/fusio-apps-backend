@@ -7,7 +7,7 @@ describe('Plan tests', function() {
 
     var plans = element.all(by.repeater('plan in plans'));
     expect(plans.count()).toEqual(1);
-    expect(plans.get(0).getText()).toEqual('Plan A');
+    expect(plans.get(0).getText()).toEqual('Plan A $39.99 500');
   });
 
   it('Create plan', function() {
@@ -21,6 +21,8 @@ describe('Plan tests', function() {
 
     element(by.model('plan.name')).sendKeys('test-plan');
     element(by.model('plan.description')).sendKeys('Test plan');
+    element(by.model('plan.price')).sendKeys('59.99');
+    element(by.model('plan.points')).sendKeys('2000');
 
     $('button.btn-primary').click();
 
