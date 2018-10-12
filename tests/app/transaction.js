@@ -19,7 +19,7 @@ describe('Transaction tests', function() {
 
     var transactions = element.all(by.repeater('transaction in transactions').column('transaction.transactionId'));
     expect(transactions.count()).toEqual(1);
-    expect(transactions.get(0).getText()).toMatch('07bdced2-5307-4a31-bfd5-fc71ed9aa499');
+    expect(transactions.get(0).getText()).toMatch('9e239bb3-cfb4-4783-92e0-18ce187041bc');
   });
 
   it('Detail transaction', function() {
