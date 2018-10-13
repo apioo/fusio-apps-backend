@@ -116,6 +116,11 @@
                             </div>
                             <span class="help-block" id="actionHelp">The action which receives the request and produces a response</span>
                         </div>
+                        <div class="form-group">
+                            <label>Costs:</label>
+                            <input type="number" class="form-control" ng-model="config.costs" ng-disabled="version.status != 4" aria-describedby="costsHelp">
+                            <span class="help-block" id="costsHelp">The amount of points a user needs to pay to invoke this request method</span>
+                        </div>
                     </uib-tab>
                 </uib-tabset>
             </uib-tab>
