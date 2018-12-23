@@ -357,6 +357,13 @@ pre
     overflow:auto;
 }
 
+.fusio-badge
+{
+    font-size:90%;
+    margin-right:4px;
+    font-weight:normal;
+}
+
 /* general bootstrap fixes */
 .form-control, .btn
 {
