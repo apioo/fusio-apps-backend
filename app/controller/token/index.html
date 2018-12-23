@@ -12,16 +12,26 @@
     </form>
 </div>
 
+<div uib-alert class="alert-success" close="closeResponse()" ng-if="response.success === true">
+    {{response.message}}
+</div>
+
+<div uib-alert class="alert-danger" close="closeResponse()" ng-if="response.success === false">
+    {{response.message}}
+</div>
+
 <div class="fusio-grid">
     <table class="table">
     <colgroup>
+        <col width="100" />
         <col width="*" />
-        <col width="200" />
         <col width="150" />
+        <col width="200" />
         <col width="50" />
     </colgroup>
     <thead>
     <tr>
+        <th>Status</th>
         <th>Scope</th>
         <th>IP</th>
         <th>Date</th>
@@ -30,12 +40,19 @@
     </thead>
     <tbody>
     <tr ng-repeat="token in tokens">
-        <td><span ng-repeat="scope in token.scope" class="label label-primary" style="margin-right:4px;font-size:14px;">{{scope}}</span></td>
+        <td>
+            <span ng-switch="token.status">
+                <span ng-switch-when="2"><span class="label label-danger fusio-badge">Deleted</span></span>
+                <span ng-switch-when="1"><span class="label label-success fusio-badge">Active</span></span>
+            </span>
+        </td>
+        <td><span ng-repeat="scope in token.scope" class="label label-primary fusio-badge">{{scope}}</span></td>
         <td>{{token.ip}}</td>
         <td>{{token.date | date: 'short'}}</td>
         <td>
             <div class="fusio-options">
                 <a ng-click="openDetailDialog(token)" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                <a ng-click="removeToken(token)" ng-disabled="token.status == 2" class="btn btn-default"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
             </div>
         </td>
     </tr>

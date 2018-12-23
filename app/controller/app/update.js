@@ -90,6 +90,30 @@ module.exports = function($scope, $http, $uibModalInstance, app, fusio) {
       });
   };
 
+  $scope.openDetailDialog = function(token) {
+    var modalInstance = $uibModal.open({
+      size: 'lg',
+      backdrop: 'static',
+      templateUrl: 'app/controller/token/detail.html',
+      controller: 'TokenDetailCtrl',
+      resolve: {
+        token: function() {
+          return token;
+        }
+      }
+    });
+
+    modalInstance.result.then(function(response) {
+      $scope.response = response;
+      $scope.load();
+
+      $timeout(function() {
+        $scope.response = null;
+      }, 2000);
+    }, function() {
+    });
+  };
+
   $scope.getScopes = function(){
     $http.get(fusio.baseUrl + 'backend/scope?count=1024')
       .then(function(response) {

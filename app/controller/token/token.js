@@ -111,6 +111,26 @@ module.exports = function($scope, $http, $uibModal, $timeout, fusio) {
     });
   };
 
+  $scope.removeToken = function(token) {
+    if (token.status == 2) {
+      // in case it is already deleted
+      return;
+    }
+
+    $http.delete(fusio.baseUrl + 'backend/app/' + token.appId + '/token/' + token.id)
+        .then(function(response) {
+          $scope.response = response.data;
+          $scope.load();
+        })
+        .catch(function(response) {
+          $scope.response = response.data;
+        });
+  };
+
+  $scope.closeResponse = function() {
+    $scope.response = null;
+  };
+
   $scope.load();
 
 };

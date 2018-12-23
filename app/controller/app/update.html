@@ -58,15 +58,20 @@
                 <table class="table fusio-table-tab fusio-table-tab-token">
                 <colgroup>
                     <col width="*" />
+                    <col width="150" />
+                    <col width="200" />
                     <col width="50" />
                 </colgroup>
                 <tbody>
                 <tr ng-repeat="token in app.tokens">
+                    <td><span ng-repeat="scope in token.scope" class="label label-primary fusio-badge">{{scope}}</span></td>
+                    <td>{{token.ip}}</td>
+                    <td>{{token.date | date: 'short'}}</td>
                     <td>
-                        <pre>{{token.token}}</pre>
-                        <small>Requested on {{token.date | date:'short'}} by {{token.ip}}, expires on  {{token.expire | date:'short'}}</small>
+                        <div class="fusio-options">
+                            <a ng-click="removeToken(token)" ng-disabled="token.status == 2" class="btn btn-default"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                        </div>
                     </td>
-                    <td><a ng-click="removeToken(token)" class="btn btn-default"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></td>
                 </tr>
                 </tbody>
                 </table>
