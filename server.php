@@ -60,8 +60,8 @@ if (isset($_SERVER['argv']) && in_array('--warmup', $_SERVER['argv'])) {
         'Fusio\Impl\Tests\Fixture' => __DIR__ . '/../vendor/fusio/impl/tests/Fixture.php',
     ]);
 
-    $connection = new PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection($container->get('connection')->getWrappedConnection());
-    PHPUnit_Extensions_Database_Operation_Factory::CLEAN_INSERT()->execute($connection, Fusio\Impl\Tests\Fixture::getDataSet());
+    \PSX\Sql\Test\Fixture::truncate($container->get('connection'));
+    \PSX\Sql\Test\Fixture::insert($container->get('connection'), \Fusio\Impl\Tests\Fixture::getDataSet());
 
     echo 'Warmup successful' . "\n";
 } else {
