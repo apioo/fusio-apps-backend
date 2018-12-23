@@ -53,7 +53,7 @@ module.exports = function($sce, $compile) {
         form += '</select>';
       } else if (el.element == 'http://fusio-project.org/ns/2015/form/tag') {
         form += '<label for="config-' + el.name + '">' + el.title + ':</label>';
-        form += '<tags-input ng-model="' + propertyName + '.' + el.name + '" placeholder="Add a ' + el.title + '"></tags-input>';
+        form += '<tags-input ng-model="' + propertyName + '.' + el.name + '" min-length="2" placeholder="Add a ' + el.title + '"></tags-input>';
       } else {
         form += '<label for="config-' + el.name + '">' + el.title + ':</label>';
         form += '<input type="text" name="config-' + el.name + '" id="config-' + el.name + '" ng-model="' + propertyName + '.' + el.name + '" aria-describedby="' + helpId + '" class="form-control" />';
