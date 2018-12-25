@@ -60,6 +60,10 @@ if (isset($_SERVER['argv']) && in_array('--warmup', $_SERVER['argv'])) {
         'Fusio\Impl\Tests\Fixture' => __DIR__ . '/../vendor/fusio/impl/tests/Fixture.php',
     ]);
 
+    if (!class_exists('PHPUnit_Extensions_Database_DataSet_ArrayDataSet')) {
+        class_alias(\PSX\Framework\Test\ArrayDataSet::class, 'PHPUnit_Extensions_Database_DataSet_ArrayDataSet');
+    }
+
     \PSX\Sql\Test\Fixture::truncate($container->get('connection'));
     \PSX\Sql\Test\Fixture::insert($container->get('connection'), \Fusio\Impl\Tests\Fixture::getDataSet());
 
