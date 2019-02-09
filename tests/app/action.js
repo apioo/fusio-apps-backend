@@ -31,7 +31,6 @@ describe('Action tests', function() {
     expect(actionOptions.get(3).getText()).toEqual('PHP-Sandbox');
     expect(actionOptions.get(4).getText()).toEqual('SQL-Table');
     expect(actionOptions.get(5).getText()).toEqual('Util-Static-Response');
-    expect(actionOptions.get(6).getText()).toEqual('V8-Processor');
 
     actionOptions.get(5).click();
 
