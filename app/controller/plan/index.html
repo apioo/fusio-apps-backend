@@ -34,12 +34,14 @@
         <col width="150" />
         <col width="150" />
         <col width="150" />
+        <col width="150" />
     </colgroup>
     <thead>
     <tr>
         <th>Name</th>
         <th>Price</th>
         <th>Points</th>
+        <th>Period</th>
         <th></th>
     </tr>
     </thead>
@@ -48,6 +50,15 @@
         <td>{{plan.name}}</td>
         <td>{{plan.price | currency : symbol : 2}}</td>
         <td>{{plan.points}}</td>
+        <td>
+            <span ng-switch="plan.period">
+                <span ng-switch-when="0">None</span>
+                <span ng-switch-when="1">1 Month</span>
+                <span ng-switch-when="2">3 Month</span>
+                <span ng-switch-when="3">6 Month</span>
+                <span ng-switch-when="4">12 Month</span>
+            </span>
+        </td>
         <td>
             <div class="fusio-options">
                 <a ng-click="openUpdateDialog(plan)" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
