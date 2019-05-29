@@ -18,11 +18,13 @@ var fusioApp = angular.module('fusioApp', [
   'fusioApp.audit',
   'fusioApp.config',
   'fusioApp.connection',
+  'fusioApp.contract',
   'fusioApp.cronjob',
   'fusioApp.dashboard',
   'fusioApp.error',
   'fusioApp.event',
   'fusioApp.import',
+  'fusioApp.invoice',
   'fusioApp.log',
   'fusioApp.login',
   'fusioApp.logout',
@@ -53,9 +55,11 @@ require('./controller/app');
 require('./controller/audit');
 require('./controller/config');
 require('./controller/connection');
+require('./controller/contract');
 require('./controller/cronjob');
 require('./controller/dashboard');
 require('./controller/import');
+require('./controller/invoice');
 require('./controller/error');
 require('./controller/event');
 require('./controller/log');
