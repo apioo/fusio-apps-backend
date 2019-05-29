@@ -29,6 +29,12 @@
             <input type="number" id="points" ng-model="plan.points" aria-describedby="pointsHelp" class="form-control">
             <span class="help-block" id="pointsHelp">The amount of points a user receives if he buys this plan</span>
         </div>
+        <div class="form-group">
+            <label for="status">Period:</label>
+            <select id="status" ng-model="plan.period" ng-options="period.id as period.name for period in periods" aria-describedby="periodHelp" class="form-control">
+            </select>
+            <span class="help-block" id="periodHelp">The period describes the time frame of the plan. If a period is available the user will receives after each period automatically an invoice.</span>
+        </div>
 
         <button type="submit" class="btn btn-primary">Save</button>
         <button type="button" ng-click="close()" class="btn btn-default">Cancel</button>

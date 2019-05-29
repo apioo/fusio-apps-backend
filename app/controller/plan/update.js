@@ -4,6 +4,23 @@ module.exports = function($scope, $http, $uibModalInstance, $uibModal, fusio, pl
 
   $scope.plan = plan;
 
+  $scope.periods = [{
+    id: 0,
+    name: 'None'
+  }, {
+    id: 1,
+    name: '1 Month'
+  }, {
+    id: 2,
+    name: '3 Month'
+  }, {
+    id: 3,
+    name: '6 Month'
+  }, {
+    id: 4,
+    name: '12 Month'
+  }];
+
   $scope.update = function(plan) {
     var data = angular.copy(plan);
 
