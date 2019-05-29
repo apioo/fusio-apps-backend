@@ -6,8 +6,26 @@ module.exports = function($scope, $http, $uibModalInstance, fusio) {
     name: '',
     description: '',
     price: 0,
-    points: 0
+    points: 0,
+    period: 0
   };
+
+  $scope.periods = [{
+    id: 0,
+    name: 'None'
+  }, {
+    id: 1,
+    name: '1 Month'
+  }, {
+    id: 2,
+    name: '3 Month'
+  }, {
+    id: 3,
+    name: '6 Month'
+  }, {
+    id: 4,
+    name: '12 Month'
+  }];
 
   $scope.create = function(plan) {
     var data = angular.copy(plan);
