@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function($scope, $http, $location, $window, $rootScope, fusio) {
+module.exports = function($scope, $http, $location, $window, $rootScope, fusio, tokenParser) {
   $scope.credentials = {
     username: '',
     password: ''
@@ -27,24 +27,20 @@ module.exports = function($scope, $http, $location, $window, $rootScope, fusio) 
         var data = response.data;
         $scope.loading = false;
         if (data.access_token) {
-          $http.defaults.headers.common['Authorization'] = 'Bearer ' + data.access_token;
+          var user = tokenParser.decode(data.access_token);
+          if (user) {
+            $http.defaults.headers.common['Authorization'] = 'Bearer ' + data.access_token;
 
-          // store access token
-          $window.sessionStorage.setItem('fusio_access_token', data.access_token);
+            // store access token
+            $window.sessionStorage.setItem('fusio_access_token', data.access_token);
 
-          $rootScope.userAuthenticated = true;
+            $rootScope.userAuthenticated = true;
+            $rootScope.user = user;
 
-          // request additional user information
-          $http.get(fusio.baseUrl + 'authorization/whoami')
-            .then(function(response){
-              var user = response.data;
-
-              $window.sessionStorage.setItem('fusio_user', JSON.stringify(user));
-
-              $rootScope.user = user;
-            });
-
-          $location.path('/dashboard');
+            $location.path('/dashboard');
+          } else {
+            $scope.response = 'Could not decode access token';
+          }
         } else {
           $scope.response = data.error_description ? data.error_description : 'Authentication failed';
         }

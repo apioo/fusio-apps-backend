@@ -79,6 +79,7 @@ fusioApp.value('version', require('../package.json').version);
 
 fusioApp.factory('formBuilder', require('./service/form_builder'));
 fusioApp.factory('helpLoader', require('./service/help_loader'));
+fusioApp.factory('tokenParser', require('./service/token_parser'));
 
 fusioApp.provider('fusio', function() {
   var baseUrl = null;
@@ -114,28 +115,10 @@ fusioApp.provider('fusio', function() {
   };
 });
 
-fusioApp.factory('fusioIsAuthenticated', ['$location', '$window', '$q', function($location, $window, $q) {
-  return {
-    responseError: function(response) {
-      if ((response.status == 400 || response.status == 401) && response.data.message && response.data.message.indexOf('Invalid access token') !== -1) {
-        $window.sessionStorage.removeItem('fusio_access_token');
-
-        $location.path('/login');
-      }
-
-      return $q.reject(response);
-    }
-  };
-}]);
-
 fusioApp.config(['$routeProvider', function($routeProvider) {
   $routeProvider.otherwise({
     redirectTo: '/dashboard'
   });
-}]);
-
-fusioApp.config(['$httpProvider', function($httpProvider) {
-  $httpProvider.interceptors.push('fusioIsAuthenticated');
 }]);
 
 fusioApp.config(['$showdownProvider', function($showdownProvider) {
@@ -147,19 +130,20 @@ fusioApp.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
   cfpLoadingBarProvider.parentSelector = '.fusio-loading-container';
 }]);
 
-fusioApp.run(function($rootScope, $window, $location, $http, helpLoader, version) {
+fusioApp.run(function($rootScope, $window, $location, $http, helpLoader, version, tokenParser) {
   var token = $window.sessionStorage.getItem('fusio_access_token');
   if (token) {
-    $http.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+    var user = tokenParser.decode(token);
+    if (user) {
+      $http.defaults.headers.common['Authorization'] = 'Bearer ' + token;
 
-    $rootScope.userAuthenticated = true;
+      $rootScope.user = user;
+      $rootScope.userAuthenticated = true;
+    } else {
+      $location.path('/login');
+    }
   } else {
     $location.path('/login');
-  }
-
-  var user = $window.sessionStorage.getItem('fusio_user');
-  if (user) {
-    $rootScope.user = JSON.parse(user);
   }
 
   $rootScope.changeNavHeading = function (item) {
