@@ -279,6 +279,15 @@ fusioApp.run(function($rootScope, $window, $location, $http, helpLoader, version
     }]
   }];
 
+  // user dropdown menu
+  $rootScope.menu = [{
+    title: "Change password",
+    path: "/account/change_password"
+  },{
+    title: "Logout",
+    path: "/logout"
+  }];
+
   // make help loader global available
   $rootScope.help = helpLoader;
 
