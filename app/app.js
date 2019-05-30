@@ -162,6 +162,139 @@ fusioApp.run(function($rootScope, $window, $location, $http, helpLoader, version
     $rootScope.user = JSON.parse(user);
   }
 
+  $rootScope.changeNavHeading = function (item) {
+    for (var i = 0; i < $rootScope.nav.length; i++) {
+      $rootScope.nav[i].visible = $rootScope.nav[i].title === item.title;
+    }
+  };
+
+  $rootScope.$on('$routeChangeStart', function (event, next, current) {
+    var path = next.$$route ? next.$$route.originalPath : '';
+
+    // mark current panel as visible
+    for (var i = 0; i < $rootScope.nav.length; i++) {
+      var found = false;
+      for (var j = 0; j < $rootScope.nav[i].children.length; j++) {
+        if ($rootScope.nav[i].children[j].path === path) {
+          found = true;
+          break;
+        }
+      }
+      $rootScope.nav[i].visible = found;
+    }
+  });
+
+  // navigation
+  $rootScope.nav = [{
+    title: 'API',
+    visible: true,
+    children: [{
+      title: 'Dashboard',
+      icon: 'glyphicon-th',
+      path: '/dashboard'
+    }, {
+      title: 'Routes',
+      icon: 'glyphicon-road',
+      path: '/routes'
+    }, {
+      title: 'Action',
+      icon: 'glyphicon-transfer',
+      path: '/action'
+    }, {
+      title: 'Schema',
+      icon: 'glyphicon-list-alt',
+      path: '/schema'
+    }, {
+      title: 'Connection',
+      icon: 'glyphicon-log-in',
+      path: '/connection'
+    }]
+  }, {
+    title: 'Consumer',
+    visible: false,
+    children: [{
+      title: 'App',
+      icon: 'glyphicon-book',
+      path: '/app'
+    }, {
+      title: 'Scope',
+      icon: 'glyphicon-eye-open',
+      path: '/scope'
+    }, {
+      title: 'User',
+      icon: 'glyphicon-user',
+      path: '/user'
+    }, {
+      title: 'Rate',
+      icon: 'glyphicon-filter',
+      path: '/rate'
+    }]
+  }, {
+    title: 'Analytics',
+    visible: false,
+    children: [{
+      title: 'Log',
+      icon: 'glyphicon-briefcase',
+      path: '/log'
+    }, {
+      title: 'Statistic',
+      icon: 'glyphicon-stats',
+      path: '/statistic'
+    }, {
+      title: 'Error',
+      icon: 'glyphicon-bell',
+      path: '/error'
+    }, {
+      title: 'Token',
+      icon: 'glyphicon-map-marker',
+      path: '/token'
+    }]
+  }, {
+    title: 'Monetization',
+    visible: false,
+    children: [{
+      title: 'Plan',
+      icon: 'glyphicon-shopping-cart',
+      path: '/plan'
+    }, {
+      title: 'Contract',
+      icon: 'glyphicon-file',
+      path: '/contract'
+    }, {
+      title: 'Invoice',
+      icon: 'glyphicon-envelope',
+      path: '/invoice'
+    }, {
+      title: 'Transaction',
+      icon: 'glyphicon-equalizer',
+      path: '/transaction'
+    }]
+  }, {
+    title: 'System',
+    visible: false,
+    children: [{
+      title: 'Event',
+      icon: 'glyphicon-retweet',
+      path: '/event'
+    }, {
+      title: 'Cronjob',
+      icon: 'glyphicon-time',
+      path: '/cronjob'
+    }, {
+      title: 'Import',
+      icon: 'glyphicon-import',
+      path: '/import'
+    }, {
+      title: 'Settings',
+      icon: 'glyphicon-cog',
+      path: '/config'
+    }, {
+      title: 'Audit',
+      icon: 'glyphicon-facetime-video',
+      path: '/audit'
+    }]
+  }];
+
   // make help loader global available
   $rootScope.help = helpLoader;
 
