@@ -1,5 +1,7 @@
 'use strict'
 
+var angular = require('angular')
+
 module.exports = function ($scope, $http, $uibModalInstance, fusio, user) {
   $scope.user = user
 
@@ -68,7 +70,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio, user) {
           for (var i = 0; i < $scope.scopes.length; i++) {
             var found = null
             for (var j = 0; j < data.scopes.length; j++) {
-              if ($scope.scopes[i].name == data.scopes[j]) {
+              if ($scope.scopes[i].name === data.scopes[j]) {
                 found = $scope.scopes[i].name
                 break
               }

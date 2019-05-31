@@ -1,5 +1,7 @@
 'use strict'
 
+var angular = require('angular')
+
 module.exports = function ($scope, $http, $uibModalInstance, formBuilder, fusio) {
   $scope.action = {
     name: '',

@@ -1,5 +1,7 @@
 'use strict'
 
+var angular = require('angular')
+
 module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout, fusio) {
   $scope.route = {
     path: '',
@@ -68,10 +70,11 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
 
   $scope.create = function (route) {
     var data = angular.copy(route)
+    var i
 
     if (angular.isArray(data.scopes)) {
       var scopes = []
-      for (var i = 0; i < data.scopes.length; i++) {
+      for (i = 0; i < data.scopes.length; i++) {
         scopes.push(data.scopes[i].text)
       }
       data.scopes = scopes
@@ -79,7 +82,7 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
 
     // remove empty responses
     if (angular.isObject(data.config)) {
-      for (var i = 0; i < data.config.length; i++) {
+      for (i = 0; i < data.config.length; i++) {
         if (angular.isObject(data.config[i].methods)) {
           for (var method in data.config[i].methods) {
             if (data.config[i].methods.hasOwnProperty(method) && angular.isObject(data.config[i].methods[method].responses)) {

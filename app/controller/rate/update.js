@@ -1,5 +1,7 @@
 'use strict'
 
+var angular = require('angular')
+
 module.exports = function ($scope, $http, $uibModalInstance, rate, fusio) {
   $scope.rate = rate
 
@@ -143,15 +145,15 @@ module.exports = function ($scope, $http, $uibModalInstance, rate, fusio) {
   }
 
   $scope.getTimespan = function (timespan) {
-    if (timespan.unit == 'minute') {
+    if (timespan.unit === 'minute') {
       return 'PT' + timespan.value + 'M'
-    } else if (timespan.unit == 'hour') {
+    } else if (timespan.unit === 'hour') {
       return 'PT' + timespan.value + 'H'
-    } else if (timespan.unit == 'day') {
+    } else if (timespan.unit === 'day') {
       return 'P' + timespan.value + 'D'
-    } else if (timespan.unit == 'week') {
+    } else if (timespan.unit === 'week') {
       return 'P' + timespan.value + 'W'
-    } else if (timespan.unit == 'month') {
+    } else if (timespan.unit === 'month') {
       return 'P' + timespan.value + 'M'
     }
   }

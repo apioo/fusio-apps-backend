@@ -1,6 +1,8 @@
 'use strict'
 
-module.exports = function ($scope, $http, $uibModalInstance, app, fusio) {
+var angular = require('angular')
+
+module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout, app, fusio) {
   $scope.app = app
 
   $scope.states = [{
@@ -59,7 +61,7 @@ module.exports = function ($scope, $http, $uibModalInstance, app, fusio) {
           for (var i = 0; i < $scope.scopes.length; i++) {
             var found = null
             for (var j = 0; j < data.scopes.length; j++) {
-              if ($scope.scopes[i].name == data.scopes[j]) {
+              if ($scope.scopes[i].name === data.scopes[j]) {
                 found = $scope.scopes[i].name
                 break
               }
@@ -79,7 +81,7 @@ module.exports = function ($scope, $http, $uibModalInstance, app, fusio) {
         if ($scope.app.tokens) {
           var tokens = []
           for (var i = 0; i < $scope.app.tokens.length; i++) {
-            if ($scope.app.tokens[i].id != token.id) {
+            if ($scope.app.tokens[i].id !== token.id) {
               tokens.push($scope.app.tokens[i])
               break
             }

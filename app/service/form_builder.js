@@ -1,5 +1,7 @@
 'use strict'
 
+var angular = require('angular')
+
 module.exports = function ($sce, $compile) {
   var builder = {}
 
@@ -22,7 +24,7 @@ module.exports = function ($sce, $compile) {
 
       form += '<div class="form-group">'
 
-      if (el.element == 'http://fusio-project.org/ns/2015/form/textarea') {
+      if (el.element === 'http://fusio-project.org/ns/2015/form/textarea') {
         var aceConfig = {
           mode: el.mode,
           workerPath: './dist'
@@ -38,10 +40,10 @@ module.exports = function ($sce, $compile) {
 
         form += '<label for="config-' + el.name + '">' + el.title + ':</label>'
         form += '<div ui-ace=\'' + JSON.stringify(aceConfig) + '\' ng-model="' + propertyName + '.' + el.name + '" id="config-' + el.name + '" aria-describedby="' + helpId + '"></div>'
-      } else if (el.element == 'http://fusio-project.org/ns/2015/form/input') {
+      } else if (el.element === 'http://fusio-project.org/ns/2015/form/input') {
         form += '<label for="config-' + el.name + '">' + el.title + ':</label>'
         form += '<input type="' + el.type + '" name="config-' + el.name + '" id="config-' + el.name + '" ng-model="' + propertyName + '.' + el.name + '" aria-describedby="' + helpId + '" class="form-control" />'
-      } else if (el.element == 'http://fusio-project.org/ns/2015/form/select') {
+      } else if (el.element === 'http://fusio-project.org/ns/2015/form/select') {
         form += '<label for="config-' + el.name + '">' + el.title + ':</label>'
         form += '<select name="config-' + el.name + '" id="config-' + el.name + '" ng-model="' + propertyName + '.' + el.name + '" aria-describedby="' + helpId + '" class="form-control">'
         var options = el.options
@@ -51,7 +53,7 @@ module.exports = function ($sce, $compile) {
           }
         }
         form += '</select>'
-      } else if (el.element == 'http://fusio-project.org/ns/2015/form/tag') {
+      } else if (el.element === 'http://fusio-project.org/ns/2015/form/tag') {
         form += '<label for="config-' + el.name + '">' + el.title + ':</label>'
         form += '<tags-input ng-model="' + propertyName + '.' + el.name + '" min-length="2" placeholder="Add a ' + el.title + '"></tags-input>'
       } else {
@@ -84,13 +86,13 @@ module.exports = function ($sce, $compile) {
       }
 
       var value = data[el.name]
-      if (el.element == 'http://fusio-project.org/ns/2015/form/textarea') {
+      if (el.element === 'http://fusio-project.org/ns/2015/form/textarea') {
         model[el.name] = value
-      } else if (el.element == 'http://fusio-project.org/ns/2015/form/input') {
+      } else if (el.element === 'http://fusio-project.org/ns/2015/form/input') {
         model[el.name] = value
-      } else if (el.element == 'http://fusio-project.org/ns/2015/form/select') {
+      } else if (el.element === 'http://fusio-project.org/ns/2015/form/select') {
         model[el.name] = value
-      } else if (el.element == 'http://fusio-project.org/ns/2015/form/tag') {
+      } else if (el.element === 'http://fusio-project.org/ns/2015/form/tag') {
         var tags = []
         if (angular.isArray(value)) {
           tags = value.map(function (val) {
@@ -123,13 +125,13 @@ module.exports = function ($sce, $compile) {
       }
 
       var value = data[el.name]
-      if (el.element == 'http://fusio-project.org/ns/2015/form/textarea') {
+      if (el.element === 'http://fusio-project.org/ns/2015/form/textarea') {
         model[el.name] = value
-      } else if (el.element == 'http://fusio-project.org/ns/2015/form/input') {
+      } else if (el.element === 'http://fusio-project.org/ns/2015/form/input') {
         model[el.name] = value
-      } else if (el.element == 'http://fusio-project.org/ns/2015/form/select') {
+      } else if (el.element === 'http://fusio-project.org/ns/2015/form/select') {
         model[el.name] = value
-      } else if (el.element == 'http://fusio-project.org/ns/2015/form/tag') {
+      } else if (el.element === 'http://fusio-project.org/ns/2015/form/tag') {
         var tags = []
         if (angular.isArray(value)) {
           tags = value.map(function (val) {

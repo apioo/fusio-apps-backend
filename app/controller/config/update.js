@@ -1,10 +1,12 @@
 'use strict'
 
+var angular = require('angular')
+
 module.exports = function ($scope, $http, $uibModalInstance, config, fusio) {
   var data = angular.copy(config)
-  if (data.type == 2) {
-    data.value = data.value == '1'
-  } else if (data.type == 3) {
+  if (data.type === 2) {
+    data.value = data.value === '1'
+  } else if (data.type === 3) {
     data.value = parseInt(data.value)
   }
 
@@ -13,7 +15,7 @@ module.exports = function ($scope, $http, $uibModalInstance, config, fusio) {
   $scope.update = function (config) {
     // value must be always a string
     var data = angular.copy(config)
-    if (data.type == 2) {
+    if (data.type === 2) {
       data.value = data.value ? '1' : '0'
     } else {
       data.value = '' + data.value

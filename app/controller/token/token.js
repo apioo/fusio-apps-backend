@@ -111,7 +111,7 @@ module.exports = function ($scope, $http, $uibModal, $timeout, fusio) {
   }
 
   $scope.removeToken = function (token) {
-    if (token.status == 2) {
+    if (token.status === 2) {
       // in case it is already deleted
       return
     }

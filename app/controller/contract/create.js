@@ -1,13 +1,15 @@
 'use strict'
 
+var angular = require('angular')
+
 module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   $scope.contract = {
     userId: 0,
     planId: 0
   }
 
-  $scope.create = function (plan) {
-    var data = angular.copy(plan)
+  $scope.create = function (contract) {
+    var data = angular.copy(contract)
 
     $http.post(fusio.baseUrl + 'backend/plan/contract', data)
       .then(function (response) {

@@ -1,5 +1,7 @@
 'use strict'
 
+var angular = require('angular')
+
 module.exports = function ($scope, $http, $routeParams, fusio, formBuilder) {
   $scope.action = {}
   $scope.methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']

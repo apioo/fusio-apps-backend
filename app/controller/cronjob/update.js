@@ -1,5 +1,7 @@
 'use strict'
 
+var angular = require('angular')
+
 module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, cronjob) {
   $scope.cronjob = cronjob
 

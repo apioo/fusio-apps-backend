@@ -1,5 +1,7 @@
 'use strict'
 
+var angular = require('angular')
+
 module.exports = function ($scope, $http, $uibModalInstance, fusio, scope) {
   $scope.scope = scope
 
@@ -14,7 +16,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio, scope) {
           var route = data.entry[i]
           if ($scope.scope.routes) {
             for (var j = 0; j < $scope.scope.routes.length; j++) {
-              if ($scope.scope.routes[j].routeId == route.id) {
+              if ($scope.scope.routes[j].routeId === route.id) {
                 var methods = []
                 if ($scope.scope.routes[j].methods) {
                   methods = $scope.scope.routes[j].methods.split('|')
