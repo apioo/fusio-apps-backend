@@ -1,7 +1,7 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
-'use strict';
+'use strict'
 
-var angular = require('angular');
+var angular = require('angular')
 var fusioApp = angular.module('fusioApp', [
   'ngRoute',
   'ngSanitize',
@@ -38,136 +38,136 @@ var fusioApp = angular.module('fusioApp', [
   'fusioApp.token',
   'fusioApp.transaction',
   'fusioApp.user'
-]);
+])
 
-require('angular-route');
-require('angular-sanitize');
-require('angular-animate');
-require('angular-ui-bootstrap');
-require('angular-ui-ace');
-require('angular-chart.js');
-require('angular-loading-bar');
-require('angular-highlightjs');
-require('ng-tags-input');
-require('ng-showdown');
-require('./controller/account');
-require('./controller/action');
-require('./controller/app');
-require('./controller/audit');
-require('./controller/config');
-require('./controller/connection');
-require('./controller/contract');
-require('./controller/cronjob');
-require('./controller/dashboard');
-require('./controller/import');
-require('./controller/invoice');
-require('./controller/error');
-require('./controller/event');
-require('./controller/log');
-require('./controller/login');
-require('./controller/logout');
-require('./controller/plan');
-require('./controller/rate');
-require('./controller/routes');
-require('./controller/schema');
-require('./controller/scope');
-require('./controller/statistic');
-require('./controller/token');
-require('./controller/transaction');
-require('./controller/user');
+require('angular-route')
+require('angular-sanitize')
+require('angular-animate')
+require('angular-ui-bootstrap')
+require('angular-ui-ace')
+require('angular-chart.js')
+require('angular-loading-bar')
+require('angular-highlightjs')
+require('ng-tags-input')
+require('ng-showdown')
+require('./controller/account')
+require('./controller/action')
+require('./controller/app')
+require('./controller/audit')
+require('./controller/config')
+require('./controller/connection')
+require('./controller/contract')
+require('./controller/cronjob')
+require('./controller/dashboard')
+require('./controller/import')
+require('./controller/invoice')
+require('./controller/error')
+require('./controller/event')
+require('./controller/log')
+require('./controller/login')
+require('./controller/logout')
+require('./controller/plan')
+require('./controller/rate')
+require('./controller/routes')
+require('./controller/schema')
+require('./controller/scope')
+require('./controller/statistic')
+require('./controller/token')
+require('./controller/transaction')
+require('./controller/user')
 
-fusioApp.value('version', require('../package.json').version);
+fusioApp.value('version', require('../package.json').version)
 
-fusioApp.factory('formBuilder', require('./service/form_builder'));
-fusioApp.factory('helpLoader', require('./service/help_loader'));
-fusioApp.factory('tokenParser', require('./service/token_parser'));
+fusioApp.factory('formBuilder', require('./service/form_builder'))
+fusioApp.factory('helpLoader', require('./service/help_loader'))
+fusioApp.factory('tokenParser', require('./service/token_parser'))
 
-fusioApp.provider('fusio', function() {
-  var baseUrl = null;
+fusioApp.provider('fusio', function () {
+  var baseUrl = null
 
-  this.setBaseUrl = function(_baseUrl) {
-    baseUrl = _baseUrl;
-  };
+  this.setBaseUrl = function (_baseUrl) {
+    baseUrl = _baseUrl
+  }
 
   /**
    * Simple helper function to guess the API endpoint url
    */
-  this.guessFusioEndpointUrl = function(urlRewrite) {
-    var url = window.location.href;
-    var pos = url.lastIndexOf('/fusio');
+  this.guessFusioEndpointUrl = function (urlRewrite) {
+    var url = window.location.href
+    var pos = url.lastIndexOf('/fusio')
     if (pos !== -1) {
-      url = url.substring(0, pos);
+      url = url.substring(0, pos)
     }
-    return url + (urlRewrite ? '/' : '/index.php/');
-  };
+    return url + (urlRewrite ? '/' : '/index.php/')
+  }
 
-  this.$get = function() {
+  this.$get = function () {
     // BC workaround if the base url was not configured but the fusio_url is
     // available we use it else we guess the url
     if (baseUrl === null && typeof fusio_url !== 'undefined') {
-      baseUrl = fusio_url;
+      baseUrl = fusio_url
     } else if (baseUrl === null) {
-      baseUrl = this.guessFusioEndpointUrl(false);
+      baseUrl = this.guessFusioEndpointUrl(false)
     }
 
     return {
       baseUrl: baseUrl
-    };
-  };
-});
+    }
+  }
+})
 
-fusioApp.config(['$routeProvider', function($routeProvider) {
+fusioApp.config(['$routeProvider', function ($routeProvider) {
   $routeProvider.otherwise({
     redirectTo: '/dashboard'
-  });
-}]);
+  })
+}])
 
-fusioApp.config(['$showdownProvider', function($showdownProvider) {
-}]);
+fusioApp.config(['$showdownProvider', function ($showdownProvider) {
+}])
 
-fusioApp.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
-  cfpLoadingBarProvider.includeBar = false;
-  cfpLoadingBarProvider.includeSpinner = true;
-  cfpLoadingBarProvider.parentSelector = '.fusio-loading-container';
-}]);
+fusioApp.config(['cfpLoadingBarProvider', function (cfpLoadingBarProvider) {
+  cfpLoadingBarProvider.includeBar = false
+  cfpLoadingBarProvider.includeSpinner = true
+  cfpLoadingBarProvider.parentSelector = '.fusio-loading-container'
+}])
 
-fusioApp.run(function($rootScope, $window, $location, $http, helpLoader, version, tokenParser) {
-  var token = $window.sessionStorage.getItem('fusio_access_token');
+fusioApp.run(function ($rootScope, $window, $location, $http, helpLoader, version, tokenParser) {
+  var token = $window.sessionStorage.getItem('fusio_access_token')
   if (token) {
-    var user = tokenParser.decode(token);
+    var user = tokenParser.decode(token)
     if (user) {
-      $http.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+      $http.defaults.headers.common['Authorization'] = 'Bearer ' + token
 
-      $rootScope.user = user;
-      $rootScope.userAuthenticated = true;
+      $rootScope.user = user
+      $rootScope.userAuthenticated = true
     } else {
-      $location.path('/login');
+      $location.path('/login')
     }
   } else {
-    $location.path('/login');
+    $location.path('/login')
   }
 
   $rootScope.changeNavHeading = function (item) {
     for (var i = 0; i < $rootScope.nav.length; i++) {
-      $rootScope.nav[i].visible = $rootScope.nav[i].title === item.title;
+      $rootScope.nav[i].visible = $rootScope.nav[i].title === item.title
     }
-  };
+  }
 
   $rootScope.$on('$routeChangeStart', function (event, next, current) {
-    var path = next.$$route ? next.$$route.originalPath : '';
+    var path = next.$$route ? next.$$route.originalPath : ''
 
     // mark current panel as visible
     for (var i = 0; i < $rootScope.nav.length; i++) {
-      var found = false;
+      var found = false
       for (var j = 0; j < $rootScope.nav[i].children.length; j++) {
         if ($rootScope.nav[i].children[j].path === path) {
-          found = true;
-          break;
+          found = true
+          break
         }
       }
-      $rootScope.nav[i].visible = found;
+      $rootScope.nav[i].visible = found
     }
-  });
+  })
 
   // navigation
   $rootScope.nav = [{
@@ -278,303 +278,297 @@ fusioApp.run(function($rootScope, $window, $location, $http, helpLoader, version
       icon: 'glyphicon-facetime-video',
       path: '/audit'
     }]
-  }];
+  }]
 
   // user dropdown menu
   $rootScope.menu = [{
-    title: "Change password",
-    path: "/account/change_password"
-  },{
-    title: "Logout",
-    path: "/logout"
-  }];
+    title: 'Change password',
+    path: '/account/change_password'
+  }, {
+    title: 'Logout',
+    path: '/logout'
+  }]
 
   // make help loader global available
-  $rootScope.help = helpLoader;
+  $rootScope.help = helpLoader
 
   // set version
-  $rootScope.version = version;
-
-});
+  $rootScope.version = version
+})
 
 if (window) {
-  window.fusioApp = fusioApp;
+  window.fusioApp = fusioApp
 }
 
-module.exports = fusioApp;
+module.exports = fusioApp
 
 },{"../package.json":347,"./controller/account":3,"./controller/action":8,"./controller/app":13,"./controller/audit":18,"./controller/config":20,"./controller/connection":25,"./controller/contract":30,"./controller/cronjob":36,"./controller/dashboard":39,"./controller/error":42,"./controller/event":46,"./controller/import":50,"./controller/invoice":54,"./controller/log":57,"./controller/login":59,"./controller/logout":61,"./controller/plan":65,"./controller/rate":70,"./controller/routes":75,"./controller/schema":81,"./controller/scope":86,"./controller/statistic":90,"./controller/token":94,"./controller/transaction":97,"./controller/user":101,"./service/form_builder":104,"./service/help_loader":105,"./service/token_parser":106,"angular":121,"angular-animate":108,"angular-chart.js":109,"angular-highlightjs":110,"angular-loading-bar":112,"angular-route":114,"angular-sanitize":116,"angular-ui-ace":117,"angular-ui-bootstrap":119,"ng-showdown":344,"ng-tags-input":345}],2:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, fusio) {
-
+module.exports = function ($scope, $http, fusio) {
   $scope.account = {
-    oldPassword: "",
-    newPassword: "",
-    verifyPassword: ""
-  };
+    oldPassword: '',
+    newPassword: '',
+    verifyPassword: ''
+  }
 
-  $scope.updatePassword = function() {
+  $scope.updatePassword = function () {
     $http.put(fusio.baseUrl + 'backend/account/change_password', $scope.account)
-      .then(function(response) {
-        $scope.response = response.data;
+      .then(function (response) {
+        $scope.response = response.data
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
-
-};
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
+}
 
 },{}],3:[function(require,module,exports){
-'use strict';
+'use strict'
 
-var angular = require('angular');
+var angular = require('angular')
 
 angular.module('fusioApp.account', ['ngRoute'])
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/account/change_password', {
-    templateUrl: 'app/controller/account/change_password.html',
-    controller: 'ChangePasswordCtrl'
-  });
-}])
+  .config(['$routeProvider', function ($routeProvider) {
+    $routeProvider.when('/account/change_password', {
+      templateUrl: 'app/controller/account/change_password.html',
+      controller: 'ChangePasswordCtrl'
+    })
+  }])
 
-.controller('ChangePasswordCtrl', require('./change_password'));
+  .controller('ChangePasswordCtrl', require('./change_password'))
 
 },{"./change_password":2,"angular":121}],4:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModal, $routeParams, $location, fusio) {
+module.exports = function ($scope, $http, $uibModal, $routeParams, $location, fusio) {
+  $scope.response = null
+  $scope.search = ''
+  $scope.routes = []
 
-  $scope.response = null;
-  $scope.search = '';
-  $scope.routes = [];
-
-  $scope.load = function() {
-    var search = encodeURIComponent($scope.search ? $scope.search : '');
+  $scope.load = function () {
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
 
     $http.get(fusio.baseUrl + 'backend/action?search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.actions = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.actions = data.entry
+      })
+  }
 
-  $scope.loadRoutes = function() {
+  $scope.loadRoutes = function () {
     $http.get(fusio.baseUrl + 'backend/routes')
-      .then(function(response) {
-        var data = response.data;
-        $scope.routes = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.routes = data.entry
+      })
+  }
 
-  $scope.pageChanged = function() {
-    var startIndex = ($scope.startIndex - 1) * 16;
-    var search = encodeURIComponent($scope.search ? $scope.search : '');
+  $scope.pageChanged = function () {
+    var startIndex = ($scope.startIndex - 1) * 16
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
 
     $http.get(fusio.baseUrl + 'backend/action?startIndex=' + startIndex + '&search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.actions = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.actions = data.entry
+      })
+  }
 
-  $scope.doSearch = function(search) {
-    $http.get(fusio.baseUrl + 'backend/action?search=' + encodeURIComponent(search ? search : ''))
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.actions = data.entry;
-      });
-  };
+  $scope.doSearch = function (search) {
+    $http.get(fusio.baseUrl + 'backend/action?search=' + encodeURIComponent(search || ''))
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.actions = data.entry
+      })
+  }
 
-  $scope.openCreateDialog = function() {
+  $scope.openCreateDialog = function () {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/action/create.html',
       controller: 'ActionCreateCtrl'
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
 
-  $scope.openUpdateDialog = function(action) {
+  $scope.openUpdateDialog = function (action) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/action/update.html',
       controller: 'ActionUpdateCtrl',
       resolve: {
-        action: function() {
-          return action;
+        action: function () {
+          return action
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
 
-  $scope.openDeleteDialog = function(action) {
+  $scope.openDeleteDialog = function (action) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/action/delete.html',
       controller: 'ActionDeleteCtrl',
       resolve: {
-        action: function() {
-          return action;
+        action: function () {
+          return action
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
-  $scope.load();
-  $scope.loadRoutes();
-
-};
+  $scope.load()
+  $scope.loadRoutes()
+}
 
 },{}],5:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModalInstance, formBuilder, fusio) {
+var angular = require('angular')
 
+module.exports = function ($scope, $http, $uibModalInstance, formBuilder, fusio) {
   $scope.action = {
-    name: "",
-    class: "",
-    engine: "Fusio\\Engine\\Factory\\Resolver\\PhpClass",
+    name: '',
+    class: '',
+    engine: 'Fusio\\Engine\\Factory\\Resolver\\PhpClass',
     config: {}
-  };
-  $scope.elements = [];
-  $scope.config = {};
-  $scope.actions = [];
-  $scope.custom = false;
+  }
+  $scope.elements = []
+  $scope.config = {}
+  $scope.actions = []
+  $scope.custom = false
 
-  $scope.create = function(action) {
-    var data = angular.copy(action);
+  $scope.create = function (action) {
+    var data = angular.copy(action)
 
     if (angular.isObject($scope.config)) {
-      data.config = formBuilder.postProcessModel($scope.config, $scope.elements);
+      data.config = formBuilder.postProcessModel($scope.config, $scope.elements)
     }
 
     $http.post(fusio.baseUrl + 'backend/action', data)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
   $http.get(fusio.baseUrl + 'backend/action/list')
-    .then(function(response) {
-      var data = response.data;
-      $scope.actions = data.actions;
+    .then(function (response) {
+      var data = response.data
+      $scope.actions = data.actions
 
       if (data.actions[0]) {
-        $scope.action.class = data.actions[0].class;
-        $scope.loadConfig();
+        $scope.action.class = data.actions[0].class
+        $scope.loadConfig()
       }
-    });
+    })
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
-  $scope.loadConfig = function() {
+  $scope.loadConfig = function () {
     if ($scope.action.class) {
       $http.get(fusio.baseUrl + 'backend/action/form?class=' + encodeURIComponent($scope.action.class))
-        .then(function(response) {
-          var data = response.data;
-          var containerEl = angular.element(document.querySelector('#config-form'));
-          containerEl.children().remove();
+        .then(function (response) {
+          var data = response.data
+          var containerEl = angular.element(document.querySelector('#config-form'))
+          containerEl.children().remove()
 
-          $scope.elements = data.element;
-          $scope.config = formBuilder.preProcessModel($scope.action.config, $scope.elements);
-          var linkFn = formBuilder.buildHtml($scope.elements, 'config');
+          $scope.elements = data.element
+          $scope.config = formBuilder.preProcessModel($scope.action.config, $scope.elements)
+          var linkFn = formBuilder.buildHtml($scope.elements, 'config')
           if (angular.isFunction(linkFn)) {
-            var el = linkFn($scope);
-            containerEl.append(el);
+            var el = linkFn($scope)
+            containerEl.append(el)
           }
-        });
+        })
     }
-  };
+  }
+}
 
-};
+},{"angular":121}],6:[function(require,module,exports){
+'use strict'
 
-},{}],6:[function(require,module,exports){
-'use strict';
+module.exports = function ($scope, $http, $uibModalInstance, action, fusio) {
+  $scope.action = action
 
-module.exports = function($scope, $http, $uibModalInstance, action, fusio) {
-
-  $scope.action = action;
-
-  $scope.delete = function(action) {
+  $scope.delete = function (action) {
     $http.delete(fusio.baseUrl + 'backend/action/' + action.id)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
-
-};
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
+}
 
 },{}],7:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $routeParams, fusio, formBuilder) {
+var angular = require('angular')
 
-  $scope.action = {};
-  $scope.methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
+module.exports = function ($scope, $http, $routeParams, fusio, formBuilder) {
+  $scope.action = {}
+  $scope.methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
 
   $scope.request = {
     method: 'GET',
@@ -582,39 +576,39 @@ module.exports = function($scope, $http, $routeParams, fusio, formBuilder) {
     parameters: '',
     headers: '',
     body: '{}'
-  };
-  $scope.response = null;
-  $scope.error = null;
+  }
+  $scope.response = null
+  $scope.error = null
 
-  $scope.update = function(action, request) {
-    var data = angular.copy(action);
+  $scope.update = function (action, request) {
+    var data = angular.copy(action)
 
     if (angular.isObject($scope.config)) {
-      data.config = formBuilder.postProcessModel($scope.config, $scope.elements);
+      data.config = formBuilder.postProcessModel($scope.config, $scope.elements)
     }
 
     // if we have a config we must update the action first else we can directly
     // execute the action
     if (angular.isObject(data.config) && !angular.equals(data.config, {})) {
       $http.put(fusio.baseUrl + 'backend/action/' + action.id, data)
-        .then(function(response) {
-          var data = response.data;
+        .then(function (response) {
+          var data = response.data
           if (data.success === true) {
-            $scope.execute(action, request);
+            $scope.execute(action, request)
           }
         })
-        .catch(function(response) {
-          $scope.response = response.data;
-        });
+        .catch(function (response) {
+          $scope.response = response.data
+        })
     } else {
-      $scope.execute(action, request);
+      $scope.execute(action, request)
     }
-  };
+  }
 
-  $scope.execute = function(action, request) {
-    var body = JSON.parse(request.body);
+  $scope.execute = function (action, request) {
+    var body = JSON.parse(request.body)
     if (!angular.isObject(body)) {
-      body = {};
+      body = {}
     }
     var data = {
       method: request.method,
@@ -622,20 +616,20 @@ module.exports = function($scope, $http, $routeParams, fusio, formBuilder) {
       parameters: request.parameters,
       headers: request.headers,
       body: body
-    };
+    }
 
     $http.post(fusio.baseUrl + 'backend/action/execute/' + action.id, data)
-      .then(function(response) {
-        var data = response.data;
+      .then(function (response) {
+        var data = response.data
         // in case we have no body property we have probably a general error
         // message in this case we simply show the complete response as body
-        var resp = {};
+        var resp = {}
         if (!data.body) {
-          resp.statusCode = 500;
-          resp.headers = {};
-          resp.body = data;
+          resp.statusCode = 500
+          resp.headers = {}
+          resp.body = data
         } else {
-          resp = data;
+          resp = data
         }
 
         // check whether we have an error response
@@ -643,288 +637,284 @@ module.exports = function($scope, $http, $routeParams, fusio, formBuilder) {
           $scope.error = {
             message: resp.body.message,
             trace: resp.body.trace
-          };
+          }
         } else {
-          $scope.error = null;
+          $scope.error = null
         }
 
         $scope.response = {
           statusCode: resp.statusCode,
           headers: resp.headers,
           body: JSON.stringify(resp.body, null, 4)
-        };
-      });
-  };
+        }
+      })
+  }
 
-  $scope.loadConfig = function() {
+  $scope.loadConfig = function () {
     if ($scope.action.class) {
       $http.get(fusio.baseUrl + 'backend/action/form?class=' + encodeURIComponent($scope.action.class))
-        .then(function(response) {
-          var data = response.data;
-          var containerEl = angular.element(document.querySelector('#config-form'));
-          containerEl.children().remove();
+        .then(function (response) {
+          var data = response.data
+          var containerEl = angular.element(document.querySelector('#config-form'))
+          containerEl.children().remove()
 
-          $scope.elements = data.element;
-          $scope.config = formBuilder.preProcessModel($scope.action.config, $scope.elements);
-          var linkFn = formBuilder.buildHtml($scope.elements, 'config');
+          $scope.elements = data.element
+          $scope.config = formBuilder.preProcessModel($scope.action.config, $scope.elements)
+          var linkFn = formBuilder.buildHtml($scope.elements, 'config')
           if (angular.isFunction(linkFn)) {
-            var el = linkFn($scope);
-            containerEl.append(el);
-            $scope.adjustEditorHeight();
+            var el = linkFn($scope)
+            containerEl.append(el)
+            $scope.adjustEditorHeight()
           }
-        });
+        })
     }
-  };
+  }
 
-  $scope.adjustEditorHeight = function() {
-    var blockCount = 4;
-    var blockUsed = 0;
-    var formEditor = false;
-    var formElements = document.querySelectorAll('#config-form .form-group');
+  $scope.adjustEditorHeight = function () {
+    var blockCount = 4
+    var blockUsed = 0
+    var formEditor = false
+    var formElements = document.querySelectorAll('#config-form .form-group')
 
     for (var i = 0; i < formElements.length; ++i) {
-      var aceEditor = formElements[i].querySelector('.ace_editor');
+      var aceEditor = formElements[i].querySelector('.ace_editor')
       if (aceEditor) {
         if (formEditor) {
           // in case we have multiple ace editors we skip this magic
-          formEditor = false;
-          break;
+          formEditor = false
+          break
         }
-        formEditor = aceEditor;
+        formEditor = aceEditor
       } else {
-        blockUsed++;
+        blockUsed++
       }
     }
 
     if (formEditor) {
-      var baseHeight = 133;
-      var blockFree = blockCount - blockUsed;
+      var baseHeight = 133
+      var blockFree = blockCount - blockUsed
       if (blockFree > 0) {
-        var editorEl = angular.element(formEditor);
-        editorEl.css('height', (baseHeight + (blockFree * 99)) + 'px');
+        var editorEl = angular.element(formEditor)
+        editorEl.css('height', (baseHeight + (blockFree * 99)) + 'px')
       }
     }
-  };
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
   $http.get(fusio.baseUrl + 'backend/action/' + $routeParams.action_id)
-    .then(function(response) {
-      $scope.action = response.data;
-      $scope.loadConfig();
-    });
+    .then(function (response) {
+      $scope.action = response.data
+      $scope.loadConfig()
+    })
+}
 
-};
+},{"angular":121}],8:[function(require,module,exports){
+'use strict'
 
-},{}],8:[function(require,module,exports){
-'use strict';
-
-var angular = require('angular');
+var angular = require('angular')
 
 angular.module('fusioApp.action', ['ngRoute', 'ui.ace'])
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/action', {
-    templateUrl: 'app/controller/action/index.html',
-    controller: 'ActionCtrl'
-  });
-  $routeProvider.when('/action/designer/:action_id', {
-    templateUrl: 'app/controller/action/designer.html',
-    controller: 'ActionDesignerCtrl'
-  });
-}])
+  .config(['$routeProvider', function ($routeProvider) {
+    $routeProvider.when('/action', {
+      templateUrl: 'app/controller/action/index.html',
+      controller: 'ActionCtrl'
+    })
+    $routeProvider.when('/action/designer/:action_id', {
+      templateUrl: 'app/controller/action/designer.html',
+      controller: 'ActionDesignerCtrl'
+    })
+  }])
 
-.controller('ActionCtrl', require('./action'))
-.controller('ActionCreateCtrl', require('./create'))
-.controller('ActionUpdateCtrl', require('./update'))
-.controller('ActionDeleteCtrl', require('./delete'))
-.controller('ActionDesignerCtrl', require('./designer'))
-
-;
+  .controller('ActionCtrl', require('./action'))
+  .controller('ActionCreateCtrl', require('./create'))
+  .controller('ActionUpdateCtrl', require('./update'))
+  .controller('ActionDeleteCtrl', require('./delete'))
+  .controller('ActionDesignerCtrl', require('./designer'))
 
 },{"./action":4,"./create":5,"./delete":6,"./designer":7,"./update":9,"angular":121}],9:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModalInstance, $uibModal, action, formBuilder, $timeout, fusio) {
+var angular = require('angular')
 
-  $scope.action = action;
-  $scope.elements = [];
-  $scope.config = {};
-  $scope.actions = [];
+module.exports = function ($scope, $http, $uibModalInstance, $uibModal, action, formBuilder, $timeout, fusio) {
+  $scope.action = action
+  $scope.elements = []
+  $scope.config = {}
+  $scope.actions = []
 
-  $scope.update = function(action) {
-    var data = angular.copy(action);
+  $scope.update = function (action) {
+    var data = angular.copy(action)
 
     if (angular.isObject($scope.config)) {
-      data.config = formBuilder.postProcessModel($scope.config, $scope.elements);
+      data.config = formBuilder.postProcessModel($scope.config, $scope.elements)
     }
 
     $http.put(fusio.baseUrl + 'backend/action/' + action.id, data)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
-  $scope.loadConfig = function() {
+  $scope.loadConfig = function () {
     if ($scope.action.class) {
       $http.get(fusio.baseUrl + 'backend/action/form?class=' + encodeURIComponent($scope.action.class))
-        .then(function(response) {
-          var data = response.data;
-          var containerEl = angular.element(document.querySelector('#config-form'));
-          containerEl.children().remove();
+        .then(function (response) {
+          var data = response.data
+          var containerEl = angular.element(document.querySelector('#config-form'))
+          containerEl.children().remove()
 
-          $scope.elements = data.element;
-          $scope.config = formBuilder.preProcessModel($scope.action.config, $scope.elements);
-          var linkFn = formBuilder.buildHtml($scope.elements, 'config');
+          $scope.elements = data.element
+          $scope.config = formBuilder.preProcessModel($scope.action.config, $scope.elements)
+          var linkFn = formBuilder.buildHtml($scope.elements, 'config')
           if (angular.isFunction(linkFn)) {
-            var el = linkFn($scope);
-            containerEl.append(el);
+            var el = linkFn($scope)
+            containerEl.append(el)
           }
-        });
+        })
     }
-  };
+  }
 
   $http.get(fusio.baseUrl + 'backend/action/' + action.id)
-    .then(function(response) {
-      $scope.action = response.data;
-      $scope.loadConfig();
-    });
-
+    .then(function (response) {
+      $scope.action = response.data
+      $scope.loadConfig()
+    })
 }
 
-},{}],10:[function(require,module,exports){
-'use strict';
+},{"angular":121}],10:[function(require,module,exports){
+'use strict'
 
-module.exports = function($scope, $http, $uibModal, fusio) {
+module.exports = function ($scope, $http, $uibModal, fusio) {
+  $scope.response = null
+  $scope.search = ''
 
-  $scope.response = null;
-  $scope.search = '';
-
-  $scope.load = function() {
-    var search = encodeURIComponent($scope.search ? $scope.search : '');
+  $scope.load = function () {
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
 
     $http.get(fusio.baseUrl + 'backend/app?search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.apps = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.apps = data.entry
+      })
+  }
 
-  $scope.pageChanged = function() {
-    var startIndex = ($scope.startIndex - 1) * 16;
-    var search = encodeURIComponent($scope.search ? $scope.search : '');
+  $scope.pageChanged = function () {
+    var startIndex = ($scope.startIndex - 1) * 16
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
 
     $http.get(fusio.baseUrl + 'backend/app?startIndex=' + startIndex + '&search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.apps = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.apps = data.entry
+      })
+  }
 
-  $scope.doSearch = function(search) {
-    $http.get(fusio.baseUrl + 'backend/app?search=' + encodeURIComponent(search ? search : ''))
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.apps = data.entry;
-      });
-  };
+  $scope.doSearch = function (search) {
+    $http.get(fusio.baseUrl + 'backend/app?search=' + encodeURIComponent(search || ''))
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.apps = data.entry
+      })
+  }
 
-  $scope.openCreateDialog = function() {
+  $scope.openCreateDialog = function () {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/app/create.html',
       controller: 'AppCreateCtrl'
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
 
-  $scope.openUpdateDialog = function(app) {
+  $scope.openUpdateDialog = function (app) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/app/update.html',
       controller: 'AppUpdateCtrl',
       resolve: {
-        app: function() {
-          return app;
+        app: function () {
+          return app
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
 
-  $scope.openDeleteDialog = function(app) {
+  $scope.openDeleteDialog = function (app) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/app/delete.html',
       controller: 'AppDeleteCtrl',
       resolve: {
-        app: function() {
-          return app;
+        app: function () {
+          return app
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
-  $scope.load();
-
-};
+  $scope.load()
+}
 
 },{}],11:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModalInstance, fusio) {
+var angular = require('angular')
 
+module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   $scope.app = {
     status: 1,
     name: '',
     url: '',
     scopes: []
-  };
+  }
 
   $scope.states = [{
     key: 1,
@@ -935,117 +925,112 @@ module.exports = function($scope, $http, $uibModalInstance, fusio) {
   }, {
     key: 3,
     value: 'Deactivated'
-  }];
+  }]
 
-  $scope.create = function(app) {
-    var data = angular.copy(app);
+  $scope.create = function (app) {
+    var data = angular.copy(app)
 
     // remove null values from scope
     if (angular.isArray(data.scopes)) {
-      data.scopes = data.scopes.filter(function(val) {
-        return val !== null;
-      });
+      data.scopes = data.scopes.filter(function (val) {
+        return val !== null
+      })
     }
 
     $http.post(fusio.baseUrl + 'backend/app', data)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
-  $scope.getUsers = function() {
+  $scope.getUsers = function () {
     $http.get(fusio.baseUrl + 'backend/user?count=1024')
-      .then(function(response) {
-        $scope.users = response.data.entry;
-      });
-  };
+      .then(function (response) {
+        $scope.users = response.data.entry
+      })
+  }
 
-  $scope.getScopes = function() {
+  $scope.getScopes = function () {
     $http.get(fusio.baseUrl + 'backend/scope?count=1024')
-      .then(function(response) {
-        $scope.scopes = response.data.entry;
-      });
-  };
+      .then(function (response) {
+        $scope.scopes = response.data.entry
+      })
+  }
 
-  $scope.getUsers();
-  $scope.getScopes();
+  $scope.getUsers()
+  $scope.getScopes()
+}
 
-};
+},{"angular":121}],12:[function(require,module,exports){
+'use strict'
 
-},{}],12:[function(require,module,exports){
-'use strict';
+module.exports = function ($scope, $http, $uibModalInstance, app, fusio) {
+  $scope.app = app
 
-module.exports = function($scope, $http, $uibModalInstance, app, fusio) {
-
-  $scope.app = app;
-
-  $scope.delete = function(app) {
+  $scope.delete = function (app) {
     $http.delete(fusio.baseUrl + 'backend/app/' + app.id)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
-
-};
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
+}
 
 },{}],13:[function(require,module,exports){
-'use strict';
+'use strict'
 
-var angular = require('angular');
+var angular = require('angular')
 
 angular.module('fusioApp.app', ['ngRoute', 'ui.bootstrap'])
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/app', {
-    templateUrl: 'app/controller/app/index.html',
-    controller: 'AppCtrl'
-  });
-}])
+  .config(['$routeProvider', function ($routeProvider) {
+    $routeProvider.when('/app', {
+      templateUrl: 'app/controller/app/index.html',
+      controller: 'AppCtrl'
+    })
+  }])
 
-.controller('AppCtrl', require('./app'))
-.controller('AppCreateCtrl', require('./create'))
-.controller('AppUpdateCtrl', require('./update'))
-.controller('AppDeleteCtrl', require('./delete'))
-
-;
-
+  .controller('AppCtrl', require('./app'))
+  .controller('AppCreateCtrl', require('./create'))
+  .controller('AppUpdateCtrl', require('./update'))
+  .controller('AppDeleteCtrl', require('./delete'))
 
 },{"./app":10,"./create":11,"./delete":12,"./update":14,"angular":121}],14:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModalInstance, app, fusio) {
+var angular = require('angular')
 
-  $scope.app = app;
+module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout, app, fusio) {
+  $scope.app = app
 
   $scope.states = [{
     key: 1,
@@ -1056,2203 +1041,2129 @@ module.exports = function($scope, $http, $uibModalInstance, app, fusio) {
   }, {
     key: 3,
     value: 'Deactivated'
-  }];
+  }]
 
-  $scope.update = function(app) {
-    var data = angular.copy(app);
+  $scope.update = function (app) {
+    var data = angular.copy(app)
 
     // remove tokens
     if (data.tokens) {
-      delete data.tokens;
+      delete data.tokens
     }
 
     // remove null values from scope
     if (angular.isArray(data.scopes)) {
-      data.scopes = data.scopes.filter(function(val) {
-        return val !== null;
-      });
+      data.scopes = data.scopes.filter(function (val) {
+        return val !== null
+      })
     }
 
     $http.put(fusio.baseUrl + 'backend/app/' + app.id, data)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
-  $scope.loadApp = function() {
+  $scope.loadApp = function () {
     $http.get(fusio.baseUrl + 'backend/app/' + app.id)
-      .then(function(response) {
-        var data = response.data;
-        var scopes = [];
+      .then(function (response) {
+        var data = response.data
+        var scopes = []
         if (angular.isArray(data.scopes)) {
           for (var i = 0; i < $scope.scopes.length; i++) {
-            var found = null;
+            var found = null
             for (var j = 0; j < data.scopes.length; j++) {
-              if ($scope.scopes[i].name == data.scopes[j]) {
-                found = $scope.scopes[i].name;
-                break;
+              if ($scope.scopes[i].name === data.scopes[j]) {
+                found = $scope.scopes[i].name
+                break
               }
             }
-            scopes.push(found);
+            scopes.push(found)
           }
         }
-        data.scopes = scopes;
+        data.scopes = scopes
 
-        $scope.app = data;
-      });
-  };
+        $scope.app = data
+      })
+  }
 
-  $scope.removeToken = function(token) {
+  $scope.removeToken = function (token) {
     $http.delete(fusio.baseUrl + 'backend/app/' + app.id + '/token/' + token.id)
-      .then(function(response) {
+      .then(function (response) {
         if ($scope.app.tokens) {
-          var tokens = [];
+          var tokens = []
           for (var i = 0; i < $scope.app.tokens.length; i++) {
-            if ($scope.app.tokens[i].id != token.id) {
-              tokens.push($scope.app.tokens[i]);
-              break;
+            if ($scope.app.tokens[i].id !== token.id) {
+              tokens.push($scope.app.tokens[i])
+              break
             }
           }
-          $scope.app.tokens = tokens;
+          $scope.app.tokens = tokens
         }
-      });
-  };
+      })
+  }
 
-  $scope.openDetailDialog = function(token) {
+  $scope.openDetailDialog = function (token) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/token/detail.html',
       controller: 'TokenDetailCtrl',
       resolve: {
-        token: function() {
-          return token;
+        token: function () {
+          return token
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
 
-      $timeout(function() {
-        $scope.response = null;
-      }, 2000);
-    }, function() {
-    });
-  };
+      $timeout(function () {
+        $scope.response = null
+      }, 2000)
+    }, function () {
+    })
+  }
 
-  $scope.getScopes = function(){
+  $scope.getScopes = function () {
     $http.get(fusio.baseUrl + 'backend/scope?count=1024')
-      .then(function(response) {
-        $scope.scopes = response.data.entry;
+      .then(function (response) {
+        $scope.scopes = response.data.entry
 
-        $scope.loadApp();
-      });
-  };
+        $scope.loadApp()
+      })
+  }
 
-  $scope.getScopes();
+  $scope.getScopes()
+}
 
-};
+},{"angular":121}],15:[function(require,module,exports){
+'use strict'
 
-},{}],15:[function(require,module,exports){
-'use strict';
-
-module.exports = function($scope, $http, $uibModal, $timeout, fusio) {
-
+module.exports = function ($scope, $http, $uibModal, $timeout, fusio) {
   // set initial date range
-  var from = new Date();
-  from.setMonth(from.getMonth() - 1);
-  var to = new Date();
+  var from = new Date()
+  from.setMonth(from.getMonth() - 1)
+  var to = new Date()
 
-  $scope.search = '';
+  $scope.search = ''
   $scope.filter = {
     from: from,
     to: to
-  };
+  }
 
-  $scope.load = function() {
-    var search = '';
+  $scope.load = function () {
+    var search = ''
     if ($scope.search) {
-      search = encodeURIComponent($scope.search);
+      search = encodeURIComponent($scope.search)
     }
 
     $http.get(fusio.baseUrl + 'backend/audit?search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.audits = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.audits = data.entry
+      })
+  }
 
-  $scope.pageChanged = function() {
-    var startIndex = ($scope.startIndex - 1) * 16;
-    var search = encodeURIComponent($scope.search);
+  $scope.pageChanged = function () {
+    var startIndex = ($scope.startIndex - 1) * 16
+    var search = encodeURIComponent($scope.search)
 
     $http.get(fusio.baseUrl + 'backend/audit?startIndex=' + startIndex + '&search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.audits = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.audits = data.entry
+      })
+  }
 
-  $scope.doFilter = function() {
-    var query = '';
+  $scope.doFilter = function () {
+    var query = ''
     for (var key in $scope.filter) {
       if ($scope.filter[key]) {
-        var value;
+        var value
         if ($scope.filter[key] instanceof Date) {
-          value = $scope.filter[key].toISOString();
+          value = $scope.filter[key].toISOString()
         } else {
-          value = $scope.filter[key];
+          value = $scope.filter[key]
         }
 
-        query += key + '=' + encodeURIComponent(value) + '&';
+        query += key + '=' + encodeURIComponent(value) + '&'
       }
     }
 
     $http.get(fusio.baseUrl + 'backend/audit?' + query)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.audits = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.audits = data.entry
+      })
+  }
 
-  $scope.openDetailDialog = function(audit) {
+  $scope.openDetailDialog = function (audit) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/audit/detail.html',
       controller: 'AuditDetailCtrl',
       resolve: {
-        audit: function() {
-          return audit;
+        audit: function () {
+          return audit
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
 
-      $timeout(function() {
-        $scope.response = null;
-      }, 2000);
-    }, function() {
-    });
-  };
+      $timeout(function () {
+        $scope.response = null
+      }, 2000)
+    }, function () {
+    })
+  }
 
-  $scope.openFilterDialog = function() {
+  $scope.openFilterDialog = function () {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/audit/filter.html',
       controller: 'AuditFilterCtrl',
       resolve: {
-        filter: function() {
-          return $scope.filter;
+        filter: function () {
+          return $scope.filter
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(filter) {
-      $scope.filter = filter;
-      $scope.doFilter();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (filter) {
+      $scope.filter = filter
+      $scope.doFilter()
+    }, function () {
+    })
+  }
 
-  $scope.load();
-
-};
+  $scope.load()
+}
 
 },{}],16:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModal, $uibModalInstance, fusio, audit) {
+module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, audit) {
+  $scope.audit = audit
 
-  $scope.audit = audit;
-
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
   $http.get(fusio.baseUrl + 'backend/audit/' + audit.id)
-    .then(function(response) {
-      $scope.audit = response.data;
-    });
-
-};
+    .then(function (response) {
+      $scope.audit = response.data
+    })
+}
 
 },{}],17:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModalInstance, fusio, filter) {
+module.exports = function ($scope, $http, $uibModalInstance, fusio, filter) {
+  $scope.filter = filter
+  $scope.apps = []
+  $scope.users = []
 
-  $scope.filter = filter;
-  $scope.apps = [];
-  $scope.users = [];
+  $scope.doFilter = function () {
+    $uibModalInstance.close($scope.filter)
+  }
 
-  $scope.doFilter = function() {
-    $uibModalInstance.close($scope.filter);
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
-
-  $scope.getApps = function(name) {
+  $scope.getApps = function (name) {
     $http.get(fusio.baseUrl + 'backend/app?count=1024')
-      .then(function(response) {
-        $scope.apps = response.data.entry;
-      });
-  };
+      .then(function (response) {
+        $scope.apps = response.data.entry
+      })
+  }
 
-  $scope.getUsers = function(name) {
+  $scope.getUsers = function (name) {
     $http.get(fusio.baseUrl + 'backend/user?count=1024')
-      .then(function(response) {
-        $scope.users = response.data.entry;
-      });
-  };
+      .then(function (response) {
+        $scope.users = response.data.entry
+      })
+  }
 
-  $scope.getApps();
-  $scope.getUsers();
-
-};
+  $scope.getApps()
+  $scope.getUsers()
+}
 
 },{}],18:[function(require,module,exports){
-'use strict';
+'use strict'
 
-var angular = require('angular');
+var angular = require('angular')
 
 angular.module('fusioApp.audit', ['ngRoute', 'ui.bootstrap'])
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/audit', {
-    templateUrl: 'app/controller/audit/index.html',
-    controller: 'AuditCtrl'
-  });
-}])
+  .config(['$routeProvider', function ($routeProvider) {
+    $routeProvider.when('/audit', {
+      templateUrl: 'app/controller/audit/index.html',
+      controller: 'AuditCtrl'
+    })
+  }])
 
-.controller('AuditCtrl', require('./audit'))
-.controller('AuditDetailCtrl', require('./detail'))
-.controller('AuditFilterCtrl', require('./filter'))
-
-;
+  .controller('AuditCtrl', require('./audit'))
+  .controller('AuditDetailCtrl', require('./detail'))
+  .controller('AuditFilterCtrl', require('./filter'))
 
 },{"./audit":15,"./detail":16,"./filter":17,"angular":121}],19:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModal, fusio) {
+module.exports = function ($scope, $http, $uibModal, fusio) {
+  $scope.response = null
+  $scope.search = ''
 
-  $scope.response = null;
-  $scope.search = '';
-
-  $scope.load = function() {
-    var search = encodeURIComponent($scope.search ? $scope.search : '');
+  $scope.load = function () {
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
 
     $http.get(fusio.baseUrl + 'backend/config?search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.configs = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.configs = data.entry
+      })
+  }
 
-  $scope.pageChanged = function() {
-    var startIndex = ($scope.startIndex - 1) * 16;
-    var search = encodeURIComponent($scope.search ? $scope.search : '');
+  $scope.pageChanged = function () {
+    var startIndex = ($scope.startIndex - 1) * 16
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
 
     $http.get(fusio.baseUrl + 'backend/config?startIndex=' + startIndex + '&search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.configs = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.configs = data.entry
+      })
+  }
 
-  $scope.doSearch = function(search) {
-    $http.get(fusio.baseUrl + 'backend/config?search=' + encodeURIComponent(search ? search : ''))
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.configs = data.entry;
-      });
-  };
+  $scope.doSearch = function (search) {
+    $http.get(fusio.baseUrl + 'backend/config?search=' + encodeURIComponent(search || ''))
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.configs = data.entry
+      })
+  }
 
-  $scope.openUpdateDialog = function(config) {
+  $scope.openUpdateDialog = function (config) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/config/update.html',
       controller: 'ConfigUpdateCtrl',
       resolve: {
-        config: function() {
-          return config;
+        config: function () {
+          return config
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
-  $scope.load();
-
-};
+  $scope.load()
+}
 
 },{}],20:[function(require,module,exports){
-'use strict';
+'use strict'
 
-var angular = require('angular');
+var angular = require('angular')
 
 angular.module('fusioApp.config', ['ngRoute', 'ui.bootstrap'])
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/config', {
-    templateUrl: 'app/controller/config/index.html',
-    controller: 'ConfigCtrl'
-  });
-}])
+  .config(['$routeProvider', function ($routeProvider) {
+    $routeProvider.when('/config', {
+      templateUrl: 'app/controller/config/index.html',
+      controller: 'ConfigCtrl'
+    })
+  }])
 
-.controller('ConfigCtrl', require('./config'))
-.controller('ConfigUpdateCtrl', require('./update'))
-
-;
+  .controller('ConfigCtrl', require('./config'))
+  .controller('ConfigUpdateCtrl', require('./update'))
 
 },{"./config":19,"./update":21,"angular":121}],21:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModalInstance, config, fusio) {
+var angular = require('angular')
 
-  var data = angular.copy(config);
-  if (data.type == 2) {
-    data.value = data.value == '1';
-  } else if (data.type == 3) {
-    data.value = parseInt(data.value);
+module.exports = function ($scope, $http, $uibModalInstance, config, fusio) {
+  var data = angular.copy(config)
+  if (data.type === 2) {
+    data.value = data.value === '1'
+  } else if (data.type === 3) {
+    data.value = parseInt(data.value)
   }
 
-  $scope.config = data;
+  $scope.config = data
 
-  $scope.update = function(config) {
+  $scope.update = function (config) {
     // value must be always a string
-    var data = angular.copy(config);
-    if (data.type == 2) {
-      data.value = data.value ? '1' : '0';
+    var data = angular.copy(config)
+    if (data.type === 2) {
+      data.value = data.value ? '1' : '0'
     } else {
-      data.value = '' + data.value;
+      data.value = '' + data.value
     }
 
     $http.put(fusio.baseUrl + 'backend/config/' + data.id, data)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
+}
 
-};
+},{"angular":121}],22:[function(require,module,exports){
+'use strict'
 
-},{}],22:[function(require,module,exports){
-'use strict';
+module.exports = function ($scope, $http, $uibModal, fusio) {
+  $scope.response = null
+  $scope.search = ''
 
-module.exports = function($scope, $http, $uibModal, fusio) {
-
-  $scope.response = null;
-  $scope.search = '';
-
-  $scope.load = function() {
-    var search = encodeURIComponent($scope.search ? $scope.search : '');
+  $scope.load = function () {
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
 
     $http.get(fusio.baseUrl + 'backend/connection?search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.connections = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.connections = data.entry
+      })
+  }
 
-  $scope.pageChanged = function() {
-    var startIndex = ($scope.startIndex - 1) * 16;
-    var search = encodeURIComponent($scope.search ? $scope.search : '');
+  $scope.pageChanged = function () {
+    var startIndex = ($scope.startIndex - 1) * 16
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
 
     $http.get(fusio.baseUrl + 'backend/connection?startIndex=' + startIndex + '&search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.connections = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.connections = data.entry
+      })
+  }
 
-  $scope.doSearch = function(search) {
-    $http.get(fusio.baseUrl + 'backend/connection?search=' + encodeURIComponent(search ? search : ''))
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.connections = data.entry;
-      });
-  };
+  $scope.doSearch = function (search) {
+    $http.get(fusio.baseUrl + 'backend/connection?search=' + encodeURIComponent(search || ''))
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.connections = data.entry
+      })
+  }
 
-  $scope.openCreateDialog = function() {
+  $scope.openCreateDialog = function () {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/connection/create.html',
       controller: 'ConnectionCreateCtrl'
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
 
-  $scope.openUpdateDialog = function(connection) {
+  $scope.openUpdateDialog = function (connection) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/connection/update.html',
       controller: 'ConnectionUpdateCtrl',
       resolve: {
-        connection: function() {
-          return connection;
+        connection: function () {
+          return connection
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
 
-  $scope.openDeleteDialog = function(connection) {
+  $scope.openDeleteDialog = function (connection) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/connection/delete.html',
       controller: 'ConnectionDeleteCtrl',
       resolve: {
-        connection: function() {
-          return connection;
+        connection: function () {
+          return connection
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
-  $scope.load();
-
-};
+  $scope.load()
+}
 
 },{}],23:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModalInstance, fusio, formBuilder) {
+var angular = require('angular')
 
+module.exports = function ($scope, $http, $uibModalInstance, fusio, formBuilder) {
   $scope.connection = {
     name: '',
     class: '',
     config: {}
-  };
-  $scope.elements = [];
-  $scope.config = {};
-  $scope.connections = [];
-  $scope.custom = false;
+  }
+  $scope.elements = []
+  $scope.config = {}
+  $scope.connections = []
+  $scope.custom = false
 
-  $scope.create = function(connection) {
-    var data = angular.copy(connection);
+  $scope.create = function (connection) {
+    var data = angular.copy(connection)
 
     if (angular.isObject(data.config)) {
-      data.config = formBuilder.postProcessModel($scope.config, $scope.elements);
+      data.config = formBuilder.postProcessModel($scope.config, $scope.elements)
     }
 
     $http.post(fusio.baseUrl + 'backend/connection', data)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
   $http.get(fusio.baseUrl + 'backend/connection/list')
-    .then(function(response) {
-      var data = response.data;
-      $scope.connections = data.connections;
+    .then(function (response) {
+      var data = response.data
+      $scope.connections = data.connections
 
       if (data.connections[0]) {
-        $scope.connection.class = data.connections[0].class;
-        $scope.loadConfig();
+        $scope.connection.class = data.connections[0].class
+        $scope.loadConfig()
       }
-    });
+    })
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
-  $scope.loadConfig = function() {
+  $scope.loadConfig = function () {
     if ($scope.connection.class) {
       $http.get(fusio.baseUrl + 'backend/connection/form?class=' + encodeURIComponent($scope.connection.class))
-        .then(function(response) {
-          var data = response.data;
-          var containerEl = angular.element(document.querySelector('#config-form'));
-          containerEl.children().remove();
+        .then(function (response) {
+          var data = response.data
+          var containerEl = angular.element(document.querySelector('#config-form'))
+          containerEl.children().remove()
 
-          $scope.elements = data.element;
-          $scope.config = formBuilder.preProcessModel($scope.connection.config, $scope.elements);
-          var linkFn = formBuilder.buildHtml($scope.elements, 'config');
+          $scope.elements = data.element
+          $scope.config = formBuilder.preProcessModel($scope.connection.config, $scope.elements)
+          var linkFn = formBuilder.buildHtml($scope.elements, 'config')
           if (angular.isFunction(linkFn)) {
-            var el = linkFn($scope);
-            containerEl.append(el);
+            var el = linkFn($scope)
+            containerEl.append(el)
           }
-        });
+        })
     }
-  };
+  }
+}
 
-};
+},{"angular":121}],24:[function(require,module,exports){
+'use strict'
 
-},{}],24:[function(require,module,exports){
-'use strict';
+module.exports = function ($scope, $http, $uibModalInstance, fusio, connection) {
+  $scope.connection = connection
 
-module.exports = function($scope, $http, $uibModalInstance, fusio, connection) {
-
-  $scope.connection = connection;
-
-  $scope.delete = function(connection) {
+  $scope.delete = function (connection) {
     $http.delete(fusio.baseUrl + 'backend/connection/' + connection.id)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
-
-};
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
+}
 
 },{}],25:[function(require,module,exports){
-'use strict';
+'use strict'
 
-var angular = require('angular');
+var angular = require('angular')
 
 angular.module('fusioApp.connection', ['ngRoute', 'ui.bootstrap'])
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/connection', {
-    templateUrl: 'app/controller/connection/index.html',
-    controller: 'ConnectionCtrl'
-  });
-}])
+  .config(['$routeProvider', function ($routeProvider) {
+    $routeProvider.when('/connection', {
+      templateUrl: 'app/controller/connection/index.html',
+      controller: 'ConnectionCtrl'
+    })
+  }])
 
-.controller('ConnectionCtrl', require('./connection'))
-.controller('ConnectionCreateCtrl', require('./create'))
-.controller('ConnectionUpdateCtrl', require('./update'))
-.controller('ConnectionDeleteCtrl', require('./delete'))
-
-;
-
+  .controller('ConnectionCtrl', require('./connection'))
+  .controller('ConnectionCreateCtrl', require('./create'))
+  .controller('ConnectionUpdateCtrl', require('./update'))
+  .controller('ConnectionDeleteCtrl', require('./delete'))
 
 },{"./connection":22,"./create":23,"./delete":24,"./update":26,"angular":121}],26:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModalInstance, fusio, formBuilder, connection) {
+var angular = require('angular')
 
-  $scope.connection = connection;
-  $scope.elements = [];
-  $scope.config = {};
-  $scope.connections = [];
+module.exports = function ($scope, $http, $uibModalInstance, fusio, formBuilder, connection) {
+  $scope.connection = connection
+  $scope.elements = []
+  $scope.config = {}
+  $scope.connections = []
 
-  $scope.update = function(connection) {
-    var data = angular.copy(connection);
+  $scope.update = function (connection) {
+    var data = angular.copy(connection)
 
     // cast every config value to string
     if (angular.isObject(data.config)) {
-      data.config = formBuilder.postProcessModel($scope.config, $scope.elements);
+      data.config = formBuilder.postProcessModel($scope.config, $scope.elements)
     }
 
     $http.put(fusio.baseUrl + 'backend/connection/' + connection.id, data)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
-  $scope.loadConfig = function() {
+  $scope.loadConfig = function () {
     if ($scope.connection.class) {
       $http.get(fusio.baseUrl + 'backend/connection/form?class=' + encodeURIComponent($scope.connection.class))
-        .then(function(response) {
-          var data = response.data;
-          var containerEl = angular.element(document.querySelector('#config-form'));
-          containerEl.children().remove();
+        .then(function (response) {
+          var data = response.data
+          var containerEl = angular.element(document.querySelector('#config-form'))
+          containerEl.children().remove()
 
-          $scope.elements = data.element;
-          $scope.config = formBuilder.preProcessModel($scope.connection.config, $scope.elements);
-          var linkFn = formBuilder.buildHtml($scope.elements, 'config');
+          $scope.elements = data.element
+          $scope.config = formBuilder.preProcessModel($scope.connection.config, $scope.elements)
+          var linkFn = formBuilder.buildHtml($scope.elements, 'config')
           if (angular.isFunction(linkFn)) {
-            var el = linkFn($scope);
-            containerEl.append(el);
+            var el = linkFn($scope)
+            containerEl.append(el)
           }
-        });
+        })
     }
-  };
+  }
 
   $http.get(fusio.baseUrl + 'backend/connection/' + connection.id)
-    .then(function(response) {
-      $scope.connection = response.data;
-      $scope.loadConfig();
-    });
+    .then(function (response) {
+      $scope.connection = response.data
+      $scope.loadConfig()
+    })
+}
 
-};
+},{"angular":121}],27:[function(require,module,exports){
+'use strict'
 
-},{}],27:[function(require,module,exports){
-'use strict';
+module.exports = function ($scope, $http, $uibModal, $routeParams, $location, fusio) {
+  $scope.response = null
+  $scope.search = ''
+  $scope.contracts = []
 
-module.exports = function($scope, $http, $uibModal, $routeParams, $location, fusio) {
-
-  $scope.response = null;
-  $scope.search = '';
-  $scope.contracts = [];
-
-  $scope.load = function() {
-    var search = encodeURIComponent($scope.search ? $scope.search : '');
+  $scope.load = function () {
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
 
     $http.get(fusio.baseUrl + 'backend/plan/contract?search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.contracts = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.contracts = data.entry
+      })
+  }
 
-  $scope.pageChanged = function() {
-    var startIndex = ($scope.startIndex - 1) * 16;
-    var search = encodeURIComponent($scope.search ? $scope.search : '');
+  $scope.pageChanged = function () {
+    var startIndex = ($scope.startIndex - 1) * 16
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
 
     $http.get(fusio.baseUrl + 'backend/plan/contract?startIndex=' + startIndex + '&search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.contracts = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.contracts = data.entry
+      })
+  }
 
-  $scope.doSearch = function(search) {
-    $http.get(fusio.baseUrl + 'backend/plan/contract?search=' + encodeURIComponent(search ? search : ''))
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.contracts = data.entry;
-      });
-  };
+  $scope.doSearch = function (search) {
+    $http.get(fusio.baseUrl + 'backend/plan/contract?search=' + encodeURIComponent(search || ''))
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.contracts = data.entry
+      })
+  }
 
-  $scope.openCreateDialog = function() {
+  $scope.openCreateDialog = function () {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/contract/create.html',
       controller: 'ContractCreateCtrl'
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
 
-  $scope.openDeleteDialog = function(contract) {
+  $scope.openDeleteDialog = function (contract) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/contract/delete.html',
       controller: 'ContractDeleteCtrl',
       resolve: {
-        contract: function() {
-          return contract;
+        contract: function () {
+          return contract
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
-  $scope.load();
-
-};
+  $scope.load()
+}
 
 },{}],28:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModalInstance, fusio) {
+var angular = require('angular')
 
+module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   $scope.contract = {
     userId: 0,
     planId: 0
-  };
+  }
 
-  $scope.create = function(plan) {
-    var data = angular.copy(plan);
+  $scope.create = function (contract) {
+    var data = angular.copy(contract)
 
     $http.post(fusio.baseUrl + 'backend/plan/contract', data)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
-  $scope.getUsers = function() {
+  $scope.getUsers = function () {
     $http.get(fusio.baseUrl + 'backend/user?count=1024')
-        .then(function(response) {
-          $scope.users = response.data.entry;
-        });
-  };
+      .then(function (response) {
+        $scope.users = response.data.entry
+      })
+  }
 
-  $scope.getPlans = function() {
+  $scope.getPlans = function () {
     $http.get(fusio.baseUrl + 'backend/plan?count=1024')
-        .then(function(response) {
-          $scope.plans = response.data.entry;
-        });
-  };
+      .then(function (response) {
+        $scope.plans = response.data.entry
+      })
+  }
 
-  $scope.getUsers();
-  $scope.getPlans();
+  $scope.getUsers()
+  $scope.getPlans()
+}
 
-};
+},{"angular":121}],29:[function(require,module,exports){
+'use strict'
 
-},{}],29:[function(require,module,exports){
-'use strict';
+module.exports = function ($scope, $http, $uibModalInstance, fusio, contract) {
+  $scope.contract = contract
 
-module.exports = function($scope, $http, $uibModalInstance, fusio, contract) {
-
-  $scope.contract = contract;
-
-  $scope.delete = function(contract) {
+  $scope.delete = function (contract) {
     $http.delete(fusio.baseUrl + 'backend/plan/contract/' + contract.id)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
-
-};
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
+}
 
 },{}],30:[function(require,module,exports){
-'use strict';
+'use strict'
 
-var angular = require('angular');
+var angular = require('angular')
 
 angular.module('fusioApp.contract', ['ngRoute', 'ui.bootstrap'])
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/contract', {
-    templateUrl: 'app/controller/contract/index.html',
-    controller: 'ContractCtrl'
-  });
-}])
+  .config(['$routeProvider', function ($routeProvider) {
+    $routeProvider.when('/contract', {
+      templateUrl: 'app/controller/contract/index.html',
+      controller: 'ContractCtrl'
+    })
+  }])
 
-.controller('ContractCtrl', require('./contract'))
-.controller('ContractCreateCtrl', require('./create'))
-.controller('ContractDeleteCtrl', require('./delete'))
-
-;
+  .controller('ContractCtrl', require('./contract'))
+  .controller('ContractCreateCtrl', require('./create'))
+  .controller('ContractDeleteCtrl', require('./delete'))
 
 },{"./contract":27,"./create":28,"./delete":29,"angular":121}],31:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModal, $uibModalInstance, fusio) {
+var angular = require('angular')
 
+module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio) {
   $scope.cronjob = {
     name: '',
     cron: '',
     action: 1
-  };
+  }
 
-  $scope.actions = [];
+  $scope.actions = []
 
-  $scope.create = function(cronjob) {
-    var data = angular.copy(cronjob);
+  $scope.create = function (cronjob) {
+    var data = angular.copy(cronjob)
 
     if (data.exitCode) {
-      delete data.exitCode;
+      delete data.exitCode
     }
     if (data.executeDate) {
-      delete data.executeDate;
+      delete data.executeDate
     }
     if (data.errors) {
-      delete data.errors;
+      delete data.errors
     }
 
     $http.post(fusio.baseUrl + 'backend/cronjob', data)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
   $http.get(fusio.baseUrl + 'backend/action?count=1024')
-    .then(function(response) {
-      $scope.actions = response.data.entry;
-    });
+    .then(function (response) {
+      $scope.actions = response.data.entry
+    })
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
-  $scope.showAction = function(actionId) {
+  $scope.showAction = function (actionId) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/action/update.html',
       controller: 'ActionUpdateCtrl',
       resolve: {
-        action: function() {
-          return {id: actionId};
+        action: function () {
+          return { id: actionId }
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+    }, function () {
+    })
+  }
+}
 
-};
+},{"angular":121}],32:[function(require,module,exports){
+'use strict'
 
-},{}],32:[function(require,module,exports){
-'use strict';
+module.exports = function ($scope, $http, $uibModal, fusio) {
+  $scope.response = null
+  $scope.search = ''
 
-module.exports = function($scope, $http, $uibModal, fusio) {
-
-  $scope.response = null;
-  $scope.search = '';
-
-  $scope.load = function() {
-    var search = encodeURIComponent($scope.search ? $scope.search : '');
+  $scope.load = function () {
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
 
     $http.get(fusio.baseUrl + 'backend/cronjob?search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.cronjobs = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.cronjobs = data.entry
+      })
+  }
 
-  $scope.pageChanged = function() {
-    var startIndex = ($scope.startIndex - 1) * 16;
-    var search = encodeURIComponent($scope.search ? $scope.search : '');
+  $scope.pageChanged = function () {
+    var startIndex = ($scope.startIndex - 1) * 16
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
 
     $http.get(fusio.baseUrl + 'backend/cronjob?startIndex=' + startIndex + '&search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.cronjobs = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.cronjobs = data.entry
+      })
+  }
 
-  $scope.doSearch = function(search) {
-    $http.get(fusio.baseUrl + 'backend/cronjob?search=' + encodeURIComponent(search ? search : ''))
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.cronjobs = data.entry;
-      });
-  };
+  $scope.doSearch = function (search) {
+    $http.get(fusio.baseUrl + 'backend/cronjob?search=' + encodeURIComponent(search || ''))
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.cronjobs = data.entry
+      })
+  }
 
-  $scope.openCreateDialog = function() {
+  $scope.openCreateDialog = function () {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/cronjob/create.html',
       controller: 'CronjobCreateCtrl'
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
 
-  $scope.openUpdateDialog = function(cronjob) {
+  $scope.openUpdateDialog = function (cronjob) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/cronjob/update.html',
       controller: 'CronjobUpdateCtrl',
       resolve: {
-        cronjob: function() {
-          return cronjob;
+        cronjob: function () {
+          return cronjob
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
 
-  $scope.openDeleteDialog = function(cronjob) {
+  $scope.openDeleteDialog = function (cronjob) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/cronjob/delete.html',
       controller: 'CronjobDeleteCtrl',
       resolve: {
-        cronjob: function() {
-          return cronjob;
+        cronjob: function () {
+          return cronjob
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
 
-  $scope.openErrorDialog = function(cronjob) {
+  $scope.openErrorDialog = function (cronjob) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/cronjob/error.html',
       controller: 'CronjobErrorCtrl',
       resolve: {
-        cronjob: function() {
-          return cronjob;
+        cronjob: function () {
+          return cronjob
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
-  $scope.load();
-
-};
+  $scope.load()
+}
 
 },{}],33:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModalInstance, fusio, cronjob) {
+module.exports = function ($scope, $http, $uibModalInstance, fusio, cronjob) {
+  $scope.cronjob = cronjob
 
-  $scope.cronjob = cronjob;
-
-  $scope.delete = function(cronjob) {
+  $scope.delete = function (cronjob) {
     $http.delete(fusio.baseUrl + 'backend/cronjob/' + cronjob.id)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
-
-};
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
+}
 
 },{}],34:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModal, $uibModalInstance, fusio, cronjob) {
+module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, cronjob) {
+  $scope.cronjob = cronjob
 
-  $scope.cronjob = cronjob;
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
-
-  $scope.openDetailDialog = function(error) {
+  $scope.openDetailDialog = function (error) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/cronjob/error/detail.html',
       controller: 'CronjobErrorDetailCtrl',
       resolve: {
-        error: function() {
-          return error;
+        error: function () {
+          return error
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+    }, function () {
+    })
+  }
 
   $http.get(fusio.baseUrl + 'backend/cronjob/' + cronjob.id)
-    .then(function(response) {
-      $scope.cronjob = response.data;
-    });
-
-};
+    .then(function (response) {
+      $scope.cronjob = response.data
+    })
+}
 
 },{}],35:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModal, $uibModalInstance, fusio, error) {
+module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, error) {
+  $scope.error = error
 
-  $scope.error = error;
-
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
-
-};
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
+}
 
 },{}],36:[function(require,module,exports){
-'use strict';
+'use strict'
 
-var angular = require('angular');
+var angular = require('angular')
 
 angular.module('fusioApp.cronjob', ['ngRoute', 'ui.bootstrap'])
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/cronjob', {
-    templateUrl: 'app/controller/cronjob/index.html',
-    controller: 'CronjobCtrl'
-  });
-}])
+  .config(['$routeProvider', function ($routeProvider) {
+    $routeProvider.when('/cronjob', {
+      templateUrl: 'app/controller/cronjob/index.html',
+      controller: 'CronjobCtrl'
+    })
+  }])
 
-.controller('CronjobCtrl', require('./cronjob'))
-.controller('CronjobCreateCtrl', require('./create'))
-.controller('CronjobUpdateCtrl', require('./update'))
-.controller('CronjobDeleteCtrl', require('./delete'))
-.controller('CronjobErrorCtrl', require('./error'))
-.controller('CronjobErrorDetailCtrl', require('./error/detail'))
-
-;
+  .controller('CronjobCtrl', require('./cronjob'))
+  .controller('CronjobCreateCtrl', require('./create'))
+  .controller('CronjobUpdateCtrl', require('./update'))
+  .controller('CronjobDeleteCtrl', require('./delete'))
+  .controller('CronjobErrorCtrl', require('./error'))
+  .controller('CronjobErrorDetailCtrl', require('./error/detail'))
 
 },{"./create":31,"./cronjob":32,"./delete":33,"./error":34,"./error/detail":35,"./update":37,"angular":121}],37:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModal, $uibModalInstance, fusio, cronjob) {
+var angular = require('angular')
 
-  $scope.cronjob = cronjob;
+module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, cronjob) {
+  $scope.cronjob = cronjob
 
-  $scope.actions = [];
+  $scope.actions = []
 
-  $scope.update = function(cronjob) {
-    var data = angular.copy(cronjob);
+  $scope.update = function (cronjob) {
+    var data = angular.copy(cronjob)
 
     if (data.exitCode) {
-      delete data.exitCode;
+      delete data.exitCode
     }
     if (data.executeDate) {
-      delete data.executeDate;
+      delete data.executeDate
     }
     if (data.errors) {
-      delete data.errors;
+      delete data.errors
     }
 
     $http.put(fusio.baseUrl + 'backend/cronjob/' + cronjob.id, data)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
   $http.get(fusio.baseUrl + 'backend/action?count=1024')
-    .then(function(response) {
-      $scope.actions = response.data.entry;
-    });
+    .then(function (response) {
+      $scope.actions = response.data.entry
+    })
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
-  $scope.showAction = function(actionId) {
+  $scope.showAction = function (actionId) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/action/update.html',
       controller: 'ActionUpdateCtrl',
       resolve: {
-        action: function() {
-          return {id: actionId};
+        action: function () {
+          return { id: actionId }
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+    }, function () {
+    })
+  }
 
   $http.get(fusio.baseUrl + 'backend/cronjob/' + cronjob.id)
-    .then(function(response) {
-      $scope.cronjob = response.data;
-    });
+    .then(function (response) {
+      $scope.cronjob = response.data
+    })
+}
 
-};
+},{"angular":121}],38:[function(require,module,exports){
+'use strict'
 
-},{}],38:[function(require,module,exports){
-'use strict';
-
-module.exports = function($scope, $http, $uibModal, fusio) {
-
+module.exports = function ($scope, $http, $uibModal, fusio) {
   // set initial date range
-  var fromDate = new Date();
-  fromDate.setDate(fromDate.getDate() - 9);
-  var toDate = new Date();
+  var fromDate = new Date()
+  fromDate.setDate(fromDate.getDate() - 9)
+  var toDate = new Date()
 
-  var query = '?from=' + fromDate.toISOString() + '&to=' + toDate.toISOString();
+  var query = '?from=' + fromDate.toISOString() + '&to=' + toDate.toISOString()
 
   $http.get(fusio.baseUrl + 'backend/dashboard' + query)
-    .then(function(response) {
-      $scope.errorsPerRoute = response.data.errorsPerRoute;
-      $scope.incomingRequests = response.data.incomingRequests;
-      $scope.incomingTransactions = response.data.incomingTransactions;
-      $scope.latestApps = response.data.latestApps.entry;
-      $scope.latestRequests = response.data.latestRequests.entry;
-      $scope.latestTransactions = response.data.latestTransactions.entry;
-      $scope.latestUsers = response.data.latestUsers.entry;
-      $scope.mostUsedRoutes = response.data.mostUsedRoutes;
-      $scope.timePerRoute = response.data.timePerRoute;
-    });
-
-};
+    .then(function (response) {
+      $scope.errorsPerRoute = response.data.errorsPerRoute
+      $scope.incomingRequests = response.data.incomingRequests
+      $scope.incomingTransactions = response.data.incomingTransactions
+      $scope.latestApps = response.data.latestApps.entry
+      $scope.latestRequests = response.data.latestRequests.entry
+      $scope.latestTransactions = response.data.latestTransactions.entry
+      $scope.latestUsers = response.data.latestUsers.entry
+      $scope.mostUsedRoutes = response.data.mostUsedRoutes
+      $scope.timePerRoute = response.data.timePerRoute
+    })
+}
 
 },{}],39:[function(require,module,exports){
-'use strict';
+'use strict'
 
-var angular = require('angular');
+var angular = require('angular')
 
 angular.module('fusioApp.dashboard', ['ngRoute', 'chart.js'])
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/dashboard', {
-    templateUrl: 'app/controller/dashboard/index.html',
-    controller: 'DashboardCtrl'
-  });
-}])
+  .config(['$routeProvider', function ($routeProvider) {
+    $routeProvider.when('/dashboard', {
+      templateUrl: 'app/controller/dashboard/index.html',
+      controller: 'DashboardCtrl'
+    })
+  }])
 
-.controller('DashboardCtrl', require('./dashboard'))
-
-;
+  .controller('DashboardCtrl', require('./dashboard'))
 
 },{"./dashboard":38,"angular":121}],40:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModal, $uibModalInstance, fusio, error) {
+module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, error) {
+  $scope.error = error
 
-  $scope.error = error;
-
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
   $http.get(fusio.baseUrl + 'backend/log/error/' + error.id)
-    .then(function(response) {
-      $scope.error = response.data;
-    });
-
-};
+    .then(function (response) {
+      $scope.error = response.data
+    })
+}
 
 },{}],41:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModal, $timeout, fusio) {
+module.exports = function ($scope, $http, $uibModal, $timeout, fusio) {
+  $scope.errors = []
 
-  $scope.errors = [];
-
-  $scope.load = function() {
-    var search = encodeURIComponent($scope.search ? $scope.search : '');
+  $scope.load = function () {
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
 
     $http.get(fusio.baseUrl + 'backend/log/error?search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.errors = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.errors = data.entry
+      })
+  }
 
-  $scope.pageChanged = function() {
-    var startIndex = ($scope.startIndex - 1) * 16;
-    var search = encodeURIComponent($scope.search ? $scope.search : '');
+  $scope.pageChanged = function () {
+    var startIndex = ($scope.startIndex - 1) * 16
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
 
     $http.get(fusio.baseUrl + 'backend/log/error?startIndex=' + startIndex + '&search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.errors = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.errors = data.entry
+      })
+  }
 
-  $scope.doSearch = function(search) {
-    $http.get(fusio.baseUrl + 'backend/log/error?search=' + encodeURIComponent(search ? search : ''))
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.errors = data.entry;
-      });
-  };
+  $scope.doSearch = function (search) {
+    $http.get(fusio.baseUrl + 'backend/log/error?search=' + encodeURIComponent(search || ''))
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.errors = data.entry
+      })
+  }
 
-  $scope.openDetailDialog = function(error) {
+  $scope.openDetailDialog = function (error) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/error/detail.html',
       controller: 'ErrorDetailCtrl',
       resolve: {
-        error: function() {
-          return error;
+        error: function () {
+          return error
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+    }, function () {
+    })
+  }
 
-  $scope.load();
-
-};
+  $scope.load()
+}
 
 },{}],42:[function(require,module,exports){
-'use strict';
+'use strict'
 
-var angular = require('angular');
+var angular = require('angular')
 
 angular.module('fusioApp.error', ['ngRoute', 'ui.bootstrap'])
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/error', {
-    templateUrl: 'app/controller/error/index.html',
-    controller: 'ErrorCtrl'
-  });
-}])
+  .config(['$routeProvider', function ($routeProvider) {
+    $routeProvider.when('/error', {
+      templateUrl: 'app/controller/error/index.html',
+      controller: 'ErrorCtrl'
+    })
+  }])
 
-.controller('ErrorCtrl', require('./error'))
-.controller('ErrorDetailCtrl', require('./detail'))
-
-;
+  .controller('ErrorCtrl', require('./error'))
+  .controller('ErrorDetailCtrl', require('./detail'))
 
 },{"./detail":40,"./error":41,"angular":121}],43:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModalInstance, fusio) {
+var angular = require('angular')
 
+module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   $scope.event = {
     name: '',
     description: ''
-  };
+  }
 
-  $scope.create = function(event) {
-    var data = angular.copy(event);
+  $scope.create = function (event) {
+    var data = angular.copy(event)
 
     $http.post(fusio.baseUrl + 'backend/event', data)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
+}
 
-};
+},{"angular":121}],44:[function(require,module,exports){
+'use strict'
 
-},{}],44:[function(require,module,exports){
-'use strict';
+module.exports = function ($scope, $http, $uibModalInstance, fusio, event) {
+  $scope.event = event
 
-module.exports = function($scope, $http, $uibModalInstance, fusio, event) {
-
-  $scope.event = event;
-
-  $scope.delete = function(event) {
+  $scope.delete = function (event) {
     $http.delete(fusio.baseUrl + 'backend/event/' + event.id)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
-
-};
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
+}
 
 },{}],45:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModal, $routeParams, $location, fusio) {
+module.exports = function ($scope, $http, $uibModal, $routeParams, $location, fusio) {
+  $scope.response = null
+  $scope.search = ''
+  $scope.events = []
 
-  $scope.response = null;
-  $scope.search = '';
-  $scope.events = [];
-
-  $scope.load = function() {
-    var search = encodeURIComponent($scope.search ? $scope.search : '');
+  $scope.load = function () {
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
 
     $http.get(fusio.baseUrl + 'backend/event?search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.events = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.events = data.entry
+      })
+  }
 
-  $scope.pageChanged = function() {
-    var startIndex = ($scope.startIndex - 1) * 16;
-    var search = encodeURIComponent($scope.search ? $scope.search : '');
+  $scope.pageChanged = function () {
+    var startIndex = ($scope.startIndex - 1) * 16
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
 
     $http.get(fusio.baseUrl + 'backend/event?startIndex=' + startIndex + '&search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.events = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.events = data.entry
+      })
+  }
 
-  $scope.doSearch = function(search) {
-    $http.get(fusio.baseUrl + 'backend/event?search=' + encodeURIComponent(search ? search : ''))
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.events = data.entry;
-      });
-  };
+  $scope.doSearch = function (search) {
+    $http.get(fusio.baseUrl + 'backend/event?search=' + encodeURIComponent(search || ''))
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.events = data.entry
+      })
+  }
 
-  $scope.openCreateDialog = function() {
+  $scope.openCreateDialog = function () {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/event/create.html',
       controller: 'EventCreateCtrl'
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
 
-  $scope.openUpdateDialog = function(event) {
+  $scope.openUpdateDialog = function (event) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/event/update.html',
       controller: 'EventUpdateCtrl',
       resolve: {
-          event: function() {
-          return event;
+        event: function () {
+          return event
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
 
-  $scope.openDeleteDialog = function(event) {
+  $scope.openDeleteDialog = function (event) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/event/delete.html',
       controller: 'EventDeleteCtrl',
       resolve: {
-        event: function() {
-          return event;
+        event: function () {
+          return event
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
-  $scope.load();
-
-};
+  $scope.load()
+}
 
 },{}],46:[function(require,module,exports){
-'use strict';
+'use strict'
 
-var angular = require('angular');
+var angular = require('angular')
 
 angular.module('fusioApp.event', ['ngRoute', 'ui.bootstrap'])
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/event', {
-    templateUrl: 'app/controller/event/index.html',
-    controller: 'EventCtrl'
-  });
-}])
+  .config(['$routeProvider', function ($routeProvider) {
+    $routeProvider.when('/event', {
+      templateUrl: 'app/controller/event/index.html',
+      controller: 'EventCtrl'
+    })
+  }])
 
-.controller('EventCtrl', require('./event'))
-.controller('EventCreateCtrl', require('./create'))
-.controller('EventUpdateCtrl', require('./update'))
-.controller('EventDeleteCtrl', require('./delete'))
-
-;
+  .controller('EventCtrl', require('./event'))
+  .controller('EventCreateCtrl', require('./create'))
+  .controller('EventUpdateCtrl', require('./update'))
+  .controller('EventDeleteCtrl', require('./delete'))
 
 },{"./create":43,"./delete":44,"./event":45,"./update":47,"angular":121}],47:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModalInstance, $uibModal, fusio, event) {
+var angular = require('angular')
 
-  $scope.event = event;
+module.exports = function ($scope, $http, $uibModalInstance, $uibModal, fusio, event) {
+  $scope.event = event
 
-  $scope.update = function(event) {
-    var data = angular.copy(event);
+  $scope.update = function (event) {
+    var data = angular.copy(event)
 
     $http.put(fusio.baseUrl + 'backend/event/' + event.id, data)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
   $http.get(fusio.baseUrl + 'backend/event/' + event.id)
-    .then(function(response) {
-      var data = response.data;
+    .then(function (response) {
+      var data = response.data
       if (!angular.isString(data.source)) {
-        data.source = JSON.stringify(data.source, null, 4);
+        data.source = JSON.stringify(data.source, null, 4)
       }
 
-      $scope.event = data;
-    });
+      $scope.event = data
+    })
+}
 
-};
+},{"angular":121}],48:[function(require,module,exports){
+'use strict'
 
-},{}],48:[function(require,module,exports){
-'use strict';
+var angular = require('angular')
 
-module.exports = function($scope, $http, $uibModalInstance, action) {
+module.exports = function ($scope, $http, $uibModalInstance, action) {
+  $scope.action = angular.copy(action)
 
-  $scope.action = angular.copy(action);
-
-  $scope.close = function() {
-    action.name = $scope.action.name;
+  $scope.close = function () {
+    action.name = $scope.action.name
 
     if (angular.isObject($scope.action.config)) {
-      action.config = $scope.action.config;
+      action.config = $scope.action.config
     }
 
-    $uibModalInstance.dismiss('cancel');
-  };
+    $uibModalInstance.dismiss('cancel')
+  }
+}
 
-};
+},{"angular":121}],49:[function(require,module,exports){
+'use strict'
 
-},{}],49:[function(require,module,exports){
-'use strict';
+module.exports = function ($scope, $http, $uibModal, fusio) {
+  $scope.openapi = null
+  $scope.raml = null
+  $scope.swagger = null
 
-module.exports = function($scope, $http, $uibModal, fusio) {
+  $scope.error = null
+  $scope.success = false
 
-  $scope.openapi = null;
-  $scope.raml = null;
-  $scope.swagger = null;
-
-  $scope.error = null;
-  $scope.success = false;
-
-  $scope.transform = function(source, format) {
-    $http.post(fusio.baseUrl + 'backend/import/' + format, {schema: source})
-      .then(function(response) {
-        var data = response.data;
+  $scope.transform = function (source, format) {
+    $http.post(fusio.baseUrl + 'backend/import/' + format, { schema: source })
+      .then(function (response) {
+        var data = response.data
         if ('success' in data && data.success === false) {
-          $scope.error = data.message;
-          return;
+          $scope.error = data.message
+          return
         } else {
-          $scope.error = null;
+          $scope.error = null
         }
 
-        $scope.openPreviewDialog(data);
+        $scope.openPreviewDialog(data)
       })
-      .catch(function(response) {
-        var data = response.data;
+      .catch(function (response) {
+        var data = response.data
         if ('success' in data && data.success === false) {
-          $scope.error = data.message;
+          $scope.error = data.message
         } else {
-          $scope.error = 'An unknown error occured';
+          $scope.error = 'An unknown error occured'
         }
-      });
-  };
+      })
+  }
 
-  $scope.openPreviewDialog = function(data) {
+  $scope.openPreviewDialog = function (data) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/import/preview.html',
       controller: 'ImportPreviewCtrl',
       resolve: {
-        data: function() {
-          return data;
+        data: function () {
+          return data
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.success = true;
-    }, function() {
-    });
-  };
-
-};
+    modalInstance.result.then(function (response) {
+      $scope.success = true
+    }, function () {
+    })
+  }
+}
 
 },{}],50:[function(require,module,exports){
-'use strict';
+'use strict'
 
-var angular = require('angular');
+var angular = require('angular')
 
 angular.module('fusioApp.import', ['ngRoute', 'ui.bootstrap'])
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/import', {
-    templateUrl: 'app/controller/import/index.html',
-    controller: 'ImportCtrl'
-  });
-}])
+  .config(['$routeProvider', function ($routeProvider) {
+    $routeProvider.when('/import', {
+      templateUrl: 'app/controller/import/index.html',
+      controller: 'ImportCtrl'
+    })
+  }])
 
-.controller('ImportCtrl', require('./import'))
-.controller('ImportPreviewCtrl', require('./preview'))
-.controller('ImportRouteCtrl', require('./route'))
-.controller('ImportActionCtrl', require('./action'))
-.controller('ImportSchemaCtrl', require('./schema'))
-
-;
-
-
+  .controller('ImportCtrl', require('./import'))
+  .controller('ImportPreviewCtrl', require('./preview'))
+  .controller('ImportRouteCtrl', require('./route'))
+  .controller('ImportActionCtrl', require('./action'))
+  .controller('ImportSchemaCtrl', require('./schema'))
 
 },{"./action":48,"./import":49,"./preview":51,"./route":52,"./schema":53,"angular":121}],51:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModalInstance, $uibModal, fusio, data) {
+module.exports = function ($scope, $http, $uibModalInstance, $uibModal, fusio, data) {
+  $scope.data = data
 
-  $scope.data = data;
-
-  $scope.doProcess = function() {
+  $scope.doProcess = function () {
     $http.post(fusio.baseUrl + 'backend/import/process', data)
-      .then(function(response) {
-        var data = response.data;
+      .then(function (response) {
+        var data = response.data
         if ('success' in data && data.success === false) {
-          $scope.error = data.message;
-          return;
+          $scope.error = data.message
+          return
         } else {
-          $scope.error = null;
+          $scope.error = null
         }
 
-        $uibModalInstance.close();
+        $uibModalInstance.close()
       })
-      .catch(function(response) {
-        var data = response.data;
+      .catch(function (response) {
+        var data = response.data
         if ('success' in data && data.success === false) {
-          $scope.error = data.message;
+          $scope.error = data.message
         } else {
-          $scope.error = 'An unknown error occured';
+          $scope.error = 'An unknown error occured'
         }
-      });
-  };
+      })
+  }
 
-  $scope.openRouteDialog = function(route) {
+  $scope.openRouteDialog = function (route) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/import/route.html',
       controller: 'ImportRouteCtrl',
       resolve: {
-        route: function() {
-          return route;
+        route: function () {
+          return route
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+    }, function () {
+    })
+  }
 
-  $scope.openActionDialog = function(action) {
+  $scope.openActionDialog = function (action) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/import/action.html',
       controller: 'ImportActionCtrl',
       resolve: {
-        action: function() {
-          return action;
+        action: function () {
+          return action
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+    }, function () {
+    })
+  }
 
-  $scope.openSchemaDialog = function(schema) {
+  $scope.openSchemaDialog = function (schema) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/import/schema.html',
       controller: 'ImportSchemaCtrl',
       resolve: {
-        schema: function() {
-          return schema;
+        schema: function () {
+          return schema
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+    }, function () {
+    })
+  }
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
-
-};
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
+}
 
 },{}],52:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModalInstance, fusio, route) {
-
-  $scope.route = route;
+module.exports = function ($scope, $http, $uibModalInstance, fusio, route) {
+  $scope.route = route
 
   $scope.statuuus = [{
     key: 4,
-    value: "Development"
+    value: 'Development'
   }, {
     key: 1,
-    value: "Production"
+    value: 'Production'
   }, {
     key: 2,
-    value: "Deprecated"
+    value: 'Deprecated'
   }, {
     key: 3,
-    value: "Closed"
-  }];
+    value: 'Closed'
+  }]
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
-
-};
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
+}
 
 },{}],53:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModalInstance, schema) {
+var angular = require('angular')
 
-  var copySchema = angular.copy(schema);
+module.exports = function ($scope, $http, $uibModalInstance, schema) {
+  var copySchema = angular.copy(schema)
 
   if (angular.isObject(copySchema.source)) {
-    copySchema.source = JSON.stringify(copySchema.source, null, 4);
+    copySchema.source = JSON.stringify(copySchema.source, null, 4)
   }
 
-  $scope.schema = copySchema;
+  $scope.schema = copySchema
 
-  $scope.close = function() {
-    schema.name = $scope.schema.name;
+  $scope.close = function () {
+    schema.name = $scope.schema.name
 
     if (angular.isString($scope.schema.source)) {
-      schema.source = JSON.parse($scope.schema.source);
+      schema.source = JSON.parse($scope.schema.source)
     }
 
-    $uibModalInstance.dismiss('cancel');
-  };
+    $uibModalInstance.dismiss('cancel')
+  }
+}
 
-};
+},{"angular":121}],54:[function(require,module,exports){
+'use strict'
 
-},{}],54:[function(require,module,exports){
-'use strict';
-
-var angular = require('angular');
+var angular = require('angular')
 
 angular.module('fusioApp.invoice', ['ngRoute', 'ui.bootstrap'])
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/invoice', {
-    templateUrl: 'app/controller/invoice/index.html',
-    controller: 'InvoiceCtrl'
-  });
-}])
+  .config(['$routeProvider', function ($routeProvider) {
+    $routeProvider.when('/invoice', {
+      templateUrl: 'app/controller/invoice/index.html',
+      controller: 'InvoiceCtrl'
+    })
+  }])
 
-.controller('InvoiceCtrl', require('./invoice'))
-
-;
+  .controller('InvoiceCtrl', require('./invoice'))
 
 },{"./invoice":55,"angular":121}],55:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModal, $routeParams, $location, fusio) {
+module.exports = function ($scope, $http, $uibModal, $routeParams, $location, fusio) {
+  $scope.response = null
+  $scope.search = ''
+  $scope.invoices = []
 
-  $scope.response = null;
-  $scope.search = '';
-  $scope.invoices = [];
-
-  $scope.load = function() {
-    var search = encodeURIComponent($scope.search ? $scope.search : '');
+  $scope.load = function () {
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
 
     $http.get(fusio.baseUrl + 'backend/plan/invoice?search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.invoices = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.invoices = data.entry
+      })
+  }
 
-  $scope.pageChanged = function() {
-    var startIndex = ($scope.startIndex - 1) * 16;
-    var search = encodeURIComponent($scope.search ? $scope.search : '');
+  $scope.pageChanged = function () {
+    var startIndex = ($scope.startIndex - 1) * 16
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
 
     $http.get(fusio.baseUrl + 'backend/plan/invoice?startIndex=' + startIndex + '&search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.invoices = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.invoices = data.entry
+      })
+  }
 
-  $scope.doSearch = function(search) {
-    $http.get(fusio.baseUrl + 'backend/plan/invoice?search=' + encodeURIComponent(search ? search : ''))
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.invoices = data.entry;
-      });
-  };
+  $scope.doSearch = function (search) {
+    $http.get(fusio.baseUrl + 'backend/plan/invoice?search=' + encodeURIComponent(search || ''))
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.invoices = data.entry
+      })
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
-  $scope.load();
-
-};
+  $scope.load()
+}
 
 },{}],56:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModal, $uibModalInstance, fusio, log) {
+module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, log) {
+  $scope.log = log
 
-  $scope.log = log;
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
-
-  $scope.openDetailDialog = function(error) {
+  $scope.openDetailDialog = function (error) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/error/detail.html',
       controller: 'ErrorDetailCtrl',
       resolve: {
-        error: function() {
-          return error;
+        error: function () {
+          return error
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+    }, function () {
+    })
+  }
 
   $http.get(fusio.baseUrl + 'backend/log/' + log.id)
-    .then(function(response) {
-      $scope.log = response.data;
-    });
-
-};
+    .then(function (response) {
+      $scope.log = response.data
+    })
+}
 
 },{}],57:[function(require,module,exports){
-'use strict';
+'use strict'
 
-var angular = require('angular');
+var angular = require('angular')
 
 angular.module('fusioApp.log', ['ngRoute', 'ui.bootstrap'])
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/log', {
-    templateUrl: 'app/controller/log/index.html',
-    controller: 'LogCtrl'
-  });
-}])
+  .config(['$routeProvider', function ($routeProvider) {
+    $routeProvider.when('/log', {
+      templateUrl: 'app/controller/log/index.html',
+      controller: 'LogCtrl'
+    })
+  }])
 
-.controller('LogCtrl', require('./log'))
-.controller('LogDetailCtrl', require('./detail'))
-
-;
+  .controller('LogCtrl', require('./log'))
+  .controller('LogDetailCtrl', require('./detail'))
 
 },{"./detail":56,"./log":58,"angular":121}],58:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModal, $timeout, fusio) {
-
+module.exports = function ($scope, $http, $uibModal, $timeout, fusio) {
   // set initial date range
-  var from = new Date();
-  from.setMonth(from.getMonth() - 1);
-  var to = new Date();
+  var from = new Date()
+  from.setMonth(from.getMonth() - 1)
+  var to = new Date()
 
-  $scope.search = '';
+  $scope.search = ''
   $scope.filter = {
     from: from,
     to: to
-  };
+  }
 
-  $scope.routes = [];
-  $scope.apps = [];
+  $scope.routes = []
+  $scope.apps = []
 
-  $scope.load = function() {
-    var search = '';
+  $scope.load = function () {
+    var search = ''
     if ($scope.search) {
-      search = encodeURIComponent($scope.search);
+      search = encodeURIComponent($scope.search)
     }
 
     $http.get(fusio.baseUrl + 'backend/log?search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.logs = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.logs = data.entry
+      })
+  }
 
-  $scope.pageChanged = function() {
-    var startIndex = ($scope.startIndex - 1) * 16;
-    var search = encodeURIComponent($scope.search);
+  $scope.pageChanged = function () {
+    var startIndex = ($scope.startIndex - 1) * 16
+    var search = encodeURIComponent($scope.search)
 
     $http.get(fusio.baseUrl + 'backend/log?startIndex=' + startIndex + '&search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.logs = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.logs = data.entry
+      })
+  }
 
-  $scope.doFilter = function() {
-    var query = '';
+  $scope.doFilter = function () {
+    var query = ''
     for (var key in $scope.filter) {
       if ($scope.filter[key]) {
-        var value;
+        var value
         if ($scope.filter[key] instanceof Date) {
-          value = $scope.filter[key].toISOString();
+          value = $scope.filter[key].toISOString()
         } else {
-          value = $scope.filter[key];
+          value = $scope.filter[key]
         }
 
-        query += key + '=' + encodeURIComponent(value) + '&';
+        query += key + '=' + encodeURIComponent(value) + '&'
       }
     }
 
     $http.get(fusio.baseUrl + 'backend/log?' + query)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.logs = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.logs = data.entry
+      })
+  }
 
-  $scope.openDetailDialog = function(log) {
+  $scope.openDetailDialog = function (log) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/log/detail.html',
       controller: 'LogDetailCtrl',
       resolve: {
-        log: function() {
-          return log;
+        log: function () {
+          return log
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
 
-      $timeout(function() {
-        $scope.response = null;
-      }, 2000);
-    }, function() {
-    });
-  };
+      $timeout(function () {
+        $scope.response = null
+      }, 2000)
+    }, function () {
+    })
+  }
 
-  $scope.openFilterDialog = function() {
+  $scope.openFilterDialog = function () {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/statistic/filter.html',
       controller: 'StatisticFilterCtrl',
       resolve: {
-        filter: function() {
-          return $scope.filter;
+        filter: function () {
+          return $scope.filter
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(filter) {
-      $scope.filter = filter;
-      $scope.doFilter();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (filter) {
+      $scope.filter = filter
+      $scope.doFilter()
+    }, function () {
+    })
+  }
 
-  $scope.load();
-
-};
+  $scope.load()
+}
 
 },{}],59:[function(require,module,exports){
-'use strict';
+'use strict'
 
-var angular = require('angular');
+var angular = require('angular')
 
 angular.module('fusioApp.login', ['ngRoute'])
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/login', {
-    templateUrl: 'app/controller/login/index.html',
-    controller: 'LoginCtrl'
-  });
-}])
+  .config(['$routeProvider', function ($routeProvider) {
+    $routeProvider.when('/login', {
+      templateUrl: 'app/controller/login/index.html',
+      controller: 'LoginCtrl'
+    })
+  }])
 
-.controller('LoginCtrl', require('./login'))
-
-;
+  .controller('LoginCtrl', require('./login'))
 
 },{"./login":60,"angular":121}],60:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $location, $window, $rootScope, fusio, tokenParser) {
+module.exports = function ($scope, $http, $location, $window, $rootScope, fusio, tokenParser) {
   $scope.credentials = {
     username: '',
     password: ''
-  };
+  }
 
-  $scope.response = null;
-  $scope.loading = false;
+  $scope.response = null
+  $scope.loading = false
 
-  $scope.login = function(credentials) {
-    $scope.loading = true;
+  $scope.login = function (credentials) {
+    $scope.loading = true
 
     var req = {
       method: 'POST',
@@ -3262,91 +3173,88 @@ module.exports = function($scope, $http, $location, $window, $rootScope, fusio, 
         'Content-Type': 'application/x-www-form-urlencoded'
       },
       data: 'grant_type=client_credentials'
-    };
+    }
 
     $http(req)
-      .then(function(response) {
-        var data = response.data;
-        $scope.loading = false;
+      .then(function (response) {
+        var data = response.data
+        $scope.loading = false
         if (data.access_token) {
-          var user = tokenParser.decode(data.access_token);
+          var user = tokenParser.decode(data.access_token)
           if (user) {
-            $http.defaults.headers.common['Authorization'] = 'Bearer ' + data.access_token;
+            $http.defaults.headers.common['Authorization'] = 'Bearer ' + data.access_token
 
             // store access token
-            $window.sessionStorage.setItem('fusio_access_token', data.access_token);
+            $window.sessionStorage.setItem('fusio_access_token', data.access_token)
 
-            $rootScope.userAuthenticated = true;
-            $rootScope.user = user;
+            $rootScope.userAuthenticated = true
+            $rootScope.user = user
 
-            $location.path('/dashboard');
+            $location.path('/dashboard')
           } else {
-            $scope.response = 'Could not decode access token';
+            $scope.response = 'Could not decode access token'
           }
         } else {
-          $scope.response = data.error_description ? data.error_description : 'Authentication failed';
+          $scope.response = data.error_description ? data.error_description : 'Authentication failed'
         }
       })
-      .catch(function(response) {
-        var data = response.data;
-        $scope.loading = false;
-        $scope.response = data.error_description ? data.error_description : 'Authentication failed';
-      });
-  };
-};
+      .catch(function (response) {
+        var data = response.data
+        $scope.loading = false
+        $scope.response = data.error_description ? data.error_description : 'Authentication failed'
+      })
+  }
+}
 
 },{}],61:[function(require,module,exports){
-'use strict';
+'use strict'
 
-var angular = require('angular');
+var angular = require('angular')
 
 angular.module('fusioApp.logout', ['ngRoute'])
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/logout', {
-    templateUrl: 'app/controller/logout/index.html',
-    controller: 'LogoutCtrl'
-  });
-}])
+  .config(['$routeProvider', function ($routeProvider) {
+    $routeProvider.when('/logout', {
+      templateUrl: 'app/controller/logout/index.html',
+      controller: 'LogoutCtrl'
+    })
+  }])
 
-.controller('LogoutCtrl', require('./logout'))
-
-;
+  .controller('LogoutCtrl', require('./logout'))
 
 },{"./logout":62,"angular":121}],62:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $location, $window, $rootScope, fusio) {
+module.exports = function ($scope, $http, $location, $window, $rootScope, fusio) {
+  var removeToken = function (response) {
+    delete $http.defaults.headers.common['Authorization']
 
-  var removeToken = function(response) {
-    delete $http.defaults.headers.common['Authorization'];
+    $window.sessionStorage.removeItem('fusio_access_token')
+    $window.sessionStorage.removeItem('fusio_user')
 
-    $window.sessionStorage.removeItem('fusio_access_token');
-    $window.sessionStorage.removeItem('fusio_user');
+    $rootScope.userAuthenticated = false
 
-    $rootScope.userAuthenticated = false;
-
-    $location.path('/login');
-  };
+    $location.path('/login')
+  }
 
   $http.post(fusio.baseUrl + 'authorization/revoke', null)
     .then(removeToken)
-    .catch(removeToken);
-
-};
+    .catch(removeToken)
+}
 
 },{}],63:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModalInstance, fusio) {
+var angular = require('angular')
 
+module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   $scope.plan = {
     name: '',
     description: '',
     price: 0,
     points: 0,
     period: 0
-  };
+  }
 
   $scope.periods = [{
     id: 0,
@@ -3363,198 +3271,192 @@ module.exports = function($scope, $http, $uibModalInstance, fusio) {
   }, {
     id: 4,
     name: '12 Month'
-  }];
+  }]
 
-  $scope.create = function(plan) {
-    var data = angular.copy(plan);
+  $scope.create = function (plan) {
+    var data = angular.copy(plan)
 
     $http.post(fusio.baseUrl + 'backend/plan', data)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
+}
 
-};
+},{"angular":121}],64:[function(require,module,exports){
+'use strict'
 
-},{}],64:[function(require,module,exports){
-'use strict';
+module.exports = function ($scope, $http, $uibModalInstance, fusio, plan) {
+  $scope.plan = plan
 
-module.exports = function($scope, $http, $uibModalInstance, fusio, plan) {
-
-  $scope.plan = plan;
-
-  $scope.delete = function(plan) {
+  $scope.delete = function (plan) {
     $http.delete(fusio.baseUrl + 'backend/plan/' + plan.id)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
-
-};
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
+}
 
 },{}],65:[function(require,module,exports){
-'use strict';
+'use strict'
 
-var angular = require('angular');
+var angular = require('angular')
 
 angular.module('fusioApp.plan', ['ngRoute', 'ui.bootstrap'])
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/plan', {
-    templateUrl: 'app/controller/plan/index.html',
-    controller: 'PlanCtrl'
-  });
-}])
+  .config(['$routeProvider', function ($routeProvider) {
+    $routeProvider.when('/plan', {
+      templateUrl: 'app/controller/plan/index.html',
+      controller: 'PlanCtrl'
+    })
+  }])
 
-.controller('PlanCtrl', require('./plan'))
-.controller('PlanCreateCtrl', require('./create'))
-.controller('PlanUpdateCtrl', require('./update'))
-.controller('PlanDeleteCtrl', require('./delete'))
-
-;
+  .controller('PlanCtrl', require('./plan'))
+  .controller('PlanCreateCtrl', require('./create'))
+  .controller('PlanUpdateCtrl', require('./update'))
+  .controller('PlanDeleteCtrl', require('./delete'))
 
 },{"./create":63,"./delete":64,"./plan":66,"./update":67,"angular":121}],66:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModal, $routeParams, $location, fusio) {
+module.exports = function ($scope, $http, $uibModal, $routeParams, $location, fusio) {
+  $scope.response = null
+  $scope.search = ''
+  $scope.plans = []
 
-  $scope.response = null;
-  $scope.search = '';
-  $scope.plans = [];
-
-  $scope.load = function() {
-    var search = encodeURIComponent($scope.search ? $scope.search : '');
+  $scope.load = function () {
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
 
     $http.get(fusio.baseUrl + 'backend/plan?search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.plans = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.plans = data.entry
+      })
+  }
 
-  $scope.pageChanged = function() {
-    var startIndex = ($scope.startIndex - 1) * 16;
-    var search = encodeURIComponent($scope.search ? $scope.search : '');
+  $scope.pageChanged = function () {
+    var startIndex = ($scope.startIndex - 1) * 16
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
 
     $http.get(fusio.baseUrl + 'backend/plan?startIndex=' + startIndex + '&search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.plans = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.plans = data.entry
+      })
+  }
 
-  $scope.doSearch = function(search) {
-    $http.get(fusio.baseUrl + 'backend/plan?search=' + encodeURIComponent(search ? search : ''))
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.plans = data.entry;
-      });
-  };
+  $scope.doSearch = function (search) {
+    $http.get(fusio.baseUrl + 'backend/plan?search=' + encodeURIComponent(search || ''))
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.plans = data.entry
+      })
+  }
 
-  $scope.openCreateDialog = function() {
+  $scope.openCreateDialog = function () {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/plan/create.html',
       controller: 'PlanCreateCtrl'
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
 
-  $scope.openUpdateDialog = function(plan) {
+  $scope.openUpdateDialog = function (plan) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/plan/update.html',
       controller: 'PlanUpdateCtrl',
       resolve: {
-          plan: function() {
-          return plan;
+        plan: function () {
+          return plan
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
 
-  $scope.openDeleteDialog = function(plan) {
+  $scope.openDeleteDialog = function (plan) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/plan/delete.html',
       controller: 'PlanDeleteCtrl',
       resolve: {
-        plan: function() {
-          return plan;
+        plan: function () {
+          return plan
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
-  $scope.load();
-
-};
+  $scope.load()
+}
 
 },{}],67:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModalInstance, $uibModal, fusio, plan) {
+var angular = require('angular')
 
-  $scope.plan = plan;
+module.exports = function ($scope, $http, $uibModalInstance, $uibModal, fusio, plan) {
+  $scope.plan = plan
 
   $scope.periods = [{
     id: 0,
@@ -3571,49 +3473,49 @@ module.exports = function($scope, $http, $uibModalInstance, $uibModal, fusio, pl
   }, {
     id: 4,
     name: '12 Month'
-  }];
+  }]
 
-  $scope.update = function(plan) {
-    var data = angular.copy(plan);
+  $scope.update = function (plan) {
+    var data = angular.copy(plan)
 
     $http.put(fusio.baseUrl + 'backend/plan/' + plan.id, data)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
   $http.get(fusio.baseUrl + 'backend/plan/' + plan.id)
-    .then(function(response) {
-      var data = response.data;
+    .then(function (response) {
+      var data = response.data
       if (!angular.isString(data.source)) {
-        data.source = JSON.stringify(data.source, null, 4);
+        data.source = JSON.stringify(data.source, null, 4)
       }
 
-      $scope.plan = data;
-    });
+      $scope.plan = data
+    })
+}
 
-};
+},{"angular":121}],68:[function(require,module,exports){
+'use strict'
 
-},{}],68:[function(require,module,exports){
-'use strict';
+var angular = require('angular')
 
-module.exports = function($scope, $http, $uibModalInstance, fusio) {
-
+module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   $scope.rate = {
     priority: 0,
     name: '',
@@ -3625,12 +3527,12 @@ module.exports = function($scope, $http, $uibModalInstance, fusio) {
       authenticated: null,
       parameters: null
     }]
-  };
+  }
 
   $scope.timespan = {
     value: 1,
     unit: 'hour'
-  };
+  }
 
   $scope.intervals = [{
     key: 'minute',
@@ -3647,7 +3549,7 @@ module.exports = function($scope, $http, $uibModalInstance, fusio) {
   }, {
     key: 'month',
     value: 'month'
-  }];
+  }]
 
   $scope.status = [{
     key: null,
@@ -3658,273 +3560,265 @@ module.exports = function($scope, $http, $uibModalInstance, fusio) {
   }, {
     key: false,
     value: 'No'
-  }];
+  }]
 
-  $scope.routes = [];
-  $scope.apps = [];
+  $scope.routes = []
+  $scope.apps = []
 
-  $scope.create = function(rate) {
-    var data = angular.copy(rate);
-    data.timespan = $scope.getTimespan($scope.timespan);
-    data.allocation = $scope.removeNullValuesFromAllocation(rate.allocation);
+  $scope.create = function (rate) {
+    var data = angular.copy(rate)
+    data.timespan = $scope.getTimespan($scope.timespan)
+    data.allocation = $scope.removeNullValuesFromAllocation(rate.allocation)
 
     $http.post(fusio.baseUrl + 'backend/rate', data)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
-  $scope.getRoutes = function() {
+  $scope.getRoutes = function () {
     $http.get(fusio.baseUrl + 'backend/routes?count=1024')
-      .then(function(response) {
-        var data = response.data;
+      .then(function (response) {
+        var data = response.data
         if (angular.isArray(data.entry)) {
-          var routes = data.entry;
+          var routes = data.entry
           routes.unshift({
             id: null,
             path: 'Every route'
-          });
-          $scope.routes = routes;
+          })
+          $scope.routes = routes
         }
-      });
-  };
+      })
+  }
 
-  $scope.addAllocation = function() {
+  $scope.addAllocation = function () {
     $scope.rate.allocation.push({
       routeId: null,
       appId: null,
       authenticated: true,
       parameters: null
-    });
-  };
+    })
+  }
 
-  $scope.removeAllocation = function(index) {
-    var allocation = $scope.rate.allocation;
-    allocation.splice(index, 1);
-    $scope.rate.allocation = allocation;
-  };
+  $scope.removeAllocation = function (index) {
+    var allocation = $scope.rate.allocation
+    allocation.splice(index, 1)
+    $scope.rate.allocation = allocation
+  }
 
-  $scope.removeNullValuesFromAllocation = function(allocation) {
-    var data = [];
+  $scope.removeNullValuesFromAllocation = function (allocation) {
+    var data = []
     for (var i = 0; i < allocation.length; i++) {
-      data.push($scope.removeNullValuesFromObject(allocation[i]));
+      data.push($scope.removeNullValuesFromObject(allocation[i]))
     }
-    return data;
-  };
+    return data
+  }
 
-  $scope.removeNullValuesFromObject = function(object) {
-    var row = {};
+  $scope.removeNullValuesFromObject = function (object) {
+    var row = {}
     for (var key in object) {
       if (object.hasOwnProperty(key) && object[key] !== null) {
-        row[key] = object[key];
+        row[key] = object[key]
       }
     }
-    return row;
-  };
+    return row
+  }
 
-  $scope.getTimespan = function(timespan) {
-    if (timespan.unit == 'minute') {
-      return 'PT' + timespan.value + 'M';
-    } else if (timespan.unit == 'hour') {
-      return 'PT' + timespan.value + 'H';
-    } else if (timespan.unit == 'day') {
-      return 'P' + timespan.value + 'D';
-    } else if (timespan.unit == 'week') {
-      return 'P' + timespan.value + 'W';
-    } else if (timespan.unit == 'month') {
-      return 'P' + timespan.value + 'M';
+  $scope.getTimespan = function (timespan) {
+    if (timespan.unit === 'minute') {
+      return 'PT' + timespan.value + 'M'
+    } else if (timespan.unit === 'hour') {
+      return 'PT' + timespan.value + 'H'
+    } else if (timespan.unit === 'day') {
+      return 'P' + timespan.value + 'D'
+    } else if (timespan.unit === 'week') {
+      return 'P' + timespan.value + 'W'
+    } else if (timespan.unit === 'month') {
+      return 'P' + timespan.value + 'M'
     }
-  };
+  }
 
-  $scope.getRoutes();
+  $scope.getRoutes()
+}
 
-};
+},{"angular":121}],69:[function(require,module,exports){
+'use strict'
 
-},{}],69:[function(require,module,exports){
-'use strict';
+module.exports = function ($scope, $http, $uibModalInstance, rate, fusio) {
+  $scope.rate = rate
 
-module.exports = function($scope, $http, $uibModalInstance, rate, fusio) {
-
-  $scope.rate = rate;
-
-  $scope.delete = function(rate) {
+  $scope.delete = function (rate) {
     $http.delete(fusio.baseUrl + 'backend/rate/' + rate.id)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
-
-};
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
+}
 
 },{}],70:[function(require,module,exports){
-'use strict';
+'use strict'
 
-var angular = require('angular');
+var angular = require('angular')
 
 angular.module('fusioApp.rate', ['ngRoute', 'ui.bootstrap'])
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/rate', {
-    templateUrl: 'app/controller/rate/index.html',
-    controller: 'RateCtrl'
-  });
-}])
+  .config(['$routeProvider', function ($routeProvider) {
+    $routeProvider.when('/rate', {
+      templateUrl: 'app/controller/rate/index.html',
+      controller: 'RateCtrl'
+    })
+  }])
 
-.controller('RateCtrl', require('./rate'))
-.controller('RateCreateCtrl', require('./create'))
-.controller('RateUpdateCtrl', require('./update'))
-.controller('RateDeleteCtrl', require('./delete'))
-
-;
+  .controller('RateCtrl', require('./rate'))
+  .controller('RateCreateCtrl', require('./create'))
+  .controller('RateUpdateCtrl', require('./update'))
+  .controller('RateDeleteCtrl', require('./delete'))
 
 },{"./create":68,"./delete":69,"./rate":71,"./update":72,"angular":121}],71:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModal, fusio) {
+module.exports = function ($scope, $http, $uibModal, fusio) {
+  $scope.response = null
+  $scope.search = ''
 
-  $scope.response = null;
-  $scope.search = '';
-
-  $scope.load = function() {
-    var search = encodeURIComponent($scope.search ? $scope.search : '');
+  $scope.load = function () {
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
 
     $http.get(fusio.baseUrl + 'backend/rate?search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.rates = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.rates = data.entry
+      })
+  }
 
-  $scope.pageChanged = function() {
-    var startIndex = ($scope.startIndex - 1) * 16;
-    var search = encodeURIComponent($scope.search ? $scope.search : '');
+  $scope.pageChanged = function () {
+    var startIndex = ($scope.startIndex - 1) * 16
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
 
     $http.get(fusio.baseUrl + 'backend/rate?startIndex=' + startIndex + '&search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.rates = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.rates = data.entry
+      })
+  }
 
-  $scope.doSearch = function(search) {
-    $http.get(fusio.baseUrl + 'backend/rate?search=' + encodeURIComponent(search ? search : ''))
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.rates = data.entry;
-      });
-  };
+  $scope.doSearch = function (search) {
+    $http.get(fusio.baseUrl + 'backend/rate?search=' + encodeURIComponent(search || ''))
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.rates = data.entry
+      })
+  }
 
-  $scope.openCreateDialog = function() {
+  $scope.openCreateDialog = function () {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/rate/create.html',
       controller: 'RateCreateCtrl'
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
 
-  $scope.openUpdateDialog = function(rate) {
+  $scope.openUpdateDialog = function (rate) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/rate/update.html',
       controller: 'RateUpdateCtrl',
       resolve: {
-        rate: function() {
-          return rate;
+        rate: function () {
+          return rate
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
 
-  $scope.openDeleteDialog = function(rate) {
+  $scope.openDeleteDialog = function (rate) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/rate/delete.html',
       controller: 'RateDeleteCtrl',
       resolve: {
-        rate: function() {
-          return rate;
+        rate: function () {
+          return rate
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
-  $scope.load();
-
-};
-
-
+  $scope.load()
+}
 
 },{}],72:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModalInstance, rate, fusio) {
+var angular = require('angular')
 
-  $scope.rate = rate;
+module.exports = function ($scope, $http, $uibModalInstance, rate, fusio) {
+  $scope.rate = rate
 
   $scope.timespan = {
     value: 1,
     unit: 'hour'
-  };
+  }
 
   $scope.intervals = [{
     key: 'minute',
@@ -3941,7 +3835,7 @@ module.exports = function($scope, $http, $uibModalInstance, rate, fusio) {
   }, {
     key: 'month',
     value: 'month'
-  }];
+  }]
 
   $scope.status = [{
     key: null,
@@ -3952,191 +3846,191 @@ module.exports = function($scope, $http, $uibModalInstance, rate, fusio) {
   }, {
     key: false,
     value: 'No'
-  }];
+  }]
 
-  $scope.routes = [];
-  $scope.apps = [];
+  $scope.routes = []
+  $scope.apps = []
 
-  $scope.update = function(rate) {
-    var data = angular.copy(rate);
-    data.timespan = $scope.getTimespan($scope.timespan);
-    data.allocation = $scope.removeNullValuesFromAllocation(rate.allocation);
+  $scope.update = function (rate) {
+    var data = angular.copy(rate)
+    data.timespan = $scope.getTimespan($scope.timespan)
+    data.allocation = $scope.removeNullValuesFromAllocation(rate.allocation)
 
     $http.put(fusio.baseUrl + 'backend/rate/' + rate.id, data)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
   $http.get(fusio.baseUrl + 'backend/rate/' + rate.id)
-    .then(function(response) {
-      var data = response.data;
-      $scope.parseTimespan(data.timespan);
-      data.allocation = $scope.addNullValuesToAllocation(data.allocation);
-      $scope.rate = data;
-    });
+    .then(function (response) {
+      var data = response.data
+      $scope.parseTimespan(data.timespan)
+      data.allocation = $scope.addNullValuesToAllocation(data.allocation)
+      $scope.rate = data
+    })
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
-  $scope.getRoutes = function() {
+  $scope.getRoutes = function () {
     $http.get(fusio.baseUrl + 'backend/routes?count=1024')
-      .then(function(response) {
-        var data = response.data;
+      .then(function (response) {
+        var data = response.data
         if (angular.isArray(data.entry)) {
-          var routes = data.entry;
+          var routes = data.entry
           routes.unshift({
             id: null,
             path: 'Every route'
-          });
-          $scope.routes = routes;
+          })
+          $scope.routes = routes
         }
-      });
-  };
+      })
+  }
 
-  $scope.addAllocation = function() {
+  $scope.addAllocation = function () {
     $scope.rate.allocation.push({
       routeId: null,
       appId: null,
       authenticated: true,
       parameters: null
-    });
-  };
+    })
+  }
 
-  $scope.removeAllocation = function(index) {
-    var allocation = $scope.rate.allocation;
-    allocation.splice(index, 1);
-    $scope.rate.allocation = allocation;
-  };
+  $scope.removeAllocation = function (index) {
+    var allocation = $scope.rate.allocation
+    allocation.splice(index, 1)
+    $scope.rate.allocation = allocation
+  }
 
-  $scope.removeNullValuesFromAllocation = function(allocation) {
-    var data = [];
+  $scope.removeNullValuesFromAllocation = function (allocation) {
+    var data = []
     for (var i = 0; i < allocation.length; i++) {
-      data.push($scope.removeNullValuesFromObject(allocation[i]));
+      data.push($scope.removeNullValuesFromObject(allocation[i]))
     }
-    return data;
-  };
+    return data
+  }
 
-  $scope.removeNullValuesFromObject = function(object) {
-    var row = {};
+  $scope.removeNullValuesFromObject = function (object) {
+    var row = {}
     for (var key in object) {
       if (object.hasOwnProperty(key) && object[key] !== null) {
-        row[key] = object[key];
+        row[key] = object[key]
       }
     }
-    return row;
-  };
+    return row
+  }
 
-  $scope.addNullValuesToAllocation = function(allocation) {
-    var data = [];
+  $scope.addNullValuesToAllocation = function (allocation) {
+    var data = []
     for (var i = 0; i < allocation.length; i++) {
-      var row = allocation[i];
+      var row = allocation[i]
       if (!row.hasOwnProperty('routeId')) {
-        row.routeId = null;
+        row.routeId = null
       }
       if (!row.hasOwnProperty('appId')) {
-        row.appId = null;
+        row.appId = null
       }
       if (!row.hasOwnProperty('authenticated')) {
-        row.authenticated = null;
+        row.authenticated = null
       }
       if (!row.hasOwnProperty('parameters')) {
-        row.parameters = null;
+        row.parameters = null
       }
-      data.push(row);
+      data.push(row)
     }
-    return data;
-  };
+    return data
+  }
 
-  $scope.getTimespan = function(timespan) {
-    if (timespan.unit == 'minute') {
-      return 'PT' + timespan.value + 'M';
-    } else if (timespan.unit == 'hour') {
-      return 'PT' + timespan.value + 'H';
-    } else if (timespan.unit == 'day') {
-      return 'P' + timespan.value + 'D';
-    } else if (timespan.unit == 'week') {
-      return 'P' + timespan.value + 'W';
-    } else if (timespan.unit == 'month') {
-      return 'P' + timespan.value + 'M';
+  $scope.getTimespan = function (timespan) {
+    if (timespan.unit === 'minute') {
+      return 'PT' + timespan.value + 'M'
+    } else if (timespan.unit === 'hour') {
+      return 'PT' + timespan.value + 'H'
+    } else if (timespan.unit === 'day') {
+      return 'P' + timespan.value + 'D'
+    } else if (timespan.unit === 'week') {
+      return 'P' + timespan.value + 'W'
+    } else if (timespan.unit === 'month') {
+      return 'P' + timespan.value + 'M'
     }
-  };
+  }
 
-  $scope.parseTimespan = function(timespan) {
-    var value = 1;
-    var unit = 'hour';
+  $scope.parseTimespan = function (timespan) {
+    var value = 1
+    var unit = 'hour'
     if (timespan.indexOf('T') !== -1) {
       if (timespan.indexOf('H') !== -1) {
-        unit = 'hour';
+        unit = 'hour'
       } else if (timespan.indexOf('M') !== -1) {
-        unit = 'minute';
+        unit = 'minute'
       }
-      value = parseInt(timespan.substr(2));
+      value = parseInt(timespan.substr(2))
     } else {
       if (timespan.indexOf('M') !== -1) {
-        unit = 'month';
+        unit = 'month'
       } else if (timespan.indexOf('W') !== -1) {
-        unit = 'week';
+        unit = 'week'
       } else if (timespan.indexOf('D') !== -1) {
-        unit = 'day';
+        unit = 'day'
       }
-      value = parseInt(timespan.substr(1));
+      value = parseInt(timespan.substr(1))
     }
 
     $scope.timespan = {
       value: value,
       unit: unit
-    };
-  };
+    }
+  }
 
-  $scope.getRoutes();
+  $scope.getRoutes()
+}
 
-};
+},{"angular":121}],73:[function(require,module,exports){
+'use strict'
 
-},{}],73:[function(require,module,exports){
-'use strict';
+var angular = require('angular')
 
-module.exports = function($scope, $http, $uibModal, $uibModalInstance, $timeout, fusio) {
-
+module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout, fusio) {
   $scope.route = {
     path: '',
     scopes: [],
     config: []
-  };
+  }
 
-  $scope.methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
-  $scope.schemas = [];
-  $scope.actions = [];
+  $scope.methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
+  $scope.schemas = []
+  $scope.actions = []
 
-  $scope.indexVersion = -1;
-  $scope.indexMethod = [];
-  $scope.responseCode = '200';
+  $scope.indexVersion = -1
+  $scope.indexMethod = []
+  $scope.responseCode = '200'
 
   $scope.statuuus = [{
     key: 4,
-    value: "Development"
+    value: 'Development'
   }, {
     key: 1,
-    value: "Production"
+    value: 'Production'
   }, {
     key: 2,
-    value: "Deprecated"
+    value: 'Deprecated'
   }, {
     key: 3,
-    value: "Closed"
-  }];
+    value: 'Closed'
+  }]
 
   $scope.statusCodes = {
     '200': 'OK',
@@ -4173,28 +4067,29 @@ module.exports = function($scope, $http, $uibModal, $uibModalInstance, $timeout,
     '504': 'Gateway Timeout',
     '507': 'Insufficient Storage',
     '508': 'Loop Detected'
-  };
+  }
 
-  $scope.create = function(route) {
-    var data = angular.copy(route);
+  $scope.create = function (route) {
+    var data = angular.copy(route)
+    var i
 
     if (angular.isArray(data.scopes)) {
-      var scopes = [];
-      for (var i = 0; i < data.scopes.length; i++) {
-        scopes.push(data.scopes[i].text);
+      var scopes = []
+      for (i = 0; i < data.scopes.length; i++) {
+        scopes.push(data.scopes[i].text)
       }
-      data.scopes = scopes;
+      data.scopes = scopes
     }
 
     // remove empty responses
     if (angular.isObject(data.config)) {
-      for (var i = 0; i < data.config.length; i++) {
+      for (i = 0; i < data.config.length; i++) {
         if (angular.isObject(data.config[i].methods)) {
           for (var method in data.config[i].methods) {
             if (data.config[i].methods.hasOwnProperty(method) && angular.isObject(data.config[i].methods[method].responses)) {
               for (var code in data.config[i].methods[method].responses) {
                 if (data.config[i].methods[method].responses.hasOwnProperty(code) && !data.config[i].methods[method].responses[code]) {
-                  delete data.config[i].methods[method].responses[code];
+                  delete data.config[i].methods[method].responses[code]
                 }
               }
             }
@@ -4204,49 +4099,49 @@ module.exports = function($scope, $http, $uibModal, $uibModalInstance, $timeout,
     }
 
     $http.post(fusio.baseUrl + 'backend/routes', data)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
   $http.get(fusio.baseUrl + 'backend/action?count=1024')
-    .then(function(response) {
-      $scope.actions = response.data.entry;
-    });
+    .then(function (response) {
+      $scope.actions = response.data.entry
+    })
 
   $http.get(fusio.baseUrl + 'backend/schema?count=1024')
-    .then(function(response) {
-      $scope.schemas = response.data.entry;
-    });
+    .then(function (response) {
+      $scope.schemas = response.data.entry
+    })
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
-  $scope.addVersion = function() {
-    var versions = $scope.route.config;
-    versions.push($scope.newVersion());
+  $scope.addVersion = function () {
+    var versions = $scope.route.config
+    versions.push($scope.newVersion())
 
-    $scope.route.config = versions;
+    $scope.route.config = versions
 
-    $timeout(function() {
-      $scope.indexVersion = ($scope.route.config.length - 1);
-      $scope.indexMethod.push(0);
-    });
-  };
+    $timeout(function () {
+      $scope.indexVersion = ($scope.route.config.length - 1)
+      $scope.indexMethod.push(0)
+    })
+  }
 
-  $scope.newVersion = function() {
+  $scope.newVersion = function () {
     return {
       version: $scope.getLatestVersion() + 1,
       status: 4,
@@ -4257,280 +4152,275 @@ module.exports = function($scope, $http, $uibModal, $uibModalInstance, $timeout,
         PATCH: $scope.newEmptyMethod(),
         DELETE: $scope.newEmptyMethod()
       }
-    };
-  };
+    }
+  }
 
-  $scope.newMethod = function() {
+  $scope.newMethod = function () {
     return {
       active: true,
       public: true,
       responses: {
-        "200": 1
+        '200': 1
       },
       action: 1
-    };
-  };
+    }
+  }
 
-  $scope.newEmptyMethod = function() {
+  $scope.newEmptyMethod = function () {
     return {
       active: false,
       responses: {}
-    };
-  };
+    }
+  }
 
-  $scope.getLatestVersion = function() {
-    var version = 0;
+  $scope.getLatestVersion = function () {
+    var version = 0
     for (var i = 0; i < $scope.route.config.length; i++) {
-      var ver = parseInt($scope.route.config[i].version);
+      var ver = parseInt($scope.route.config[i].version)
       if (ver > version) {
-        version = ver;
+        version = ver
       }
     }
-    return version;
-  };
+    return version
+  }
 
-  $scope.addResponse = function(code) {
-    var method = $scope.methods[$scope.indexMethod];
+  $scope.addResponse = function (code) {
+    var method = $scope.methods[$scope.indexMethod]
     if (!$scope.route.config[$scope.indexVersion].methods[method].responses) {
-      $scope.route.config[$scope.indexVersion].methods[method].responses = {};
+      $scope.route.config[$scope.indexVersion].methods[method].responses = {}
     }
     if (!$scope.route.config[$scope.indexVersion].methods[method].responses[code]) {
-      $scope.route.config[$scope.indexVersion].methods[method].responses[code] = 1;
+      $scope.route.config[$scope.indexVersion].methods[method].responses[code] = 1
     }
-  };
+  }
 
-  $scope.removeResponse = function(code) {
-    var method = $scope.methods[$scope.indexMethod];
-    var responses = $scope.route.config[$scope.indexVersion].methods[method].responses;
-    delete responses[code];
+  $scope.removeResponse = function (code) {
+    var method = $scope.methods[$scope.indexMethod]
+    var responses = $scope.route.config[$scope.indexVersion].methods[method].responses
+    delete responses[code]
 
-    $scope.route.config[$scope.indexVersion].methods[method].responses = responses;
-  };
+    $scope.route.config[$scope.indexVersion].methods[method].responses = responses
+  }
 
-  $scope.showShema = function(schemaId) {
+  $scope.showShema = function (schemaId) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/schema/update.html',
       controller: 'SchemaUpdateCtrl',
       resolve: {
-        schema: function() {
-          return {id: schemaId};
+        schema: function () {
+          return { id: schemaId }
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+    }, function () {
+    })
+  }
 
-  $scope.showAction = function(actionId) {
+  $scope.showAction = function (actionId) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/action/update.html',
       controller: 'ActionUpdateCtrl',
       resolve: {
-        action: function() {
-          return {id: actionId};
+        action: function () {
+          return { id: actionId }
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+    }, function () {
+    })
+  }
 
-  $scope.addVersion();
-};
+  $scope.addVersion()
+}
 
-},{}],74:[function(require,module,exports){
-'use strict';
+},{"angular":121}],74:[function(require,module,exports){
+'use strict'
 
-module.exports = function($scope, $http, $uibModalInstance, fusio, route) {
+module.exports = function ($scope, $http, $uibModalInstance, fusio, route) {
+  $scope.route = route
 
-  $scope.route = route;
-
-  $scope.delete = function(route) {
+  $scope.delete = function (route) {
     $http.delete(fusio.baseUrl + 'backend/routes/' + route.id)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
-
-};
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
+}
 
 },{}],75:[function(require,module,exports){
-'use strict';
+'use strict'
 
-var angular = require('angular');
+var angular = require('angular')
 
 angular.module('fusioApp.routes', ['ngRoute', 'ui.bootstrap'])
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/routes', {
-    templateUrl: 'app/controller/routes/index.html',
-    controller: 'RoutesCtrl'
-  });
-}])
+  .config(['$routeProvider', function ($routeProvider) {
+    $routeProvider.when('/routes', {
+      templateUrl: 'app/controller/routes/index.html',
+      controller: 'RoutesCtrl'
+    })
+  }])
 
-.controller('RoutesCtrl', require('./routes'))
-.controller('RoutesCreateCtrl', require('./create'))
-.controller('RoutesUpdateCtrl', require('./update'))
-.controller('RoutesDeleteCtrl', require('./delete'))
-
-;
+  .controller('RoutesCtrl', require('./routes'))
+  .controller('RoutesCreateCtrl', require('./create'))
+  .controller('RoutesUpdateCtrl', require('./update'))
+  .controller('RoutesDeleteCtrl', require('./delete'))
 
 },{"./create":73,"./delete":74,"./routes":76,"./update":77,"angular":121}],76:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModal, $routeParams, fusio) {
+module.exports = function ($scope, $http, $uibModal, $routeParams, fusio) {
+  $scope.response = null
+  $scope.search = ''
 
-  $scope.response = null;
-  $scope.search = '';
-
-  $scope.load = function() {
-    var search = encodeURIComponent($scope.search ? $scope.search : '');
+  $scope.load = function () {
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
 
     $http.get(fusio.baseUrl + 'backend/routes?search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.routes = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.routes = data.entry
+      })
+  }
 
-  $scope.pageChanged = function() {
-    var startIndex = ($scope.startIndex - 1) * 16;
-    var search = encodeURIComponent($scope.search ? $scope.search : '');
+  $scope.pageChanged = function () {
+    var startIndex = ($scope.startIndex - 1) * 16
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
 
     $http.get(fusio.baseUrl + 'backend/routes?startIndex=' + startIndex + '&search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.routes = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.routes = data.entry
+      })
+  }
 
-  $scope.doSearch = function(search) {
-    $http.get(fusio.baseUrl + 'backend/routes?search=' + encodeURIComponent(search ? search : ''))
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.routes = data.entry;
-      });
-  };
+  $scope.doSearch = function (search) {
+    $http.get(fusio.baseUrl + 'backend/routes?search=' + encodeURIComponent(search || ''))
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.routes = data.entry
+      })
+  }
 
-  $scope.openCreateDialog = function() {
+  $scope.openCreateDialog = function () {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/routes/create.html',
       controller: 'RoutesCreateCtrl'
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
 
-  $scope.openUpdateDialog = function(route) {
+  $scope.openUpdateDialog = function (route) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/routes/update.html',
       controller: 'RoutesUpdateCtrl',
       resolve: {
-        route: function() {
-          return route;
+        route: function () {
+          return route
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
 
-  $scope.openDeleteDialog = function(route) {
+  $scope.openDeleteDialog = function (route) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/routes/delete.html',
       controller: 'RoutesDeleteCtrl',
       resolve: {
-        route: function() {
-          return route;
+        route: function () {
+          return route
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
-  $scope.load();
-
-};
+  $scope.load()
+}
 
 },{}],77:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModal, $uibModalInstance, $timeout, fusio, route) {
+var angular = require('angular')
 
-  $scope.route = route;
+module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout, fusio, route) {
+  $scope.route = route
 
-  $scope.methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
-  $scope.schemas = [];
-  $scope.actions = [];
+  $scope.methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
+  $scope.schemas = []
+  $scope.actions = []
 
-  $scope.indexVersion = -1;
-  $scope.indexMethod = [];
-  $scope.responseCode = '200';
+  $scope.indexVersion = -1
+  $scope.indexMethod = []
+  $scope.responseCode = '200'
 
   $scope.statuuus = [{
     key: 4,
-    value: "Development"
+    value: 'Development'
   }, {
     key: 1,
-    value: "Production"
+    value: 'Production'
   }, {
     key: 2,
-    value: "Deprecated"
+    value: 'Deprecated'
   }, {
     key: 3,
-    value: "Closed"
-  }];
+    value: 'Closed'
+  }]
 
   $scope.statusCodes = {
     '200': 'OK',
@@ -4567,28 +4457,29 @@ module.exports = function($scope, $http, $uibModal, $uibModalInstance, $timeout,
     '504': 'Gateway Timeout',
     '507': 'Insufficient Storage',
     '508': 'Loop Detected'
-  };
+  }
 
-  $scope.update = function(route) {
-    var data = angular.copy(route);
+  $scope.update = function (route) {
+    var data = angular.copy(route)
+    var i
 
     if (angular.isArray(data.scopes)) {
-      var scopes = [];
-      for (var i = 0; i < data.scopes.length; i++) {
-        scopes.push(data.scopes[i].text);
+      var scopes = []
+      for (i = 0; i < data.scopes.length; i++) {
+        scopes.push(data.scopes[i].text)
       }
-      data.scopes = scopes;
+      data.scopes = scopes
     }
 
     // remove empty responses
     if (angular.isObject(data.config)) {
-      for (var i = 0; i < data.config.length; i++) {
+      for (i = 0; i < data.config.length; i++) {
         if (angular.isObject(data.config[i].methods)) {
           for (var method in data.config[i].methods) {
             if (data.config[i].methods.hasOwnProperty(method) && angular.isObject(data.config[i].methods[method].responses)) {
               for (var code in data.config[i].methods[method].responses) {
                 if (data.config[i].methods[method].responses.hasOwnProperty(code) && !data.config[i].methods[method].responses[code]) {
-                  delete data.config[i].methods[method].responses[code];
+                  delete data.config[i].methods[method].responses[code]
                 }
               }
             }
@@ -4598,88 +4489,88 @@ module.exports = function($scope, $http, $uibModal, $uibModalInstance, $timeout,
     }
 
     $http.put(fusio.baseUrl + 'backend/routes/' + route.id, data)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
   $http.get(fusio.baseUrl + 'backend/routes/' + route.id)
-    .then(function(response) {
-      var data = response.data;
+    .then(function (response) {
+      var data = response.data
       // check and add missing methods
       if (data.config) {
-        var config = [];
+        var config = []
         for (var version in data.config) {
-          var ver = data.config[version];
-          var methods = {};
+          var ver = data.config[version]
+          var methods = {}
           for (var i = 0; i < $scope.methods.length; i++) {
             if (ver.methods.hasOwnProperty($scope.methods[i])) {
-              methods[$scope.methods[i]] = ver.methods[$scope.methods[i]];
+              methods[$scope.methods[i]] = ver.methods[$scope.methods[i]]
             } else {
-              methods[$scope.methods[i]] = $scope.newEmptyMethod();
+              methods[$scope.methods[i]] = $scope.newEmptyMethod()
             }
           }
-          ver.methods = methods;
-          config.push(ver);
+          ver.methods = methods
+          config.push(ver)
         }
-        data.config = config;
+        data.config = config
       }
 
-      $scope.route = data;
+      $scope.route = data
 
-      $timeout(function() {
-        var indexVersion = -1;
-        var indexMethod = [];
+      $timeout(function () {
+        var indexVersion = -1
+        var indexMethod = []
         if ($scope.route.config.length > 0) {
           for (var i = 0; i < $scope.route.config.length; i++) {
-            indexVersion++;
-            indexMethod.push(0);
+            indexVersion++
+            indexMethod.push(0)
           }
         }
 
-        $scope.indexVersion = indexVersion;
-        $scope.indexMethod = indexMethod;
-      });
-    });
+        $scope.indexVersion = indexVersion
+        $scope.indexMethod = indexMethod
+      })
+    })
 
   $http.get(fusio.baseUrl + 'backend/action?count=1024')
-    .then(function(response) {
-      $scope.actions = response.data.entry;
-    });
+    .then(function (response) {
+      $scope.actions = response.data.entry
+    })
 
   $http.get(fusio.baseUrl + 'backend/schema?count=1024')
-    .then(function(response) {
-      $scope.schemas = response.data.entry;
-    });
+    .then(function (response) {
+      $scope.schemas = response.data.entry
+    })
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
-  $scope.addVersion = function() {
-    var versions = $scope.route.config;
-    versions.push($scope.newVersion());
+  $scope.addVersion = function () {
+    var versions = $scope.route.config
+    versions.push($scope.newVersion())
 
-    $scope.route.config = versions;
+    $scope.route.config = versions
 
-    $timeout(function() {
-      $scope.indexVersion = ($scope.route.config.length - 1);
-      $scope.indexMethod.push(0);
-    });
-  };
+    $timeout(function () {
+      $scope.indexVersion = ($scope.route.config.length - 1)
+      $scope.indexMethod.push(0)
+    })
+  }
 
-  $scope.newVersion = function() {
+  $scope.newVersion = function () {
     return {
       version: $scope.getLatestVersion() + 1,
       status: 4,
@@ -4690,432 +4581,427 @@ module.exports = function($scope, $http, $uibModal, $uibModalInstance, $timeout,
         PATCH: $scope.newEmptyMethod(),
         DELETE: $scope.newEmptyMethod()
       }
-    };
-  };
+    }
+  }
 
-  $scope.newMethod = function() {
+  $scope.newMethod = function () {
     return {
       active: true,
       public: true,
       responses: {
-        "200": 1
+        '200': 1
       },
       action: 1
-    };
-  };
+    }
+  }
 
-  $scope.newEmptyMethod = function() {
+  $scope.newEmptyMethod = function () {
     return {
       active: false,
       responses: {}
-    };
-  };
+    }
+  }
 
-  $scope.getLatestVersion = function() {
-    var version = 0;
+  $scope.getLatestVersion = function () {
+    var version = 0
     for (var i = 0; i < $scope.route.config.length; i++) {
-      var ver = parseInt($scope.route.config[i].version);
+      var ver = parseInt($scope.route.config[i].version)
       if (ver > version) {
-        version = ver;
+        version = ver
       }
     }
-    return version;
-  };
+    return version
+  }
 
-  $scope.addResponse = function(code) {
-    var method = $scope.methods[$scope.indexMethod];
+  $scope.addResponse = function (code) {
+    var method = $scope.methods[$scope.indexMethod]
     if (!$scope.route.config[$scope.indexVersion].methods[method].responses) {
-      $scope.route.config[$scope.indexVersion].methods[method].responses = {};
+      $scope.route.config[$scope.indexVersion].methods[method].responses = {}
     }
     if (!$scope.route.config[$scope.indexVersion].methods[method].responses[code]) {
-      $scope.route.config[$scope.indexVersion].methods[method].responses[code] = 1;
+      $scope.route.config[$scope.indexVersion].methods[method].responses[code] = 1
     }
-  };
+  }
 
-  $scope.removeResponse = function(code) {
-    var method = $scope.methods[$scope.indexMethod];
-    var responses = $scope.route.config[$scope.indexVersion].methods[method].responses;
-    delete responses[code];
+  $scope.removeResponse = function (code) {
+    var method = $scope.methods[$scope.indexMethod]
+    var responses = $scope.route.config[$scope.indexVersion].methods[method].responses
+    delete responses[code]
 
-    $scope.route.config[$scope.indexVersion].methods[method].responses = responses;
-  };
+    $scope.route.config[$scope.indexVersion].methods[method].responses = responses
+  }
 
-  $scope.showShema = function(schemaId) {
+  $scope.showShema = function (schemaId) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/schema/update.html',
       controller: 'SchemaUpdateCtrl',
       resolve: {
-        schema: function() {
-          return {id: schemaId};
+        schema: function () {
+          return { id: schemaId }
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+    }, function () {
+    })
+  }
 
-  $scope.showAction = function(actionId) {
+  $scope.showAction = function (actionId) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/action/update.html',
       controller: 'ActionUpdateCtrl',
       resolve: {
-        action: function() {
-          return {id: actionId};
+        action: function () {
+          return { id: actionId }
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-    }, function() {
-    });
-  };
-};
+    modalInstance.result.then(function (response) {
+    }, function () {
+    })
+  }
+}
 
-},{}],78:[function(require,module,exports){
-'use strict';
+},{"angular":121}],78:[function(require,module,exports){
+'use strict'
 
-module.exports = function($scope, $http, $uibModalInstance, fusio) {
+var angular = require('angular')
 
+module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   $scope.schema = {
     name: '',
     source: ''
-  };
+  }
 
-  $scope.create = function(schema) {
-    var data = angular.copy(schema);
+  $scope.create = function (schema) {
+    var data = angular.copy(schema)
 
     // convert string to json
     if (angular.isString(data.source)) {
-      data.source = JSON.parse(data.source);
+      data.source = JSON.parse(data.source)
     }
 
     $http.post(fusio.baseUrl + 'backend/schema', data)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
+}
 
-};
+},{"angular":121}],79:[function(require,module,exports){
+'use strict'
 
-},{}],79:[function(require,module,exports){
-'use strict';
+module.exports = function ($scope, $http, $uibModalInstance, fusio, schema) {
+  $scope.schema = schema
 
-module.exports = function($scope, $http, $uibModalInstance, fusio, schema) {
-
-  $scope.schema = schema;
-
-  $scope.delete = function(schema) {
+  $scope.delete = function (schema) {
     $http.delete(fusio.baseUrl + 'backend/schema/' + schema.id)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
-
-};
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
+}
 
 },{}],80:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $routeParams, fusio) {
+var angular = require('angular')
 
-  $scope.schema = {};
-  $scope.response = null;
+module.exports = function ($scope, $http, $routeParams, fusio) {
+  $scope.schema = {}
+  $scope.response = null
 
-  $scope.update = function(schema) {
-    var data = angular.copy(schema);
-    if (typeof data.source == 'string') {
-      data.source = JSON.parse(data.source);
+  $scope.update = function (schema) {
+    var data = angular.copy(schema)
+    if (typeof data.source === 'string') {
+      data.source = JSON.parse(data.source)
     }
 
     $http.put(fusio.baseUrl + 'backend/schema/' + data.id, data)
-      .then(function(response) {
-        var data = response.data;
+      .then(function (response) {
+        var data = response.data
         if (data.success === true) {
-          $scope.loadPreview(schema.id);
+          $scope.loadPreview(schema.id)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
-  $scope.loadPreview = function(schemaId){
+  $scope.loadPreview = function (schemaId) {
     $http.post(fusio.baseUrl + 'backend/schema/preview/' + schemaId, null)
-      .then(function(response) {
-        var data = response.data;
-        data.preview = data.preview.replace(/href=\"\#([A-z0-9_]+)\"/g, "href=\"#!/schema/designer/" + schemaId + "\"");
-        $scope.response = data;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        data.preview = data.preview.replace(/href="#([A-z0-9_]+)"/g, 'href="#!/schema/designer/' + schemaId + '"')
+        $scope.response = data
+      })
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
   $http.get(fusio.baseUrl + 'backend/schema/' + $routeParams.schema_id)
-    .then(function(response) {
-      var data = response.data;
+    .then(function (response) {
+      var data = response.data
       if (!angular.isString(data.source)) {
-        data.source = JSON.stringify(data.source, null, 4);
+        data.source = JSON.stringify(data.source, null, 4)
       }
 
-      $scope.schema = data;
-    });
+      $scope.schema = data
+    })
 
-  $scope.loadPreview($routeParams.schema_id);
+  $scope.loadPreview($routeParams.schema_id)
+}
 
-};
+},{"angular":121}],81:[function(require,module,exports){
+'use strict'
 
-},{}],81:[function(require,module,exports){
-'use strict';
-
-var angular = require('angular');
+var angular = require('angular')
 
 angular.module('fusioApp.schema', ['ngRoute', 'ui.bootstrap'])
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/schema', {
-    templateUrl: 'app/controller/schema/index.html',
-    controller: 'SchemaCtrl'
-  });
-  $routeProvider.when('/schema/designer/:schema_id', {
-    templateUrl: 'app/controller/schema/designer.html',
-    controller: 'SchemaDesignerCtrl'
-  });
-}])
+  .config(['$routeProvider', function ($routeProvider) {
+    $routeProvider.when('/schema', {
+      templateUrl: 'app/controller/schema/index.html',
+      controller: 'SchemaCtrl'
+    })
+    $routeProvider.when('/schema/designer/:schema_id', {
+      templateUrl: 'app/controller/schema/designer.html',
+      controller: 'SchemaDesignerCtrl'
+    })
+  }])
 
-.controller('SchemaCtrl', require('./schema'))
-.controller('SchemaCreateCtrl', require('./create'))
-.controller('SchemaUpdateCtrl', require('./update'))
-.controller('SchemaDeleteCtrl', require('./delete'))
-.controller('SchemaDesignerCtrl', require('./designer'))
-
-;
+  .controller('SchemaCtrl', require('./schema'))
+  .controller('SchemaCreateCtrl', require('./create'))
+  .controller('SchemaUpdateCtrl', require('./update'))
+  .controller('SchemaDeleteCtrl', require('./delete'))
+  .controller('SchemaDesignerCtrl', require('./designer'))
 
 },{"./create":78,"./delete":79,"./designer":80,"./schema":82,"./update":83,"angular":121}],82:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModal, $routeParams, $location, fusio) {
+module.exports = function ($scope, $http, $uibModal, $routeParams, $location, fusio) {
+  $scope.response = null
+  $scope.search = ''
+  $scope.routes = []
 
-  $scope.response = null;
-  $scope.search = '';
-  $scope.routes = [];
-
-  $scope.load = function() {
-    var search = encodeURIComponent($scope.search ? $scope.search : '');
+  $scope.load = function () {
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
 
     $http.get(fusio.baseUrl + 'backend/schema?search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.schemas = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.schemas = data.entry
+      })
+  }
 
-  $scope.loadRoutes = function() {
+  $scope.loadRoutes = function () {
     $http.get(fusio.baseUrl + 'backend/routes')
-      .then(function(response) {
-        $scope.routes = response.data.entry;
-      });
-  };
+      .then(function (response) {
+        $scope.routes = response.data.entry
+      })
+  }
 
-  $scope.pageChanged = function() {
-    var startIndex = ($scope.startIndex - 1) * 16;
-    var search = encodeURIComponent($scope.search ? $scope.search : '');
+  $scope.pageChanged = function () {
+    var startIndex = ($scope.startIndex - 1) * 16
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
 
     $http.get(fusio.baseUrl + 'backend/schema?startIndex=' + startIndex + '&search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.schemas = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.schemas = data.entry
+      })
+  }
 
-  $scope.doSearch = function(search) {
-    $http.get(fusio.baseUrl + 'backend/schema?search=' + encodeURIComponent(search ? search : ''))
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.schemas = data.entry;
-      });
-  };
+  $scope.doSearch = function (search) {
+    $http.get(fusio.baseUrl + 'backend/schema?search=' + encodeURIComponent(search || ''))
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.schemas = data.entry
+      })
+  }
 
-  $scope.openCreateDialog = function() {
+  $scope.openCreateDialog = function () {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/schema/create.html',
       controller: 'SchemaCreateCtrl'
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
 
-  $scope.openUpdateDialog = function(schema) {
+  $scope.openUpdateDialog = function (schema) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/schema/update.html',
       controller: 'SchemaUpdateCtrl',
       resolve: {
-        schema: function() {
-          return schema;
+        schema: function () {
+          return schema
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
 
-  $scope.openDeleteDialog = function(schema) {
+  $scope.openDeleteDialog = function (schema) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/schema/delete.html',
       controller: 'SchemaDeleteCtrl',
       resolve: {
-        schema: function() {
-          return schema;
+        schema: function () {
+          return schema
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
-  $scope.load();
-  $scope.loadRoutes();
-
-};
+  $scope.load()
+  $scope.loadRoutes()
+}
 
 },{}],83:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModalInstance, $uibModal, fusio, schema) {
+var angular = require('angular')
 
-  $scope.schema = schema;
+module.exports = function ($scope, $http, $uibModalInstance, $uibModal, fusio, schema) {
+  $scope.schema = schema
 
-  $scope.update = function(schema) {
-    var data = angular.copy(schema);
+  $scope.update = function (schema) {
+    var data = angular.copy(schema)
 
     // convert string to json
     if (angular.isString(data.source)) {
-      data.source = JSON.parse(data.source);
+      data.source = JSON.parse(data.source)
     }
 
     $http.put(fusio.baseUrl + 'backend/schema/' + schema.id, data)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
   $http.get(fusio.baseUrl + 'backend/schema/' + schema.id)
-    .then(function(response) {
-      var data = response.data;
+    .then(function (response) {
+      var data = response.data
       if (!angular.isString(data.source)) {
-        data.source = JSON.stringify(data.source, null, 4);
+        data.source = JSON.stringify(data.source, null, 4)
       }
 
-      $scope.schema = data;
-    });
+      $scope.schema = data
+    })
+}
 
-};
+},{"angular":121}],84:[function(require,module,exports){
+'use strict'
 
-},{}],84:[function(require,module,exports){
-'use strict';
+var angular = require('angular')
 
-module.exports = function($scope, $http, $uibModalInstance, fusio) {
-
+module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   $scope.scope = {
     name: ''
-  };
+  }
 
-  $scope.routes = [];
+  $scope.routes = []
 
   $http.get(fusio.baseUrl + 'backend/routes?count=1024')
-    .then(function(response) {
-      $scope.routes = response.data.entry;
-    });
+    .then(function (response) {
+      $scope.routes = response.data.entry
+    })
 
-  $scope.create = function(scope) {
-    var data = angular.copy(scope);
+  $scope.create = function (scope) {
+    var data = angular.copy(scope)
 
-    var routes = [];
+    var routes = []
     for (var i = 0; i < $scope.routes.length; i++) {
-      var methods = [];
+      var methods = []
       if ($scope.routes[i].allowedMethods) {
         for (var key in $scope.routes[i].allowedMethods) {
           if ($scope.routes[i].allowedMethods[key] === true) {
-            methods.push(key.toUpperCase());
+            methods.push(key.toUpperCase())
           }
         }
       }
@@ -5125,147 +5011,141 @@ module.exports = function($scope, $http, $uibModalInstance, fusio) {
           routeId: $scope.routes[i].id,
           allow: true,
           methods: methods.join('|')
-        });
+        })
       }
     }
 
-    data.routes = routes;
+    data.routes = routes
 
     $http.post(fusio.baseUrl + 'backend/scope', data)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
+}
 
-};
+},{"angular":121}],85:[function(require,module,exports){
+'use strict'
 
-},{}],85:[function(require,module,exports){
-'use strict';
+module.exports = function ($scope, $http, $uibModalInstance, fusio, scope) {
+  $scope.scope = scope
 
-module.exports = function($scope, $http, $uibModalInstance, fusio, scope) {
-
-  $scope.scope = scope;
-
-  $scope.delete = function(scope) {
+  $scope.delete = function (scope) {
     $http.delete(fusio.baseUrl + 'backend/scope/' + scope.id)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
-
-};
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
+}
 
 },{}],86:[function(require,module,exports){
-'use strict';
+'use strict'
 
-var angular = require('angular');
+var angular = require('angular')
 
 angular.module('fusioApp.scope', ['ngRoute', 'ui.bootstrap'])
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/scope', {
-    templateUrl: 'app/controller/scope/index.html',
-    controller: 'ScopeCtrl'
-  });
-}])
+  .config(['$routeProvider', function ($routeProvider) {
+    $routeProvider.when('/scope', {
+      templateUrl: 'app/controller/scope/index.html',
+      controller: 'ScopeCtrl'
+    })
+  }])
 
-.controller('ScopeCtrl', require('./scope'))
-.controller('ScopeCreateCtrl', require('./create'))
-.controller('ScopeUpdateCtrl', require('./update'))
-.controller('ScopeDeleteCtrl', require('./delete'))
-
-;
+  .controller('ScopeCtrl', require('./scope'))
+  .controller('ScopeCreateCtrl', require('./create'))
+  .controller('ScopeUpdateCtrl', require('./update'))
+  .controller('ScopeDeleteCtrl', require('./delete'))
 
 },{"./create":84,"./delete":85,"./scope":87,"./update":88,"angular":121}],87:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModal, fusio) {
+module.exports = function ($scope, $http, $uibModal, fusio) {
+  $scope.response = null
+  $scope.search = ''
 
-  $scope.response = null;
-  $scope.search = '';
-
-  $scope.load = function() {
-    var search = encodeURIComponent($scope.search ? $scope.search : '');
+  $scope.load = function () {
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
 
     $http.get(fusio.baseUrl + 'backend/scope?search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.scopes = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.scopes = data.entry
+      })
+  }
 
-  $scope.pageChanged = function() {
-    var startIndex = ($scope.startIndex - 1) * 16;
-    var search = encodeURIComponent($scope.search ? $scope.search : '');
+  $scope.pageChanged = function () {
+    var startIndex = ($scope.startIndex - 1) * 16
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
 
     $http.get(fusio.baseUrl + 'backend/scope?startIndex=' + startIndex + '&search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.scopes = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.scopes = data.entry
+      })
+  }
 
-  $scope.doSearch = function(search) {
-    $http.get(fusio.baseUrl + 'backend/scope?search=' + encodeURIComponent(search ? search : ''))
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.scopes = data.entry;
-      });
-  };
+  $scope.doSearch = function (search) {
+    $http.get(fusio.baseUrl + 'backend/scope?search=' + encodeURIComponent(search || ''))
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.scopes = data.entry
+      })
+  }
 
-  $scope.openCreateDialog = function() {
+  $scope.openCreateDialog = function () {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/scope/create.html',
       controller: 'ScopeCreateCtrl'
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
 
-  $scope.openUpdateDialog = function(scope) {
+  $scope.openUpdateDialog = function (scope) {
     if (scope.id <= 3) {
-      return;
+      return
     }
 
     var modalInstance = $uibModal.open({
@@ -5274,22 +5154,22 @@ module.exports = function($scope, $http, $uibModal, fusio) {
       templateUrl: 'app/controller/scope/update.html',
       controller: 'ScopeUpdateCtrl',
       resolve: {
-        scope: function() {
-          return scope;
+        scope: function () {
+          return scope
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
 
-  $scope.openDeleteDialog = function(scope) {
+  $scope.openDeleteDialog = function (scope) {
     if (scope.id <= 3) {
-      return;
+      return
     }
 
     var modalInstance = $uibModal.open({
@@ -5298,77 +5178,77 @@ module.exports = function($scope, $http, $uibModal, fusio) {
       templateUrl: 'app/controller/scope/delete.html',
       controller: 'ScopeDeleteCtrl',
       resolve: {
-        scope: function() {
-          return scope;
+        scope: function () {
+          return scope
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
-  $scope.load();
-
-};
+  $scope.load()
+}
 
 },{}],88:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModalInstance, fusio, scope) {
+var angular = require('angular')
 
-  $scope.scope = scope;
+module.exports = function ($scope, $http, $uibModalInstance, fusio, scope) {
+  $scope.scope = scope
 
-  $scope.routes = [];
+  $scope.routes = []
 
-  $scope.loadRoutes = function() {
+  $scope.loadRoutes = function () {
     $http.get(fusio.baseUrl + 'backend/routes?count=1024')
-      .then(function(response) {
-        var data = response.data;
-        var routes = [];
+      .then(function (response) {
+        var data = response.data
+        var routes = []
         for (var i = 0; i < data.entry.length; i++) {
-          var route = data.entry[i];
+          var route = data.entry[i]
           if ($scope.scope.routes) {
             for (var j = 0; j < $scope.scope.routes.length; j++) {
-              if ($scope.scope.routes[j].routeId == route.id) {
-                var methods = [];
+              if ($scope.scope.routes[j].routeId === route.id) {
+                var methods = []
                 if ($scope.scope.routes[j].methods) {
-                  methods = $scope.scope.routes[j].methods.split('|');
+                  methods = $scope.scope.routes[j].methods.split('|')
                 }
-                var allowedMethods = {};
+                var allowedMethods = {}
                 for (var k = 0; k < methods.length; k++) {
-                  allowedMethods[methods[k].toLowerCase()] = true;
+                  allowedMethods[methods[k].toLowerCase()] = true
                 }
 
-                route.allow = $scope.scope.routes[j].allow ? true : false;
-                route.allowedMethods = allowedMethods;
+                route.allow = !!$scope.scope.routes[j].allow
+                route.allowedMethods = allowedMethods
               }
             }
           }
-          routes.push(route);
+          routes.push(route)
         }
-        $scope.routes = routes;
-      });
-  };
+        $scope.routes = routes
+      })
+  }
 
-  $scope.update = function(scope) {
-    var data = angular.copy(scope);
+  $scope.update = function (scope) {
+    var data = angular.copy(scope)
 
-    var routes = [];
+    var routes = []
     if ($scope.routes) {
       for (var i = 0; i < $scope.routes.length; i++) {
-        var methods = [];
+        var methods = []
         if ($scope.routes[i].allowedMethods) {
           for (var key in $scope.routes[i].allowedMethods) {
             if ($scope.routes[i].allowedMethods[key] === true) {
-              methods.push(key.toUpperCase());
+              methods.push(key.toUpperCase())
             }
           }
         }
@@ -5378,123 +5258,117 @@ module.exports = function($scope, $http, $uibModalInstance, fusio, scope) {
             routeId: $scope.routes[i].id,
             allow: true,
             methods: methods.join('|')
-          });
+          })
         }
       }
     }
 
-    data.routes = routes;
+    data.routes = routes
 
     $http.put(fusio.baseUrl + 'backend/scope/' + scope.id, data)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
   $http.get(fusio.baseUrl + 'backend/scope/' + scope.id)
-    .then(function(response) {
-      $scope.scope = response.data;
+    .then(function (response) {
+      $scope.scope = response.data
 
-      $scope.loadRoutes();
-    });
+      $scope.loadRoutes()
+    })
+}
 
-};
+},{"angular":121}],89:[function(require,module,exports){
+'use strict'
 
-},{}],89:[function(require,module,exports){
-'use strict';
+module.exports = function ($scope, $http, $uibModalInstance, fusio, filter) {
+  $scope.filter = filter
+  $scope.apps = []
+  $scope.users = []
+  $scope.routes = []
 
-module.exports = function($scope, $http, $uibModalInstance, fusio, filter) {
+  $scope.doFilter = function () {
+    $uibModalInstance.close($scope.filter)
+  }
 
-  $scope.filter = filter;
-  $scope.apps = [];
-  $scope.users = [];
-  $scope.routes = [];
-  
-  $scope.doFilter = function() {
-    $uibModalInstance.close($scope.filter);
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
-
-  $scope.getApps = function(name) {
+  $scope.getApps = function (name) {
     $http.get(fusio.baseUrl + 'backend/app?count=1024')
-      .then(function(response) {
-        $scope.apps = response.data.entry;
-      });
-  };
+      .then(function (response) {
+        $scope.apps = response.data.entry
+      })
+  }
 
-  $scope.getUsers = function(name) {
+  $scope.getUsers = function (name) {
     $http.get(fusio.baseUrl + 'backend/user?count=1024')
-      .then(function(response) {
-        $scope.users = response.data.entry;
-      });
-  };
+      .then(function (response) {
+        $scope.users = response.data.entry
+      })
+  }
 
-  $scope.getRoutes = function(name) {
+  $scope.getRoutes = function (name) {
     $http.get(fusio.baseUrl + 'backend/routes?count=1024')
-      .then(function(response) {
-        $scope.routes = response.data.entry;
-      });
-  };
+      .then(function (response) {
+        $scope.routes = response.data.entry
+      })
+  }
 
-  $scope.getApps();
-  $scope.getUsers();
-  $scope.getRoutes();
-
-};
+  $scope.getApps()
+  $scope.getUsers()
+  $scope.getRoutes()
+}
 
 },{}],90:[function(require,module,exports){
-'use strict';
+'use strict'
 
-var angular = require('angular');
+var angular = require('angular')
 
 angular.module('fusioApp.statistic', ['ngRoute', 'ui.bootstrap'])
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/statistic', {
-    templateUrl: 'app/controller/statistic/index.html',
-    controller: 'StatisticCtrl'
-  });
-}])
+  .config(['$routeProvider', function ($routeProvider) {
+    $routeProvider.when('/statistic', {
+      templateUrl: 'app/controller/statistic/index.html',
+      controller: 'StatisticCtrl'
+    })
+  }])
 
-.controller('StatisticCtrl', require('./statistic'))
-.controller('StatisticFilterCtrl', require('./filter'))
-
-;
+  .controller('StatisticCtrl', require('./statistic'))
+  .controller('StatisticFilterCtrl', require('./filter'))
 
 },{"./filter":89,"./statistic":91,"angular":121}],91:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModal, $compile, fusio) {
-
+module.exports = function ($scope, $http, $uibModal, $compile, fusio) {
   // set initial date range
-  var from = new Date();
-  from.setMonth(from.getMonth() - 1);
-  var to = new Date();
+  var from = new Date()
+  from.setMonth(from.getMonth() - 1)
+  var to = new Date()
 
   $scope.filter = {
     from: from,
     to: to
-  };
-  $scope.chart = {};
-  $scope.statistic = 'incoming_requests';
+  }
+  $scope.chart = {}
+  $scope.statistic = 'incoming_requests'
 
   $scope.statistics = [{
     name: 'Errors per route',
@@ -5523,449 +5397,403 @@ module.exports = function($scope, $http, $uibModal, $compile, fusio) {
   }, {
     name: 'Used points',
     value: 'used_points'
-  }];
+  }]
 
-  $scope.doFilter = function() {
-    var statistic = $scope.statistic ? $scope.statistic : 'incoming_requests';
-    var query = '';
+  $scope.doFilter = function () {
+    var statistic = $scope.statistic ? $scope.statistic : 'incoming_requests'
+    var query = ''
     for (var key in $scope.filter) {
       if ($scope.filter[key]) {
-        var value;
+        var value
         if ($scope.filter[key] instanceof Date) {
-          value = $scope.filter[key].toISOString();
+          value = $scope.filter[key].toISOString()
         } else {
-          value = $scope.filter[key];
+          value = $scope.filter[key]
         }
 
-        query += key + '=' + encodeURIComponent(value) + '&';
+        query += key + '=' + encodeURIComponent(value) + '&'
       }
     }
 
     $http.get(fusio.baseUrl + 'backend/statistic/' + statistic + '?' + query)
-      .then(function(response) {
-        $scope.chart = response.data;
-      });
-  };
+      .then(function (response) {
+        $scope.chart = response.data
+      })
+  }
 
-  $scope.getStatisticName = function(statistic) {
+  $scope.getStatisticName = function (statistic) {
     for (var i = 0; i < $scope.statistics.length; i++) {
-      if ($scope.statistics[i].value == statistic) {
-        return $scope.statistics[i].name;
+      if ($scope.statistics[i].value === statistic) {
+        return $scope.statistics[i].name
       }
     }
-    return null;
-  };
+    return null
+  }
 
-  $scope.openFilterDialog = function() {
+  $scope.openFilterDialog = function () {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/statistic/filter.html',
       controller: 'StatisticFilterCtrl',
       resolve: {
-        filter: function() {
-          return $scope.filter;
+        filter: function () {
+          return $scope.filter
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(filter) {
-      $scope.filter = filter;
-      $scope.doFilter();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (filter) {
+      $scope.filter = filter
+      $scope.doFilter()
+    }, function () {
+    })
+  }
 
-  $scope.doFilter();
-
-};
+  $scope.doFilter()
+}
 
 },{}],92:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModal, $uibModalInstance, fusio, token) {
-
-  $scope.token = token;
+module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, token) {
+  $scope.token = token
 
   $scope.statuuus = [{
     key: 1,
-    value: "Active"
+    value: 'Active'
   }, {
     key: 2,
-    value: "Deleted"
-  }];
+    value: 'Deleted'
+  }]
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
   $http.get(fusio.baseUrl + 'backend/app/token/' + token.id)
-    .then(function(response) {
-      $scope.token = response.data;
-    });
-
-};
+    .then(function (response) {
+      $scope.token = response.data
+    })
+}
 
 },{}],93:[function(require,module,exports){
-'use strict';
+arguments[4][17][0].apply(exports,arguments)
+},{"dup":17}],94:[function(require,module,exports){
+'use strict'
 
-module.exports = function($scope, $http, $uibModalInstance, fusio, filter) {
-
-  $scope.filter = filter;
-  $scope.apps = [];
-  $scope.users = [];
-
-  $scope.doFilter = function() {
-    $uibModalInstance.close($scope.filter);
-  };
-
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
-
-  $scope.getApps = function(name) {
-    $http.get(fusio.baseUrl + 'backend/app?count=1024')
-      .then(function(response) {
-        $scope.apps = response.data.entry;
-      });
-  };
-
-  $scope.getUsers = function(name) {
-    $http.get(fusio.baseUrl + 'backend/user?count=1024')
-      .then(function(response) {
-        $scope.users = response.data.entry;
-      });
-  };
-
-  $scope.getApps();
-  $scope.getUsers();
-  
-};
-
-},{}],94:[function(require,module,exports){
-'use strict';
-
-var angular = require('angular');
+var angular = require('angular')
 
 angular.module('fusioApp.token', ['ngRoute', 'ui.bootstrap'])
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/token', {
-    templateUrl: 'app/controller/token/index.html',
-    controller: 'TokenCtrl'
-  });
-}])
+  .config(['$routeProvider', function ($routeProvider) {
+    $routeProvider.when('/token', {
+      templateUrl: 'app/controller/token/index.html',
+      controller: 'TokenCtrl'
+    })
+  }])
 
-.controller('TokenCtrl', require('./token'))
-.controller('TokenDetailCtrl', require('./detail'))
-.controller('TokenFilterCtrl', require('./filter'))
-
-;
+  .controller('TokenCtrl', require('./token'))
+  .controller('TokenDetailCtrl', require('./detail'))
+  .controller('TokenFilterCtrl', require('./filter'))
 
 },{"./detail":92,"./filter":93,"./token":95,"angular":121}],95:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModal, $timeout, fusio) {
-
+module.exports = function ($scope, $http, $uibModal, $timeout, fusio) {
   // set initial date range
-  var from = new Date();
-  from.setMonth(from.getMonth() - 1);
-  var to = new Date();
+  var from = new Date()
+  from.setMonth(from.getMonth() - 1)
+  var to = new Date()
 
-  $scope.search = '';
+  $scope.search = ''
   $scope.filter = {
     from: from,
     to: to
-  };
+  }
 
-  $scope.routes = [];
-  $scope.apps = [];
+  $scope.routes = []
+  $scope.apps = []
 
-  $scope.load = function() {
-    var search = '';
+  $scope.load = function () {
+    var search = ''
     if ($scope.search) {
-      search = encodeURIComponent($scope.search);
+      search = encodeURIComponent($scope.search)
     }
 
     $http.get(fusio.baseUrl + 'backend/app/token?search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.tokens = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.tokens = data.entry
+      })
+  }
 
-  $scope.pageChanged = function() {
-    var startIndex = ($scope.startIndex - 1) * 16;
-    var search = encodeURIComponent($scope.search);
+  $scope.pageChanged = function () {
+    var startIndex = ($scope.startIndex - 1) * 16
+    var search = encodeURIComponent($scope.search)
 
     $http.get(fusio.baseUrl + 'backend/app/token?startIndex=' + startIndex + '&search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.tokens = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.tokens = data.entry
+      })
+  }
 
-  $scope.doFilter = function() {
-    var query = '';
+  $scope.doFilter = function () {
+    var query = ''
     for (var key in $scope.filter) {
       if ($scope.filter[key]) {
-        var value;
+        var value
         if ($scope.filter[key] instanceof Date) {
-          value = $scope.filter[key].toISOString();
+          value = $scope.filter[key].toISOString()
         } else {
-          value = $scope.filter[key];
+          value = $scope.filter[key]
         }
 
-        query += key + '=' + encodeURIComponent(value) + '&';
+        query += key + '=' + encodeURIComponent(value) + '&'
       }
     }
 
     $http.get(fusio.baseUrl + 'backend/app/token?' + query)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.tokens = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.tokens = data.entry
+      })
+  }
 
-  $scope.openDetailDialog = function(token) {
+  $scope.openDetailDialog = function (token) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/token/detail.html',
       controller: 'TokenDetailCtrl',
       resolve: {
-        token: function() {
-          return token;
+        token: function () {
+          return token
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
 
-      $timeout(function() {
-        $scope.response = null;
-      }, 2000);
-    }, function() {
-    });
-  };
+      $timeout(function () {
+        $scope.response = null
+      }, 2000)
+    }, function () {
+    })
+  }
 
-  $scope.openFilterDialog = function() {
+  $scope.openFilterDialog = function () {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/token/filter.html',
       controller: 'TokenFilterCtrl',
       resolve: {
-        filter: function() {
-          return $scope.filter;
+        filter: function () {
+          return $scope.filter
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(filter) {
-      $scope.filter = filter;
-      $scope.doFilter();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (filter) {
+      $scope.filter = filter
+      $scope.doFilter()
+    }, function () {
+    })
+  }
 
-  $scope.removeToken = function(token) {
-    if (token.status == 2) {
+  $scope.removeToken = function (token) {
+    if (token.status === 2) {
       // in case it is already deleted
-      return;
+      return
     }
 
     $http.delete(fusio.baseUrl + 'backend/app/' + token.appId + '/token/' + token.id)
-        .then(function(response) {
-          $scope.response = response.data;
-          $scope.load();
-        })
-        .catch(function(response) {
-          $scope.response = response.data;
-        });
-  };
+      .then(function (response) {
+        $scope.response = response.data
+        $scope.load()
+      })
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
-  $scope.load();
-
-};
+  $scope.load()
+}
 
 },{}],96:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModal, $uibModalInstance, fusio, transaction) {
+module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, transaction) {
+  $scope.transaction = transaction
 
-  $scope.transaction = transaction;
-
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
   $http.get(fusio.baseUrl + 'backend/transaction/' + transaction.id)
-    .then(function(response) {
-      $scope.transaction = response.data;
-    });
-
-};
+    .then(function (response) {
+      $scope.transaction = response.data
+    })
+}
 
 },{}],97:[function(require,module,exports){
-'use strict';
+'use strict'
 
-var angular = require('angular');
+var angular = require('angular')
 
 angular.module('fusioApp.transaction', ['ngRoute', 'ui.bootstrap'])
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/transaction', {
-    templateUrl: 'app/controller/transaction/index.html',
-    controller: 'TransactionCtrl'
-  });
-}])
+  .config(['$routeProvider', function ($routeProvider) {
+    $routeProvider.when('/transaction', {
+      templateUrl: 'app/controller/transaction/index.html',
+      controller: 'TransactionCtrl'
+    })
+  }])
 
-.controller('TransactionCtrl', require('./transaction'))
-.controller('TransactionDetailCtrl', require('./detail'))
-
-;
+  .controller('TransactionCtrl', require('./transaction'))
+  .controller('TransactionDetailCtrl', require('./detail'))
 
 },{"./detail":96,"./transaction":98,"angular":121}],98:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModal, $timeout, fusio) {
-
+module.exports = function ($scope, $http, $uibModal, $timeout, fusio) {
   // set initial date range
-  var from = new Date();
-  from.setMonth(from.getMonth() - 1);
-  var to = new Date();
+  var from = new Date()
+  from.setMonth(from.getMonth() - 1)
+  var to = new Date()
 
-  $scope.search = '';
+  $scope.search = ''
   $scope.filter = {
     from: from,
     to: to
-  };
+  }
 
-  $scope.routes = [];
-  $scope.apps = [];
+  $scope.routes = []
+  $scope.apps = []
 
-  $scope.load = function() {
-    var search = '';
+  $scope.load = function () {
+    var search = ''
     if ($scope.search) {
-      search = encodeURIComponent($scope.search);
+      search = encodeURIComponent($scope.search)
     }
 
     $http.get(fusio.baseUrl + 'backend/transaction?search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.transactions = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.transactions = data.entry
+      })
+  }
 
-  $scope.pageChanged = function() {
-    var startIndex = ($scope.startIndex - 1) * 16;
-    var search = encodeURIComponent($scope.search);
+  $scope.pageChanged = function () {
+    var startIndex = ($scope.startIndex - 1) * 16
+    var search = encodeURIComponent($scope.search)
 
     $http.get(fusio.baseUrl + 'backend/transaction?startIndex=' + startIndex + '&search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.transactions = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.transactions = data.entry
+      })
+  }
 
-  $scope.doFilter = function() {
-    var query = '';
+  $scope.doFilter = function () {
+    var query = ''
     for (var key in $scope.filter) {
       if ($scope.filter[key]) {
-        var value;
+        var value
         if ($scope.filter[key] instanceof Date) {
-          value = $scope.filter[key].toISOString();
+          value = $scope.filter[key].toISOString()
         } else {
-          value = $scope.filter[key];
+          value = $scope.filter[key]
         }
 
-        query += key + '=' + encodeURIComponent(value) + '&';
+        query += key + '=' + encodeURIComponent(value) + '&'
       }
     }
 
     $http.get(fusio.baseUrl + 'backend/transaction?' + query)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.transactions = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.transactions = data.entry
+      })
+  }
 
-  $scope.openDetailDialog = function(transaction) {
+  $scope.openDetailDialog = function (transaction) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/transaction/detail.html',
       controller: 'TransactionDetailCtrl',
       resolve: {
-        transaction: function() {
-          return transaction;
+        transaction: function () {
+          return transaction
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
 
-      $timeout(function() {
-        $scope.response = null;
-      }, 2000);
-    }, function() {
-    });
-  };
+      $timeout(function () {
+        $scope.response = null
+      }, 2000)
+    }, function () {
+    })
+  }
 
-  $scope.openFilterDialog = function() {
+  $scope.openFilterDialog = function () {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/statistic/filter.html',
       controller: 'StatisticFilterCtrl',
       resolve: {
-        filter: function() {
-          return $scope.filter;
+        filter: function () {
+          return $scope.filter
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(filter) {
-      $scope.filter = filter;
-      $scope.doFilter();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (filter) {
+      $scope.filter = filter
+      $scope.doFilter()
+    }, function () {
+    })
+  }
 
-  $scope.load();
-
-};
+  $scope.load()
+}
 
 },{}],99:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModalInstance, fusio) {
+var angular = require('angular')
 
+module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   $scope.user = {
     status: 0,
     name: '',
     email: '',
     scopes: []
-  };
+  }
 
   $scope.statuuus = [{
     id: 0,
@@ -5976,111 +5804,107 @@ module.exports = function($scope, $http, $uibModalInstance, fusio) {
   }, {
     id: 2,
     name: 'Disabled'
-  }];
+  }]
 
-  $scope.scopes = [];
+  $scope.scopes = []
 
   $http.get(fusio.baseUrl + 'backend/scope?count=1024')
-    .then(function(response) {
-      $scope.scopes = response.data.entry;
-    });
+    .then(function (response) {
+      $scope.scopes = response.data.entry
+    })
 
-  $scope.create = function(user) {
-    var data = angular.copy(user);
+  $scope.create = function (user) {
+    var data = angular.copy(user)
 
     // remove app data
     if (data.apps) {
-      delete data.apps;
+      delete data.apps
     }
 
     // filter scopes
     if (data.scopes && angular.isArray(data.scopes)) {
-      data.scopes = data.scopes.filter(function(value) {
-        return value !== null;
-      });
+      data.scopes = data.scopes.filter(function (value) {
+        return value !== null
+      })
     }
 
     $http.post(fusio.baseUrl + 'backend/user', data)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
+}
 
-};
+},{"angular":121}],100:[function(require,module,exports){
+'use strict'
 
-},{}],100:[function(require,module,exports){
-'use strict';
+module.exports = function ($scope, $http, $uibModalInstance, fusio, user) {
+  $scope.user = user
 
-module.exports = function($scope, $http, $uibModalInstance, fusio, user) {
-
-  $scope.user = user;
-
-  $scope.delete = function(user) {
+  $scope.delete = function (user) {
     $http.delete(fusio.baseUrl + 'backend/user/' + user.id)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
-
-};
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
+}
 
 },{}],101:[function(require,module,exports){
-'use strict';
+'use strict'
 
-var angular = require('angular');
+var angular = require('angular')
 
 angular.module('fusioApp.user', ['ngRoute', 'ui.bootstrap'])
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/user', {
-    templateUrl: 'app/controller/user/index.html',
-    controller: 'UserCtrl'
-  });
-}])
+  .config(['$routeProvider', function ($routeProvider) {
+    $routeProvider.when('/user', {
+      templateUrl: 'app/controller/user/index.html',
+      controller: 'UserCtrl'
+    })
+  }])
 
-.controller('UserCtrl', require('./user'))
-.controller('UserCreateCtrl', require('./create'))
-.controller('UserUpdateCtrl', require('./update'))
-.controller('UserDeleteCtrl', require('./delete'))
-
-;
+  .controller('UserCtrl', require('./user'))
+  .controller('UserCreateCtrl', require('./create'))
+  .controller('UserUpdateCtrl', require('./update'))
+  .controller('UserDeleteCtrl', require('./delete'))
 
 },{"./create":99,"./delete":100,"./update":102,"./user":103,"angular":121}],102:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModalInstance, fusio, user) {
+var angular = require('angular')
 
-  $scope.user = user;
+module.exports = function ($scope, $http, $uibModalInstance, fusio, user) {
+  $scope.user = user
 
   $scope.statuuus = [{
     id: 0,
@@ -6091,422 +5915,419 @@ module.exports = function($scope, $http, $uibModalInstance, fusio, user) {
   }, {
     id: 2,
     name: 'Disabled'
-  }];
+  }]
 
-  $scope.scopes = [];
+  $scope.scopes = []
 
   $http.get(fusio.baseUrl + 'backend/scope?count=1024')
-    .then(function(response) {
-      $scope.scopes = response.data.entry;
+    .then(function (response) {
+      $scope.scopes = response.data.entry
 
-      $scope.loadUser();
-    });
+      $scope.loadUser()
+    })
 
-  $scope.update = function(user) {
-    var data = angular.copy(user);
+  $scope.update = function (user) {
+    var data = angular.copy(user)
 
     // remove app data
     if (data.apps) {
-      delete data.apps;
+      delete data.apps
     }
 
     // filter scopes
     if (data.scopes && angular.isArray(data.scopes)) {
-      data.scopes = data.scopes.filter(function(value) {
-        return value !== null;
-      });
+      data.scopes = data.scopes.filter(function (value) {
+        return value !== null
+      })
     }
 
     $http.put(fusio.baseUrl + 'backend/user/' + data.id, data)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
-  $scope.loadUser = function() {
+  $scope.loadUser = function () {
     $http.get(fusio.baseUrl + 'backend/user/' + user.id)
-      .then(function(response) {
-        var data = response.data;
-        var scopes = [];
+      .then(function (response) {
+        var data = response.data
+        var scopes = []
         if (angular.isArray(data.scopes)) {
           for (var i = 0; i < $scope.scopes.length; i++) {
-            var found = null;
+            var found = null
             for (var j = 0; j < data.scopes.length; j++) {
-              if ($scope.scopes[i].name == data.scopes[j]) {
-                found = $scope.scopes[i].name;
-                break;
+              if ($scope.scopes[i].name === data.scopes[j]) {
+                found = $scope.scopes[i].name
+                break
               }
             }
-            scopes.push(found);
+            scopes.push(found)
           }
         }
-        data.scopes = scopes;
+        data.scopes = scopes
 
-        $scope.user = data;
-      });
-  };
+        $scope.user = data
+      })
+  }
+}
 
-};
+},{"angular":121}],103:[function(require,module,exports){
+'use strict'
 
-},{}],103:[function(require,module,exports){
-'use strict';
+module.exports = function ($scope, $http, $uibModal, fusio) {
+  $scope.response = null
+  $scope.search = ''
 
-module.exports = function($scope, $http, $uibModal, fusio) {
-
-  $scope.response = null;
-  $scope.search = '';
-
-  $scope.load = function() {
-    var search = encodeURIComponent($scope.search ? $scope.search : '');
+  $scope.load = function () {
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
 
     $http.get(fusio.baseUrl + 'backend/user?search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.users = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.users = data.entry
+      })
+  }
 
-  $scope.pageChanged = function() {
-    var startIndex = ($scope.startIndex - 1) * 16;
-    var search = encodeURIComponent($scope.search ? $scope.search : '');
+  $scope.pageChanged = function () {
+    var startIndex = ($scope.startIndex - 1) * 16
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
 
     $http.get(fusio.baseUrl + 'backend/user?startIndex=' + startIndex + '&search=' + search)
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.users = data.entry;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.users = data.entry
+      })
+  }
 
-  $scope.doSearch = function(search) {
-    $http.get(fusio.baseUrl + 'backend/user?search=' + encodeURIComponent(search ? search : ''))
-      .then(function(response) {
-        var data = response.data;
-        $scope.totalResults = data.totalResults;
-        $scope.startIndex = 0;
-        $scope.users = data.entry;
-      });
-  };
+  $scope.doSearch = function (search) {
+    $http.get(fusio.baseUrl + 'backend/user?search=' + encodeURIComponent(search || ''))
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.users = data.entry
+      })
+  }
 
-  $scope.openCreateDialog = function() {
+  $scope.openCreateDialog = function () {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/user/create.html',
       controller: 'UserCreateCtrl'
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
 
-  $scope.openUpdateDialog = function(user) {
+  $scope.openUpdateDialog = function (user) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/user/update.html',
       controller: 'UserUpdateCtrl',
       resolve: {
-        user: function() {
-          return user;
+        user: function () {
+          return user
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
 
-  $scope.openDeleteDialog = function(user) {
+  $scope.openDeleteDialog = function (user) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/user/delete.html',
       controller: 'UserDeleteCtrl',
       resolve: {
-        user: function() {
-          return user;
+        user: function () {
+          return user
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-      $scope.response = response;
-      $scope.load();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
-  $scope.load();
-
-};
+  $scope.load()
+}
 
 },{}],104:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function($sce, $compile) {
-  var builder = {};
+var angular = require('angular')
 
-  builder.buildHtml = function(elements, propertyName) {
+module.exports = function ($sce, $compile) {
+  var builder = {}
+
+  builder.buildHtml = function (elements, propertyName) {
     if (!elements || !angular.isArray(elements) || elements.length === 0) {
-      return null;
+      return null
     }
 
-    var form = '<div>';
+    var form = '<div>'
     for (var i = 0; i < elements.length; i++) {
-      var el = elements[i];
+      var el = elements[i]
       if (!el.name || !el.title) {
-        continue;
+        continue
       }
 
-      var helpId;
+      var helpId
       if (el.help) {
-        helpId = 'help-' + el.name;
+        helpId = 'help-' + el.name
       }
 
-      form += '<div class="form-group">';
+      form += '<div class="form-group">'
 
-      if (el.element == 'http://fusio-project.org/ns/2015/form/textarea') {
+      if (el.element === 'http://fusio-project.org/ns/2015/form/textarea') {
         var aceConfig = {
           mode: el.mode,
           workerPath: './dist'
-        };
+        }
         if (el.mode === 'php') {
-          aceConfig.require = ['ace/ext/language_tools'];
+          aceConfig.require = ['ace/ext/language_tools']
           aceConfig.advanced = {
             enableSnippets: true,
             enableBasicAutocompletion: true,
             enableLiveAutocompletion: false
-          };
-        }
-
-        form += '<label for="config-' + el.name + '">' + el.title + ':</label>';
-        form += '<div ui-ace=\'' + JSON.stringify(aceConfig) + '\' ng-model="' + propertyName + '.' + el.name + '" id="config-' + el.name + '" aria-describedby="' + helpId + '"></div>';
-      } else if (el.element == 'http://fusio-project.org/ns/2015/form/input') {
-        form += '<label for="config-' + el.name + '">' + el.title + ':</label>';
-        form += '<input type="' + el.type + '" name="config-' + el.name + '" id="config-' + el.name + '" ng-model="' + propertyName + '.' + el.name + '" aria-describedby="' + helpId + '" class="form-control" />';
-      } else if (el.element == 'http://fusio-project.org/ns/2015/form/select') {
-        form += '<label for="config-' + el.name + '">' + el.title + ':</label>';
-        form += '<select name="config-' + el.name + '" id="config-' + el.name + '" ng-model="' + propertyName + '.' + el.name + '" aria-describedby="' + helpId + '" class="form-control">';
-        var options = el.options;
-        if (angular.isArray(options)) {
-          for (var j = 0; j < options.length; j++) {
-            form += '<option value="' + options[j].key + '">' + options[j].value + '</option>';
           }
         }
-        form += '</select>';
-      } else if (el.element == 'http://fusio-project.org/ns/2015/form/tag') {
-        form += '<label for="config-' + el.name + '">' + el.title + ':</label>';
-        form += '<tags-input ng-model="' + propertyName + '.' + el.name + '" min-length="2" placeholder="Add a ' + el.title + '"></tags-input>';
+
+        form += '<label for="config-' + el.name + '">' + el.title + ':</label>'
+        form += '<div ui-ace=\'' + JSON.stringify(aceConfig) + '\' ng-model="' + propertyName + '.' + el.name + '" id="config-' + el.name + '" aria-describedby="' + helpId + '"></div>'
+      } else if (el.element === 'http://fusio-project.org/ns/2015/form/input') {
+        form += '<label for="config-' + el.name + '">' + el.title + ':</label>'
+        form += '<input type="' + el.type + '" name="config-' + el.name + '" id="config-' + el.name + '" ng-model="' + propertyName + '.' + el.name + '" aria-describedby="' + helpId + '" class="form-control" />'
+      } else if (el.element === 'http://fusio-project.org/ns/2015/form/select') {
+        form += '<label for="config-' + el.name + '">' + el.title + ':</label>'
+        form += '<select name="config-' + el.name + '" id="config-' + el.name + '" ng-model="' + propertyName + '.' + el.name + '" aria-describedby="' + helpId + '" class="form-control">'
+        var options = el.options
+        if (angular.isArray(options)) {
+          for (var j = 0; j < options.length; j++) {
+            form += '<option value="' + options[j].key + '">' + options[j].value + '</option>'
+          }
+        }
+        form += '</select>'
+      } else if (el.element === 'http://fusio-project.org/ns/2015/form/tag') {
+        form += '<label for="config-' + el.name + '">' + el.title + ':</label>'
+        form += '<tags-input ng-model="' + propertyName + '.' + el.name + '" min-length="2" placeholder="Add a ' + el.title + '"></tags-input>'
       } else {
-        form += '<label for="config-' + el.name + '">' + el.title + ':</label>';
-        form += '<input type="text" name="config-' + el.name + '" id="config-' + el.name + '" ng-model="' + propertyName + '.' + el.name + '" aria-describedby="' + helpId + '" class="form-control" />';
+        form += '<label for="config-' + el.name + '">' + el.title + ':</label>'
+        form += '<input type="text" name="config-' + el.name + '" id="config-' + el.name + '" ng-model="' + propertyName + '.' + el.name + '" aria-describedby="' + helpId + '" class="form-control" />'
       }
 
       if (el.help) {
-        form += '<span class="help-block" id="' + helpId + '">' + el.help + '</span>';
+        form += '<span class="help-block" id="' + helpId + '">' + el.help + '</span>'
       }
 
-      form += '</div>';
+      form += '</div>'
     }
-    form += '</div>';
+    form += '</div>'
 
-    return $compile(form);
-  };
+    return $compile(form)
+  }
 
-  builder.preProcessModel = function(data, elements){
-    var model = {};
+  builder.preProcessModel = function (data, elements) {
+    var model = {}
 
     for (var i = 0; i < elements.length; i++) {
-      var el = elements[i];
+      var el = elements[i]
       if (!el.name || !el.title) {
-        continue;
+        continue
       }
 
       if (!data[el.name]) {
-        continue;
+        continue
       }
 
-      var value = data[el.name];
-      if (el.element == 'http://fusio-project.org/ns/2015/form/textarea') {
-        model[el.name] = value;
-      } else if (el.element == 'http://fusio-project.org/ns/2015/form/input') {
-        model[el.name] = value;
-      } else if (el.element == 'http://fusio-project.org/ns/2015/form/select') {
-        model[el.name] = value;
-      } else if (el.element == 'http://fusio-project.org/ns/2015/form/tag') {
-        var tags = [];
+      var value = data[el.name]
+      if (el.element === 'http://fusio-project.org/ns/2015/form/textarea') {
+        model[el.name] = value
+      } else if (el.element === 'http://fusio-project.org/ns/2015/form/input') {
+        model[el.name] = value
+      } else if (el.element === 'http://fusio-project.org/ns/2015/form/select') {
+        model[el.name] = value
+      } else if (el.element === 'http://fusio-project.org/ns/2015/form/tag') {
+        var tags = []
         if (angular.isArray(value)) {
-          tags = value.map(function(val){
+          tags = value.map(function (val) {
             return {
               text: val
-            };
-          });
+            }
+          })
         }
 
-        model[el.name] = tags;
+        model[el.name] = tags
       } else {
-        model[el.name] = value;
+        model[el.name] = value
       }
     }
 
-    return model;
-  };
+    return model
+  }
 
-  builder.postProcessModel = function(data, elements){
-    var model = {};
+  builder.postProcessModel = function (data, elements) {
+    var model = {}
 
     for (var i = 0; i < elements.length; i++) {
-      var el = elements[i];
+      var el = elements[i]
       if (!el.name || !el.title) {
-        continue;
+        continue
       }
 
       if (!data[el.name]) {
-        continue;
+        continue
       }
 
-      var value = data[el.name];
-      if (el.element == 'http://fusio-project.org/ns/2015/form/textarea') {
-        model[el.name] = value;
-      } else if (el.element == 'http://fusio-project.org/ns/2015/form/input') {
-        model[el.name] = value;
-      } else if (el.element == 'http://fusio-project.org/ns/2015/form/select') {
-        model[el.name] = value;
-      } else if (el.element == 'http://fusio-project.org/ns/2015/form/tag') {
-        var tags = [];
+      var value = data[el.name]
+      if (el.element === 'http://fusio-project.org/ns/2015/form/textarea') {
+        model[el.name] = value
+      } else if (el.element === 'http://fusio-project.org/ns/2015/form/input') {
+        model[el.name] = value
+      } else if (el.element === 'http://fusio-project.org/ns/2015/form/select') {
+        model[el.name] = value
+      } else if (el.element === 'http://fusio-project.org/ns/2015/form/tag') {
+        var tags = []
         if (angular.isArray(value)) {
-          tags = value.map(function(val){
-            return val.text;
-          });
+          tags = value.map(function (val) {
+            return val.text
+          })
         }
 
-        model[el.name] = tags;
+        model[el.name] = tags
       } else {
-        model[el.name] = value;
+        model[el.name] = value
       }
     }
 
-    return model;
-  };
+    return model
+  }
 
-  return builder;
-};
+  return builder
+}
 
-},{}],105:[function(require,module,exports){
-'use strict';
+},{"angular":121}],105:[function(require,module,exports){
+'use strict'
 
-module.exports = function($http, $showdown, $q, $uibModal) {
-  var helper = {};
+module.exports = function ($http, $showdown, $q, $uibModal) {
+  var helper = {}
 
-  helper.load = function(path) {
-    return $q(function(resolve, reject) {
+  helper.load = function (path) {
+    return $q(function (resolve, reject) {
       $http.get(path)
-        .then(function(response) {
-          var data = response.data;
+        .then(function (response) {
+          var data = response.data
           // if the path has an fragment extract the part of the content
           // with the heading
-          var parser = document.createElement('a');
-          parser.href = path;
+          var parser = document.createElement('a')
+          parser.href = path
 
           if (parser.hash) {
-            var heading = parser.hash.substr(1);
+            var heading = parser.hash.substr(1)
             if (heading !== '') {
-              var regexp = new RegExp('(^###\\s' + heading + '$\\s+([\\s\\S]*?))^###\\s', 'gmi');
-              var matches = regexp.exec(data);
+              var regexp = new RegExp('(^###\\s' + heading + '$\\s+([\\s\\S]*?))^###\\s', 'gmi')
+              var matches = regexp.exec(data)
 
-              data = matches && matches.length > 0 ? matches[1] : 'Could not found chapter';
+              data = matches && matches.length > 0 ? matches[1] : 'Could not found chapter'
             }
           }
 
-          var html = $showdown.makeHtml(data);
+          var html = $showdown.makeHtml(data)
 
           // replace {{ ... }} so that angular does not try to
           // interpret these values
-          html = html.replace(/{{/g, '{<!-- -->{');
-          html = html.replace(/}}/g, '}<!-- -->}');
+          html = html.replace(/{{/g, '{<!-- -->{')
+          html = html.replace(/}}/g, '}<!-- -->}')
 
-          resolve(html);
+          resolve(html)
         })
-        .catch(function(data) {
-          reject('Could not find help file');
-        });
-    });
-  };
+        .catch(function (data) {
+          reject('Could not find help file')
+        })
+    })
+  }
 
-  helper.showDialog = function(path) {
-    this.load(path).then(function(html) {
+  helper.showDialog = function (path) {
+    this.load(path).then(function (html) {
       $uibModal.open({
         size: 'md',
         template: '<div class="modal-body">' + html + '</div>'
-      });
-    }, function(html) {
+      })
+    }, function (html) {
       $uibModal.open({
         size: 'md',
         template: '<div class="modal-body"><div class="alert alert-info">' + html + '</div></div>'
-      });
-    });
-  };
+      })
+    })
+  }
 
-  return helper;
-};
-
+  return helper
+}
 
 },{}],106:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = function() {
-  var parser = {};
+module.exports = function () {
+  var parser = {}
 
-  parser.decode = function(token) {
+  parser.decode = function (token) {
     if (!token) {
-      return false;
+      return false
     }
 
-    var parts = token.split(".");
+    var parts = token.split('.')
     if (parts.length >= 2) {
-      var body = JSON.parse(atob(parts[1]));
+      var body = JSON.parse(atob(parts[1]))
 
       if (Math.floor(Date.now() / 1000) > body.exp) {
-        return false;
+        return false
       }
 
-      return body;
+      return body
     } else {
-      return false;
+      return false
     }
-  };
+  }
 
-  return parser;
-};
-
+  return parser
+}
 
 },{}],107:[function(require,module,exports){
 /**
@@ -93413,6 +93234,9 @@ module.exports={
   "main": "Gruntfile.js",
   "author": "Christoph Kappestein",
   "license": "AGPLv3",
+  "scripts": {
+    "cs": "standard \"app/**/*.js\" --fix"
+  },
   "dependencies": {
     "ace-builds": "^1.4.4",
     "angular": "^1.7.8",
@@ -93434,11 +93258,10 @@ module.exports={
     "grunt-cli": "^1.3.2",
     "grunt-contrib-concat": "^1.0.0",
     "grunt-contrib-uglify": "^2.0.0",
-    "jscs": "^3.0.7",
-    "jshint": "^2.10.2",
     "protractor": "^5.4.2",
     "request": "^2.88.0",
-    "request-promise": "^4.2.4"
+    "request-promise": "^4.2.4",
+    "standard": "^12.0.1"
   }
 }
 
