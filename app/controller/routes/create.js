@@ -1,34 +1,33 @@
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModal, $uibModalInstance, $timeout, fusio) {
-
+module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout, fusio) {
   $scope.route = {
     path: '',
     scopes: [],
     config: []
-  };
+  }
 
-  $scope.methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
-  $scope.schemas = [];
-  $scope.actions = [];
+  $scope.methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
+  $scope.schemas = []
+  $scope.actions = []
 
-  $scope.indexVersion = -1;
-  $scope.indexMethod = [];
-  $scope.responseCode = '200';
+  $scope.indexVersion = -1
+  $scope.indexMethod = []
+  $scope.responseCode = '200'
 
   $scope.statuuus = [{
     key: 4,
-    value: "Development"
+    value: 'Development'
   }, {
     key: 1,
-    value: "Production"
+    value: 'Production'
   }, {
     key: 2,
-    value: "Deprecated"
+    value: 'Deprecated'
   }, {
     key: 3,
-    value: "Closed"
-  }];
+    value: 'Closed'
+  }]
 
   $scope.statusCodes = {
     '200': 'OK',
@@ -65,17 +64,17 @@ module.exports = function($scope, $http, $uibModal, $uibModalInstance, $timeout,
     '504': 'Gateway Timeout',
     '507': 'Insufficient Storage',
     '508': 'Loop Detected'
-  };
+  }
 
-  $scope.create = function(route) {
-    var data = angular.copy(route);
+  $scope.create = function (route) {
+    var data = angular.copy(route)
 
     if (angular.isArray(data.scopes)) {
-      var scopes = [];
+      var scopes = []
       for (var i = 0; i < data.scopes.length; i++) {
-        scopes.push(data.scopes[i].text);
+        scopes.push(data.scopes[i].text)
       }
-      data.scopes = scopes;
+      data.scopes = scopes
     }
 
     // remove empty responses
@@ -86,7 +85,7 @@ module.exports = function($scope, $http, $uibModal, $uibModalInstance, $timeout,
             if (data.config[i].methods.hasOwnProperty(method) && angular.isObject(data.config[i].methods[method].responses)) {
               for (var code in data.config[i].methods[method].responses) {
                 if (data.config[i].methods[method].responses.hasOwnProperty(code) && !data.config[i].methods[method].responses[code]) {
-                  delete data.config[i].methods[method].responses[code];
+                  delete data.config[i].methods[method].responses[code]
                 }
               }
             }
@@ -96,49 +95,49 @@ module.exports = function($scope, $http, $uibModal, $uibModalInstance, $timeout,
     }
 
     $http.post(fusio.baseUrl + 'backend/routes', data)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
   $http.get(fusio.baseUrl + 'backend/action?count=1024')
-    .then(function(response) {
-      $scope.actions = response.data.entry;
-    });
+    .then(function (response) {
+      $scope.actions = response.data.entry
+    })
 
   $http.get(fusio.baseUrl + 'backend/schema?count=1024')
-    .then(function(response) {
-      $scope.schemas = response.data.entry;
-    });
+    .then(function (response) {
+      $scope.schemas = response.data.entry
+    })
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
-  $scope.addVersion = function() {
-    var versions = $scope.route.config;
-    versions.push($scope.newVersion());
+  $scope.addVersion = function () {
+    var versions = $scope.route.config
+    versions.push($scope.newVersion())
 
-    $scope.route.config = versions;
+    $scope.route.config = versions
 
-    $timeout(function() {
-      $scope.indexVersion = ($scope.route.config.length - 1);
-      $scope.indexMethod.push(0);
-    });
-  };
+    $timeout(function () {
+      $scope.indexVersion = ($scope.route.config.length - 1)
+      $scope.indexMethod.push(0)
+    })
+  }
 
-  $scope.newVersion = function() {
+  $scope.newVersion = function () {
     return {
       version: $scope.getLatestVersion() + 1,
       status: 4,
@@ -149,91 +148,91 @@ module.exports = function($scope, $http, $uibModal, $uibModalInstance, $timeout,
         PATCH: $scope.newEmptyMethod(),
         DELETE: $scope.newEmptyMethod()
       }
-    };
-  };
+    }
+  }
 
-  $scope.newMethod = function() {
+  $scope.newMethod = function () {
     return {
       active: true,
       public: true,
       responses: {
-        "200": 1
+        '200': 1
       },
       action: 1
-    };
-  };
+    }
+  }
 
-  $scope.newEmptyMethod = function() {
+  $scope.newEmptyMethod = function () {
     return {
       active: false,
       responses: {}
-    };
-  };
+    }
+  }
 
-  $scope.getLatestVersion = function() {
-    var version = 0;
+  $scope.getLatestVersion = function () {
+    var version = 0
     for (var i = 0; i < $scope.route.config.length; i++) {
-      var ver = parseInt($scope.route.config[i].version);
+      var ver = parseInt($scope.route.config[i].version)
       if (ver > version) {
-        version = ver;
+        version = ver
       }
     }
-    return version;
-  };
+    return version
+  }
 
-  $scope.addResponse = function(code) {
-    var method = $scope.methods[$scope.indexMethod];
+  $scope.addResponse = function (code) {
+    var method = $scope.methods[$scope.indexMethod]
     if (!$scope.route.config[$scope.indexVersion].methods[method].responses) {
-      $scope.route.config[$scope.indexVersion].methods[method].responses = {};
+      $scope.route.config[$scope.indexVersion].methods[method].responses = {}
     }
     if (!$scope.route.config[$scope.indexVersion].methods[method].responses[code]) {
-      $scope.route.config[$scope.indexVersion].methods[method].responses[code] = 1;
+      $scope.route.config[$scope.indexVersion].methods[method].responses[code] = 1
     }
-  };
+  }
 
-  $scope.removeResponse = function(code) {
-    var method = $scope.methods[$scope.indexMethod];
-    var responses = $scope.route.config[$scope.indexVersion].methods[method].responses;
-    delete responses[code];
+  $scope.removeResponse = function (code) {
+    var method = $scope.methods[$scope.indexMethod]
+    var responses = $scope.route.config[$scope.indexVersion].methods[method].responses
+    delete responses[code]
 
-    $scope.route.config[$scope.indexVersion].methods[method].responses = responses;
-  };
+    $scope.route.config[$scope.indexVersion].methods[method].responses = responses
+  }
 
-  $scope.showShema = function(schemaId) {
+  $scope.showShema = function (schemaId) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/schema/update.html',
       controller: 'SchemaUpdateCtrl',
       resolve: {
-        schema: function() {
-          return {id: schemaId};
+        schema: function () {
+          return { id: schemaId }
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+    }, function () {
+    })
+  }
 
-  $scope.showAction = function(actionId) {
+  $scope.showAction = function (actionId) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/action/update.html',
       controller: 'ActionUpdateCtrl',
       resolve: {
-        action: function() {
-          return {id: actionId};
+        action: function () {
+          return { id: actionId }
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+    }, function () {
+    })
+  }
 
-  $scope.addVersion();
-};
+  $scope.addVersion()
+}

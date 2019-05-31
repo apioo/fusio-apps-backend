@@ -1,25 +1,23 @@
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModalInstance, fusio, route) {
-
-  $scope.route = route;
+module.exports = function ($scope, $http, $uibModalInstance, fusio, route) {
+  $scope.route = route
 
   $scope.statuuus = [{
     key: 4,
-    value: "Development"
+    value: 'Development'
   }, {
     key: 1,
-    value: "Production"
+    value: 'Production'
   }, {
     key: 2,
-    value: "Deprecated"
+    value: 'Deprecated'
   }, {
     key: 3,
-    value: "Closed"
-  }];
+    value: 'Closed'
+  }]
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
-
-};
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
+}

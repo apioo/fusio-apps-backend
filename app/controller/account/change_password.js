@@ -1,25 +1,23 @@
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, fusio) {
-
+module.exports = function ($scope, $http, fusio) {
   $scope.account = {
-    oldPassword: "",
-    newPassword: "",
-    verifyPassword: ""
-  };
+    oldPassword: '',
+    newPassword: '',
+    verifyPassword: ''
+  }
 
-  $scope.updatePassword = function() {
+  $scope.updatePassword = function () {
     $http.put(fusio.baseUrl + 'backend/account/change_password', $scope.account)
-      .then(function(response) {
-        $scope.response = response.data;
+      .then(function (response) {
+        $scope.response = response.data
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
-
-};
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
+}

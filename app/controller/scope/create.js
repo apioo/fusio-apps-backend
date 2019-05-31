@@ -1,28 +1,27 @@
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModalInstance, fusio) {
-
+module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   $scope.scope = {
     name: ''
-  };
+  }
 
-  $scope.routes = [];
+  $scope.routes = []
 
   $http.get(fusio.baseUrl + 'backend/routes?count=1024')
-    .then(function(response) {
-      $scope.routes = response.data.entry;
-    });
+    .then(function (response) {
+      $scope.routes = response.data.entry
+    })
 
-  $scope.create = function(scope) {
-    var data = angular.copy(scope);
+  $scope.create = function (scope) {
+    var data = angular.copy(scope)
 
-    var routes = [];
+    var routes = []
     for (var i = 0; i < $scope.routes.length; i++) {
-      var methods = [];
+      var methods = []
       if ($scope.routes[i].allowedMethods) {
         for (var key in $scope.routes[i].allowedMethods) {
           if ($scope.routes[i].allowedMethods[key] === true) {
-            methods.push(key.toUpperCase());
+            methods.push(key.toUpperCase())
           }
         }
       }
@@ -32,31 +31,30 @@ module.exports = function($scope, $http, $uibModalInstance, fusio) {
           routeId: $scope.routes[i].id,
           allow: true,
           methods: methods.join('|')
-        });
+        })
       }
     }
 
-    data.routes = routes;
+    data.routes = routes
 
     $http.post(fusio.baseUrl + 'backend/scope', data)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
-
-};
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
+}

@@ -1,51 +1,49 @@
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $routeParams, fusio) {
+module.exports = function ($scope, $http, $routeParams, fusio) {
+  $scope.schema = {}
+  $scope.response = null
 
-  $scope.schema = {};
-  $scope.response = null;
-
-  $scope.update = function(schema) {
-    var data = angular.copy(schema);
-    if (typeof data.source == 'string') {
-      data.source = JSON.parse(data.source);
+  $scope.update = function (schema) {
+    var data = angular.copy(schema)
+    if (typeof data.source === 'string') {
+      data.source = JSON.parse(data.source)
     }
 
     $http.put(fusio.baseUrl + 'backend/schema/' + data.id, data)
-      .then(function(response) {
-        var data = response.data;
+      .then(function (response) {
+        var data = response.data
         if (data.success === true) {
-          $scope.loadPreview(schema.id);
+          $scope.loadPreview(schema.id)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
-  $scope.loadPreview = function(schemaId){
+  $scope.loadPreview = function (schemaId) {
     $http.post(fusio.baseUrl + 'backend/schema/preview/' + schemaId, null)
-      .then(function(response) {
-        var data = response.data;
-        data.preview = data.preview.replace(/href=\"\#([A-z0-9_]+)\"/g, "href=\"#!/schema/designer/" + schemaId + "\"");
-        $scope.response = data;
-      });
-  };
+      .then(function (response) {
+        var data = response.data
+        data.preview = data.preview.replace(/href=\"\#([A-z0-9_]+)\"/g, 'href="#!/schema/designer/' + schemaId + '"')
+        $scope.response = data
+      })
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
   $http.get(fusio.baseUrl + 'backend/schema/' + $routeParams.schema_id)
-    .then(function(response) {
-      var data = response.data;
+    .then(function (response) {
+      var data = response.data
       if (!angular.isString(data.source)) {
-        data.source = JSON.stringify(data.source, null, 4);
+        data.source = JSON.stringify(data.source, null, 4)
       }
 
-      $scope.schema = data;
-    });
+      $scope.schema = data
+    })
 
-  $scope.loadPreview($routeParams.schema_id);
-
-};
+  $scope.loadPreview($routeParams.schema_id)
+}

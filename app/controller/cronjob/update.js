@@ -1,71 +1,69 @@
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModal, $uibModalInstance, fusio, cronjob) {
+module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, cronjob) {
+  $scope.cronjob = cronjob
 
-  $scope.cronjob = cronjob;
+  $scope.actions = []
 
-  $scope.actions = [];
-
-  $scope.update = function(cronjob) {
-    var data = angular.copy(cronjob);
+  $scope.update = function (cronjob) {
+    var data = angular.copy(cronjob)
 
     if (data.exitCode) {
-      delete data.exitCode;
+      delete data.exitCode
     }
     if (data.executeDate) {
-      delete data.executeDate;
+      delete data.executeDate
     }
     if (data.errors) {
-      delete data.errors;
+      delete data.errors
     }
 
     $http.put(fusio.baseUrl + 'backend/cronjob/' + cronjob.id, data)
-      .then(function(response) {
-        var data = response.data;
-        $scope.response = data;
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
         if (data.success === true) {
-          $uibModalInstance.close(data);
+          $uibModalInstance.close(data)
         }
       })
-      .catch(function(response) {
-        $scope.response = response.data;
-      });
-  };
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
 
   $http.get(fusio.baseUrl + 'backend/action?count=1024')
-    .then(function(response) {
-      $scope.actions = response.data.entry;
-    });
+    .then(function (response) {
+      $scope.actions = response.data.entry
+    })
 
-  $scope.close = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
 
-  $scope.closeResponse = function() {
-    $scope.response = null;
-  };
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
 
-  $scope.showAction = function(actionId) {
+  $scope.showAction = function (actionId) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/action/update.html',
       controller: 'ActionUpdateCtrl',
       resolve: {
-        action: function() {
-          return {id: actionId};
+        action: function () {
+          return { id: actionId }
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(response) {
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (response) {
+    }, function () {
+    })
+  }
 
   $http.get(fusio.baseUrl + 'backend/cronjob/' + cronjob.id)
-    .then(function(response) {
-      $scope.cronjob = response.data;
-    });
-
-};
+    .then(function (response) {
+      $scope.cronjob = response.data
+    })
+}

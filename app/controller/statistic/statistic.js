@@ -1,18 +1,17 @@
-'use strict';
+'use strict'
 
-module.exports = function($scope, $http, $uibModal, $compile, fusio) {
-
+module.exports = function ($scope, $http, $uibModal, $compile, fusio) {
   // set initial date range
-  var from = new Date();
-  from.setMonth(from.getMonth() - 1);
-  var to = new Date();
+  var from = new Date()
+  from.setMonth(from.getMonth() - 1)
+  var to = new Date()
 
   $scope.filter = {
     from: from,
     to: to
-  };
-  $scope.chart = {};
-  $scope.statistic = 'incoming_requests';
+  }
+  $scope.chart = {}
+  $scope.statistic = 'incoming_requests'
 
   $scope.statistics = [{
     name: 'Errors per route',
@@ -41,59 +40,58 @@ module.exports = function($scope, $http, $uibModal, $compile, fusio) {
   }, {
     name: 'Used points',
     value: 'used_points'
-  }];
+  }]
 
-  $scope.doFilter = function() {
-    var statistic = $scope.statistic ? $scope.statistic : 'incoming_requests';
-    var query = '';
+  $scope.doFilter = function () {
+    var statistic = $scope.statistic ? $scope.statistic : 'incoming_requests'
+    var query = ''
     for (var key in $scope.filter) {
       if ($scope.filter[key]) {
-        var value;
+        var value
         if ($scope.filter[key] instanceof Date) {
-          value = $scope.filter[key].toISOString();
+          value = $scope.filter[key].toISOString()
         } else {
-          value = $scope.filter[key];
+          value = $scope.filter[key]
         }
 
-        query += key + '=' + encodeURIComponent(value) + '&';
+        query += key + '=' + encodeURIComponent(value) + '&'
       }
     }
 
     $http.get(fusio.baseUrl + 'backend/statistic/' + statistic + '?' + query)
-      .then(function(response) {
-        $scope.chart = response.data;
-      });
-  };
+      .then(function (response) {
+        $scope.chart = response.data
+      })
+  }
 
-  $scope.getStatisticName = function(statistic) {
+  $scope.getStatisticName = function (statistic) {
     for (var i = 0; i < $scope.statistics.length; i++) {
       if ($scope.statistics[i].value == statistic) {
-        return $scope.statistics[i].name;
+        return $scope.statistics[i].name
       }
     }
-    return null;
-  };
+    return null
+  }
 
-  $scope.openFilterDialog = function() {
+  $scope.openFilterDialog = function () {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/statistic/filter.html',
       controller: 'StatisticFilterCtrl',
       resolve: {
-        filter: function() {
-          return $scope.filter;
+        filter: function () {
+          return $scope.filter
         }
       }
-    });
+    })
 
-    modalInstance.result.then(function(filter) {
-      $scope.filter = filter;
-      $scope.doFilter();
-    }, function() {
-    });
-  };
+    modalInstance.result.then(function (filter) {
+      $scope.filter = filter
+      $scope.doFilter()
+    }, function () {
+    })
+  }
 
-  $scope.doFilter();
-
-};
+  $scope.doFilter()
+}
