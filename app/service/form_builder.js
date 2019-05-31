@@ -1,150 +1,150 @@
-'use strict';
+'use strict'
 
-module.exports = function($sce, $compile) {
-  var builder = {};
+module.exports = function ($sce, $compile) {
+  var builder = {}
 
-  builder.buildHtml = function(elements, propertyName) {
+  builder.buildHtml = function (elements, propertyName) {
     if (!elements || !angular.isArray(elements) || elements.length === 0) {
-      return null;
+      return null
     }
 
-    var form = '<div>';
+    var form = '<div>'
     for (var i = 0; i < elements.length; i++) {
-      var el = elements[i];
+      var el = elements[i]
       if (!el.name || !el.title) {
-        continue;
+        continue
       }
 
-      var helpId;
+      var helpId
       if (el.help) {
-        helpId = 'help-' + el.name;
+        helpId = 'help-' + el.name
       }
 
-      form += '<div class="form-group">';
+      form += '<div class="form-group">'
 
       if (el.element == 'http://fusio-project.org/ns/2015/form/textarea') {
         var aceConfig = {
           mode: el.mode,
           workerPath: './dist'
-        };
+        }
         if (el.mode === 'php') {
-          aceConfig.require = ['ace/ext/language_tools'];
+          aceConfig.require = ['ace/ext/language_tools']
           aceConfig.advanced = {
             enableSnippets: true,
             enableBasicAutocompletion: true,
             enableLiveAutocompletion: false
-          };
-        }
-
-        form += '<label for="config-' + el.name + '">' + el.title + ':</label>';
-        form += '<div ui-ace=\'' + JSON.stringify(aceConfig) + '\' ng-model="' + propertyName + '.' + el.name + '" id="config-' + el.name + '" aria-describedby="' + helpId + '"></div>';
-      } else if (el.element == 'http://fusio-project.org/ns/2015/form/input') {
-        form += '<label for="config-' + el.name + '">' + el.title + ':</label>';
-        form += '<input type="' + el.type + '" name="config-' + el.name + '" id="config-' + el.name + '" ng-model="' + propertyName + '.' + el.name + '" aria-describedby="' + helpId + '" class="form-control" />';
-      } else if (el.element == 'http://fusio-project.org/ns/2015/form/select') {
-        form += '<label for="config-' + el.name + '">' + el.title + ':</label>';
-        form += '<select name="config-' + el.name + '" id="config-' + el.name + '" ng-model="' + propertyName + '.' + el.name + '" aria-describedby="' + helpId + '" class="form-control">';
-        var options = el.options;
-        if (angular.isArray(options)) {
-          for (var j = 0; j < options.length; j++) {
-            form += '<option value="' + options[j].key + '">' + options[j].value + '</option>';
           }
         }
-        form += '</select>';
+
+        form += '<label for="config-' + el.name + '">' + el.title + ':</label>'
+        form += '<div ui-ace=\'' + JSON.stringify(aceConfig) + '\' ng-model="' + propertyName + '.' + el.name + '" id="config-' + el.name + '" aria-describedby="' + helpId + '"></div>'
+      } else if (el.element == 'http://fusio-project.org/ns/2015/form/input') {
+        form += '<label for="config-' + el.name + '">' + el.title + ':</label>'
+        form += '<input type="' + el.type + '" name="config-' + el.name + '" id="config-' + el.name + '" ng-model="' + propertyName + '.' + el.name + '" aria-describedby="' + helpId + '" class="form-control" />'
+      } else if (el.element == 'http://fusio-project.org/ns/2015/form/select') {
+        form += '<label for="config-' + el.name + '">' + el.title + ':</label>'
+        form += '<select name="config-' + el.name + '" id="config-' + el.name + '" ng-model="' + propertyName + '.' + el.name + '" aria-describedby="' + helpId + '" class="form-control">'
+        var options = el.options
+        if (angular.isArray(options)) {
+          for (var j = 0; j < options.length; j++) {
+            form += '<option value="' + options[j].key + '">' + options[j].value + '</option>'
+          }
+        }
+        form += '</select>'
       } else if (el.element == 'http://fusio-project.org/ns/2015/form/tag') {
-        form += '<label for="config-' + el.name + '">' + el.title + ':</label>';
-        form += '<tags-input ng-model="' + propertyName + '.' + el.name + '" min-length="2" placeholder="Add a ' + el.title + '"></tags-input>';
+        form += '<label for="config-' + el.name + '">' + el.title + ':</label>'
+        form += '<tags-input ng-model="' + propertyName + '.' + el.name + '" min-length="2" placeholder="Add a ' + el.title + '"></tags-input>'
       } else {
-        form += '<label for="config-' + el.name + '">' + el.title + ':</label>';
-        form += '<input type="text" name="config-' + el.name + '" id="config-' + el.name + '" ng-model="' + propertyName + '.' + el.name + '" aria-describedby="' + helpId + '" class="form-control" />';
+        form += '<label for="config-' + el.name + '">' + el.title + ':</label>'
+        form += '<input type="text" name="config-' + el.name + '" id="config-' + el.name + '" ng-model="' + propertyName + '.' + el.name + '" aria-describedby="' + helpId + '" class="form-control" />'
       }
 
       if (el.help) {
-        form += '<span class="help-block" id="' + helpId + '">' + el.help + '</span>';
+        form += '<span class="help-block" id="' + helpId + '">' + el.help + '</span>'
       }
 
-      form += '</div>';
+      form += '</div>'
     }
-    form += '</div>';
+    form += '</div>'
 
-    return $compile(form);
-  };
+    return $compile(form)
+  }
 
-  builder.preProcessModel = function(data, elements){
-    var model = {};
+  builder.preProcessModel = function (data, elements) {
+    var model = {}
 
     for (var i = 0; i < elements.length; i++) {
-      var el = elements[i];
+      var el = elements[i]
       if (!el.name || !el.title) {
-        continue;
+        continue
       }
 
       if (!data[el.name]) {
-        continue;
+        continue
       }
 
-      var value = data[el.name];
+      var value = data[el.name]
       if (el.element == 'http://fusio-project.org/ns/2015/form/textarea') {
-        model[el.name] = value;
+        model[el.name] = value
       } else if (el.element == 'http://fusio-project.org/ns/2015/form/input') {
-        model[el.name] = value;
+        model[el.name] = value
       } else if (el.element == 'http://fusio-project.org/ns/2015/form/select') {
-        model[el.name] = value;
+        model[el.name] = value
       } else if (el.element == 'http://fusio-project.org/ns/2015/form/tag') {
-        var tags = [];
+        var tags = []
         if (angular.isArray(value)) {
-          tags = value.map(function(val){
+          tags = value.map(function (val) {
             return {
               text: val
-            };
-          });
+            }
+          })
         }
 
-        model[el.name] = tags;
+        model[el.name] = tags
       } else {
-        model[el.name] = value;
+        model[el.name] = value
       }
     }
 
-    return model;
-  };
+    return model
+  }
 
-  builder.postProcessModel = function(data, elements){
-    var model = {};
+  builder.postProcessModel = function (data, elements) {
+    var model = {}
 
     for (var i = 0; i < elements.length; i++) {
-      var el = elements[i];
+      var el = elements[i]
       if (!el.name || !el.title) {
-        continue;
+        continue
       }
 
       if (!data[el.name]) {
-        continue;
+        continue
       }
 
-      var value = data[el.name];
+      var value = data[el.name]
       if (el.element == 'http://fusio-project.org/ns/2015/form/textarea') {
-        model[el.name] = value;
+        model[el.name] = value
       } else if (el.element == 'http://fusio-project.org/ns/2015/form/input') {
-        model[el.name] = value;
+        model[el.name] = value
       } else if (el.element == 'http://fusio-project.org/ns/2015/form/select') {
-        model[el.name] = value;
+        model[el.name] = value
       } else if (el.element == 'http://fusio-project.org/ns/2015/form/tag') {
-        var tags = [];
+        var tags = []
         if (angular.isArray(value)) {
-          tags = value.map(function(val){
-            return val.text;
-          });
+          tags = value.map(function (val) {
+            return val.text
+          })
         }
 
-        model[el.name] = tags;
+        model[el.name] = tags
       } else {
-        model[el.name] = value;
+        model[el.name] = value
       }
     }
 
-    return model;
-  };
+    return model
+  }
 
-  return builder;
-};
+  return builder
+}

@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var angular = require('angular');
+var angular = require('angular')
 var fusioApp = angular.module('fusioApp', [
   'ngRoute',
   'ngSanitize',
@@ -37,136 +37,136 @@ var fusioApp = angular.module('fusioApp', [
   'fusioApp.token',
   'fusioApp.transaction',
   'fusioApp.user'
-]);
+])
 
-require('angular-route');
-require('angular-sanitize');
-require('angular-animate');
-require('angular-ui-bootstrap');
-require('angular-ui-ace');
-require('angular-chart.js');
-require('angular-loading-bar');
-require('angular-highlightjs');
-require('ng-tags-input');
-require('ng-showdown');
-require('./controller/account');
-require('./controller/action');
-require('./controller/app');
-require('./controller/audit');
-require('./controller/config');
-require('./controller/connection');
-require('./controller/contract');
-require('./controller/cronjob');
-require('./controller/dashboard');
-require('./controller/import');
-require('./controller/invoice');
-require('./controller/error');
-require('./controller/event');
-require('./controller/log');
-require('./controller/login');
-require('./controller/logout');
-require('./controller/plan');
-require('./controller/rate');
-require('./controller/routes');
-require('./controller/schema');
-require('./controller/scope');
-require('./controller/statistic');
-require('./controller/token');
-require('./controller/transaction');
-require('./controller/user');
+require('angular-route')
+require('angular-sanitize')
+require('angular-animate')
+require('angular-ui-bootstrap')
+require('angular-ui-ace')
+require('angular-chart.js')
+require('angular-loading-bar')
+require('angular-highlightjs')
+require('ng-tags-input')
+require('ng-showdown')
+require('./controller/account')
+require('./controller/action')
+require('./controller/app')
+require('./controller/audit')
+require('./controller/config')
+require('./controller/connection')
+require('./controller/contract')
+require('./controller/cronjob')
+require('./controller/dashboard')
+require('./controller/import')
+require('./controller/invoice')
+require('./controller/error')
+require('./controller/event')
+require('./controller/log')
+require('./controller/login')
+require('./controller/logout')
+require('./controller/plan')
+require('./controller/rate')
+require('./controller/routes')
+require('./controller/schema')
+require('./controller/scope')
+require('./controller/statistic')
+require('./controller/token')
+require('./controller/transaction')
+require('./controller/user')
 
-fusioApp.value('version', require('../package.json').version);
+fusioApp.value('version', require('../package.json').version)
 
-fusioApp.factory('formBuilder', require('./service/form_builder'));
-fusioApp.factory('helpLoader', require('./service/help_loader'));
-fusioApp.factory('tokenParser', require('./service/token_parser'));
+fusioApp.factory('formBuilder', require('./service/form_builder'))
+fusioApp.factory('helpLoader', require('./service/help_loader'))
+fusioApp.factory('tokenParser', require('./service/token_parser'))
 
-fusioApp.provider('fusio', function() {
-  var baseUrl = null;
+fusioApp.provider('fusio', function () {
+  var baseUrl = null
 
-  this.setBaseUrl = function(_baseUrl) {
-    baseUrl = _baseUrl;
-  };
+  this.setBaseUrl = function (_baseUrl) {
+    baseUrl = _baseUrl
+  }
 
   /**
    * Simple helper function to guess the API endpoint url
    */
-  this.guessFusioEndpointUrl = function(urlRewrite) {
-    var url = window.location.href;
-    var pos = url.lastIndexOf('/fusio');
+  this.guessFusioEndpointUrl = function (urlRewrite) {
+    var url = window.location.href
+    var pos = url.lastIndexOf('/fusio')
     if (pos !== -1) {
-      url = url.substring(0, pos);
+      url = url.substring(0, pos)
     }
-    return url + (urlRewrite ? '/' : '/index.php/');
-  };
+    return url + (urlRewrite ? '/' : '/index.php/')
+  }
 
-  this.$get = function() {
+  this.$get = function () {
     // BC workaround if the base url was not configured but the fusio_url is
     // available we use it else we guess the url
     if (baseUrl === null && typeof fusio_url !== 'undefined') {
-      baseUrl = fusio_url;
+      baseUrl = fusio_url
     } else if (baseUrl === null) {
-      baseUrl = this.guessFusioEndpointUrl(false);
+      baseUrl = this.guessFusioEndpointUrl(false)
     }
 
     return {
       baseUrl: baseUrl
-    };
-  };
-});
+    }
+  }
+})
 
-fusioApp.config(['$routeProvider', function($routeProvider) {
+fusioApp.config(['$routeProvider', function ($routeProvider) {
   $routeProvider.otherwise({
     redirectTo: '/dashboard'
-  });
-}]);
+  })
+}])
 
-fusioApp.config(['$showdownProvider', function($showdownProvider) {
-}]);
+fusioApp.config(['$showdownProvider', function ($showdownProvider) {
+}])
 
-fusioApp.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
-  cfpLoadingBarProvider.includeBar = false;
-  cfpLoadingBarProvider.includeSpinner = true;
-  cfpLoadingBarProvider.parentSelector = '.fusio-loading-container';
-}]);
+fusioApp.config(['cfpLoadingBarProvider', function (cfpLoadingBarProvider) {
+  cfpLoadingBarProvider.includeBar = false
+  cfpLoadingBarProvider.includeSpinner = true
+  cfpLoadingBarProvider.parentSelector = '.fusio-loading-container'
+}])
 
-fusioApp.run(function($rootScope, $window, $location, $http, helpLoader, version, tokenParser) {
-  var token = $window.sessionStorage.getItem('fusio_access_token');
+fusioApp.run(function ($rootScope, $window, $location, $http, helpLoader, version, tokenParser) {
+  var token = $window.sessionStorage.getItem('fusio_access_token')
   if (token) {
-    var user = tokenParser.decode(token);
+    var user = tokenParser.decode(token)
     if (user) {
-      $http.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+      $http.defaults.headers.common['Authorization'] = 'Bearer ' + token
 
-      $rootScope.user = user;
-      $rootScope.userAuthenticated = true;
+      $rootScope.user = user
+      $rootScope.userAuthenticated = true
     } else {
-      $location.path('/login');
+      $location.path('/login')
     }
   } else {
-    $location.path('/login');
+    $location.path('/login')
   }
 
   $rootScope.changeNavHeading = function (item) {
     for (var i = 0; i < $rootScope.nav.length; i++) {
-      $rootScope.nav[i].visible = $rootScope.nav[i].title === item.title;
+      $rootScope.nav[i].visible = $rootScope.nav[i].title === item.title
     }
-  };
+  }
 
   $rootScope.$on('$routeChangeStart', function (event, next, current) {
-    var path = next.$$route ? next.$$route.originalPath : '';
+    var path = next.$$route ? next.$$route.originalPath : ''
 
     // mark current panel as visible
     for (var i = 0; i < $rootScope.nav.length; i++) {
-      var found = false;
+      var found = false
       for (var j = 0; j < $rootScope.nav[i].children.length; j++) {
         if ($rootScope.nav[i].children[j].path === path) {
-          found = true;
-          break;
+          found = true
+          break
         }
       }
-      $rootScope.nav[i].visible = found;
+      $rootScope.nav[i].visible = found
     }
-  });
+  })
 
   // navigation
   $rootScope.nav = [{
@@ -277,27 +277,26 @@ fusioApp.run(function($rootScope, $window, $location, $http, helpLoader, version
       icon: 'glyphicon-facetime-video',
       path: '/audit'
     }]
-  }];
+  }]
 
   // user dropdown menu
   $rootScope.menu = [{
-    title: "Change password",
-    path: "/account/change_password"
-  },{
-    title: "Logout",
-    path: "/logout"
-  }];
+    title: 'Change password',
+    path: '/account/change_password'
+  }, {
+    title: 'Logout',
+    path: '/logout'
+  }]
 
   // make help loader global available
-  $rootScope.help = helpLoader;
+  $rootScope.help = helpLoader
 
   // set version
-  $rootScope.version = version;
-
-});
+  $rootScope.version = version
+})
 
 if (window) {
-  window.fusioApp = fusioApp;
+  window.fusioApp = fusioApp
 }
 
-module.exports = fusioApp;
+module.exports = fusioApp

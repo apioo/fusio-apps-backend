@@ -1,27 +1,26 @@
-'use strict';
+'use strict'
 
-module.exports = function() {
-  var parser = {};
+module.exports = function () {
+  var parser = {}
 
-  parser.decode = function(token) {
+  parser.decode = function (token) {
     if (!token) {
-      return false;
+      return false
     }
 
-    var parts = token.split(".");
+    var parts = token.split('.')
     if (parts.length >= 2) {
-      var body = JSON.parse(atob(parts[1]));
+      var body = JSON.parse(atob(parts[1]))
 
       if (Math.floor(Date.now() / 1000) > body.exp) {
-        return false;
+        return false
       }
 
-      return body;
+      return body
     } else {
-      return false;
+      return false
     }
-  };
+  }
 
-  return parser;
-};
-
+  return parser
+}
