@@ -8,7 +8,7 @@ describe('Plan tests', function() {
     var plans = element.all(by.repeater('plan in plans'));
     expect(plans.count()).toEqual(2);
     expect(plans.get(0).getText()).toEqual('Plan A $39.99 500 1 Month');
-    expect(plans.get(1).getText()).toEqual('Plan A $39.99 500');
+    expect(plans.get(1).getText()).toEqual('Plan B $49.99 1000');
   });
 
   it('Create plan', function() {
