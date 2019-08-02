@@ -93,6 +93,21 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, fusio) {
     })
   }
 
+  $scope.openProviderDialog = function () {
+    var modalInstance = $uibModal.open({
+      size: 'lg',
+      backdrop: 'static',
+      templateUrl: 'app/controller/routes/provider.html',
+      controller: 'RoutesProviderCtrl'
+    })
+
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
+
   $scope.closeResponse = function () {
     $scope.response = null
   }

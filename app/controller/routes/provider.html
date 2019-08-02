@@ -1,0 +1,34 @@
+
+<div class="modal-header">
+    <h3 class="modal-title">Provider</h3>
+</div>
+
+<div class="modal-body">
+    <div uib-alert class="alert-danger" close="closeResponse()" ng-if="response.success === false">
+        {{response.message}}
+    </div>
+    <form name="routesProviderForm" ng-submit="create(route)">
+        <div class="form-group">
+            <label for="path">Base-Path:</label>
+            <input type="text" id="path" ng-model="route.path" aria-describedby="pathHelp" class="form-control">
+            <span class="help-block" id="pathHelp">Base-Path of the API endpoint i.e. <code>/acme/news</code>. The provider
+            creates all routes under this path</span>
+        </div>
+        <div class="form-group">
+            <label>Scopes:</label>
+            <tags-input ng-model="route.scopes" placeholder="Add a scope" aria-describedby="scopeHelp"></tags-input>
+            <span class="help-block" id="scopeHelp">Assign specific scopes to the routes</span>
+        </div>
+        <div class="form-group">
+            <label for="class">Class:</label>
+            <select id="class" ng-model="provider" ng-change="loadConfig()" ng-options="provider.class as provider.name for provider in providers" aria-describedby="classHelp" class="form-control no-animate">
+            </select>
+        </div>
+
+        <div id="config-form"></div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" ng-click="showChangelog(changelog)" class="btn btn-default">Changelog</button>
+        <button type="button" ng-click="close()" class="btn btn-default">Cancel</button>
+    </form>
+</div>
