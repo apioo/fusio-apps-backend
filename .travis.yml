@@ -1,6 +1,6 @@
 language: php
 php:
-  - 7.1
+  - '7.1'
 sudo: required
 dist: trusty
 addons:
@@ -19,7 +19,7 @@ install:
   - composer create-project fusio/fusio fusio dev-master
   - npm install
   - node node_modules/grunt-cli/bin/grunt
-  - node node_modules/protractor/bin/webdriver-manager update
+  - node node_modules/protractor/bin/webdriver-manager update --versions.chrome 2.46
 before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
