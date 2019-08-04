@@ -4,33 +4,47 @@
 </div>
 
 <div class="modal-body">
-    <div uib-alert class="alert-info">
-        The selected provider creates the following objects:
+    <div class="fusio-grid">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Schema</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="schema in changelog.schemas">
+                <td>{{schema.name}}</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="action in changelog.actions">
+                <td>{{action.name}}</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Routes</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="route in changelog.routes">
+                <td><code class="fusio-route-path">{{route.path}}</code></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 
-    <uib-accordion close-others="false">
-        <div uib-accordion-group class="panel-default" heading="Schemas" is-open="true" ng-if="changelog.schemas">
-            <table class="table">
-            <tr ng-repeat="schema in changelog.schemas">
-                <td><code>{{schema.name}}</code></td>
-            </tr>
-            </table>
-        </div>
-        <div uib-accordion-group class="panel-default" heading="Actions" is-open="true" ng-if="changelog.actions">
-            <table class="table">
-            <tr ng-repeat="action in changelog.actions">
-                <td><code>{{action.name}}</code></td>
-            </tr>
-            </table>
-        </div>
-        <div uib-accordion-group class="panel-default" heading="Routes" is-open="true" ng-if="changelog.routes">
-            <table class="table">
-            <tr ng-repeat="route in changelog.routes">
-                <td><code>{{route.path}}</code></td>
-            </tr>
-            </table>
-        </div>
-    </uib-accordion>
-
+    <br>
     <button type="button" ng-click="close()" class="btn btn-default">Cancel</button>
 </div>
