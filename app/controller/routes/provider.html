@@ -4,6 +4,12 @@
 </div>
 
 <div class="modal-body">
+    <div uib-alert class="alert-info">
+        Through this form you can use a provider which automatically creates
+        predefined schemas, actions and routes for you. All routes are placed under
+        the provided base path. Click changelog to see all objects which this
+        provider will create.
+    </div>
     <div uib-alert class="alert-danger" close="closeResponse()" ng-if="response.success === false">
         {{response.message}}
     </div>
