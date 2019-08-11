@@ -6,10 +6,14 @@ describe('Schema tests', function() {
     browser.get('#!/schema');
 
     var schemas = element.all(by.repeater('schema in schemas'));
-    expect(schemas.count()).toEqual(3);
-    expect(schemas.get(0).getText()).toEqual('Entry-Schema');
-    expect(schemas.get(1).getText()).toEqual('Collection-Schema');
-    expect(schemas.get(2).getText()).toEqual('Passthru');
+    expect(schemas.count()).toEqual(7);
+    expect(schemas.get(0).getText()).toEqual('Provider-Entity');
+    expect(schemas.get(1).getText()).toEqual('Provider-Collection');
+    expect(schemas.get(2).getText()).toEqual('SQL-Table-Response');
+    expect(schemas.get(3).getText()).toEqual('SQL-Table-Parameters');
+    expect(schemas.get(4).getText()).toEqual('Entry-Schema');
+    expect(schemas.get(5).getText()).toEqual('Collection-Schema');
+    expect(schemas.get(6).getText()).toEqual('Passthru');
   });
 
   it('Create schema', function() {
