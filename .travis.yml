@@ -31,7 +31,7 @@ before_script:
   - php server.php --warmup
   - (php -S 127.0.0.1:8008 server.php) &
   - popd
-  - (node node_modules/protractor/bin/webdriver-manager start > /dev/null 2>&1) &
+  - (node node_modules/.bin/webdriver-manager start > /dev/null 2>&1) &
   - sleep 12
 script:
   - node node_modules/protractor/bin/protractor tests/conf.js
