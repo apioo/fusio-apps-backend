@@ -93388,6 +93388,7 @@ module.exports={
     "grunt-contrib-concat": "^1.0.0",
     "grunt-contrib-uglify": "^2.0.0",
     "protractor": "^5.4.2",
+    "webdriver-manager": "12.1.5",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
     "standard": "^12.0.1"
