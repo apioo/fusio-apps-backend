@@ -260,6 +260,32 @@ describe('Routes tests', function() {
     expect($('div.alert-success > div').getText()).toEqual('Routes successful deleted');
   });
 
+  it('Create route provider', function() {
+    browser.get('#!/routes');
+
+    var EC = protractor.ExpectedConditions;
+
+    element.all(by.css('a.btn-primary')).get(1).click();
+
+    browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
+
+    element(by.model('route.path')).sendKeys('/provider');
+
+    var providerOptions = element.all(by.options('provider.class as provider.name for provider in providers'));
+    expect(providerOptions.get(0).getText()).toEqual('SQL-Table');
+
+    providerOptions.get(0).click();
+
+    element(by.cssContainingText('#config-connection option', 'System')).click();
+    element(by.css('#config-table')).sendKeys('app_news');
+
+    $('button.btn-primary').click();
+
+    browser.wait(EC.visibilityOf($('div.alert-success')), 5000);
+
+    expect($('div.alert-success > div').getText()).toEqual('Route successful created');
+  });
+
 });
 
 
