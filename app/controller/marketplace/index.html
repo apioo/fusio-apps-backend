@@ -1,0 +1,53 @@
+
+<h1>Marketplace</h1>
+
+<div class="fusio-search">
+    <form name="marketplaceSearchForm" ng-submit="doSearch(search)">
+        <div class="input-group">
+            <input type="text" class="form-control" ng-model="search" placeholder="Search i.e. app-name" />
+            <div class="input-group-btn">
+                <a class="btn btn-default" ng-click="help.showDialog('help/marketplace.md')"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div uib-alert class="alert-success" close="closeResponse()" ng-if="response.success === true">
+    {{response.message}}
+</div>
+
+<div uib-alert class="alert-danger" close="closeResponse()" ng-if="response.success === false">
+    {{response.message}}
+</div>
+
+<div class="fusio-grid">
+    <table class="table">
+        <colgroup>
+            <col width="256" />
+            <col width="*" />
+            <col width="200" />
+        </colgroup>
+        <thead>
+        <tr>
+            <th>Screenshot</th>
+            <th>Description</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="(name, app) in apps">
+            <td><a href="{{ app.screenshot }}" target="_blank"><img width="256" src="{{ app.screenshot }}"></a></td>
+            <td><b>{{ name }} ({{ app.version }})</b><br>{{ app.description }}</td>
+            <td>
+                <div class="fusio-options">
+                    <a ng-if="app.local" href="{{ app.local.startUrl }}" target="_blank" class="btn btn-primary"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></a>
+                    <a href="{{ app.website }}" target="_blank" class="btn btn-default"><span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span></a>
+                    <a ng-click="install(name)" ng-disabled="working || app.local" class="btn btn-default"><span class="glyphicon glyphicon-download" aria-hidden="true"></span></a>
+                    <a ng-click="update(name)" ng-disabled="working || !app.local" class="btn btn-default"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></a>
+                    <a ng-click="remove(name)" ng-disabled="working || !app.local" class="btn btn-default"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

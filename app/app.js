@@ -28,6 +28,7 @@ var fusioApp = angular.module('fusioApp', [
   'fusioApp.log',
   'fusioApp.login',
   'fusioApp.logout',
+  'fusioApp.marketplace',
   'fusioApp.plan',
   'fusioApp.rate',
   'fusioApp.routes',
@@ -65,6 +66,7 @@ require('./controller/event')
 require('./controller/log')
 require('./controller/login')
 require('./controller/logout')
+require('./controller/marketplace')
 require('./controller/plan')
 require('./controller/rate')
 require('./controller/routes')
@@ -238,7 +240,7 @@ fusioApp.run(function ($rootScope, $window, $location, $http, helpLoader, versio
     visible: false,
     children: [{
       title: 'Plan',
-      icon: 'glyphicon-shopping-cart',
+      icon: 'glyphicon-hdd',
       path: '/plan'
     }, {
       title: 'Contract',
@@ -257,6 +259,10 @@ fusioApp.run(function ($rootScope, $window, $location, $http, helpLoader, versio
     title: 'System',
     visible: false,
     children: [{
+      title: 'Marketplace',
+      icon: 'glyphicon-shopping-cart',
+      path: '/marketplace'
+    }, {
       title: 'Event',
       icon: 'glyphicon-retweet',
       path: '/event'
