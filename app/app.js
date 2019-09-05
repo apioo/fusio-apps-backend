@@ -34,6 +34,7 @@ var fusioApp = angular.module('fusioApp', [
   'fusioApp.routes',
   'fusioApp.schema',
   'fusioApp.scope',
+  'fusioApp.sdk',
   'fusioApp.statistic',
   'fusioApp.token',
   'fusioApp.transaction',
@@ -72,6 +73,7 @@ require('./controller/rate')
 require('./controller/routes')
 require('./controller/schema')
 require('./controller/scope')
+require('./controller/sdk')
 require('./controller/statistic')
 require('./controller/token')
 require('./controller/transaction')
@@ -214,6 +216,10 @@ fusioApp.run(function ($rootScope, $window, $location, $http, helpLoader, versio
       title: 'Rate',
       icon: 'glyphicon-filter',
       path: '/rate'
+    }, {
+      title: 'SDK',
+      icon: 'glyphicon-download',
+      path: '/sdk'
     }]
   }, {
     title: 'Analytics',
