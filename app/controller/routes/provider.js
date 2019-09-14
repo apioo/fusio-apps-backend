@@ -12,7 +12,6 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
   $scope.provider = null
   $scope.providers = []
   $scope.config = {}
-  $scope.changelog = []
 
   $scope.create = function (route) {
     var data = angular.copy(route)
@@ -70,27 +69,26 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
             var containerEl = angular.element(document.querySelector('#config-form'))
             containerEl.children().remove()
 
-            $scope.elements = data.form.element
+            $scope.elements = data.element
             $scope.config = formBuilder.preProcessModel($scope.route.config, $scope.elements)
             var linkFn = formBuilder.buildHtml($scope.elements, 'config')
             if (angular.isFunction(linkFn)) {
               var el = linkFn($scope)
               containerEl.append(el)
             }
-
-            $scope.changelog = data.changelog;
           })
     }
   }
 
-  $scope.showChangelog = function (changelog) {
+  $scope.showChangelog = function (provider, config) {
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/routes/changelog.html',
       controller: 'RoutesChangelogCtrl',
       resolve: {
-        changelog: changelog
+        provider: provider,
+        config: config
       }
     })
   }
