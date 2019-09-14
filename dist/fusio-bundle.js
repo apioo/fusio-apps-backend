@@ -4104,13 +4104,23 @@ module.exports = function ($scope, $http, $uibModalInstance, rate, fusio) {
 },{"angular":127}],75:[function(require,module,exports){
 'use strict'
 
-module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, changelog) {
-  $scope.changelog = changelog
+module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, provider, config) {
+  $scope.provider = provider
+  $scope.config = config
+  $scope.changelog = {}
+
+  $scope.loadChangelog = function () {
+    $http.put(fusio.baseUrl + 'backend/routes/provider/' + $scope.provider, $scope.config)
+        .then(function (response) {
+          $scope.changelog = response.data
+        })
+  }
 
   $scope.close = function () {
     $uibModalInstance.dismiss('cancel')
   }
 
+  $scope.loadChangelog();
 }
 
 },{}],76:[function(require,module,exports){
@@ -4421,7 +4431,6 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
   $scope.provider = null
   $scope.providers = []
   $scope.config = {}
-  $scope.changelog = []
 
   $scope.create = function (route) {
     var data = angular.copy(route)
@@ -4479,27 +4488,36 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
             var containerEl = angular.element(document.querySelector('#config-form'))
             containerEl.children().remove()
 
-            $scope.elements = data.form.element
+            $scope.elements = data.element
             $scope.config = formBuilder.preProcessModel($scope.route.config, $scope.elements)
             var linkFn = formBuilder.buildHtml($scope.elements, 'config')
             if (angular.isFunction(linkFn)) {
               var el = linkFn($scope)
               containerEl.append(el)
             }
-
-            $scope.changelog = data.changelog;
           })
     }
   }
 
-  $scope.showChangelog = function (changelog) {
+  $scope.showChangelog = function () {
+    var provider = $scope.provider;
+    var config = {};
+    if (angular.isObject($scope.config)) {
+      config = formBuilder.postProcessModel($scope.config, $scope.elements)
+    }
+
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/routes/changelog.html',
       controller: 'RoutesChangelogCtrl',
       resolve: {
-        changelog: changelog
+        provider: function () {
+          return provider
+        },
+        config: function () {
+          return config
+        }
       }
     })
   }
