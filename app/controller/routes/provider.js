@@ -80,15 +80,25 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
     }
   }
 
-  $scope.showChangelog = function (provider, config) {
+  $scope.showChangelog = function () {
+    var provider = $scope.provider;
+    var config = {};
+    if (angular.isObject($scope.config)) {
+      config = formBuilder.postProcessModel($scope.config, $scope.elements)
+    }
+
     var modalInstance = $uibModal.open({
       size: 'lg',
       backdrop: 'static',
       templateUrl: 'app/controller/routes/changelog.html',
       controller: 'RoutesChangelogCtrl',
       resolve: {
-        provider: provider,
-        config: config
+        provider: function () {
+          return provider
+        },
+        config: function () {
+          return config
+        }
       }
     })
   }

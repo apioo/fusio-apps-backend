@@ -6,12 +6,10 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, p
   $scope.changelog = {}
 
   $scope.loadChangelog = function () {
-    if ($scope.provider) {
-      $http.put(fusio.baseUrl + 'backend/routes/provider/' + $scope.provider, $scope.config)
-          .then(function (response) {
-            $scope.changelog = response.data
-          })
-    }
+    $http.put(fusio.baseUrl + 'backend/routes/provider/' + $scope.provider, $scope.config)
+        .then(function (response) {
+          $scope.changelog = response.data
+        })
   }
 
   $scope.close = function () {
