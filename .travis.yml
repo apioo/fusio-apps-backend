@@ -1,10 +1,13 @@
 language: php
 php:
   - '7.1'
+env:
+  global:
+    - MOZ_HEADLESS=1
 sudo: required
-dist: trusty
+dist: bionic
 addons:
-  chrome: stable
+  firefox: latest
 services:
   - mysql
   - memcached
