@@ -30,10 +30,11 @@ describe('Action tests', function() {
     expect(actionOptions.get(2).getText()).toEqual('HTTP-Processor');
     expect(actionOptions.get(3).getText()).toEqual('PHP-Processor');
     expect(actionOptions.get(4).getText()).toEqual('PHP-Sandbox');
-    expect(actionOptions.get(5).getText()).toEqual('SQL-Table');
-    expect(actionOptions.get(6).getText()).toEqual('Util-Static-Response');
+    expect(actionOptions.get(5).getText()).toEqual('SQL-Select');
+    expect(actionOptions.get(6).getText()).toEqual('SQL-Table');
+    expect(actionOptions.get(7).getText()).toEqual('Util-Static-Response');
 
-    actionOptions.get(6).click();
+    actionOptions.get(7).click();
 
     browser.wait(EC.visibilityOf($('#config-statusCode')), 5000);
     browser.wait(EC.visibilityOf($('.ace_editor')), 5000);
@@ -102,7 +103,7 @@ describe('Action tests', function() {
     element(by.model('action.name')).sendKeys('app-action');
 
     var actionOptions = element.all(by.options('action.class as action.name for action in actions'));
-    actionOptions.get(5).click();
+    actionOptions.get(6).click();
 
     browser.wait(EC.visibilityOf($('#config-connection')), 5000);
 
