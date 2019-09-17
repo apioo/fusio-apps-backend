@@ -21,9 +21,6 @@ install:
   - node node_modules/grunt-cli/bin/grunt
   - node node_modules/.bin/webdriver-manager update
 before_script:
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
-  - sleep 3
   - cp .env fusio/.env
   - cp server.php fusio/public/server.php
   - cp -r dist fusio/public/fusio/
