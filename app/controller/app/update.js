@@ -30,7 +30,7 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
     // remove null values from scope
     if (angular.isArray(data.scopes)) {
       data.scopes = data.scopes.filter(function (val) {
-        return val !== null
+        return !!val
       })
     }
 
