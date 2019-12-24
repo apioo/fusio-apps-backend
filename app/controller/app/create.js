@@ -21,6 +21,9 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
     value: 'Deactivated'
   }]
 
+  $scope.scopes = [];
+  $scope.toggle = true;
+
   $scope.create = function (app) {
     var data = angular.copy(app)
 
@@ -50,6 +53,19 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
 
   $scope.closeResponse = function () {
     $scope.response = null
+  }
+
+  $scope.bulkSelect = function () {
+    if ($scope.toggle) {
+      var scopes = [];
+      for (var i = 0; i < $scope.scopes.length; i++) {
+        scopes.push($scope.scopes[i].name);
+      }
+      $scope.app.scopes = scopes;
+    } else {
+      $scope.app.scopes = [];
+    }
+    $scope.toggle = !$scope.toggle;
   }
 
   $scope.getUsers = function () {
