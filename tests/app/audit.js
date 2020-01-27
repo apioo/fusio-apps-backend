@@ -18,8 +18,8 @@ describe('Audit tests', function() {
     $('button.btn-primary').click();
 
     var audits = element.all(by.repeater('audit in audits').column('audit.event'));
-    expect(audits.count()).toEqual(1);
-    expect(audits.get(0).getText()).toMatch('app.update');
+    expect(audits.count()).toEqual(12);
+    expect(audits.get(0).getText()).toMatch('app.delete');
   });
 
   it('Detail audit', function() {

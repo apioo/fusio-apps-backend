@@ -6,7 +6,7 @@ describe('Token tests', function() {
     browser.get('#!/token');
 
     var tokens = element.all(by.repeater('token in tokens').column('scope'));
-    expect(tokens.count()).toEqual(2);
+    expect(tokens.count()).toEqual(9);
     expect(tokens.get(0).getText()).toMatch('backend');
     expect(tokens.get(1).getText()).toMatch('authorization');
   });
