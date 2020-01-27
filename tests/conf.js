@@ -26,7 +26,7 @@ exports.config = {
   ],
   baseUrl: 'http://127.0.0.1:8008/fusio/index.htm',
   capabilities: {
-    browserName: 'chrome'
+    browserName: 'firefox'
   },
   onPrepare: function() {
     // login
