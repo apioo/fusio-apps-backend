@@ -24,7 +24,7 @@ before_script:
   - cp .env fusio/.env
   - cp server.php fusio/public/server.php
   - cp -r dist fusio/public/fusio/
-  - cp index.htm fusio/public/fusio/index.htm
+  - cp index.html fusio/public/fusio/index.html
   - pushd fusio/public
   - php server.php --warmup
   - (php -S 127.0.0.1:8008 server.php) &
