@@ -12,8 +12,8 @@ describe('Transaction tests', function() {
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
-    element(by.model('filter.from')).sendKeys('10', '01', '2018');
-    element(by.model('filter.to')).sendKeys('10', '30', '2018');
+    element(by.model('filter.from')).click().sendKeys('2018-10-01');
+    element(by.model('filter.to')).click().sendKeys('2018-10-30');
 
     $('button.btn-primary').click();
 
@@ -32,8 +32,8 @@ describe('Transaction tests', function() {
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
-    element(by.model('filter.from')).sendKeys('10', '01', '2018');
-    element(by.model('filter.to')).sendKeys('10', '30', '2018');
+    element(by.model('filter.from')).click().sendKeys('2018-10-01');
+    element(by.model('filter.to')).click().sendKeys('2018-10-30');
 
     $('button.btn-primary').click();
 

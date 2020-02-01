@@ -12,8 +12,8 @@ describe('Log tests', function() {
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
-    element(by.model('filter.from')).sendKeys('06', '01', '2015');
-    element(by.model('filter.to')).sendKeys('06', '30', '2015');
+    element(by.model('filter.from')).click().sendKeys('2015-06-01');
+    element(by.model('filter.to')).click().sendKeys('2015-06-30');
 
     $('button.btn-primary').click();
 
@@ -33,8 +33,8 @@ describe('Log tests', function() {
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
-    element(by.model('filter.from')).sendKeys('06', '01', '2015');
-    element(by.model('filter.to')).sendKeys('06', '30', '2015');
+    element(by.model('filter.from')).click().sendKeys('2015-06-01');
+    element(by.model('filter.to')).click().sendKeys('2015-06-30');
 
     $('button.btn-primary').click();
 
