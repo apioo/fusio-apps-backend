@@ -6,8 +6,9 @@ describe('Subscription tests', function() {
     browser.get('#!/subscription');
 
     var events = element.all(by.repeater('subscription in subscriptions'));
-    expect(events.count()).toEqual(1);
-    expect(events.get(0).getText()).toEqual('foo-event');
+    expect(events.count()).toEqual(2);
+    expect(events.get(0).getText()).toEqual('http://www.fusio-project.org/ping');
+    expect(events.get(1).getText()).toEqual('http://www.fusio-project.org/ping');
   });
 
   it('Create subscription', function() {
@@ -18,6 +19,12 @@ describe('Subscription tests', function() {
     $('a.btn-primary').click();
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
+
+    var eventOptions = element.all(by.options('event.id as event.name for event in events'));
+    eventOptions.get(1).click();
+
+    var userOptions = element.all(by.options('user.id as user.name for user in users'));
+    userOptions.get(1).click();
 
     element(by.model('subscription.endpoint')).sendKeys('http://localhost');
 
