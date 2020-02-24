@@ -2,7 +2,7 @@
 
 describe('Cronjob tests', function() {
 
-  it('List scope', function() {
+  it('List cronjob', function() {
     browser.get('#!/cronjob');
 
     var routes = element.all(by.repeater('cronjob in cronjobs'));
