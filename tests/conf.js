@@ -19,6 +19,7 @@ exports.config = {
     'app/schema.js',
     'app/scope.js',
     'app/statistic.js',
+    'app/subscription.js',
     'app/token.js',
     'app/transaction.js',
     'app/user.js',
