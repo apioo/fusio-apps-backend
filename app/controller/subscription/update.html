@@ -1,0 +1,46 @@
+
+<div class="modal-header">
+    <h3 class="modal-title">Update</h3>
+</div>
+
+<div class="modal-body">
+    <div uib-alert class="alert-danger" close="closeResponse()" ng-if="response.success === false">
+        {{response.message}}
+    </div>
+    <form name="subscriptionUpdateForm" ng-submit="update(subscription)">
+        <input type="hidden" ng-model="subscription.id" value="{{subscription.id}}" />
+        <div class="form-group">
+            <label for="endpoint">Endpoint:</label>
+            <input type="url" id="endpoint" ng-model="subscription.endpoint" aria-describedby="endpointHelp" class="form-control">
+            <span class="help-block" id="nameHelp">Url of the endpoint which gets called</span>
+        </div>
+        <uib-tabset>
+            <uib-tab heading="Responses">
+                <table class="table fusio-table-tab fusio-table-tab-token">
+                    <colgroup>
+                        <col width="50" />
+                        <col width="50" />
+                        <col width="*" />
+                        <col width="150" />
+                    </colgroup>
+                    <tbody>
+                    <tr ng-repeat="response in subscription.responses">
+                        <td>
+                            <span ng-if="response.code >= 200 && response.code < 300" class="label label-success">{{response.code}}</span>
+                            <span ng-if="response.code >= 300 && response.code < 400" class="label label-info">{{response.code}}</span>
+                            <span ng-if="response.code >= 400 && response.code < 500" class="label label-warning">{{response.code}}</span>
+                            <span ng-if="response.code >= 500 && response.code < 600" class="label label-danger">{{response.code}}</span>
+                            <span ng-if="!response.code" class="label label-default">-</span>
+                        </td>
+                        <td>{{response.attempts}}</td>
+                        <td>{{response.error}}</td>
+                        <td>{{response.executeDate | date: 'short'}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </uib-tab>
+        </uib-tabset>
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" ng-click="close()" class="btn btn-default">Cancel</button>
+    </form>
+</div>
