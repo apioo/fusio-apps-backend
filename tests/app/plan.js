@@ -20,7 +20,7 @@ describe('Plan tests', function() {
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
-    element(by.model('plan.name')).sendKeys('test-plan');
+    element(by.model('plan.name')).sendKeys('a-test-plan');
     element(by.model('plan.description')).sendKeys('Test plan');
     element(by.model('plan.price')).sendKeys('59.99');
     element(by.model('plan.points')).sendKeys('2000');
@@ -41,7 +41,7 @@ describe('Plan tests', function() {
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
-    expect(element(by.model('plan.name')).getAttribute('value')).toEqual('Plan A');
+    expect(element(by.model('plan.name')).getAttribute('value')).toEqual('Test plan');
 
     $('button.btn-primary').click();
 
@@ -59,7 +59,7 @@ describe('Plan tests', function() {
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
-    expect(element(by.model('plan.name')).getAttribute('value')).toEqual('Plan A');
+    expect(element(by.model('plan.name')).getAttribute('value')).toEqual('Test plan');
 
     $('button.btn-primary').click();
 

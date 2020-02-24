@@ -19,7 +19,7 @@ describe('Event tests', function() {
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
-    element(by.model('event.name')).sendKeys('test-event');
+    element(by.model('event.name')).sendKeys('a-test-event');
     element(by.model('event.description')).sendKeys('Test event');
 
     $('button.btn-primary').click();
@@ -38,7 +38,7 @@ describe('Event tests', function() {
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
-    expect(element(by.model('event.name')).getAttribute('value')).toEqual('foo-event');
+    expect(element(by.model('event.name')).getAttribute('value')).toEqual('a-test-event');
 
     $('button.btn-primary').click();
 
@@ -56,7 +56,7 @@ describe('Event tests', function() {
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
-    expect(element(by.model('event.name')).getAttribute('value')).toEqual('foo-event');
+    expect(element(by.model('event.name')).getAttribute('value')).toEqual('a-test-event');
 
     $('button.btn-primary').click();
 
