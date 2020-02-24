@@ -6,7 +6,7 @@ describe('Event tests', function() {
     browser.get('#!/event');
 
     var events = element.all(by.repeater('event in events'));
-    expect(events.count()).toEqual(1);
+    expect(events.count()).toEqual(16);
     expect(events.get(0).getText()).toEqual('foo-event');
   });
 
