@@ -19,6 +19,11 @@
             <div ui-ace="{mode: 'json'}" id="source" ng-model="schema.source" aria-describedby="sourceHelp"></div>
             <span class="help-block" id="sourceHelp">JsonSchema which describes the data format. Click <a ng-click="help.showDialog('help/schema.md')">here</a> for more informations about the JsonSchema format.</span>
         </div>
+        <div class="form-group">
+            <label for="source">UI Schema:</label>
+            <div ui-ace="{mode: 'json'}" id="form" ng-model="schema.form" aria-describedby="formHelp"></div>
+            <span class="help-block" id="formHelp">Optional an UI Schema which arguments the JsonSchema. This can be used by clients to build a fitting UI based on the JsonSchema.</span>
+        </div>
 
         <button type="submit" class="btn btn-primary">Save</button>
         <button type="button" ng-click="close()" class="btn btn-default">Cancel</button>
