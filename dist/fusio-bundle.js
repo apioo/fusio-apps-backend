@@ -37,6 +37,7 @@ var fusioApp = angular.module('fusioApp', [
   'fusioApp.scope',
   'fusioApp.sdk',
   'fusioApp.statistic',
+  'fusioApp.subscription',
   'fusioApp.token',
   'fusioApp.transaction',
   'fusioApp.user'
@@ -76,6 +77,7 @@ require('./controller/schema')
 require('./controller/scope')
 require('./controller/sdk')
 require('./controller/statistic')
+require('./controller/subscription')
 require('./controller/token')
 require('./controller/transaction')
 require('./controller/user')
@@ -221,6 +223,10 @@ fusioApp.run(function ($rootScope, $window, $location, $http, helpLoader, versio
       title: 'SDK',
       icon: 'glyphicon-download',
       path: '/sdk'
+    }, {
+      title: 'Subscription',
+      icon: 'glyphicon-fire',
+      path: '/subscription'
     }]
   }, {
     title: 'Analytics',
@@ -314,7 +320,7 @@ if (window) {
 
 module.exports = fusioApp
 
-},{"../package.json":353,"./controller/account":3,"./controller/action":8,"./controller/app":13,"./controller/audit":18,"./controller/config":20,"./controller/connection":25,"./controller/contract":30,"./controller/cronjob":36,"./controller/dashboard":39,"./controller/error":42,"./controller/event":46,"./controller/import":50,"./controller/invoice":54,"./controller/log":57,"./controller/login":59,"./controller/logout":61,"./controller/marketplace":63,"./controller/plan":67,"./controller/rate":72,"./controller/routes":78,"./controller/schema":85,"./controller/scope":90,"./controller/sdk":93,"./controller/statistic":96,"./controller/token":100,"./controller/transaction":103,"./controller/user":107,"./service/form_builder":110,"./service/help_loader":111,"./service/token_parser":112,"angular":127,"angular-animate":114,"angular-chart.js":115,"angular-highlightjs":116,"angular-loading-bar":118,"angular-route":120,"angular-sanitize":122,"angular-ui-ace":123,"angular-ui-bootstrap":125,"ng-showdown":350,"ng-tags-input":351}],2:[function(require,module,exports){
+},{"../package.json":358,"./controller/account":3,"./controller/action":8,"./controller/app":13,"./controller/audit":18,"./controller/config":20,"./controller/connection":25,"./controller/contract":30,"./controller/cronjob":36,"./controller/dashboard":39,"./controller/error":42,"./controller/event":46,"./controller/import":50,"./controller/invoice":54,"./controller/log":57,"./controller/login":59,"./controller/logout":61,"./controller/marketplace":63,"./controller/plan":67,"./controller/rate":72,"./controller/routes":78,"./controller/schema":85,"./controller/scope":90,"./controller/sdk":93,"./controller/statistic":96,"./controller/subscription":100,"./controller/token":105,"./controller/transaction":108,"./controller/user":112,"./service/form_builder":115,"./service/help_loader":116,"./service/token_parser":117,"angular":132,"angular-animate":119,"angular-chart.js":120,"angular-highlightjs":121,"angular-loading-bar":123,"angular-route":125,"angular-sanitize":127,"angular-ui-ace":128,"angular-ui-bootstrap":130,"ng-showdown":355,"ng-tags-input":356}],2:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, fusio) {
@@ -355,7 +361,7 @@ angular.module('fusioApp.account', ['ngRoute'])
 
   .controller('ChangePasswordCtrl', require('./change_password'))
 
-},{"./change_password":2,"angular":127}],4:[function(require,module,exports){
+},{"./change_password":2,"angular":132}],4:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $routeParams, $location, fusio) {
@@ -544,7 +550,7 @@ module.exports = function ($scope, $http, $uibModalInstance, formBuilder, fusio)
   }
 }
 
-},{"angular":127}],6:[function(require,module,exports){
+},{"angular":132}],6:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, action, fusio) {
@@ -723,7 +729,7 @@ module.exports = function ($scope, $http, $routeParams, fusio, formBuilder) {
     })
 }
 
-},{"angular":127}],8:[function(require,module,exports){
+},{"angular":132}],8:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -747,7 +753,7 @@ angular.module('fusioApp.action', ['ngRoute', 'ui.ace'])
   .controller('ActionDeleteCtrl', require('./delete'))
   .controller('ActionDesignerCtrl', require('./designer'))
 
-},{"./action":4,"./create":5,"./delete":6,"./designer":7,"./update":9,"angular":127}],9:[function(require,module,exports){
+},{"./action":4,"./create":5,"./delete":6,"./designer":7,"./update":9,"angular":132}],9:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -812,7 +818,7 @@ module.exports = function ($scope, $http, $uibModalInstance, $uibModal, action, 
     })
 }
 
-},{"angular":127}],10:[function(require,module,exports){
+},{"angular":132}],10:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, fusio) {
@@ -939,13 +945,16 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
     value: 'Deactivated'
   }]
 
+  $scope.scopes = [];
+  $scope.toggle = true;
+
   $scope.create = function (app) {
     var data = angular.copy(app)
 
     // remove null values from scope
     if (angular.isArray(data.scopes)) {
       data.scopes = data.scopes.filter(function (val) {
-        return val !== null
+        return !!val
       })
     }
 
@@ -970,6 +979,19 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
     $scope.response = null
   }
 
+  $scope.bulkSelect = function () {
+    if ($scope.toggle) {
+      var scopes = [];
+      for (var i = 0; i < $scope.scopes.length; i++) {
+        scopes.push($scope.scopes[i].name);
+      }
+      $scope.app.scopes = scopes;
+    } else {
+      $scope.app.scopes = [];
+    }
+    $scope.toggle = !$scope.toggle;
+  }
+
   $scope.getUsers = function () {
     $http.get(fusio.baseUrl + 'backend/user?count=1024')
       .then(function (response) {
@@ -988,7 +1010,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   $scope.getScopes()
 }
 
-},{"angular":127}],12:[function(require,module,exports){
+},{"angular":132}],12:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, app, fusio) {
@@ -1036,7 +1058,7 @@ angular.module('fusioApp.app', ['ngRoute', 'ui.bootstrap'])
   .controller('AppUpdateCtrl', require('./update'))
   .controller('AppDeleteCtrl', require('./delete'))
 
-},{"./app":10,"./create":11,"./delete":12,"./update":14,"angular":127}],14:[function(require,module,exports){
+},{"./app":10,"./create":11,"./delete":12,"./update":14,"angular":132}],14:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -1055,6 +1077,9 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
     value: 'Deactivated'
   }]
 
+  $scope.scopes = [];
+  $scope.toggle = true;
+
   $scope.update = function (app) {
     var data = angular.copy(app)
 
@@ -1066,7 +1091,7 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
     // remove null values from scope
     if (angular.isArray(data.scopes)) {
       data.scopes = data.scopes.filter(function (val) {
-        return val !== null
+        return !!val
       })
     }
 
@@ -1089,6 +1114,19 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
 
   $scope.closeResponse = function () {
     $scope.response = null
+  }
+
+  $scope.bulkSelect = function () {
+    if ($scope.toggle) {
+      var scopes = [];
+      for (var i = 0; i < $scope.scopes.length; i++) {
+        scopes.push($scope.scopes[i].name);
+      }
+      $scope.app.scopes = scopes;
+    } else {
+      $scope.app.scopes = [];
+    }
+    $scope.toggle = !$scope.toggle;
   }
 
   $scope.loadApp = function () {
@@ -1166,7 +1204,7 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
   $scope.getScopes()
 }
 
-},{"angular":127}],15:[function(require,module,exports){
+},{"angular":132}],15:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $timeout, fusio) {
@@ -1347,7 +1385,7 @@ angular.module('fusioApp.audit', ['ngRoute', 'ui.bootstrap'])
   .controller('AuditDetailCtrl', require('./detail'))
   .controller('AuditFilterCtrl', require('./filter'))
 
-},{"./audit":15,"./detail":16,"./filter":17,"angular":127}],19:[function(require,module,exports){
+},{"./audit":15,"./detail":16,"./filter":17,"angular":132}],19:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, fusio) {
@@ -1432,7 +1470,7 @@ angular.module('fusioApp.config', ['ngRoute', 'ui.bootstrap'])
   .controller('ConfigCtrl', require('./config'))
   .controller('ConfigUpdateCtrl', require('./update'))
 
-},{"./config":19,"./update":21,"angular":127}],21:[function(require,module,exports){
+},{"./config":19,"./update":21,"angular":132}],21:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -1478,7 +1516,7 @@ module.exports = function ($scope, $http, $uibModalInstance, config, fusio) {
   }
 }
 
-},{"angular":127}],22:[function(require,module,exports){
+},{"angular":132}],22:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, fusio) {
@@ -1656,7 +1694,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio, formBuilder)
   }
 }
 
-},{"angular":127}],24:[function(require,module,exports){
+},{"angular":132}],24:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, fusio, connection) {
@@ -1704,7 +1742,7 @@ angular.module('fusioApp.connection', ['ngRoute', 'ui.bootstrap'])
   .controller('ConnectionUpdateCtrl', require('./update'))
   .controller('ConnectionDeleteCtrl', require('./delete'))
 
-},{"./connection":22,"./create":23,"./delete":24,"./update":26,"angular":127}],26:[function(require,module,exports){
+},{"./connection":22,"./create":23,"./delete":24,"./update":26,"angular":132}],26:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -1770,7 +1808,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio, formBuilder,
     })
 }
 
-},{"angular":127}],27:[function(require,module,exports){
+},{"angular":132}],27:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $routeParams, $location, fusio) {
@@ -1907,7 +1945,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   $scope.getPlans()
 }
 
-},{"angular":127}],29:[function(require,module,exports){
+},{"angular":132}],29:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, fusio, contract) {
@@ -1954,7 +1992,7 @@ angular.module('fusioApp.contract', ['ngRoute', 'ui.bootstrap'])
   .controller('ContractCreateCtrl', require('./create'))
   .controller('ContractDeleteCtrl', require('./delete'))
 
-},{"./contract":27,"./create":28,"./delete":29,"angular":127}],31:[function(require,module,exports){
+},{"./contract":27,"./create":28,"./delete":29,"angular":132}],31:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -2026,7 +2064,7 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio) {
   }
 }
 
-},{"angular":127}],32:[function(require,module,exports){
+},{"angular":132}],32:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, fusio) {
@@ -2244,7 +2282,7 @@ angular.module('fusioApp.cronjob', ['ngRoute', 'ui.bootstrap'])
   .controller('CronjobErrorCtrl', require('./error'))
   .controller('CronjobErrorDetailCtrl', require('./error/detail'))
 
-},{"./create":31,"./cronjob":32,"./delete":33,"./error":34,"./error/detail":35,"./update":37,"angular":127}],37:[function(require,module,exports){
+},{"./create":31,"./cronjob":32,"./delete":33,"./error":34,"./error/detail":35,"./update":37,"angular":132}],37:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -2317,7 +2355,7 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, c
     })
 }
 
-},{"angular":127}],38:[function(require,module,exports){
+},{"angular":132}],38:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, fusio) {
@@ -2358,7 +2396,7 @@ angular.module('fusioApp.dashboard', ['ngRoute', 'chart.js'])
 
   .controller('DashboardCtrl', require('./dashboard'))
 
-},{"./dashboard":38,"angular":127}],40:[function(require,module,exports){
+},{"./dashboard":38,"angular":132}],40:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, error) {
@@ -2452,7 +2490,7 @@ angular.module('fusioApp.error', ['ngRoute', 'ui.bootstrap'])
   .controller('ErrorCtrl', require('./error'))
   .controller('ErrorDetailCtrl', require('./detail'))
 
-},{"./detail":40,"./error":41,"angular":127}],43:[function(require,module,exports){
+},{"./detail":40,"./error":41,"angular":132}],43:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -2488,7 +2526,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   }
 }
 
-},{"angular":127}],44:[function(require,module,exports){
+},{"angular":132}],44:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, fusio, event) {
@@ -2640,7 +2678,7 @@ angular.module('fusioApp.event', ['ngRoute', 'ui.bootstrap'])
   .controller('EventUpdateCtrl', require('./update'))
   .controller('EventDeleteCtrl', require('./delete'))
 
-},{"./create":43,"./delete":44,"./event":45,"./update":47,"angular":127}],47:[function(require,module,exports){
+},{"./create":43,"./delete":44,"./event":45,"./update":47,"angular":132}],47:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -2683,7 +2721,7 @@ module.exports = function ($scope, $http, $uibModalInstance, $uibModal, fusio, e
     })
 }
 
-},{"angular":127}],48:[function(require,module,exports){
+},{"angular":132}],48:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -2702,7 +2740,7 @@ module.exports = function ($scope, $http, $uibModalInstance, action) {
   }
 }
 
-},{"angular":127}],49:[function(require,module,exports){
+},{"angular":132}],49:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, fusio) {
@@ -2776,7 +2814,7 @@ angular.module('fusioApp.import', ['ngRoute', 'ui.bootstrap'])
   .controller('ImportActionCtrl', require('./action'))
   .controller('ImportSchemaCtrl', require('./schema'))
 
-},{"./action":48,"./import":49,"./preview":51,"./route":52,"./schema":53,"angular":127}],51:[function(require,module,exports){
+},{"./action":48,"./import":49,"./preview":51,"./route":52,"./schema":53,"angular":132}],51:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, $uibModal, fusio, data) {
@@ -2914,7 +2952,7 @@ module.exports = function ($scope, $http, $uibModalInstance, schema) {
   }
 }
 
-},{"angular":127}],54:[function(require,module,exports){
+},{"angular":132}],54:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -2930,7 +2968,7 @@ angular.module('fusioApp.invoice', ['ngRoute', 'ui.bootstrap'])
 
   .controller('InvoiceCtrl', require('./invoice'))
 
-},{"./invoice":55,"angular":127}],55:[function(require,module,exports){
+},{"./invoice":55,"angular":132}],55:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $routeParams, $location, fusio) {
@@ -3030,7 +3068,7 @@ angular.module('fusioApp.log', ['ngRoute', 'ui.bootstrap'])
   .controller('LogCtrl', require('./log'))
   .controller('LogDetailCtrl', require('./detail'))
 
-},{"./detail":56,"./log":58,"angular":127}],58:[function(require,module,exports){
+},{"./detail":56,"./log":58,"angular":132}],58:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $timeout, fusio) {
@@ -3162,7 +3200,7 @@ angular.module('fusioApp.login', ['ngRoute'])
 
   .controller('LoginCtrl', require('./login'))
 
-},{"./login":60,"angular":127}],60:[function(require,module,exports){
+},{"./login":60,"angular":132}],60:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $location, $window, $rootScope, fusio, tokenParser) {
@@ -3234,7 +3272,7 @@ angular.module('fusioApp.logout', ['ngRoute'])
 
   .controller('LogoutCtrl', require('./logout'))
 
-},{"./logout":62,"angular":127}],62:[function(require,module,exports){
+},{"./logout":62,"angular":132}],62:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $location, $window, $rootScope, fusio) {
@@ -3270,7 +3308,7 @@ angular.module('fusioApp.marketplace', ['ngRoute', 'ui.bootstrap'])
 
   .controller('MarketplaceCtrl', require('./marketplace'))
 
-},{"./marketplace":64,"angular":127}],64:[function(require,module,exports){
+},{"./marketplace":64,"angular":132}],64:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, fusio) {
@@ -3401,7 +3439,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   }
 }
 
-},{"angular":127}],66:[function(require,module,exports){
+},{"angular":132}],66:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, fusio, plan) {
@@ -3449,7 +3487,7 @@ angular.module('fusioApp.plan', ['ngRoute', 'ui.bootstrap'])
   .controller('PlanUpdateCtrl', require('./update'))
   .controller('PlanDeleteCtrl', require('./delete'))
 
-},{"./create":65,"./delete":66,"./plan":68,"./update":69,"angular":127}],68:[function(require,module,exports){
+},{"./create":65,"./delete":66,"./plan":68,"./update":69,"angular":132}],68:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $routeParams, $location, fusio) {
@@ -3613,7 +3651,7 @@ module.exports = function ($scope, $http, $uibModalInstance, $uibModal, fusio, p
     })
 }
 
-},{"angular":127}],70:[function(require,module,exports){
+},{"angular":132}],70:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -3759,7 +3797,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   $scope.getRoutes()
 }
 
-},{"angular":127}],71:[function(require,module,exports){
+},{"angular":132}],71:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, rate, fusio) {
@@ -3807,7 +3845,7 @@ angular.module('fusioApp.rate', ['ngRoute', 'ui.bootstrap'])
   .controller('RateUpdateCtrl', require('./update'))
   .controller('RateDeleteCtrl', require('./delete'))
 
-},{"./create":70,"./delete":71,"./rate":73,"./update":74,"angular":127}],73:[function(require,module,exports){
+},{"./create":70,"./delete":71,"./rate":73,"./update":74,"angular":132}],73:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, fusio) {
@@ -4101,7 +4139,7 @@ module.exports = function ($scope, $http, $uibModalInstance, rate, fusio) {
   $scope.getRoutes()
 }
 
-},{"angular":127}],75:[function(require,module,exports){
+},{"angular":132}],75:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, provider, config) {
@@ -4366,7 +4404,7 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
   $scope.addVersion()
 }
 
-},{"angular":127}],77:[function(require,module,exports){
+},{"angular":132}],77:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, fusio, route) {
@@ -4416,7 +4454,7 @@ angular.module('fusioApp.routes', ['ngRoute', 'ui.bootstrap'])
   .controller('RoutesProviderCtrl', require('./provider'))
   .controller('RoutesChangelogCtrl', require('./changelog'))
 
-},{"./changelog":75,"./create":76,"./delete":77,"./provider":79,"./routes":80,"./update":81,"angular":127}],79:[function(require,module,exports){
+},{"./changelog":75,"./create":76,"./delete":77,"./provider":79,"./routes":80,"./update":81,"angular":132}],79:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -4524,7 +4562,7 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
 
 }
 
-},{"angular":127}],80:[function(require,module,exports){
+},{"angular":132}],80:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $routeParams, fusio) {
@@ -4918,7 +4956,7 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
   }
 }
 
-},{"angular":127}],82:[function(require,module,exports){
+},{"angular":132}],82:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -4959,7 +4997,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   }
 }
 
-},{"angular":127}],83:[function(require,module,exports){
+},{"angular":132}],83:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, fusio, schema) {
@@ -5041,7 +5079,7 @@ module.exports = function ($scope, $http, $routeParams, fusio) {
   $scope.loadPreview($routeParams.schema_id)
 }
 
-},{"angular":127}],85:[function(require,module,exports){
+},{"angular":132}],85:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -5065,7 +5103,7 @@ angular.module('fusioApp.schema', ['ngRoute', 'ui.bootstrap'])
   .controller('SchemaDeleteCtrl', require('./delete'))
   .controller('SchemaDesignerCtrl', require('./designer'))
 
-},{"./create":82,"./delete":83,"./designer":84,"./schema":86,"./update":87,"angular":127}],86:[function(require,module,exports){
+},{"./create":82,"./delete":83,"./designer":84,"./schema":86,"./update":87,"angular":132}],86:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $routeParams, $location, fusio) {
@@ -5225,7 +5263,7 @@ module.exports = function ($scope, $http, $uibModalInstance, $uibModal, fusio, s
     })
 }
 
-},{"angular":127}],88:[function(require,module,exports){
+},{"angular":132}],88:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -5289,7 +5327,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   }
 }
 
-},{"angular":127}],89:[function(require,module,exports){
+},{"angular":132}],89:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, fusio, scope) {
@@ -5337,7 +5375,7 @@ angular.module('fusioApp.scope', ['ngRoute', 'ui.bootstrap'])
   .controller('ScopeUpdateCtrl', require('./update'))
   .controller('ScopeDeleteCtrl', require('./delete'))
 
-},{"./create":88,"./delete":89,"./scope":91,"./update":92,"angular":127}],91:[function(require,module,exports){
+},{"./create":88,"./delete":89,"./scope":91,"./update":92,"angular":132}],91:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, fusio) {
@@ -5544,7 +5582,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio, scope) {
     })
 }
 
-},{"angular":127}],93:[function(require,module,exports){
+},{"angular":132}],93:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -5560,7 +5598,7 @@ angular.module('fusioApp.sdk', ['ngRoute', 'ui.bootstrap'])
 
   .controller('SdkCtrl', require('./sdk'))
 
-},{"./sdk":94,"angular":127}],94:[function(require,module,exports){
+},{"./sdk":94,"angular":132}],94:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $window, fusio) {
@@ -5664,7 +5702,7 @@ angular.module('fusioApp.statistic', ['ngRoute', 'ui.bootstrap'])
   .controller('StatisticCtrl', require('./statistic'))
   .controller('StatisticFilterCtrl', require('./filter'))
 
-},{"./filter":95,"./statistic":97,"angular":127}],97:[function(require,module,exports){
+},{"./filter":95,"./statistic":97,"angular":132}],97:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $compile, fusio) {
@@ -5766,6 +5804,258 @@ module.exports = function ($scope, $http, $uibModal, $compile, fusio) {
 },{}],98:[function(require,module,exports){
 'use strict'
 
+var angular = require('angular')
+
+module.exports = function ($scope, $http, $uibModalInstance, fusio) {
+  $scope.subscription = {
+    eventId: null,
+    userId: null,
+    endpoint: ''
+  }
+
+  $scope.events = [];
+  $scope.users = [];
+
+  $scope.create = function (subscription) {
+    var data = angular.copy(subscription)
+
+    $http.post(fusio.baseUrl + 'backend/event/subscription', data)
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
+        if (data.success === true) {
+          $uibModalInstance.close(data)
+        }
+      })
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
+
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
+
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
+
+  $scope.getEvents = function () {
+    $http.get(fusio.baseUrl + 'backend/event?count=1024')
+        .then(function (response) {
+          $scope.events = response.data.entry
+        })
+  }
+
+  $scope.getUsers = function () {
+    $http.get(fusio.baseUrl + 'backend/user?count=1024')
+        .then(function (response) {
+          $scope.users = response.data.entry
+        })
+  }
+
+  $scope.getEvents();
+  $scope.getUsers();
+}
+
+},{"angular":132}],99:[function(require,module,exports){
+'use strict'
+
+module.exports = function ($scope, $http, $uibModalInstance, fusio, subscription) {
+  $scope.subscription = subscription
+
+  $scope.delete = function (subscription) {
+    $http.delete(fusio.baseUrl + 'backend/event/subscription/' + subscription.id)
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
+        if (data.success === true) {
+          $uibModalInstance.close(data)
+        }
+      })
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
+
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
+
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
+}
+
+},{}],100:[function(require,module,exports){
+'use strict'
+
+var angular = require('angular')
+
+angular.module('fusioApp.subscription', ['ngRoute', 'ui.bootstrap'])
+
+  .config(['$routeProvider', function ($routeProvider) {
+    $routeProvider.when('/subscription', {
+      templateUrl: 'app/controller/subscription/index.html',
+      controller: 'SubscriptionCtrl'
+    })
+  }])
+
+  .controller('SubscriptionCtrl', require('./subscription'))
+  .controller('SubscriptionCreateCtrl', require('./create'))
+  .controller('SubscriptionUpdateCtrl', require('./update'))
+  .controller('SubscriptionDeleteCtrl', require('./delete'))
+
+},{"./create":98,"./delete":99,"./subscription":101,"./update":102,"angular":132}],101:[function(require,module,exports){
+'use strict'
+
+module.exports = function ($scope, $http, $uibModal, $routeParams, $location, fusio) {
+  $scope.response = null
+  $scope.search = ''
+  $scope.subscriptions = []
+
+  $scope.load = function () {
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
+
+    $http.get(fusio.baseUrl + 'backend/event/subscription?search=' + search)
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.subscriptions = data.entry
+      })
+  }
+
+  $scope.pageChanged = function () {
+    var startIndex = ($scope.startIndex - 1) * 16
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
+
+    $http.get(fusio.baseUrl + 'backend/event/subscription?startIndex=' + startIndex + '&search=' + search)
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.subscriptions = data.entry
+      })
+  }
+
+  $scope.doSearch = function (search) {
+    $http.get(fusio.baseUrl + 'backend/event/subscription?search=' + encodeURIComponent(search || ''))
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.subscriptions = data.entry
+      })
+  }
+
+  $scope.openCreateDialog = function () {
+    var modalInstance = $uibModal.open({
+      size: 'lg',
+      backdrop: 'static',
+      templateUrl: 'app/controller/subscription/create.html',
+      controller: 'SubscriptionCreateCtrl'
+    })
+
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
+
+  $scope.openUpdateDialog = function (subscription) {
+    var modalInstance = $uibModal.open({
+      size: 'lg',
+      backdrop: 'static',
+      templateUrl: 'app/controller/subscription/update.html',
+      controller: 'SubscriptionUpdateCtrl',
+      resolve: {
+        subscription: function () {
+          return subscription
+        }
+      }
+    })
+
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
+
+  $scope.openDeleteDialog = function (subscription) {
+    var modalInstance = $uibModal.open({
+      size: 'lg',
+      backdrop: 'static',
+      templateUrl: 'app/controller/subscription/delete.html',
+      controller: 'SubscriptionDeleteCtrl',
+      resolve: {
+        subscription: function () {
+          return subscription
+        }
+      }
+    })
+
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
+
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
+
+  $scope.load()
+}
+
+},{}],102:[function(require,module,exports){
+'use strict'
+
+var angular = require('angular')
+
+module.exports = function ($scope, $http, $uibModalInstance, $uibModal, fusio, subscription) {
+  $scope.subscription = subscription
+
+  $scope.update = function (subscription) {
+    var data = angular.copy(subscription)
+
+    $http.put(fusio.baseUrl + 'backend/event/subscription/' + subscription.id, data)
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
+        if (data.success === true) {
+          $uibModalInstance.close(data)
+        }
+      })
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
+
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
+
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
+
+  $http.get(fusio.baseUrl + 'backend/event/subscription/' + subscription.id)
+    .then(function (response) {
+      var data = response.data
+      if (!angular.isString(data.source)) {
+        data.source = JSON.stringify(data.source, null, 4)
+      }
+
+      $scope.subscription = data
+    })
+}
+
+},{"angular":132}],103:[function(require,module,exports){
+'use strict'
+
 module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, token) {
   $scope.token = token
 
@@ -5787,9 +6077,9 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, t
     })
 }
 
-},{}],99:[function(require,module,exports){
+},{}],104:[function(require,module,exports){
 arguments[4][17][0].apply(exports,arguments)
-},{"dup":17}],100:[function(require,module,exports){
+},{"dup":17}],105:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -5807,7 +6097,7 @@ angular.module('fusioApp.token', ['ngRoute', 'ui.bootstrap'])
   .controller('TokenDetailCtrl', require('./detail'))
   .controller('TokenFilterCtrl', require('./filter'))
 
-},{"./detail":98,"./filter":99,"./token":101,"angular":127}],101:[function(require,module,exports){
+},{"./detail":103,"./filter":104,"./token":106,"angular":132}],106:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $timeout, fusio) {
@@ -5943,7 +6233,7 @@ module.exports = function ($scope, $http, $uibModal, $timeout, fusio) {
   $scope.load()
 }
 
-},{}],102:[function(require,module,exports){
+},{}],107:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, transaction) {
@@ -5959,7 +6249,7 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, t
     })
 }
 
-},{}],103:[function(require,module,exports){
+},{}],108:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -5976,7 +6266,7 @@ angular.module('fusioApp.transaction', ['ngRoute', 'ui.bootstrap'])
   .controller('TransactionCtrl', require('./transaction'))
   .controller('TransactionDetailCtrl', require('./detail'))
 
-},{"./detail":102,"./transaction":104,"angular":127}],104:[function(require,module,exports){
+},{"./detail":107,"./transaction":109,"angular":132}],109:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $timeout, fusio) {
@@ -6092,7 +6382,7 @@ module.exports = function ($scope, $http, $uibModal, $timeout, fusio) {
   $scope.load()
 }
 
-},{}],105:[function(require,module,exports){
+},{}],110:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -6160,7 +6450,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   }
 }
 
-},{"angular":127}],106:[function(require,module,exports){
+},{"angular":132}],111:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, fusio, user) {
@@ -6189,7 +6479,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio, user) {
   }
 }
 
-},{}],107:[function(require,module,exports){
+},{}],112:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -6208,7 +6498,7 @@ angular.module('fusioApp.user', ['ngRoute', 'ui.bootstrap'])
   .controller('UserUpdateCtrl', require('./update'))
   .controller('UserDeleteCtrl', require('./delete'))
 
-},{"./create":105,"./delete":106,"./update":108,"./user":109,"angular":127}],108:[function(require,module,exports){
+},{"./create":110,"./delete":111,"./update":113,"./user":114,"angular":132}],113:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -6296,7 +6586,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio, user) {
   }
 }
 
-},{"angular":127}],109:[function(require,module,exports){
+},{"angular":132}],114:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, fusio) {
@@ -6399,7 +6689,7 @@ module.exports = function ($scope, $http, $uibModal, fusio) {
   $scope.load()
 }
 
-},{}],110:[function(require,module,exports){
+},{}],115:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -6553,7 +6843,7 @@ module.exports = function ($sce, $compile) {
   return builder
 }
 
-},{"angular":127}],111:[function(require,module,exports){
+},{"angular":132}],116:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($http, $showdown, $q, $uibModal) {
@@ -6611,7 +6901,7 @@ module.exports = function ($http, $showdown, $q, $uibModal) {
   return helper
 }
 
-},{}],112:[function(require,module,exports){
+},{}],117:[function(require,module,exports){
 'use strict'
 
 module.exports = function () {
@@ -6639,9 +6929,9 @@ module.exports = function () {
   return parser
 }
 
-},{}],113:[function(require,module,exports){
+},{}],118:[function(require,module,exports){
 /**
- * @license AngularJS v1.7.8
+ * @license AngularJS v1.7.9
  * (c) 2010-2018 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -10894,7 +11184,7 @@ angular.module('ngAnimate', [], function initAngularHelpers() {
   isFunction  = angular.isFunction;
   isElement   = angular.isElement;
 })
-  .info({ angularVersion: '1.7.8' })
+  .info({ angularVersion: '1.7.9' })
   .directive('ngAnimateSwap', ngAnimateSwapDirective)
 
   .directive('ngAnimateChildren', $$AnimateChildrenDirective)
@@ -10913,11 +11203,11 @@ angular.module('ngAnimate', [], function initAngularHelpers() {
 
 })(window, window.angular);
 
-},{}],114:[function(require,module,exports){
+},{}],119:[function(require,module,exports){
 require('./angular-animate');
 module.exports = 'ngAnimate';
 
-},{"./angular-animate":113}],115:[function(require,module,exports){
+},{"./angular-animate":118}],120:[function(require,module,exports){
 /*!
  * angular-chart.js - An angular.js wrapper for Chart.js
  * http://jtblin.github.io/angular-chart.js/
@@ -11319,7 +11609,7 @@ module.exports = 'ngAnimate';
   }
 }));
 
-},{"angular":127,"chart.js":128}],116:[function(require,module,exports){
+},{"angular":132,"chart.js":133}],121:[function(require,module,exports){
 /*! angular-highlightjs
 version: 0.7.1
 build date: 2017-02-28
@@ -11842,7 +12132,7 @@ includeDirFactory = function (dirName) {
 
   return "hljs";
 }));
-},{"angular":127,"highlight.js":172}],117:[function(require,module,exports){
+},{"angular":132,"highlight.js":177}],122:[function(require,module,exports){
 /*! 
  * angular-loading-bar v0.9.0
  * https://chieffancypants.github.io/angular-loading-bar
@@ -12185,13 +12475,13 @@ angular.module('cfp.loadingBar', [])
   });       // wtf javascript. srsly
 })();       //
 
-},{}],118:[function(require,module,exports){
+},{}],123:[function(require,module,exports){
 require('./build/loading-bar');
 module.exports = 'angular-loading-bar';
 
-},{"./build/loading-bar":117}],119:[function(require,module,exports){
+},{"./build/loading-bar":122}],124:[function(require,module,exports){
 /**
- * @license AngularJS v1.7.8
+ * @license AngularJS v1.7.9
  * (c) 2010-2018 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -12293,7 +12583,7 @@ var noop;
 /* global -ngRouteModule */
 var ngRouteModule = angular.
   module('ngRoute', []).
-  info({ angularVersion: '1.7.8' }).
+  info({ angularVersion: '1.7.9' }).
   provider('$route', $RouteProvider).
   // Ensure `$route` will be instantiated in time to capture the initial `$locationChangeSuccess`
   // event (unless explicitly disabled). This is necessary in case `ngView` is included in an
@@ -13457,13 +13747,13 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
 })(window, window.angular);
 
-},{}],120:[function(require,module,exports){
+},{}],125:[function(require,module,exports){
 require('./angular-route');
 module.exports = 'ngRoute';
 
-},{"./angular-route":119}],121:[function(require,module,exports){
+},{"./angular-route":124}],126:[function(require,module,exports){
 /**
- * @license AngularJS v1.7.8
+ * @license AngularJS v1.7.9
  * (c) 2010-2018 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -14175,7 +14465,7 @@ function sanitizeText(chars) {
 // define ngSanitize module and register $sanitize service
 angular.module('ngSanitize', [])
   .provider('$sanitize', $SanitizeProvider)
-  .info({ angularVersion: '1.7.8' });
+  .info({ angularVersion: '1.7.9' });
 
 /**
  * @ngdoc filter
@@ -14376,11 +14666,11 @@ angular.module('ngSanitize').filter('linky', ['$sanitize', function($sanitize) {
 
 })(window, window.angular);
 
-},{}],122:[function(require,module,exports){
+},{}],127:[function(require,module,exports){
 require('./angular-sanitize');
 module.exports = 'ngSanitize';
 
-},{"./angular-sanitize":121}],123:[function(require,module,exports){
+},{"./angular-sanitize":126}],128:[function(require,module,exports){
 'use strict';
 
 /**
@@ -14710,7 +15000,7 @@ angular.module('ui.ace', [])
     };
   }]);
 
-},{}],124:[function(require,module,exports){
+},{}],129:[function(require,module,exports){
 /*
  * angular-ui-bootstrap
  * http://angular-ui.github.io/bootstrap/
@@ -22514,14 +22804,14 @@ angular.module('ui.bootstrap.datepickerPopup').run(function() {!angular.$$csp().
 angular.module('ui.bootstrap.tooltip').run(function() {!angular.$$csp().noInlineStyle && !angular.$$uibTooltipCss && angular.element(document).find('head').prepend('<style type="text/css">[uib-tooltip-popup].tooltip.top-left > .tooltip-arrow,[uib-tooltip-popup].tooltip.top-right > .tooltip-arrow,[uib-tooltip-popup].tooltip.bottom-left > .tooltip-arrow,[uib-tooltip-popup].tooltip.bottom-right > .tooltip-arrow,[uib-tooltip-popup].tooltip.left-top > .tooltip-arrow,[uib-tooltip-popup].tooltip.left-bottom > .tooltip-arrow,[uib-tooltip-popup].tooltip.right-top > .tooltip-arrow,[uib-tooltip-popup].tooltip.right-bottom > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.top-left > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.top-right > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.bottom-left > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.bottom-right > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.left-top > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.left-bottom > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.right-top > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.right-bottom > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.top-left > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.top-right > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.bottom-left > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.bottom-right > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.left-top > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.left-bottom > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.right-top > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.right-bottom > .tooltip-arrow,[uib-popover-popup].popover.top-left > .arrow,[uib-popover-popup].popover.top-right > .arrow,[uib-popover-popup].popover.bottom-left > .arrow,[uib-popover-popup].popover.bottom-right > .arrow,[uib-popover-popup].popover.left-top > .arrow,[uib-popover-popup].popover.left-bottom > .arrow,[uib-popover-popup].popover.right-top > .arrow,[uib-popover-popup].popover.right-bottom > .arrow,[uib-popover-html-popup].popover.top-left > .arrow,[uib-popover-html-popup].popover.top-right > .arrow,[uib-popover-html-popup].popover.bottom-left > .arrow,[uib-popover-html-popup].popover.bottom-right > .arrow,[uib-popover-html-popup].popover.left-top > .arrow,[uib-popover-html-popup].popover.left-bottom > .arrow,[uib-popover-html-popup].popover.right-top > .arrow,[uib-popover-html-popup].popover.right-bottom > .arrow,[uib-popover-template-popup].popover.top-left > .arrow,[uib-popover-template-popup].popover.top-right > .arrow,[uib-popover-template-popup].popover.bottom-left > .arrow,[uib-popover-template-popup].popover.bottom-right > .arrow,[uib-popover-template-popup].popover.left-top > .arrow,[uib-popover-template-popup].popover.left-bottom > .arrow,[uib-popover-template-popup].popover.right-top > .arrow,[uib-popover-template-popup].popover.right-bottom > .arrow{top:auto;bottom:auto;left:auto;right:auto;margin:0;}[uib-popover-popup].popover,[uib-popover-html-popup].popover,[uib-popover-template-popup].popover{display:block !important;}</style>'); angular.$$uibTooltipCss = true; });
 angular.module('ui.bootstrap.timepicker').run(function() {!angular.$$csp().noInlineStyle && !angular.$$uibTimepickerCss && angular.element(document).find('head').prepend('<style type="text/css">.uib-time input{width:50px;}</style>'); angular.$$uibTimepickerCss = true; });
 angular.module('ui.bootstrap.typeahead').run(function() {!angular.$$csp().noInlineStyle && !angular.$$uibTypeaheadCss && angular.element(document).find('head').prepend('<style type="text/css">[uib-typeahead-popup].dropdown-menu{display:block;}</style>'); angular.$$uibTypeaheadCss = true; });
-},{}],125:[function(require,module,exports){
+},{}],130:[function(require,module,exports){
 require('./dist/ui-bootstrap-tpls');
 
 module.exports = 'ui.bootstrap';
 
-},{"./dist/ui-bootstrap-tpls":124}],126:[function(require,module,exports){
+},{"./dist/ui-bootstrap-tpls":129}],131:[function(require,module,exports){
 /**
- * @license AngularJS v1.7.8
+ * @license AngularJS v1.7.9
  * (c) 2010-2018 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -22621,7 +22911,7 @@ function isValidObjectMaxDepth(maxDepth) {
 function minErr(module, ErrorConstructor) {
   ErrorConstructor = ErrorConstructor || Error;
 
-  var url = 'https://errors.angularjs.org/1.7.8/';
+  var url = 'https://errors.angularjs.org/1.7.9/';
   var regex = url.replace('.', '\\.') + '[\\s\\S]*';
   var errRegExp = new RegExp(regex, 'g');
 
@@ -23003,8 +23293,10 @@ function baseExtend(dst, objs, deep) {
         } else if (isElement(src)) {
           dst[key] = src.clone();
         } else {
-          if (!isObject(dst[key])) dst[key] = isArray(src) ? [] : {};
-          baseExtend(dst[key], [src], true);
+          if (key !== '__proto__') {
+            if (!isObject(dst[key])) dst[key] = isArray(src) ? [] : {};
+            baseExtend(dst[key], [src], true);
+          }
         }
       } else {
         dst[key] = src;
@@ -25327,11 +25619,11 @@ function toDebugString(obj, maxDepth) {
 var version = {
   // These placeholder strings will be replaced by grunt's `build` task.
   // They need to be double- or single-quoted.
-  full: '1.7.8',
+  full: '1.7.9',
   major: 1,
   minor: 7,
-  dot: 8,
-  codeName: 'enthusiastic-oblation'
+  dot: 9,
+  codeName: 'pollution-eradication'
 };
 
 
@@ -25481,7 +25773,7 @@ function publishExternalAPI(angular) {
       });
     }
   ])
-  .info({ angularVersion: '1.7.8' });
+  .info({ angularVersion: '1.7.9' });
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -29982,7 +30274,7 @@ function $TemplateCacheProvider() {
  *
  * This example show how you might use `$doCheck` to trigger changes in your component's inputs even if the
  * actual identity of the component doesn't change. (Be aware that cloning and deep equality checks on large
- * arrays or objects can have a negative impact on your application performance)
+ * arrays or objects can have a negative impact on your application performance.)
  *
  * <example name="doCheckArrayExample" module="do-check-module">
  *   <file name="index.html">
@@ -30305,7 +30597,7 @@ function $TemplateCacheProvider() {
  * would result in the whole app "stalling" until all templates are loaded asynchronously - even in the
  * case when only one deeply nested directive has `templateUrl`.
  *
- * Template loading is asynchronous even if the template has been preloaded into the {@link $templateCache}
+ * Template loading is asynchronous even if the template has been preloaded into the {@link $templateCache}.
  *
  * You can specify `templateUrl` as a string representing the URL or as a function which takes two
  * arguments `tElement` and `tAttrs` (described in the `compile` function api below) and returns
@@ -30366,7 +30658,7 @@ function $TemplateCacheProvider() {
  * own templates or compile functions. Compiling these directives results in an infinite loop and
  * stack overflow errors.
  *
- * This can be avoided by manually using $compile in the postLink function to imperatively compile
+ * This can be avoided by manually using `$compile` in the postLink function to imperatively compile
  * a directive's template instead of relying on automatic template compilation via `template` or
  * `templateUrl` declaration or manual compilation inside the compile function.
  * </div>
@@ -30470,17 +30762,17 @@ function $TemplateCacheProvider() {
  *
  * * `true` - transclude the content (i.e. the child nodes) of the directive's element.
  * * `'element'` - transclude the whole of the directive's element including any directives on this
- *   element that defined at a lower priority than this directive. When used, the `template`
+ *   element that are defined at a lower priority than this directive. When used, the `template`
  *   property is ignored.
  * * **`{...}` (an object hash):** - map elements of the content onto transclusion "slots" in the template.
  *
- * **Mult-slot transclusion** is declared by providing an object for the `transclude` property.
+ * **Multi-slot transclusion** is declared by providing an object for the `transclude` property.
  *
  * This object is a map where the keys are the name of the slot to fill and the value is an element selector
  * used to match the HTML to the slot. The element selector should be in normalized form (e.g. `myElement`)
  * and will match the standard element variants (e.g. `my-element`, `my:element`, `data-my-element`, etc).
  *
- * For further information check out the guide on {@link guide/directive#matching-directives Matching Directives}
+ * For further information check out the guide on {@link guide/directive#matching-directives Matching Directives}.
  *
  * If the element selector is prefixed with a `?` then that slot is optional.
  *
@@ -30505,7 +30797,7 @@ function $TemplateCacheProvider() {
  * </div>
  *
  * If you want to manually control the insertion and removal of the transcluded content in your directive
- * then you must use this transclude function. When you call a transclude function it returns a a jqLite/JQuery
+ * then you must use this transclude function. When you call a transclude function it returns a jqLite/JQuery
  * object that contains the compiled DOM, which is linked to the correct transclusion scope.
  *
  * When you call a transclusion function you can pass in a **clone attach function**. This function accepts
@@ -30590,8 +30882,8 @@ function $TemplateCacheProvider() {
  * The {@link ng.$compile.directive.Attributes Attributes} object - passed as a parameter in the
  * `link()` or `compile()` functions. It has a variety of uses.
  *
- * * *Accessing normalized attribute names:* Directives like 'ngBind' can be expressed in many ways:
- *   'ng:bind', `data-ng-bind`, or 'x-ng-bind'. The attributes object allows for normalized access
+ * * *Accessing normalized attribute names:* Directives like `ngBind` can be expressed in many ways:
+ *   `ng:bind`, `data-ng-bind`, or `x-ng-bind`. The attributes object allows for normalized access
  *   to the attributes.
  *
  * * *Directive inter-communication:* All directives share the same instance of the attributes
@@ -30632,25 +30924,24 @@ function $TemplateCacheProvider() {
    <file name="index.html">
     <script>
       angular.module('compileExample', [], function($compileProvider) {
-        // configure new 'compile' directive by passing a directive
-        // factory function. The factory function injects the '$compile'
+        // Configure new 'compile' directive by passing a directive
+        // factory function. The factory function injects '$compile'.
         $compileProvider.directive('compile', function($compile) {
-          // directive factory creates a link function
+          // The directive factory creates a link function.
           return function(scope, element, attrs) {
             scope.$watch(
               function(scope) {
-                 // watch the 'compile' expression for changes
+                // Watch the 'compile' expression for changes.
                 return scope.$eval(attrs.compile);
               },
               function(value) {
-                // when the 'compile' expression changes
-                // assign it into the current DOM
+                // When the 'compile' expression changes
+                // assign it into the current DOM.
                 element.html(value);
 
-                // compile the new DOM and link it to the current
-                // scope.
-                // NOTE: we only compile .childNodes so that
-                // we don't get into infinite loop compiling ourselves
+                // Compile the new DOM and link it to the current scope.
+                // NOTE: we only compile '.childNodes' so that we
+                // don't get into an infinite loop compiling ourselves.
                 $compile(element.contents())(scope);
               }
             );
@@ -30723,13 +31014,13 @@ function $TemplateCacheProvider() {
  *        }
  *        ```
  *      * `futureParentElement` - defines the parent to which the `cloneAttachFn` will add
- *        the cloned elements; only needed for transcludes that are allowed to contain non html
- *        elements (e.g. SVG elements). See also the directive.controller property.
+ *        the cloned elements; only needed for transcludes that are allowed to contain non HTML
+ *        elements (e.g. SVG elements). See also the `directive.controller` property.
  *
  * Calling the linking function returns the element of the template. It is either the original
  * element passed in, or the clone of the element if the `cloneAttachFn` is provided.
  *
- * After linking the view is not updated until after a call to $digest which typically is done by
+ * After linking the view is not updated until after a call to `$digest`, which typically is done by
  * AngularJS automatically.
  *
  * If you need access to the bound view, there are two ways to do it:
@@ -30737,21 +31028,23 @@ function $TemplateCacheProvider() {
  * - If you are not asking the linking function to clone the template, create the DOM element(s)
  *   before you send them to the compiler and keep this reference around.
  *   ```js
- *     var element = $compile('<p>{{total}}</p>')(scope);
+ *     var element = angular.element('<p>{{total}}</p>');
+ *     $compile(element)(scope);
  *   ```
  *
  * - if on the other hand, you need the element to be cloned, the view reference from the original
  *   example would not point to the clone, but rather to the original template that was cloned. In
- *   this case, you can access the clone via the cloneAttachFn:
+ *   this case, you can access the clone either via the `cloneAttachFn` or the value returned by the
+ *   linking function:
  *   ```js
- *     var templateElement = angular.element('<p>{{total}}</p>'),
- *         scope = ....;
- *
+ *     var templateElement = angular.element('<p>{{total}}</p>');
  *     var clonedElement = $compile(templateElement)(scope, function(clonedElement, scope) {
- *       //attach the clone to DOM document at the right place
+ *       // Attach the clone to DOM document at the right place.
  *     });
  *
- *     //now we have reference to the cloned DOM via `clonedElement`
+ *     // Now we have reference to the cloned DOM via `clonedElement`.
+ *     // NOTE: The `clonedElement` returned by the linking function is the same as the
+ *     //       `clonedElement` passed to `cloneAttachFn`.
  *   ```
  *
  *
@@ -31277,9 +31570,9 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
    * @description
    * Register a new directive with the compiler.
    *
-   * @param {string|Object} name Name of the directive in camel-case (i.e. <code>ngBind</code> which
-   *    will match as <code>ng-bind</code>), or an object map of directives where the keys are the
-   *    names and the values are the factories.
+   * @param {string|Object} name Name of the directive in camel-case (i.e. `ngBind` which will match
+   *    as `ng-bind`), or an object map of directives where the keys are the names and the values
+   *    are the factories.
    * @param {Function|Array} directiveFactory An injectable directive factory function. See the
    *    {@link guide/directive directive guide} and the {@link $compile compile API} for more info.
    * @returns {ng.$compileProvider} Self for chaining.
@@ -56946,14 +57239,7 @@ var ngHideDirective = ['$animate', function($animate) {
 var ngStyleDirective = ngDirective(function(scope, element, attr) {
   scope.$watchCollection(attr.ngStyle, function ngStyleWatchAction(newStyles, oldStyles) {
     if (oldStyles && (newStyles !== oldStyles)) {
-      if (!newStyles) {
-        newStyles = {};
-      }
-      forEach(oldStyles, function(val, style) {
-        if (newStyles[style] == null) {
-          newStyles[style] = '';
-        }
-      });
+      forEach(oldStyles, function(val, style) { element.css(style, ''); });
     }
     if (newStyles) element.css(newStyles);
   });
@@ -58955,11 +59241,11 @@ $provide.value("$locale", {
 })(window);
 
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
-},{}],127:[function(require,module,exports){
+},{}],132:[function(require,module,exports){
 require('./angular');
 module.exports = angular;
 
-},{"./angular":126}],128:[function(require,module,exports){
+},{"./angular":131}],133:[function(require,module,exports){
 /**
  * @namespace Chart
  */
@@ -59010,7 +59296,7 @@ require('./charts/Chart.Scatter')(Chart);
 
 window.Chart = module.exports = Chart;
 
-},{"./charts/Chart.Bar":129,"./charts/Chart.Bubble":130,"./charts/Chart.Doughnut":131,"./charts/Chart.Line":132,"./charts/Chart.PolarArea":133,"./charts/Chart.Radar":134,"./charts/Chart.Scatter":135,"./controllers/controller.bar":136,"./controllers/controller.bubble":137,"./controllers/controller.doughnut":138,"./controllers/controller.line":139,"./controllers/controller.polarArea":140,"./controllers/controller.radar":141,"./core/core.animation":142,"./core/core.canvasHelpers":143,"./core/core.controller":144,"./core/core.datasetController":145,"./core/core.element":146,"./core/core.helpers":147,"./core/core.js":148,"./core/core.layoutService":149,"./core/core.legend":150,"./core/core.plugin.js":151,"./core/core.scale":152,"./core/core.scaleService":153,"./core/core.title":154,"./core/core.tooltip":155,"./elements/element.arc":156,"./elements/element.line":157,"./elements/element.point":158,"./elements/element.rectangle":159,"./scales/scale.category":160,"./scales/scale.linear":161,"./scales/scale.linearbase.js":162,"./scales/scale.logarithmic":163,"./scales/scale.radialLinear":164,"./scales/scale.time":165}],129:[function(require,module,exports){
+},{"./charts/Chart.Bar":134,"./charts/Chart.Bubble":135,"./charts/Chart.Doughnut":136,"./charts/Chart.Line":137,"./charts/Chart.PolarArea":138,"./charts/Chart.Radar":139,"./charts/Chart.Scatter":140,"./controllers/controller.bar":141,"./controllers/controller.bubble":142,"./controllers/controller.doughnut":143,"./controllers/controller.line":144,"./controllers/controller.polarArea":145,"./controllers/controller.radar":146,"./core/core.animation":147,"./core/core.canvasHelpers":148,"./core/core.controller":149,"./core/core.datasetController":150,"./core/core.element":151,"./core/core.helpers":152,"./core/core.js":153,"./core/core.layoutService":154,"./core/core.legend":155,"./core/core.plugin.js":156,"./core/core.scale":157,"./core/core.scaleService":158,"./core/core.title":159,"./core/core.tooltip":160,"./elements/element.arc":161,"./elements/element.line":162,"./elements/element.point":163,"./elements/element.rectangle":164,"./scales/scale.category":165,"./scales/scale.linear":166,"./scales/scale.linearbase.js":167,"./scales/scale.logarithmic":168,"./scales/scale.radialLinear":169,"./scales/scale.time":170}],134:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -59023,7 +59309,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],130:[function(require,module,exports){
+},{}],135:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -59035,7 +59321,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],131:[function(require,module,exports){
+},{}],136:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -59048,7 +59334,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],132:[function(require,module,exports){
+},{}],137:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -59061,7 +59347,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],133:[function(require,module,exports){
+},{}],138:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -59074,7 +59360,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],134:[function(require,module,exports){
+},{}],139:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -59088,7 +59374,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],135:[function(require,module,exports){
+},{}],140:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -59137,7 +59423,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],136:[function(require,module,exports){
+},{}],141:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -59712,7 +59998,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],137:[function(require,module,exports){
+},{}],142:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -59836,7 +60122,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],138:[function(require,module,exports){
+},{}],143:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -60129,7 +60415,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],139:[function(require,module,exports){
+},{}],144:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -60481,7 +60767,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],140:[function(require,module,exports){
+},{}],145:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -60698,7 +60984,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],141:[function(require,module,exports){
+},{}],146:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -60888,7 +61174,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],142:[function(require,module,exports){
+},{}],147:[function(require,module,exports){
 /* global window: false */
 'use strict';
 
@@ -61021,7 +61307,7 @@ module.exports = function(Chart) {
 	};
 };
 
-},{}],143:[function(require,module,exports){
+},{}],148:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -61127,7 +61413,7 @@ module.exports = function(Chart) {
 	};
 };
 
-},{}],144:[function(require,module,exports){
+},{}],149:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -61819,7 +62105,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],145:[function(require,module,exports){
+},{}],150:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -61985,7 +62271,7 @@ module.exports = function(Chart) {
 	Chart.DatasetController.extend = helpers.inherits;
 };
 
-},{}],146:[function(require,module,exports){
+},{}],151:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -62083,7 +62369,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],147:[function(require,module,exports){
+},{}],152:[function(require,module,exports){
 /* global window: false */
 /* global document: false */
 'use strict';
@@ -63129,7 +63415,7 @@ module.exports = function(Chart) {
 	};
 };
 
-},{"chartjs-color":167}],148:[function(require,module,exports){
+},{"chartjs-color":172}],153:[function(require,module,exports){
 'use strict';
 
 module.exports = function() {
@@ -63241,7 +63527,7 @@ module.exports = function() {
 
 };
 
-},{}],149:[function(require,module,exports){
+},{}],154:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -63564,7 +63850,7 @@ module.exports = function(Chart) {
 	};
 };
 
-},{}],150:[function(require,module,exports){
+},{}],155:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -64050,7 +64336,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],151:[function(require,module,exports){
+},{}],156:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -64181,7 +64467,7 @@ module.exports = function(Chart) {
 	Chart.pluginService = Chart.plugins;
 };
 
-},{}],152:[function(require,module,exports){
+},{}],157:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -64941,7 +65227,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],153:[function(require,module,exports){
+},{}],158:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -64983,7 +65269,7 @@ module.exports = function(Chart) {
 	};
 };
 
-},{}],154:[function(require,module,exports){
+},{}],159:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -65189,7 +65475,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],155:[function(require,module,exports){
+},{}],160:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -65905,7 +66191,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],156:[function(require,module,exports){
+},{}],161:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -65998,7 +66284,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],157:[function(require,module,exports){
+},{}],162:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -66175,7 +66461,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],158:[function(require,module,exports){
+},{}],163:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -66234,7 +66520,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],159:[function(require,module,exports){
+},{}],164:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -66331,7 +66617,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],160:[function(require,module,exports){
+},{}],165:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -66462,7 +66748,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],161:[function(require,module,exports){
+},{}],166:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -66656,7 +66942,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],162:[function(require,module,exports){
+},{}],167:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -66783,7 +67069,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],163:[function(require,module,exports){
+},{}],168:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -67051,7 +67337,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],164:[function(require,module,exports){
+},{}],169:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -67467,7 +67753,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],165:[function(require,module,exports){
+},{}],170:[function(require,module,exports){
 /* global window: false */
 'use strict';
 
@@ -67929,7 +68215,7 @@ module.exports = function(Chart) {
 
 };
 
-},{"moment":349}],166:[function(require,module,exports){
+},{"moment":354}],171:[function(require,module,exports){
 /* MIT license */
 var colorNames = require('color-name');
 
@@ -68152,7 +68438,7 @@ for (var name in colorNames) {
    reverseNames[colorNames[name]] = name;
 }
 
-},{"color-name":170}],167:[function(require,module,exports){
+},{"color-name":175}],172:[function(require,module,exports){
 /* MIT license */
 var convert = require('color-convert');
 var string = require('chartjs-color-string');
@@ -68637,7 +68923,7 @@ if (typeof window !== 'undefined') {
 
 module.exports = Color;
 
-},{"chartjs-color-string":166,"color-convert":169}],168:[function(require,module,exports){
+},{"chartjs-color-string":171,"color-convert":174}],173:[function(require,module,exports){
 /* MIT license */
 
 module.exports = {
@@ -69337,7 +69623,7 @@ for (var key in cssKeywords) {
   reverseKeywords[JSON.stringify(cssKeywords[key])] = key;
 }
 
-},{}],169:[function(require,module,exports){
+},{}],174:[function(require,module,exports){
 var conversions = require("./conversions");
 
 var convert = function() {
@@ -69430,7 +69716,7 @@ Converter.prototype.getValues = function(space) {
 });
 
 module.exports = convert;
-},{"./conversions":168}],170:[function(require,module,exports){
+},{"./conversions":173}],175:[function(require,module,exports){
 module.exports = {
 	"aliceblue": [240, 248, 255],
 	"antiquewhite": [250, 235, 215],
@@ -69581,7 +69867,7 @@ module.exports = {
 	"yellow": [255, 255, 0],
 	"yellowgreen": [154, 205, 50]
 };
-},{}],171:[function(require,module,exports){
+},{}],176:[function(require,module,exports){
 /*
 Syntax highlighting with language autodetection.
 https://highlightjs.org/
@@ -70399,7 +70685,7 @@ https://highlightjs.org/
   return hljs;
 }));
 
-},{}],172:[function(require,module,exports){
+},{}],177:[function(require,module,exports){
 var hljs = require('./highlight');
 
 hljs.registerLanguage('1c', require('./languages/1c'));
@@ -70580,7 +70866,7 @@ hljs.registerLanguage('xquery', require('./languages/xquery'));
 hljs.registerLanguage('zephir', require('./languages/zephir'));
 
 module.exports = hljs;
-},{"./highlight":171,"./languages/1c":173,"./languages/abnf":174,"./languages/accesslog":175,"./languages/actionscript":176,"./languages/ada":177,"./languages/apache":178,"./languages/applescript":179,"./languages/arduino":180,"./languages/armasm":181,"./languages/asciidoc":182,"./languages/aspectj":183,"./languages/autohotkey":184,"./languages/autoit":185,"./languages/avrasm":186,"./languages/awk":187,"./languages/axapta":188,"./languages/bash":189,"./languages/basic":190,"./languages/bnf":191,"./languages/brainfuck":192,"./languages/cal":193,"./languages/capnproto":194,"./languages/ceylon":195,"./languages/clean":196,"./languages/clojure":198,"./languages/clojure-repl":197,"./languages/cmake":199,"./languages/coffeescript":200,"./languages/coq":201,"./languages/cos":202,"./languages/cpp":203,"./languages/crmsh":204,"./languages/crystal":205,"./languages/cs":206,"./languages/csp":207,"./languages/css":208,"./languages/d":209,"./languages/dart":210,"./languages/delphi":211,"./languages/diff":212,"./languages/django":213,"./languages/dns":214,"./languages/dockerfile":215,"./languages/dos":216,"./languages/dsconfig":217,"./languages/dts":218,"./languages/dust":219,"./languages/ebnf":220,"./languages/elixir":221,"./languages/elm":222,"./languages/erb":223,"./languages/erlang":225,"./languages/erlang-repl":224,"./languages/excel":226,"./languages/fix":227,"./languages/flix":228,"./languages/fortran":229,"./languages/fsharp":230,"./languages/gams":231,"./languages/gauss":232,"./languages/gcode":233,"./languages/gherkin":234,"./languages/glsl":235,"./languages/go":236,"./languages/golo":237,"./languages/gradle":238,"./languages/groovy":239,"./languages/haml":240,"./languages/handlebars":241,"./languages/haskell":242,"./languages/haxe":243,"./languages/hsp":244,"./languages/htmlbars":245,"./languages/http":246,"./languages/hy":247,"./languages/inform7":248,"./languages/ini":249,"./languages/irpf90":250,"./languages/java":251,"./languages/javascript":252,"./languages/jboss-cli":253,"./languages/json":254,"./languages/julia":256,"./languages/julia-repl":255,"./languages/kotlin":257,"./languages/lasso":258,"./languages/ldif":259,"./languages/leaf":260,"./languages/less":261,"./languages/lisp":262,"./languages/livecodeserver":263,"./languages/livescript":264,"./languages/llvm":265,"./languages/lsl":266,"./languages/lua":267,"./languages/makefile":268,"./languages/markdown":269,"./languages/mathematica":270,"./languages/matlab":271,"./languages/maxima":272,"./languages/mel":273,"./languages/mercury":274,"./languages/mipsasm":275,"./languages/mizar":276,"./languages/mojolicious":277,"./languages/monkey":278,"./languages/moonscript":279,"./languages/n1ql":280,"./languages/nginx":281,"./languages/nimrod":282,"./languages/nix":283,"./languages/nsis":284,"./languages/objectivec":285,"./languages/ocaml":286,"./languages/openscad":287,"./languages/oxygene":288,"./languages/parser3":289,"./languages/perl":290,"./languages/pf":291,"./languages/php":292,"./languages/pony":293,"./languages/powershell":294,"./languages/processing":295,"./languages/profile":296,"./languages/prolog":297,"./languages/protobuf":298,"./languages/puppet":299,"./languages/purebasic":300,"./languages/python":301,"./languages/q":302,"./languages/qml":303,"./languages/r":304,"./languages/rib":305,"./languages/roboconf":306,"./languages/routeros":307,"./languages/rsl":308,"./languages/ruby":309,"./languages/ruleslanguage":310,"./languages/rust":311,"./languages/scala":312,"./languages/scheme":313,"./languages/scilab":314,"./languages/scss":315,"./languages/shell":316,"./languages/smali":317,"./languages/smalltalk":318,"./languages/sml":319,"./languages/sqf":320,"./languages/sql":321,"./languages/stan":322,"./languages/stata":323,"./languages/step21":324,"./languages/stylus":325,"./languages/subunit":326,"./languages/swift":327,"./languages/taggerscript":328,"./languages/tap":329,"./languages/tcl":330,"./languages/tex":331,"./languages/thrift":332,"./languages/tp":333,"./languages/twig":334,"./languages/typescript":335,"./languages/vala":336,"./languages/vbnet":337,"./languages/vbscript":339,"./languages/vbscript-html":338,"./languages/verilog":340,"./languages/vhdl":341,"./languages/vim":342,"./languages/x86asm":343,"./languages/xl":344,"./languages/xml":345,"./languages/xquery":346,"./languages/yaml":347,"./languages/zephir":348}],173:[function(require,module,exports){
+},{"./highlight":176,"./languages/1c":178,"./languages/abnf":179,"./languages/accesslog":180,"./languages/actionscript":181,"./languages/ada":182,"./languages/apache":183,"./languages/applescript":184,"./languages/arduino":185,"./languages/armasm":186,"./languages/asciidoc":187,"./languages/aspectj":188,"./languages/autohotkey":189,"./languages/autoit":190,"./languages/avrasm":191,"./languages/awk":192,"./languages/axapta":193,"./languages/bash":194,"./languages/basic":195,"./languages/bnf":196,"./languages/brainfuck":197,"./languages/cal":198,"./languages/capnproto":199,"./languages/ceylon":200,"./languages/clean":201,"./languages/clojure":203,"./languages/clojure-repl":202,"./languages/cmake":204,"./languages/coffeescript":205,"./languages/coq":206,"./languages/cos":207,"./languages/cpp":208,"./languages/crmsh":209,"./languages/crystal":210,"./languages/cs":211,"./languages/csp":212,"./languages/css":213,"./languages/d":214,"./languages/dart":215,"./languages/delphi":216,"./languages/diff":217,"./languages/django":218,"./languages/dns":219,"./languages/dockerfile":220,"./languages/dos":221,"./languages/dsconfig":222,"./languages/dts":223,"./languages/dust":224,"./languages/ebnf":225,"./languages/elixir":226,"./languages/elm":227,"./languages/erb":228,"./languages/erlang":230,"./languages/erlang-repl":229,"./languages/excel":231,"./languages/fix":232,"./languages/flix":233,"./languages/fortran":234,"./languages/fsharp":235,"./languages/gams":236,"./languages/gauss":237,"./languages/gcode":238,"./languages/gherkin":239,"./languages/glsl":240,"./languages/go":241,"./languages/golo":242,"./languages/gradle":243,"./languages/groovy":244,"./languages/haml":245,"./languages/handlebars":246,"./languages/haskell":247,"./languages/haxe":248,"./languages/hsp":249,"./languages/htmlbars":250,"./languages/http":251,"./languages/hy":252,"./languages/inform7":253,"./languages/ini":254,"./languages/irpf90":255,"./languages/java":256,"./languages/javascript":257,"./languages/jboss-cli":258,"./languages/json":259,"./languages/julia":261,"./languages/julia-repl":260,"./languages/kotlin":262,"./languages/lasso":263,"./languages/ldif":264,"./languages/leaf":265,"./languages/less":266,"./languages/lisp":267,"./languages/livecodeserver":268,"./languages/livescript":269,"./languages/llvm":270,"./languages/lsl":271,"./languages/lua":272,"./languages/makefile":273,"./languages/markdown":274,"./languages/mathematica":275,"./languages/matlab":276,"./languages/maxima":277,"./languages/mel":278,"./languages/mercury":279,"./languages/mipsasm":280,"./languages/mizar":281,"./languages/mojolicious":282,"./languages/monkey":283,"./languages/moonscript":284,"./languages/n1ql":285,"./languages/nginx":286,"./languages/nimrod":287,"./languages/nix":288,"./languages/nsis":289,"./languages/objectivec":290,"./languages/ocaml":291,"./languages/openscad":292,"./languages/oxygene":293,"./languages/parser3":294,"./languages/perl":295,"./languages/pf":296,"./languages/php":297,"./languages/pony":298,"./languages/powershell":299,"./languages/processing":300,"./languages/profile":301,"./languages/prolog":302,"./languages/protobuf":303,"./languages/puppet":304,"./languages/purebasic":305,"./languages/python":306,"./languages/q":307,"./languages/qml":308,"./languages/r":309,"./languages/rib":310,"./languages/roboconf":311,"./languages/routeros":312,"./languages/rsl":313,"./languages/ruby":314,"./languages/ruleslanguage":315,"./languages/rust":316,"./languages/scala":317,"./languages/scheme":318,"./languages/scilab":319,"./languages/scss":320,"./languages/shell":321,"./languages/smali":322,"./languages/smalltalk":323,"./languages/sml":324,"./languages/sqf":325,"./languages/sql":326,"./languages/stan":327,"./languages/stata":328,"./languages/step21":329,"./languages/stylus":330,"./languages/subunit":331,"./languages/swift":332,"./languages/taggerscript":333,"./languages/tap":334,"./languages/tcl":335,"./languages/tex":336,"./languages/thrift":337,"./languages/tp":338,"./languages/twig":339,"./languages/typescript":340,"./languages/vala":341,"./languages/vbnet":342,"./languages/vbscript":344,"./languages/vbscript-html":343,"./languages/verilog":345,"./languages/vhdl":346,"./languages/vim":347,"./languages/x86asm":348,"./languages/xl":349,"./languages/xml":350,"./languages/xquery":351,"./languages/yaml":352,"./languages/zephir":353}],178:[function(require,module,exports){
 module.exports = function(hljs){
 
   // общий паттерн для определения идентификаторов
@@ -71090,7 +71376,7 @@ module.exports = function(hljs){
     ]  
   }
 };
-},{}],174:[function(require,module,exports){
+},{}],179:[function(require,module,exports){
 module.exports = function(hljs) {
     var regexes = {
         ruleDeclaration: "^[a-zA-Z][a-zA-Z0-9-]*",
@@ -71161,7 +71447,7 @@ module.exports = function(hljs) {
       ]
     };
 };
-},{}],175:[function(require,module,exports){
+},{}],180:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     contains: [
@@ -71199,7 +71485,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],176:[function(require,module,exports){
+},{}],181:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '[a-zA-Z_$][a-zA-Z0-9_$]*';
   var IDENT_FUNC_RETURN_TYPE_RE = '([*]|[a-zA-Z_$][a-zA-Z0-9_$]*)';
@@ -71273,7 +71559,7 @@ module.exports = function(hljs) {
     illegal: /#/
   };
 };
-},{}],177:[function(require,module,exports){
+},{}],182:[function(require,module,exports){
 module.exports = // We try to support full Ada2012
 //
 // We highlight all appearances of types, keywords, literals (string, char, number, bool)
@@ -71446,7 +71732,7 @@ function(hljs) {
         ]
     };
 };
-},{}],178:[function(require,module,exports){
+},{}],183:[function(require,module,exports){
 module.exports = function(hljs) {
   var NUMBER = {className: 'number', begin: '[\\$%]\\d+'};
   return {
@@ -71492,7 +71778,7 @@ module.exports = function(hljs) {
     illegal: /\S/
   };
 };
-},{}],179:[function(require,module,exports){
+},{}],184:[function(require,module,exports){
 module.exports = function(hljs) {
   var STRING = hljs.inherit(hljs.QUOTE_STRING_MODE, {illegal: ''});
   var PARAMS = {
@@ -71578,7 +71864,7 @@ module.exports = function(hljs) {
     illegal: '//|->|=>|\\[\\['
   };
 };
-},{}],180:[function(require,module,exports){
+},{}],185:[function(require,module,exports){
 module.exports = function(hljs) {
   var CPP = hljs.getLanguage('cpp').exports;
 	return {
@@ -71678,7 +71964,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],181:[function(require,module,exports){
+},{}],186:[function(require,module,exports){
 module.exports = function(hljs) {
     //local labels: %?[FB]?[AT]?\d{1,2}\w+
   return {
@@ -71770,7 +72056,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],182:[function(require,module,exports){
+},{}],187:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['adoc'],
@@ -71958,7 +72244,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],183:[function(require,module,exports){
+},{}],188:[function(require,module,exports){
 module.exports = function (hljs) {
   var KEYWORDS =
     'false synchronized int abstract float private char boolean static null if const ' +
@@ -72103,7 +72389,7 @@ module.exports = function (hljs) {
     ]
   };
 };
-},{}],184:[function(require,module,exports){
+},{}],189:[function(require,module,exports){
 module.exports = function(hljs) {
   var BACKTICK_ESCAPE = {
     begin: '`[\\s\\S]'
@@ -72162,7 +72448,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],185:[function(require,module,exports){
+},{}],190:[function(require,module,exports){
 module.exports = function(hljs) {
     var KEYWORDS = 'ByRef Case Const ContinueCase ContinueLoop ' +
         'Default Dim Do Else ElseIf EndFunc EndIf EndSelect ' +
@@ -72298,7 +72584,7 @@ module.exports = function(hljs) {
         ]
     }
 };
-},{}],186:[function(require,module,exports){
+},{}],191:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: true,
@@ -72360,7 +72646,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],187:[function(require,module,exports){
+},{}],192:[function(require,module,exports){
 module.exports = function(hljs) {
   var VARIABLE = {
     className: 'variable',
@@ -72413,7 +72699,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],188:[function(require,module,exports){
+},{}],193:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: 'false int abstract private char boolean static null if for true ' +
@@ -72444,7 +72730,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],189:[function(require,module,exports){
+},{}],194:[function(require,module,exports){
 module.exports = function(hljs) {
   var VAR = {
     className: 'variable',
@@ -72519,7 +72805,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],190:[function(require,module,exports){
+},{}],195:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: true,
@@ -72570,7 +72856,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],191:[function(require,module,exports){
+},{}],196:[function(require,module,exports){
 module.exports = function(hljs){
   return {
     contains: [
@@ -72599,7 +72885,7 @@ module.exports = function(hljs){
     ]
   };
 };
-},{}],192:[function(require,module,exports){
+},{}],197:[function(require,module,exports){
 module.exports = function(hljs){
   var LITERAL = {
     className: 'literal',
@@ -72636,7 +72922,7 @@ module.exports = function(hljs){
     ]
   };
 };
-},{}],193:[function(require,module,exports){
+},{}],198:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS =
     'div mod in and or not xor asserterror begin case do downto else end exit for if of repeat then to ' +
@@ -72716,7 +73002,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],194:[function(require,module,exports){
+},{}],199:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['capnp'],
@@ -72765,7 +73051,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],195:[function(require,module,exports){
+},{}],200:[function(require,module,exports){
 module.exports = function(hljs) {
   // 2.3. Identifiers and keywords
   var KEYWORDS =
@@ -72832,7 +73118,7 @@ module.exports = function(hljs) {
     ].concat(EXPRESSIONS)
   };
 };
-},{}],196:[function(require,module,exports){
+},{}],201:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['clean','icl','dcl'],
@@ -72857,7 +73143,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],197:[function(require,module,exports){
+},{}],202:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     contains: [
@@ -72872,7 +73158,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],198:[function(require,module,exports){
+},{}],203:[function(require,module,exports){
 module.exports = function(hljs) {
   var keywords = {
     'builtin-name':
@@ -72968,7 +73254,7 @@ module.exports = function(hljs) {
     contains: [LIST, STRING, HINT, HINT_COL, COMMENT, KEY, COLLECTION, NUMBER, LITERAL]
   }
 };
-},{}],199:[function(require,module,exports){
+},{}],204:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['cmake.in'],
@@ -73006,7 +73292,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],200:[function(require,module,exports){
+},{}],205:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -73152,7 +73438,7 @@ module.exports = function(hljs) {
     ])
   };
 };
-},{}],201:[function(require,module,exports){
+},{}],206:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -73219,7 +73505,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],202:[function(require,module,exports){
+},{}],207:[function(require,module,exports){
 module.exports = function cos (hljs) {
 
   var STRINGS = {
@@ -73343,7 +73629,7 @@ module.exports = function cos (hljs) {
     ]
   };
 };
-},{}],203:[function(require,module,exports){
+},{}],208:[function(require,module,exports){
 module.exports = function(hljs) {
   var CPP_PRIMITIVE_TYPES = {
     className: 'keyword',
@@ -73518,7 +73804,7 @@ module.exports = function(hljs) {
     }
   };
 };
-},{}],204:[function(require,module,exports){
+},{}],209:[function(require,module,exports){
 module.exports = function(hljs) {
   var RESOURCES = 'primitive rsc_template';
 
@@ -73612,7 +73898,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],205:[function(require,module,exports){
+},{}],210:[function(require,module,exports){
 module.exports = function(hljs) {
   var NUM_SUFFIX = '(_[uif](8|16|32|64))?';
   var CRYSTAL_IDENT_RE = '[a-zA-Z_]\\w*[!?=]?';
@@ -73806,7 +74092,7 @@ module.exports = function(hljs) {
     contains: CRYSTAL_DEFAULT_CONTAINS
   };
 };
-},{}],206:[function(require,module,exports){
+},{}],211:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -73983,7 +74269,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],207:[function(require,module,exports){
+},{}],212:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: false,
@@ -74005,7 +74291,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],208:[function(require,module,exports){
+},{}],213:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '[a-zA-Z-][a-zA-Z0-9_-]*';
   var RULE = {
@@ -74110,7 +74396,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],209:[function(require,module,exports){
+},{}],214:[function(require,module,exports){
 module.exports = /**
  * Known issues:
  *
@@ -74368,7 +74654,7 @@ function(hljs) {
     ]
   };
 };
-},{}],210:[function(require,module,exports){
+},{}],215:[function(require,module,exports){
 module.exports = function (hljs) {
   var SUBST = {
     className: 'subst',
@@ -74469,7 +74755,7 @@ module.exports = function (hljs) {
     ]
   }
 };
-},{}],211:[function(require,module,exports){
+},{}],216:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS =
     'exports register file shl array record property for mod while set ally label uses raise not ' +
@@ -74538,7 +74824,7 @@ module.exports = function(hljs) {
     ].concat(COMMENT_MODES)
   };
 };
-},{}],212:[function(require,module,exports){
+},{}],217:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['patch'],
@@ -74578,7 +74864,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],213:[function(require,module,exports){
+},{}],218:[function(require,module,exports){
 module.exports = function(hljs) {
   var FILTER = {
     begin: /\|[A-Za-z]+:?/,
@@ -74642,7 +74928,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],214:[function(require,module,exports){
+},{}],219:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['bind', 'zone'],
@@ -74671,7 +74957,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],215:[function(require,module,exports){
+},{}],220:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['docker'],
@@ -74693,7 +74979,7 @@ module.exports = function(hljs) {
     illegal: '</'
   }
 };
-},{}],216:[function(require,module,exports){
+},{}],221:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMENT = hljs.COMMENT(
     /^\s*@?rem\b/, /$/,
@@ -74745,7 +75031,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],217:[function(require,module,exports){
+},{}],222:[function(require,module,exports){
 module.exports = function(hljs) {
   var QUOTED_PROPERTY = {
     className: 'string',
@@ -74792,7 +75078,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],218:[function(require,module,exports){
+},{}],223:[function(require,module,exports){
 module.exports = function(hljs) {
   var STRINGS = {
     className: 'string',
@@ -74916,7 +75202,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],219:[function(require,module,exports){
+},{}],224:[function(require,module,exports){
 module.exports = function(hljs) {
   var EXPRESSION_KEYWORDS = 'if eq ne lt lte gt gte select default math sep';
   return {
@@ -74948,7 +75234,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],220:[function(require,module,exports){
+},{}],225:[function(require,module,exports){
 module.exports = function(hljs) {
     var commentMode = hljs.COMMENT(/\(\*/, /\*\)/);
 
@@ -74981,7 +75267,7 @@ module.exports = function(hljs) {
         ]
     };
 };
-},{}],221:[function(require,module,exports){
+},{}],226:[function(require,module,exports){
 module.exports = function(hljs) {
   var ELIXIR_IDENT_RE = '[a-zA-Z_][a-zA-Z0-9_]*(\\!|\\?)?';
   var ELIXIR_METHOD_RE = '[a-zA-Z_]\\w*[!?=]?|[-+~]\\@|<<|>>|=~|===?|<=>|[<>]=?|\\*\\*|[-/+%^&*~`|]|\\[\\]=?';
@@ -75078,7 +75364,7 @@ module.exports = function(hljs) {
     contains: ELIXIR_DEFAULT_CONTAINS
   };
 };
-},{}],222:[function(require,module,exports){
+},{}],227:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMENT = {
     variants: [
@@ -75162,7 +75448,7 @@ module.exports = function(hljs) {
     illegal: /;/
   };
 };
-},{}],223:[function(require,module,exports){
+},{}],228:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     subLanguage: 'xml',
@@ -75177,7 +75463,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],224:[function(require,module,exports){
+},{}],229:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -75223,7 +75509,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],225:[function(require,module,exports){
+},{}],230:[function(require,module,exports){
 module.exports = function(hljs) {
   var BASIC_ATOM_RE = '[a-z\'][a-zA-Z0-9_\']*';
   var FUNCTION_NAME_RE = '(' + BASIC_ATOM_RE + ':' + BASIC_ATOM_RE + '|' + BASIC_ATOM_RE + ')';
@@ -75369,7 +75655,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],226:[function(require,module,exports){
+},{}],231:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['xlsx', 'xls'],
@@ -75417,7 +75703,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],227:[function(require,module,exports){
+},{}],232:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     contains: [
@@ -75446,7 +75732,7 @@ module.exports = function(hljs) {
     case_insensitive: true
   };
 };
-},{}],228:[function(require,module,exports){
+},{}],233:[function(require,module,exports){
 module.exports = function (hljs) {
 
     var CHAR = {
@@ -75491,7 +75777,7 @@ module.exports = function (hljs) {
         ]
     };
 };
-},{}],229:[function(require,module,exports){
+},{}],234:[function(require,module,exports){
 module.exports = function(hljs) {
   var PARAMS = {
     className: 'params',
@@ -75562,7 +75848,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],230:[function(require,module,exports){
+},{}],235:[function(require,module,exports){
 module.exports = function(hljs) {
   var TYPEPARAM = {
     begin: '<', end: '>',
@@ -75621,7 +75907,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],231:[function(require,module,exports){
+},{}],236:[function(require,module,exports){
 module.exports = function (hljs) {
   var KEYWORDS = {
     'keyword':
@@ -75775,7 +76061,7 @@ module.exports = function (hljs) {
     ]
   };
 };
-},{}],232:[function(require,module,exports){
+},{}],237:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword: 'and bool break call callexe checkinterrupt clear clearg closeall cls comlog compile ' +
@@ -75999,7 +76285,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],233:[function(require,module,exports){
+},{}],238:[function(require,module,exports){
 module.exports = function(hljs) {
     var GCODE_IDENT_RE = '[A-Z_][A-Z0-9_.]*';
     var GCODE_CLOSE_RE = '\\%';
@@ -76066,7 +76352,7 @@ module.exports = function(hljs) {
         ].concat(GCODE_CODE)
     };
 };
-},{}],234:[function(require,module,exports){
+},{}],239:[function(require,module,exports){
 module.exports = function (hljs) {
   return {
     aliases: ['feature'],
@@ -76103,7 +76389,7 @@ module.exports = function (hljs) {
     ]
   };
 };
-},{}],235:[function(require,module,exports){
+},{}],240:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -76220,7 +76506,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],236:[function(require,module,exports){
+},{}],241:[function(require,module,exports){
 module.exports = function(hljs) {
   var GO_KEYWORDS = {
     keyword:
@@ -76274,7 +76560,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],237:[function(require,module,exports){
+},{}],242:[function(require,module,exports){
 module.exports = function(hljs) {
     return {
       keywords: {
@@ -76297,7 +76583,7 @@ module.exports = function(hljs) {
       ]
     }
 };
-},{}],238:[function(require,module,exports){
+},{}],243:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: true,
@@ -76332,7 +76618,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],239:[function(require,module,exports){
+},{}],244:[function(require,module,exports){
 module.exports = function(hljs) {
     return {
         keywords: {
@@ -76426,7 +76712,7 @@ module.exports = function(hljs) {
         illegal: /#|<\//
     }
 };
-},{}],240:[function(require,module,exports){
+},{}],245:[function(require,module,exports){
 module.exports = // TODO support filter tags like :javascript, support inline HTML
 function(hljs) {
   return {
@@ -76533,7 +76819,7 @@ function(hljs) {
     ]
   };
 };
-},{}],241:[function(require,module,exports){
+},{}],246:[function(require,module,exports){
 module.exports = function(hljs) {
   var BUILT_INS = {'builtin-name': 'each in with if else unless bindattr action collection debugger log outlet template unbound view yield'};
   return {
@@ -76567,7 +76853,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],242:[function(require,module,exports){
+},{}],247:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMENT = {
     variants: [
@@ -76689,7 +76975,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],243:[function(require,module,exports){
+},{}],248:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '[a-zA-Z_$][a-zA-Z0-9_$]*';
   var IDENT_FUNC_RETURN_TYPE_RE = '([*]|[a-zA-Z_$][a-zA-Z0-9_$]*)';
@@ -76801,7 +77087,7 @@ module.exports = function(hljs) {
     illegal: /<\//
   };
 };
-},{}],244:[function(require,module,exports){
+},{}],249:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: true,
@@ -76847,7 +77133,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],245:[function(require,module,exports){
+},{}],250:[function(require,module,exports){
 module.exports = function(hljs) {
   var BUILT_INS = 'action collection component concat debugger each each-in else get hash if input link-to loc log mut outlet partial query-params render textarea unbound unless with yield view';
 
@@ -76918,7 +77204,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],246:[function(require,module,exports){
+},{}],251:[function(require,module,exports){
 module.exports = function(hljs) {
   var VERSION = 'HTTP/[0-9\\.]+';
   return {
@@ -76959,7 +77245,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],247:[function(require,module,exports){
+},{}],252:[function(require,module,exports){
 module.exports = function(hljs) {
   var keywords = {
     'builtin-name':
@@ -77061,7 +77347,7 @@ module.exports = function(hljs) {
     contains: [SHEBANG, LIST, STRING, HINT, HINT_COL, COMMENT, KEY, COLLECTION, NUMBER, LITERAL]
   }
 };
-},{}],248:[function(require,module,exports){
+},{}],253:[function(require,module,exports){
 module.exports = function(hljs) {
   var START_BRACKET = '\\[';
   var END_BRACKET = '\\]';
@@ -77118,7 +77404,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],249:[function(require,module,exports){
+},{}],254:[function(require,module,exports){
 module.exports = function(hljs) {
   var STRING = {
     className: "string",
@@ -77184,7 +77470,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],250:[function(require,module,exports){
+},{}],255:[function(require,module,exports){
 module.exports = function(hljs) {
   var PARAMS = {
     className: 'params',
@@ -77260,7 +77546,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],251:[function(require,module,exports){
+},{}],256:[function(require,module,exports){
 module.exports = function(hljs) {
   var JAVA_IDENT_RE = '[\u00C0-\u02B8a-zA-Z_$][\u00C0-\u02B8a-zA-Z_$0-9]*';
   var GENERIC_IDENT_RE = JAVA_IDENT_RE + '(<' + JAVA_IDENT_RE + '(\\s*,\\s*' + JAVA_IDENT_RE + ')*>)?';
@@ -77368,7 +77654,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],252:[function(require,module,exports){
+},{}],257:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '[A-Za-z$_][0-9A-Za-z$_]*';
   var KEYWORDS = {
@@ -77539,7 +77825,7 @@ module.exports = function(hljs) {
     illegal: /#(?!!)/
   };
 };
-},{}],253:[function(require,module,exports){
+},{}],258:[function(require,module,exports){
 module.exports = function (hljs) {
   var PARAM = {
     begin: /[\w-]+ *=/, returnBegin: true,
@@ -77586,7 +77872,7 @@ module.exports = function (hljs) {
     ]
   }
 };
-},{}],254:[function(require,module,exports){
+},{}],259:[function(require,module,exports){
 module.exports = function(hljs) {
   var LITERALS = {literal: 'true false null'};
   var TYPES = [
@@ -77623,7 +77909,7 @@ module.exports = function(hljs) {
     illegal: '\\S'
   };
 };
-},{}],255:[function(require,module,exports){
+},{}],260:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     contains: [
@@ -77647,7 +77933,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],256:[function(require,module,exports){
+},{}],261:[function(require,module,exports){
 module.exports = function(hljs) {
   // Since there are numerous special names in Julia, it is too much trouble
   // to maintain them by hand. Hence these names (i.e. keywords, literals and
@@ -77809,7 +78095,7 @@ module.exports = function(hljs) {
 
   return DEFAULT;
 };
-},{}],257:[function(require,module,exports){
+},{}],262:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -77983,7 +78269,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],258:[function(require,module,exports){
+},{}],263:[function(require,module,exports){
 module.exports = function(hljs) {
   var LASSO_IDENT_RE = '[a-zA-Z_][\\w.]*';
   var LASSO_ANGLE_RE = '<\\?(lasso(script)?|=)';
@@ -78146,7 +78432,7 @@ module.exports = function(hljs) {
     ].concat(LASSO_CODE)
   };
 };
-},{}],259:[function(require,module,exports){
+},{}],264:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     contains: [
@@ -78169,7 +78455,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],260:[function(require,module,exports){
+},{}],265:[function(require,module,exports){
 module.exports = function (hljs) {
   return {
     contains: [
@@ -78209,7 +78495,7 @@ module.exports = function (hljs) {
     ]
   };
 };
-},{}],261:[function(require,module,exports){
+},{}],266:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE        = '[\\w-]+'; // yes, Less identifiers may begin with a digit
   var INTERP_IDENT_RE = '(' + IDENT_RE + '|@{' + IDENT_RE + '})';
@@ -78349,7 +78635,7 @@ module.exports = function(hljs) {
     contains: RULES
   };
 };
-},{}],262:[function(require,module,exports){
+},{}],267:[function(require,module,exports){
 module.exports = function(hljs) {
   var LISP_IDENT_RE = '[a-zA-Z_\\-\\+\\*\\/\\<\\=\\>\\&\\#][a-zA-Z0-9_\\-\\+\\*\\/\\<\\=\\>\\&\\#!]*';
   var MEC_RE = '\\|[^]*?\\|';
@@ -78452,7 +78738,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],263:[function(require,module,exports){
+},{}],268:[function(require,module,exports){
 module.exports = function(hljs) {
   var VARIABLE = {
     begin: '\\b[gtps][A-Z]+[A-Za-z0-9_\\-]*\\b|\\$_[A-Z]+',
@@ -78609,7 +78895,7 @@ module.exports = function(hljs) {
     illegal: ';$|^\\[|^=|&|{'
   };
 };
-},{}],264:[function(require,module,exports){
+},{}],269:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -78758,7 +79044,7 @@ module.exports = function(hljs) {
     ])
   };
 };
-},{}],265:[function(require,module,exports){
+},{}],270:[function(require,module,exports){
 module.exports = function(hljs) {
   var identifier = '([-a-zA-Z$._][\\w\\-$.]*)';
   return {
@@ -78847,7 +79133,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],266:[function(require,module,exports){
+},{}],271:[function(require,module,exports){
 module.exports = function(hljs) {
 
     var LSL_STRING_ESCAPE_CHARS = {
@@ -78930,7 +79216,7 @@ module.exports = function(hljs) {
         ]
     };
 };
-},{}],267:[function(require,module,exports){
+},{}],272:[function(require,module,exports){
 module.exports = function(hljs) {
   var OPENING_LONG_BRACKET = '\\[=*\\[';
   var CLOSING_LONG_BRACKET = '\\]=*\\]';
@@ -78996,7 +79282,7 @@ module.exports = function(hljs) {
     ])
   };
 };
-},{}],268:[function(require,module,exports){
+},{}],273:[function(require,module,exports){
 module.exports = function(hljs) {
   /* Variables: simple (eg $(var)) and special (eg $@) */
   var VARIABLE = {
@@ -79077,7 +79363,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],269:[function(require,module,exports){
+},{}],274:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['md', 'mkdown', 'mkd'],
@@ -79185,7 +79471,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],270:[function(require,module,exports){
+},{}],275:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['mma'],
@@ -79243,7 +79529,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],271:[function(require,module,exports){
+},{}],276:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMON_CONTAINS = [
     hljs.C_NUMBER_MODE,
@@ -79331,7 +79617,7 @@ module.exports = function(hljs) {
     ].concat(COMMON_CONTAINS)
   };
 };
-},{}],272:[function(require,module,exports){
+},{}],277:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = 'if then else elseif for thru do while unless step in and or not';
   var LITERALS = 'true false unknown inf minf ind und %e %i %pi %phi %gamma';
@@ -79737,7 +80023,7 @@ module.exports = function(hljs) {
     illegal: /@/
   }
 };
-},{}],273:[function(require,module,exports){
+},{}],278:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords:
@@ -79962,7 +80248,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],274:[function(require,module,exports){
+},{}],279:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -80044,7 +80330,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],275:[function(require,module,exports){
+},{}],280:[function(require,module,exports){
 module.exports = function(hljs) {
     //local labels: %?[FB]?[AT]?\d{1,2}\w+
   return {
@@ -80130,7 +80416,7 @@ module.exports = function(hljs) {
     illegal: '\/'
   };
 };
-},{}],276:[function(require,module,exports){
+},{}],281:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords:
@@ -80149,7 +80435,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],277:[function(require,module,exports){
+},{}],282:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     subLanguage: 'xml',
@@ -80174,7 +80460,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],278:[function(require,module,exports){
+},{}],283:[function(require,module,exports){
 module.exports = function(hljs) {
   var NUMBER = {
     className: 'number', relevance: 0,
@@ -80249,7 +80535,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],279:[function(require,module,exports){
+},{}],284:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -80361,7 +80647,7 @@ module.exports = function(hljs) {
     ])
   };
 };
-},{}],280:[function(require,module,exports){
+},{}],285:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: true,
@@ -80430,7 +80716,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],281:[function(require,module,exports){
+},{}],286:[function(require,module,exports){
 module.exports = function(hljs) {
   var VAR = {
     className: 'variable',
@@ -80523,7 +80809,7 @@ module.exports = function(hljs) {
     illegal: '[^\\s\\}]'
   };
 };
-},{}],282:[function(require,module,exports){
+},{}],287:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['nim'],
@@ -80578,7 +80864,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],283:[function(require,module,exports){
+},{}],288:[function(require,module,exports){
 module.exports = function(hljs) {
   var NIX_KEYWORDS = {
     keyword:
@@ -80627,7 +80913,7 @@ module.exports = function(hljs) {
     contains: EXPRESSIONS
   };
 };
-},{}],284:[function(require,module,exports){
+},{}],289:[function(require,module,exports){
 module.exports = function(hljs) {
   var CONSTANTS = {
     className: 'variable',
@@ -80733,7 +81019,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],285:[function(require,module,exports){
+},{}],290:[function(require,module,exports){
 module.exports = function(hljs) {
   var API_CLASS = {
     className: 'built_in',
@@ -80824,7 +81110,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],286:[function(require,module,exports){
+},{}],291:[function(require,module,exports){
 module.exports = function(hljs) {
   /* missing support for heredoc-like string (OCaml 4.0.2+) */
   return {
@@ -80895,7 +81181,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],287:[function(require,module,exports){
+},{}],292:[function(require,module,exports){
 module.exports = function(hljs) {
 	var SPECIAL_VARS = {
 		className: 'keyword',
@@ -80952,7 +81238,7 @@ module.exports = function(hljs) {
 		]
 	}
 };
-},{}],288:[function(require,module,exports){
+},{}],293:[function(require,module,exports){
 module.exports = function(hljs) {
   var OXYGENE_KEYWORDS = 'abstract add and array as asc aspect assembly async begin break block by case class concat const copy constructor continue '+
     'create default delegate desc distinct div do downto dynamic each else empty end ensure enum equals event except exit extension external false '+
@@ -81022,7 +81308,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],289:[function(require,module,exports){
+},{}],294:[function(require,module,exports){
 module.exports = function(hljs) {
   var CURLY_SUBCOMMENT = hljs.COMMENT(
     '{',
@@ -81070,7 +81356,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],290:[function(require,module,exports){
+},{}],295:[function(require,module,exports){
 module.exports = function(hljs) {
   var PERL_KEYWORDS = 'getpwent getservent quotemeta msgrcv scalar kill dbmclose undef lc ' +
     'ma syswrite tr send umask sysopen shmwrite vec qx utime local oct semctl localtime ' +
@@ -81227,7 +81513,7 @@ module.exports = function(hljs) {
     contains: PERL_DEFAULT_CONTAINS
   };
 };
-},{}],291:[function(require,module,exports){
+},{}],296:[function(require,module,exports){
 module.exports = function(hljs) {
   var MACRO = {
     className: 'variable',
@@ -81279,7 +81565,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],292:[function(require,module,exports){
+},{}],297:[function(require,module,exports){
 module.exports = function(hljs) {
   var VARIABLE = {
     begin: '\\$+[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*'
@@ -81406,7 +81692,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],293:[function(require,module,exports){
+},{}],298:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -81497,7 +81783,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],294:[function(require,module,exports){
+},{}],299:[function(require,module,exports){
 module.exports = function(hljs) {
   var BACKTICK_ESCAPE = {
     begin: '`[\\s\\S]',
@@ -81578,7 +81864,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],295:[function(require,module,exports){
+},{}],300:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -81626,7 +81912,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],296:[function(require,module,exports){
+},{}],301:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     contains: [
@@ -81656,7 +81942,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],297:[function(require,module,exports){
+},{}],302:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var ATOM = {
@@ -81744,7 +82030,7 @@ module.exports = function(hljs) {
     ])
   };
 };
-},{}],298:[function(require,module,exports){
+},{}],303:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -81780,7 +82066,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],299:[function(require,module,exports){
+},{}],304:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var PUPPET_KEYWORDS = {
@@ -81895,7 +82181,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],300:[function(require,module,exports){
+},{}],305:[function(require,module,exports){
 module.exports = // Base deafult colors in PB IDE: background: #FFFFDF; foreground: #000000;
 
 function(hljs) {
@@ -81953,7 +82239,7 @@ function(hljs) {
     ]
   };
 };
-},{}],301:[function(require,module,exports){
+},{}],306:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -82069,7 +82355,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],302:[function(require,module,exports){
+},{}],307:[function(require,module,exports){
 module.exports = function(hljs) {
   var Q_KEYWORDS = {
   keyword:
@@ -82092,7 +82378,7 @@ module.exports = function(hljs) {
      ]
   };
 };
-},{}],303:[function(require,module,exports){
+},{}],308:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
       keyword:
@@ -82261,7 +82547,7 @@ module.exports = function(hljs) {
     illegal: /#/
   };
 };
-},{}],304:[function(require,module,exports){
+},{}],309:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '([a-zA-Z]|\\.[a-zA-Z.])[a-zA-Z0-9._]*';
 
@@ -82331,7 +82617,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],305:[function(require,module,exports){
+},{}],310:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords:
@@ -82358,7 +82644,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],306:[function(require,module,exports){
+},{}],311:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENTIFIER = '[a-zA-Z-_][^\\n{]+\\{';
 
@@ -82425,7 +82711,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],307:[function(require,module,exports){
+},{}],312:[function(require,module,exports){
 module.exports = // Colors from RouterOS terminal:
 //   green        - #0E9A00
 //   teal         - #0C9A9A
@@ -82584,7 +82870,7 @@ function(hljs) {
     ]
   };
 };
-},{}],308:[function(require,module,exports){
+},{}],313:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -82620,7 +82906,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],309:[function(require,module,exports){
+},{}],314:[function(require,module,exports){
 module.exports = function(hljs) {
   var RUBY_METHOD_RE = '[a-zA-Z_]\\w*[!?=]?|[-+~]\\@|<<|>>|=~|===?|<=>|[<>]=?|\\*\\*|[-/+%^&*~`|]|\\[\\]=?';
   var RUBY_KEYWORDS = {
@@ -82797,7 +83083,7 @@ module.exports = function(hljs) {
     contains: COMMENT_MODES.concat(IRB_DEFAULT).concat(RUBY_DEFAULT_CONTAINS)
   };
 };
-},{}],310:[function(require,module,exports){
+},{}],315:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -82858,7 +83144,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],311:[function(require,module,exports){
+},{}],316:[function(require,module,exports){
 module.exports = function(hljs) {
   var NUM_SUFFIX = '([ui](8|16|32|64|128|size)|f(32|64))\?';
   var KEYWORDS =
@@ -82966,7 +83252,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],312:[function(require,module,exports){
+},{}],317:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var ANNOTATION = { className: 'meta', begin: '@[A-Za-z]+' };
@@ -83081,7 +83367,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],313:[function(require,module,exports){
+},{}],318:[function(require,module,exports){
 module.exports = function(hljs) {
   var SCHEME_IDENT_RE = '[^\\(\\)\\[\\]\\{\\}",\'`;#|\\\\\\s]+';
   var SCHEME_SIMPLE_NUMBER_RE = '(\\-|\\+)?\\d+([./]\\d+)?';
@@ -83225,7 +83511,7 @@ module.exports = function(hljs) {
     contains: [SHEBANG, NUMBER, STRING, QUOTED_IDENT, QUOTED_LIST, LIST].concat(COMMENT_MODES)
   };
 };
-},{}],314:[function(require,module,exports){
+},{}],319:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var COMMON_CONTAINS = [
@@ -83279,7 +83565,7 @@ module.exports = function(hljs) {
     ].concat(COMMON_CONTAINS)
   };
 };
-},{}],315:[function(require,module,exports){
+},{}],320:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '[a-zA-Z-][a-zA-Z0-9_-]*';
   var VARIABLE = {
@@ -83377,7 +83663,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],316:[function(require,module,exports){
+},{}],321:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['console'],
@@ -83392,7 +83678,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],317:[function(require,module,exports){
+},{}],322:[function(require,module,exports){
 module.exports = function(hljs) {
   var smali_instr_low_prio = ['add', 'and', 'cmp', 'cmpg', 'cmpl', 'const', 'div', 'double', 'float', 'goto', 'if', 'int', 'long', 'move', 'mul', 'neg', 'new', 'nop', 'not', 'or', 'rem', 'return', 'shl', 'shr', 'sput', 'sub', 'throw', 'ushr', 'xor'];
   var smali_instr_high_prio = ['aget', 'aput', 'array', 'check', 'execute', 'fill', 'filled', 'goto/16', 'goto/32', 'iget', 'instance', 'invoke', 'iput', 'monitor', 'packed', 'sget', 'sparse'];
@@ -83448,7 +83734,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],318:[function(require,module,exports){
+},{}],323:[function(require,module,exports){
 module.exports = function(hljs) {
   var VAR_IDENT_RE = '[a-z][a-zA-Z0-9_]*';
   var CHAR = {
@@ -83498,7 +83784,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],319:[function(require,module,exports){
+},{}],324:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['ml'],
@@ -83564,7 +83850,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],320:[function(require,module,exports){
+},{}],325:[function(require,module,exports){
 module.exports = function(hljs) {
   var CPP = hljs.getLanguage('cpp').exports;
 
@@ -83935,7 +84221,7 @@ module.exports = function(hljs) {
     illegal: /#/
   };
 };
-},{}],321:[function(require,module,exports){
+},{}],326:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMENT_MODE = hljs.COMMENT('--', '$');
   return {
@@ -84095,7 +84381,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],322:[function(require,module,exports){
+},{}],327:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     contains: [
@@ -84178,7 +84464,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],323:[function(require,module,exports){
+},{}],328:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['do', 'ado'],
@@ -84216,7 +84502,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],324:[function(require,module,exports){
+},{}],329:[function(require,module,exports){
 module.exports = function(hljs) {
   var STEP21_IDENT_RE = '[A-Z_][A-Z0-9_.]*';
   var STEP21_KEYWORDS = {
@@ -84263,7 +84549,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],325:[function(require,module,exports){
+},{}],330:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var VARIABLE = {
@@ -84717,7 +85003,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],326:[function(require,module,exports){
+},{}],331:[function(require,module,exports){
 module.exports = function(hljs) {
   var DETAILS = {
     className: 'string',
@@ -84751,7 +85037,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],327:[function(require,module,exports){
+},{}],332:[function(require,module,exports){
 module.exports = function(hljs) {
   var SWIFT_KEYWORDS = {
       keyword: '__COLUMN__ __FILE__ __FUNCTION__ __LINE__ as as! as? associativity ' +
@@ -84868,7 +85154,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],328:[function(require,module,exports){
+},{}],333:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var COMMENT = {
@@ -84912,7 +85198,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],329:[function(require,module,exports){
+},{}],334:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: true,
@@ -84948,7 +85234,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],330:[function(require,module,exports){
+},{}],335:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['tk'],
@@ -85009,7 +85295,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],331:[function(require,module,exports){
+},{}],336:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMAND = {
     className: 'tag',
@@ -85071,7 +85357,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],332:[function(require,module,exports){
+},{}],337:[function(require,module,exports){
 module.exports = function(hljs) {
   var BUILT_IN_TYPES = 'bool byte i16 i32 i64 double string binary';
   return {
@@ -85106,7 +85392,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],333:[function(require,module,exports){
+},{}],338:[function(require,module,exports){
 module.exports = function(hljs) {
   var TPID = {
     className: 'number',
@@ -85190,7 +85476,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],334:[function(require,module,exports){
+},{}],339:[function(require,module,exports){
 module.exports = function(hljs) {
   var PARAMS = {
     className: 'params',
@@ -85256,7 +85542,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],335:[function(require,module,exports){
+},{}],340:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -85412,7 +85698,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],336:[function(require,module,exports){
+},{}],341:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -85462,7 +85748,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],337:[function(require,module,exports){
+},{}],342:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['vb'],
@@ -85518,7 +85804,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],338:[function(require,module,exports){
+},{}],343:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     subLanguage: 'xml',
@@ -85530,7 +85816,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],339:[function(require,module,exports){
+},{}],344:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['vbs'],
@@ -85569,7 +85855,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],340:[function(require,module,exports){
+},{}],345:[function(require,module,exports){
 module.exports = function(hljs) {
   var SV_KEYWORDS = {
     keyword:
@@ -85668,7 +85954,7 @@ module.exports = function(hljs) {
     ]
   }; // return
 };
-},{}],341:[function(require,module,exports){
+},{}],346:[function(require,module,exports){
 module.exports = function(hljs) {
   // Regular expression for VHDL numeric literals.
 
@@ -85729,7 +86015,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],342:[function(require,module,exports){
+},{}],347:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     lexemes: /[!#@\w]+/,
@@ -85835,7 +86121,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],343:[function(require,module,exports){
+},{}],348:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: true,
@@ -85971,7 +86257,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],344:[function(require,module,exports){
+},{}],349:[function(require,module,exports){
 module.exports = function(hljs) {
   var BUILTIN_MODULES =
     'ObjectLoader Animate MovieCredits Slides Filters Shading Materials LensFlare Mapping VLCAudioVideo ' +
@@ -86044,7 +86330,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],345:[function(require,module,exports){
+},{}],350:[function(require,module,exports){
 module.exports = function(hljs) {
   var XML_IDENT_RE = '[A-Za-z0-9\\._:-]+';
   var TAG_INTERNALS = {
@@ -86147,7 +86433,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],346:[function(require,module,exports){
+},{}],351:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = 'for let if while then else return where group by xquery encoding version' +
     'module namespace boundary-space preserve strip default collation base-uri ordering' +
@@ -86218,7 +86504,7 @@ module.exports = function(hljs) {
     contains: CONTAINS
   };
 };
-},{}],347:[function(require,module,exports){
+},{}],352:[function(require,module,exports){
 module.exports = function(hljs) {
   var LITERALS = 'true false yes no null';
 
@@ -86306,7 +86592,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],348:[function(require,module,exports){
+},{}],353:[function(require,module,exports){
 module.exports = function(hljs) {
   var STRING = {
     className: 'string',
@@ -86413,7 +86699,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],349:[function(require,module,exports){
+},{}],354:[function(require,module,exports){
 //! moment.js
 //! version : 2.17.1
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -90716,7 +91002,7 @@ return hooks;
 
 })));
 
-},{}],350:[function(require,module,exports){
+},{}],355:[function(require,module,exports){
 ;/*! ng-showdown 19-10-2015 */
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
@@ -90930,9 +91216,9 @@ return hooks;
 }));
 
 
-},{"angular":127,"showdown":352}],351:[function(require,module,exports){
+},{"angular":132,"showdown":357}],356:[function(require,module,exports){
 /*! ngTagsInput v3.2.0 License: MIT */!function(){"use strict";var a={backspace:8,tab:9,enter:13,escape:27,space:32,up:38,down:40,left:37,right:39,"delete":46,comma:188},b=9007199254740991,c=["text","email","url"],d=angular.module("ngTagsInput",[]);d.directive("tagsInput",["$timeout","$document","$window","$q","tagsInputConfig","tiUtil",function(d,e,f,g,h,i){function j(a,b,c,d){var e,f,h,j,k={};return e=function(b){return i.safeToString(b[a.displayProperty])},f=function(b,c){b[a.displayProperty]=c},h=function(b){var d=e(b),f=d&&d.length>=a.minLength&&d.length<=a.maxLength&&a.allowedTagsPattern.test(d)&&!i.findInObjectArray(k.items,b,a.keyProperty||a.displayProperty);return g.when(f&&c({$tag:b})).then(i.promisifyValue)},j=function(a){return g.when(d({$tag:a})).then(i.promisifyValue)},k.items=[],k.addText=function(a){var b={};return f(b,a),k.add(b)},k.add=function(c){var d=e(c);return a.replaceSpacesWithDashes&&(d=i.replaceSpacesWithDashes(d)),f(c,d),h(c).then(function(){k.items.push(c),b.trigger("tag-added",{$tag:c})})["catch"](function(){d&&b.trigger("invalid-tag",{$tag:c})})},k.remove=function(a){var c=k.items[a];return j(c).then(function(){return k.items.splice(a,1),k.clearSelection(),b.trigger("tag-removed",{$tag:c}),c})},k.select=function(a){0>a?a=k.items.length-1:a>=k.items.length&&(a=0),k.index=a,k.selected=k.items[a]},k.selectPrior=function(){k.select(--k.index)},k.selectNext=function(){k.select(++k.index)},k.removeSelected=function(){return k.remove(k.index)},k.clearSelection=function(){k.selected=null,k.index=-1},k.getItems=function(){return a.useStrings?k.items.map(e):k.items},k.clearSelection(),k}function k(a){return-1!==c.indexOf(a)}return{restrict:"E",require:"ngModel",scope:{tags:"=ngModel",text:"=?",templateScope:"=?",tagClass:"&",onTagAdding:"&",onTagAdded:"&",onInvalidTag:"&",onTagRemoving:"&",onTagRemoved:"&",onTagClicked:"&"},replace:!1,transclude:!0,templateUrl:"ngTagsInput/tags-input.html",controller:["$scope","$attrs","$element",function(a,c,d){a.events=i.simplePubSub(),h.load("tagsInput",a,c,{template:[String,"ngTagsInput/tag-item.html"],type:[String,"text",k],placeholder:[String,"Add a tag"],tabindex:[Number,null],removeTagSymbol:[String,String.fromCharCode(215)],replaceSpacesWithDashes:[Boolean,!0],minLength:[Number,3],maxLength:[Number,b],addOnEnter:[Boolean,!0],addOnSpace:[Boolean,!1],addOnComma:[Boolean,!0],addOnBlur:[Boolean,!0],addOnPaste:[Boolean,!1],pasteSplitPattern:[RegExp,/,/],allowedTagsPattern:[RegExp,/.+/],enableEditingLastTag:[Boolean,!1],minTags:[Number,0],maxTags:[Number,b],displayProperty:[String,"text"],keyProperty:[String,""],allowLeftoverText:[Boolean,!1],addFromAutocompleteOnly:[Boolean,!1],spellcheck:[Boolean,!0],useStrings:[Boolean,!1]}),a.tagList=new j(a.options,a.events,i.handleUndefinedResult(a.onTagAdding,!0),i.handleUndefinedResult(a.onTagRemoving,!0)),this.registerAutocomplete=function(){d.find("input");return{addTag:function(b){return a.tagList.add(b)},getTags:function(){return a.tagList.items},getCurrentTagText:function(){return a.newTag.text()},getOptions:function(){return a.options},getTemplateScope:function(){return a.templateScope},on:function(b,c){return a.events.on(b,c,!0),this}}},this.registerTagItem=function(){return{getOptions:function(){return a.options},removeTag:function(b){a.disabled||a.tagList.remove(b)}}}}],link:function(b,c,g,h){var j,k,l=[a.enter,a.comma,a.space,a.backspace,a["delete"],a.left,a.right],m=b.tagList,n=b.events,o=b.options,p=c.find("input"),q=["minTags","maxTags","allowLeftoverText"];j=function(){h.$setValidity("maxTags",m.items.length<=o.maxTags),h.$setValidity("minTags",m.items.length>=o.minTags),h.$setValidity("leftoverText",b.hasFocus||o.allowLeftoverText?!0:!b.newTag.text())},k=function(){d(function(){p[0].focus()})},h.$isEmpty=function(a){return!a||!a.length},b.newTag={text:function(a){return angular.isDefined(a)?(b.text=a,void n.trigger("input-change",a)):b.text||""},invalid:null},b.track=function(a){return a[o.keyProperty||o.displayProperty]},b.getTagClass=function(a,c){var d=a===m.selected;return[b.tagClass({$tag:a,$index:c,$selected:d}),{selected:d}]},b.$watch("tags",function(a){if(a){if(m.items=i.makeObjectArray(a,o.displayProperty),o.useStrings)return;b.tags=m.items}else m.items=[]}),b.$watch("tags.length",function(){j(),h.$validate()}),g.$observe("disabled",function(a){b.disabled=a}),b.eventHandlers={input:{keydown:function(a){n.trigger("input-keydown",a)},focus:function(){b.hasFocus||(b.hasFocus=!0,n.trigger("input-focus"))},blur:function(){d(function(){var a=e.prop("activeElement"),d=a===p[0],f=c[0].contains(a);(d||!f)&&(b.hasFocus=!1,n.trigger("input-blur"))})},paste:function(a){a.getTextData=function(){var b=a.clipboardData||a.originalEvent&&a.originalEvent.clipboardData;return b?b.getData("text/plain"):f.clipboardData.getData("Text")},n.trigger("input-paste",a)}},host:{click:function(){b.disabled||k()}},tag:{click:function(a){n.trigger("tag-clicked",{$tag:a})}}},n.on("tag-added",b.onTagAdded).on("invalid-tag",b.onInvalidTag).on("tag-removed",b.onTagRemoved).on("tag-clicked",b.onTagClicked).on("tag-added",function(){b.newTag.text("")}).on("tag-added tag-removed",function(){b.tags=m.getItems(),h.$setDirty(),k()}).on("invalid-tag",function(){b.newTag.invalid=!0}).on("option-change",function(a){-1!==q.indexOf(a.name)&&j()}).on("input-change",function(){m.clearSelection(),b.newTag.invalid=null}).on("input-focus",function(){c.triggerHandler("focus"),h.$setValidity("leftoverText",!0)}).on("input-blur",function(){o.addOnBlur&&!o.addFromAutocompleteOnly&&m.addText(b.newTag.text()),c.triggerHandler("blur"),j()}).on("input-keydown",function(c){var d,e,f,g,h=c.keyCode,j={};i.isModifierOn(c)||-1===l.indexOf(h)||(j[a.enter]=o.addOnEnter,j[a.comma]=o.addOnComma,j[a.space]=o.addOnSpace,d=!o.addFromAutocompleteOnly&&j[h],e=(h===a.backspace||h===a["delete"])&&m.selected,g=h===a.backspace&&0===b.newTag.text().length&&o.enableEditingLastTag,f=(h===a.backspace||h===a.left||h===a.right)&&0===b.newTag.text().length&&!o.enableEditingLastTag,d?m.addText(b.newTag.text()):g?(m.selectPrior(),m.removeSelected().then(function(a){a&&b.newTag.text(a[o.displayProperty])})):e?m.removeSelected():f&&(h===a.left||h===a.backspace?m.selectPrior():h===a.right&&m.selectNext()),(d||f||e||g)&&c.preventDefault())}).on("input-paste",function(a){if(o.addOnPaste){var b=a.getTextData(),c=b.split(o.pasteSplitPattern);c.length>1&&(c.forEach(function(a){m.addText(a)}),a.preventDefault())}})}}}]),d.directive("tiTagItem",["tiUtil",function(a){return{restrict:"E",require:"^tagsInput",template:'<ng-include src="$$template"></ng-include>',scope:{$scope:"=scope",data:"="},link:function(b,c,d,e){var f=e.registerTagItem(),g=f.getOptions();b.$$template=g.template,b.$$removeTagSymbol=g.removeTagSymbol,b.$getDisplayText=function(){return a.safeToString(b.data[g.displayProperty])},b.$removeTag=function(){f.removeTag(b.$index)},b.$watch("$parent.$index",function(a){b.$index=a})}}}]),d.directive("autoComplete",["$document","$timeout","$sce","$q","tagsInputConfig","tiUtil",function(b,c,d,e,f,g){function h(a,b,c){var d,f,h,i={};return h=function(){return b.tagsInput.keyProperty||b.tagsInput.displayProperty},d=function(a,c){return a.filter(function(a){return!g.findInObjectArray(c,a,h(),function(a,c){return b.tagsInput.replaceSpacesWithDashes&&(a=g.replaceSpacesWithDashes(a),c=g.replaceSpacesWithDashes(c)),g.defaultComparer(a,c)})})},i.reset=function(){f=null,i.items=[],i.visible=!1,i.index=-1,i.selected=null,i.query=null},i.show=function(){b.selectFirstMatch?i.select(0):i.selected=null,i.visible=!0},i.load=g.debounce(function(c,j){i.query=c;var k=e.when(a({$query:c}));f=k,k.then(function(a){k===f&&(a=g.makeObjectArray(a.data||a,h()),a=d(a,j),i.items=a.slice(0,b.maxResultsToShow),i.items.length>0?i.show():i.reset())})},b.debounceDelay),i.selectNext=function(){i.select(++i.index)},i.selectPrior=function(){i.select(--i.index)},i.select=function(a){0>a?a=i.items.length-1:a>=i.items.length&&(a=0),i.index=a,i.selected=i.items[a],c.trigger("suggestion-selected",a)},i.reset(),i}function i(a,b){var c=a.find("li").eq(b),d=c.parent(),e=c.prop("offsetTop"),f=c.prop("offsetHeight"),g=d.prop("clientHeight"),h=d.prop("scrollTop");h>e?d.prop("scrollTop",e):e+f>g+h&&d.prop("scrollTop",e+f-g)}return{restrict:"E",require:"^tagsInput",scope:{source:"&",matchClass:"&"},templateUrl:"ngTagsInput/auto-complete.html",controller:["$scope","$element","$attrs",function(a,b,c){a.events=g.simplePubSub(),f.load("autoComplete",a,c,{template:[String,"ngTagsInput/auto-complete-match.html"],debounceDelay:[Number,100],minLength:[Number,3],highlightMatchedText:[Boolean,!0],maxResultsToShow:[Number,10],loadOnDownArrow:[Boolean,!1],loadOnEmpty:[Boolean,!1],loadOnFocus:[Boolean,!1],selectFirstMatch:[Boolean,!0],displayProperty:[String,""]}),a.suggestionList=new h(a.source,a.options,a.events),this.registerAutocompleteMatch=function(){return{getOptions:function(){return a.options},getQuery:function(){return a.suggestionList.query}}}}],link:function(b,c,d,e){var f,h=[a.enter,a.tab,a.escape,a.up,a.down],j=b.suggestionList,k=e.registerAutocomplete(),l=b.options,m=b.events;l.tagsInput=k.getOptions(),f=function(a){return a&&a.length>=l.minLength||!a&&l.loadOnEmpty},b.templateScope=k.getTemplateScope(),b.addSuggestionByIndex=function(a){j.select(a),b.addSuggestion()},b.addSuggestion=function(){var a=!1;return j.selected&&(k.addTag(angular.copy(j.selected)),j.reset(),a=!0),a},b.track=function(a){return a[l.tagsInput.keyProperty||l.tagsInput.displayProperty]},b.getSuggestionClass=function(a,c){var d=a===j.selected;return[b.matchClass({$match:a,$index:c,$selected:d}),{selected:d}]},k.on("tag-added tag-removed invalid-tag input-blur",function(){j.reset()}).on("input-change",function(a){f(a)?j.load(a,k.getTags()):j.reset()}).on("input-focus",function(){var a=k.getCurrentTagText();l.loadOnFocus&&f(a)&&j.load(a,k.getTags())}).on("input-keydown",function(c){var d=c.keyCode,e=!1;if(!g.isModifierOn(c)&&-1!==h.indexOf(d))return j.visible?d===a.down?(j.selectNext(),e=!0):d===a.up?(j.selectPrior(),e=!0):d===a.escape?(j.reset(),e=!0):(d===a.enter||d===a.tab)&&(e=b.addSuggestion()):d===a.down&&b.options.loadOnDownArrow&&(j.load(k.getCurrentTagText(),k.getTags()),e=!0),e?(c.preventDefault(),c.stopImmediatePropagation(),!1):void 0}),m.on("suggestion-selected",function(a){i(c,a)})}}}]),d.directive("tiAutocompleteMatch",["$sce","tiUtil",function(a,b){return{restrict:"E",require:"^autoComplete",template:'<ng-include src="$$template"></ng-include>',scope:{$scope:"=scope",data:"="},link:function(c,d,e,f){var g=f.registerAutocompleteMatch(),h=g.getOptions();c.$$template=h.template,c.$index=c.$parent.$index,c.$highlight=function(c){return h.highlightMatchedText&&(c=b.safeHighlight(c,g.getQuery())),a.trustAsHtml(c)},c.$getDisplayText=function(){return b.safeToString(c.data[h.displayProperty||h.tagsInput.displayProperty])}}}}]),d.directive("tiTranscludeAppend",function(){return function(a,b,c,d,e){e(function(a){b.append(a)})}}),d.directive("tiAutosize",["tagsInputConfig",function(a){return{restrict:"A",require:"ngModel",link:function(b,c,d,e){var f,g,h=a.getTextAutosizeThreshold();f=angular.element('<span class="input"></span>'),f.css("display","none").css("visibility","hidden").css("width","auto").css("white-space","pre"),c.parent().append(f),g=function(a){var b,e=a;return angular.isString(e)&&0===e.length&&(e=d.placeholder),e&&(f.text(e),f.css("display",""),b=f.prop("offsetWidth"),f.css("display","none")),c.css("width",b?b+h+"px":""),a},e.$parsers.unshift(g),e.$formatters.unshift(g),d.$observe("placeholder",function(a){e.$modelValue||g(a)})}}}]),d.directive("tiBindAttrs",function(){return function(a,b,c){a.$watch(c.tiBindAttrs,function(a){angular.forEach(a,function(a,b){c.$set(b,a)})},!0)}}),d.provider("tagsInputConfig",function(){var a={},b={},c=3;this.setDefaults=function(b,c){return a[b]=c,this},this.setActiveInterpolation=function(a,c){return b[a]=c,this},this.setTextAutosizeThreshold=function(a){return c=a,this},this.$get=["$interpolate",function(d){var e={};return e[String]=function(a){return a},e[Number]=function(a){return parseInt(a,10)},e[Boolean]=function(a){return"true"===a.toLowerCase()},e[RegExp]=function(a){return new RegExp(a)},{load:function(c,f,g,h){var i=function(){return!0};f.options={},angular.forEach(h,function(h,j){var k,l,m,n,o,p;k=h[0],l=h[1],m=h[2]||i,n=e[k],o=function(){var b=a[c]&&a[c][j];return angular.isDefined(b)?b:l},p=function(a){f.options[j]=a&&m(a)?n(a):o()},b[c]&&b[c][j]?g.$observe(j,function(a){p(a),f.events.trigger("option-change",{name:j,newValue:a})}):p(g[j]&&d(g[j])(f.$parent))})},getTextAutosizeThreshold:function(){return c}}}]}),d.factory("tiUtil",["$timeout","$q",function(a,b){var c={};return c.debounce=function(b,c){var d;return function(){var e=arguments;a.cancel(d),d=a(function(){b.apply(null,e)},c)}},c.makeObjectArray=function(a,b){if(!angular.isArray(a)||0===a.length||angular.isObject(a[0]))return a;var c=[];return a.forEach(function(a){var d={};d[b]=a,c.push(d)}),c},c.findInObjectArray=function(a,b,d,e){var f=null;return e=e||c.defaultComparer,a.some(function(a){return e(a[d],b[d])?(f=a,!0):void 0}),f},c.defaultComparer=function(a,b){return c.safeToString(a).toLowerCase()===c.safeToString(b).toLowerCase()},c.safeHighlight=function(a,b){function d(a){return a.replace(/([.?*+^$[\]\\(){}|-])/g,"\\$1")}if(a=c.encodeHTML(a),b=c.encodeHTML(b),!b)return a;var e=new RegExp("&[^;]+;|"+d(b),"gi");return a.replace(e,function(a){return a.toLowerCase()===b.toLowerCase()?"<em>"+a+"</em>":a})},c.safeToString=function(a){return angular.isUndefined(a)||null==a?"":a.toString().trim()},c.encodeHTML=function(a){return c.safeToString(a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")},c.handleUndefinedResult=function(a,b){return function(){var c=a.apply(null,arguments);return angular.isUndefined(c)?b:c}},c.replaceSpacesWithDashes=function(a){return c.safeToString(a).replace(/\s/g,"-")},c.isModifierOn=function(a){return a.shiftKey||a.ctrlKey||a.altKey||a.metaKey},c.promisifyValue=function(a){return a=angular.isUndefined(a)?!0:a,b[a?"when":"reject"]()},c.simplePubSub=function(){var a={};return{on:function(b,c,d){return b.split(" ").forEach(function(b){a[b]||(a[b]=[]);var e=d?[].unshift:[].push;e.call(a[b],c)}),this},trigger:function(b,d){var e=a[b]||[];return e.every(function(a){return c.handleUndefinedResult(a,!0)(d)}),this}}},c}]),d.run(["$templateCache",function(a){a.put("ngTagsInput/tags-input.html",'<div class="host" tabindex="-1" ng-click="eventHandlers.host.click()" ti-transclude-append><div class="tags" ng-class="{focused: hasFocus}"><ul class="tag-list"><li class="tag-item" ng-repeat="tag in tagList.items track by track(tag)" ng-class="getTagClass(tag, $index)" ng-click="eventHandlers.tag.click(tag)"><ti-tag-item scope="templateScope" data="::tag"></ti-tag-item></li></ul><input class="input" autocomplete="off" ng-model="newTag.text" ng-model-options="{getterSetter: true}" ng-keydown="eventHandlers.input.keydown($event)" ng-focus="eventHandlers.input.focus($event)" ng-blur="eventHandlers.input.blur($event)" ng-paste="eventHandlers.input.paste($event)" ng-trim="false" ng-class="{\'invalid-tag\': newTag.invalid}" ng-disabled="disabled" ti-bind-attrs="{type: options.type, placeholder: options.placeholder, tabindex: options.tabindex, spellcheck: options.spellcheck}" ti-autosize></div></div>'),a.put("ngTagsInput/tag-item.html",'<span ng-bind="$getDisplayText()"></span> <a class="remove-button" ng-click="$removeTag()" ng-bind="::$$removeTagSymbol"></a>'),a.put("ngTagsInput/auto-complete.html",'<div class="autocomplete" ng-if="suggestionList.visible"><ul class="suggestion-list"><li class="suggestion-item" ng-repeat="item in suggestionList.items track by track(item)" ng-class="getSuggestionClass(item, $index)" ng-click="addSuggestionByIndex($index)" ng-mouseenter="suggestionList.select($index)"><ti-autocomplete-match scope="templateScope" data="::item"></ti-autocomplete-match></li></ul></div>'),a.put("ngTagsInput/auto-complete-match.html",'<span ng-bind-html="$highlight($getDisplayText())"></span>')}])}();
-},{}],352:[function(require,module,exports){
+},{}],357:[function(require,module,exports){
 ;/*! showdown 09-01-2017 */
 (function(){
 /**
@@ -93536,7 +93822,7 @@ if (typeof module !== 'undefined' && module.exports) {
 
 
 
-},{}],353:[function(require,module,exports){
+},{}],358:[function(require,module,exports){
 module.exports={
   "name": "fusio",
   "version": "0.6.0",
@@ -93548,14 +93834,14 @@ module.exports={
     "cs": "standard \"app/**/*.js\" --fix"
   },
   "dependencies": {
-    "ace-builds": "^1.4.5",
-    "angular": "^1.7.8",
-    "angular-animate": "^1.7.8",
+    "ace-builds": "^1.4.8",
+    "angular": "^1.7.9",
+    "angular-animate": "^1.7.9",
     "angular-chart.js": "1.1.*",
     "angular-highlightjs": "0.7.*",
     "angular-loading-bar": "0.9.*",
-    "angular-route": "^1.7.8",
-    "angular-sanitize": "^1.7.8",
+    "angular-route": "^1.7.9",
+    "angular-sanitize": "^1.7.9",
     "angular-ui-ace": "0.2.*",
     "angular-ui-bootstrap": "^2.5.6",
     "ng-showdown": "1.1.*",
@@ -93563,16 +93849,16 @@ module.exports={
   },
   "devDependencies": {
     "grunt": "^1.0.4",
-    "grunt-angular-templates": "^1.1.0",
+    "grunt-angular-templates": "^1.2.0",
     "grunt-browserify": "^5.3.0",
     "grunt-cli": "^1.3.2",
     "grunt-contrib-concat": "^1.0.0",
     "grunt-contrib-uglify": "^2.0.0",
     "protractor": "^5.4.2",
-    "webdriver-manager": "12.1.5",
     "request": "^2.88.0",
-    "request-promise": "^4.2.4",
-    "standard": "^12.0.1"
+    "request-promise": "^4.2.5",
+    "standard": "^12.0.1",
+    "webdriver-manager": "12.1.5"
   }
 }
 
