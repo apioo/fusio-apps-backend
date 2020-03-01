@@ -5231,6 +5231,10 @@ module.exports = function ($scope, $http, $uibModalInstance, $uibModal, fusio, s
       data.source = JSON.parse(data.source)
     }
 
+    if (angular.isString(data.form)) {
+      data.form = JSON.parse(data.form)
+    }
+
     $http.put(fusio.baseUrl + 'backend/schema/' + schema.id, data)
       .then(function (response) {
         var data = response.data
@@ -5257,6 +5261,10 @@ module.exports = function ($scope, $http, $uibModalInstance, $uibModal, fusio, s
       var data = response.data
       if (!angular.isString(data.source)) {
         data.source = JSON.stringify(data.source, null, 4)
+      }
+
+      if (!angular.isString(data.form)) {
+        data.form = JSON.stringify(data.form, null, 4)
       }
 
       $scope.schema = data
