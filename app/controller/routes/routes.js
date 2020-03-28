@@ -1,18 +1,29 @@
 'use strict'
 
-module.exports = function ($scope, $http, $uibModal, $routeParams, fusio) {
+module.exports = function ($scope, $http, $uibModal, $routeParams, $route, $timeout, $cacheFactory, $location, fusio) {
   $scope.response = null
   $scope.search = ''
+  $scope.route = null
+
+  $scope.schemas = []
+  $scope.actions = []
+
+  $scope.indexVersion = -1
 
   $scope.load = function () {
     var search = encodeURIComponent($scope.search ? $scope.search : '')
 
-    $http.get(fusio.baseUrl + 'backend/routes?search=' + search)
+    $http.get(fusio.baseUrl + 'backend/routes?search=' + search, {cache: true})
       .then(function (response) {
         var data = response.data
         $scope.totalResults = data.totalResults
         $scope.startIndex = 0
         $scope.routes = data.entry
+
+        if (!$routeParams.route_id && $scope.routes[0].id) {
+          // redirect in case we are on the first page without id
+          $location.path('/routes/' + $scope.routes[0].id);
+        }
       })
   }
 
@@ -20,7 +31,7 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, fusio) {
     var startIndex = ($scope.startIndex - 1) * 16
     var search = encodeURIComponent($scope.search ? $scope.search : '')
 
-    $http.get(fusio.baseUrl + 'backend/routes?startIndex=' + startIndex + '&search=' + search)
+    $http.get(fusio.baseUrl + 'backend/routes?startIndex=' + startIndex + '&search=' + search, {cache: true})
       .then(function (response) {
         var data = response.data
         $scope.totalResults = data.totalResults
@@ -47,6 +58,8 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, fusio) {
     })
 
     modalInstance.result.then(function (response) {
+      $cacheFactory.get('$http').removeAll();
+
       $scope.response = response
       $scope.load()
     }, function () {
@@ -67,8 +80,9 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, fusio) {
     })
 
     modalInstance.result.then(function (response) {
+      $route.reload()
+
       $scope.response = response
-      $scope.load()
     }, function () {
     })
   }
@@ -87,8 +101,14 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, fusio) {
     })
 
     modalInstance.result.then(function (response) {
+      $cacheFactory.get('$http').removeAll();
+
       $scope.response = response
       $scope.load()
+
+      if (response.success) {
+        $scope.route = null
+      }
     }, function () {
     })
   }
@@ -108,9 +128,112 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, fusio) {
     })
   }
 
-  $scope.closeResponse = function () {
-    $scope.response = null
+  $scope.showDetail = function (routeId) {
+    $scope.indexVersion = -1
+
+    $http.get(fusio.baseUrl + 'backend/routes/' + routeId)
+      .then(function (response) {
+        $scope.route = response.data
+
+        $timeout(function () {
+          var indexVersion = -1
+          if ($scope.route.config.length > 0) {
+            for (var i = 0; i < $scope.route.config.length; i++) {
+              indexVersion++
+            }
+          }
+
+          $scope.indexVersion = indexVersion
+        })
+      })
   }
 
+  $scope.showShema = function (schemaId) {
+    var modalInstance = $uibModal.open({
+      size: 'lg',
+      backdrop: 'static',
+      templateUrl: 'app/controller/schema/update.html',
+      controller: 'SchemaUpdateCtrl',
+      resolve: {
+        schema: function () {
+          return { id: schemaId }
+        }
+      }
+    })
+
+    modalInstance.result.then(function (response) {
+    }, function () {
+    })
+  }
+
+  $scope.showAction = function (actionId) {
+    var modalInstance = $uibModal.open({
+      size: 'lg',
+      backdrop: 'static',
+      templateUrl: 'app/controller/action/update.html',
+      controller: 'ActionUpdateCtrl',
+      resolve: {
+        action: function () {
+          return { id: actionId }
+        }
+      }
+    })
+
+    modalInstance.result.then(function (response) {
+    }, function () {
+    })
+  }
+
+  $scope.showLogs = function (route) {
+    var modalInstance = $uibModal.open({
+      size: 'lg',
+      backdrop: 'static',
+      templateUrl: 'app/controller/routes/log.html',
+      controller: 'RoutesLogCtrl',
+      resolve: {
+        route: function () {
+          return route
+        }
+      }
+    })
+
+    modalInstance.result.then(function (response) {
+    }, function () {
+    })
+  }
+
+  $scope.normalizeBaseUrl = function (url) {
+    if (url.charAt(url.length - 1) === '/') {
+      return url.substr(0, url.length - 1);
+    }
+
+    return url;
+  }
+
+  $http.get(fusio.baseUrl + 'backend/action?count=1024', {cache: true})
+    .then(function (response) {
+      var result = {};
+      for (var i = 0; i < response.data.entry.length; i++) {
+        result[response.data.entry[i].id] = response.data.entry[i].name
+      }
+
+      $scope.actions = result
+    })
+
+  $http.get(fusio.baseUrl + 'backend/schema?count=1024', {cache: true})
+    .then(function (response) {
+      var result = {};
+      for (var i = 0; i < response.data.entry.length; i++) {
+        result[response.data.entry[i].id] = response.data.entry[i].name
+      }
+
+      $scope.schemas = result
+    })
+
+  $scope.baseUrl = $scope.normalizeBaseUrl(fusio.baseUrl)
   $scope.load()
+
+  if ($routeParams.route_id) {
+    $scope.showDetail($routeParams.route_id)
+  }
 }

@@ -1,6 +1,6 @@
 'use strict'
 
-module.exports = function ($scope, $http, $uibModal, $routeParams, $location, fusio) {
+module.exports = function ($scope, $http, $uibModal, $routeParams, $cacheFactory, fusio) {
   $scope.response = null
   $scope.search = ''
   $scope.routes = []
@@ -56,6 +56,8 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, $location, fu
     })
 
     modalInstance.result.then(function (response) {
+      $cacheFactory.get('$http').removeAll();
+
       $scope.response = response
       $scope.load()
     }, function () {
@@ -76,6 +78,8 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, $location, fu
     })
 
     modalInstance.result.then(function (response) {
+      $cacheFactory.get('$http').removeAll();
+
       $scope.response = response
       $scope.load()
     }, function () {
@@ -96,6 +100,8 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, $location, fu
     })
 
     modalInstance.result.then(function (response) {
+      $cacheFactory.get('$http').removeAll();
+
       $scope.response = response
       $scope.load()
     }, function () {

@@ -1,0 +1,43 @@
+
+<div class="modal-header">
+    <h3 class="modal-title">Logs</h3>
+</div>
+
+<div class="modal-body">
+    <div class="fusio-grid">
+        <table class="table">
+            <colgroup>
+                <col width="80" />
+                <col width="200" />
+                <col width="150" />
+                <col width="150" />
+                <col width="50" />
+            </colgroup>
+            <thead>
+            <tr>
+                <th>Method</th>
+                <th>User-Agent</th>
+                <th>IP</th>
+                <th>Date</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="log in logs">
+                <td>{{log.method}}</td>
+                <td><div style="overflow:hidden;width:200px;white-space:nowrap;" title="{{log.userAgent}}">{{log.userAgent}}</div></td>
+                <td>{{log.ip}}</td>
+                <td>{{log.date | date: 'short'}}</td>
+                <td>
+                    <div class="fusio-options">
+                        <a ng-click="openDetailDialog(log)" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <br>
+    <button type="button" ng-click="close()" class="btn btn-default">Cancel</button>
+</div>

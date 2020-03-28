@@ -52,14 +52,10 @@
                         <div class="form-group">
                             <label>Parameters:</label>
                             <div class="row">
-                                <div class="col-md-11">
+                                <div class="col-md-12">
                                     <select class="form-control" ng-model="config.parameters" ng-options="schema.id as schema.name for schema in schemas" ng-disabled="version.status != 4" aria-describedby="parametersHelp">
                                         <option value="">No schema</option>
                                     </select>
-                                </div>
-                                <div class="col-md-1">
-                                    <a ng-if="config.parameters > 1" ng-click="showShema(config.parameters)" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
-                                    <a ng-if="!(config.parameters > 1)" ng-disabled="true" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
                                 </div>
                             </div>
                             <span class="help-block" id="parametersHelp">Optional a json schema which validates URI query parameters</span>
@@ -67,14 +63,10 @@
                         <div class="form-group">
                             <label>Request:</label>
                             <div class="row">
-                                <div class="col-md-11">
+                                <div class="col-md-12">
                                     <select class="form-control" ng-model="config.request" ng-options="schema.id as schema.name for schema in schemas" ng-disabled="method == 'GET' || version.status != 4" aria-describedby="requestHelp">
                                         <option value="">No schema</option>
                                     </select>
-                                </div>
-                                <div class="col-md-1">
-                                    <a ng-if="config.request > 1" ng-click="showShema(config.request)" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
-                                    <a ng-if="!(config.request > 1)" ng-disabled="true" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
                                 </div>
                             </div>
                             <span class="help-block" id="requestHelp">The allowed format for incoming requests. The <code>Passthru</code> schema forwards all incoming data unfiltered to the action</span>
@@ -85,14 +77,10 @@
                                 <div class="col-md-2">
                                     <div style="margin-top:8px;"><code>{{code}}</code></div>
                                 </div>
-                                <div class="col-md-9">
+                                <div class="col-md-10">
                                     <select class="form-control" ng-model="config.responses[code]" ng-options="schema.id as schema.name for schema in schemas" ng-disabled="version.status != 4" aria-describedby="responsesHelp">
                                         <option value="">No schema</option>
                                     </select>
-                                </div>
-                                <div class="col-md-1">
-                                    <a ng-if="config.responses[code] > 1" ng-click="showShema(config.responses[code])" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
-                                    <a ng-if="!(config.responses[code] > 1)" ng-disabled="true" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
                                 </div>
                             </div>
                             <div class="row">
@@ -109,14 +97,10 @@
                         <div class="form-group">
                             <label>Action:</label>
                             <div class="row">
-                                <div class="col-md-11">
+                                <div class="col-md-12">
                                     <select class="form-control" ng-model="config.action" ng-options="action.id as action.name for action in actions" ng-disabled="version.status != 4" aria-describedby="actionHelp">
                                         <option value="">No action</option>
                                     </select>
-                                </div>
-                                <div class="col-md-1">
-                                    <a ng-if="config.action > 0" ng-click="showAction(config.action)" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
-                                    <a ng-if="!(config.action > 0)" ng-disabled="true" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
                                 </div>
                             </div>
                             <span class="help-block" id="actionHelp">The action which receives the request and produces a response</span>

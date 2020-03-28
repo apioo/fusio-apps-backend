@@ -3,7 +3,7 @@
 var angular = require('angular')
 
 module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout, fusio, route) {
-  $scope.route = route
+  $scope.route = null
 
   $scope.methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
   $scope.schemas = []
@@ -106,51 +106,51 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
       })
   }
 
-  $http.get(fusio.baseUrl + 'backend/routes/' + route.id)
-    .then(function (response) {
-      var data = response.data
-      // check and add missing methods
-      if (data.config) {
-        var config = []
-        for (var version in data.config) {
-          var ver = data.config[version]
-          var methods = {}
-          for (var i = 0; i < $scope.methods.length; i++) {
-            if (ver.methods.hasOwnProperty($scope.methods[i])) {
-              methods[$scope.methods[i]] = ver.methods[$scope.methods[i]]
-            } else {
-              methods[$scope.methods[i]] = $scope.newEmptyMethod()
-            }
+  $scope.load = function () {
+    var data = angular.copy(route);
+
+    // check and add missing methods
+    if (data.config) {
+      var config = []
+      for (var version in data.config) {
+        var ver = data.config[version]
+        var methods = {}
+        for (var i = 0; i < $scope.methods.length; i++) {
+          if (ver.methods.hasOwnProperty($scope.methods[i])) {
+            methods[$scope.methods[i]] = ver.methods[$scope.methods[i]]
+          } else {
+            methods[$scope.methods[i]] = $scope.newEmptyMethod()
           }
-          ver.methods = methods
-          config.push(ver)
         }
-        data.config = config
+        ver.methods = methods
+        config.push(ver)
+      }
+      data.config = config
+    }
+
+    $scope.route = data
+
+    $timeout(function () {
+      var indexVersion = -1
+      var indexMethod = []
+      if ($scope.route.config.length > 0) {
+        for (var i = 0; i < $scope.route.config.length; i++) {
+          indexVersion++
+          indexMethod.push(0)
+        }
       }
 
-      $scope.route = data
-
-      $timeout(function () {
-        var indexVersion = -1
-        var indexMethod = []
-        if ($scope.route.config.length > 0) {
-          for (var i = 0; i < $scope.route.config.length; i++) {
-            indexVersion++
-            indexMethod.push(0)
-          }
-        }
-
-        $scope.indexVersion = indexVersion
-        $scope.indexMethod = indexMethod
-      })
+      $scope.indexVersion = indexVersion
+      $scope.indexMethod = indexMethod
     })
+  }
 
-  $http.get(fusio.baseUrl + 'backend/action?count=1024')
+  $http.get(fusio.baseUrl + 'backend/action?count=1024', {cache: true})
     .then(function (response) {
       $scope.actions = response.data.entry
     })
 
-  $http.get(fusio.baseUrl + 'backend/schema?count=1024')
+  $http.get(fusio.baseUrl + 'backend/schema?count=1024', {cache: true})
     .then(function (response) {
       $scope.schemas = response.data.entry
     })
@@ -236,39 +236,5 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
     $scope.route.config[$scope.indexVersion].methods[method].responses = responses
   }
 
-  $scope.showShema = function (schemaId) {
-    var modalInstance = $uibModal.open({
-      size: 'lg',
-      backdrop: 'static',
-      templateUrl: 'app/controller/schema/update.html',
-      controller: 'SchemaUpdateCtrl',
-      resolve: {
-        schema: function () {
-          return { id: schemaId }
-        }
-      }
-    })
-
-    modalInstance.result.then(function (response) {
-    }, function () {
-    })
-  }
-
-  $scope.showAction = function (actionId) {
-    var modalInstance = $uibModal.open({
-      size: 'lg',
-      backdrop: 'static',
-      templateUrl: 'app/controller/action/update.html',
-      controller: 'ActionUpdateCtrl',
-      resolve: {
-        action: function () {
-          return { id: actionId }
-        }
-      }
-    })
-
-    modalInstance.result.then(function (response) {
-    }, function () {
-    })
-  }
+  $scope.load()
 }

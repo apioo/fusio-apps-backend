@@ -9,6 +9,10 @@ angular.module('fusioApp.routes', ['ngRoute', 'ui.bootstrap'])
       templateUrl: 'app/controller/routes/index.html',
       controller: 'RoutesCtrl'
     })
+    $routeProvider.when('/routes/:route_id', {
+      templateUrl: 'app/controller/routes/index.html',
+      controller: 'RoutesCtrl'
+    })
   }])
 
   .controller('RoutesCtrl', require('./routes'))
@@ -17,3 +21,4 @@ angular.module('fusioApp.routes', ['ngRoute', 'ui.bootstrap'])
   .controller('RoutesDeleteCtrl', require('./delete'))
   .controller('RoutesProviderCtrl', require('./provider'))
   .controller('RoutesChangelogCtrl', require('./changelog'))
+  .controller('RoutesLogCtrl', require('./log'))

@@ -110,12 +110,12 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
       })
   }
 
-  $http.get(fusio.baseUrl + 'backend/action?count=1024')
+  $http.get(fusio.baseUrl + 'backend/action?count=1024', {cache: true})
     .then(function (response) {
       $scope.actions = response.data.entry
     })
 
-  $http.get(fusio.baseUrl + 'backend/schema?count=1024')
+  $http.get(fusio.baseUrl + 'backend/schema?count=1024', {cache: true})
     .then(function (response) {
       $scope.schemas = response.data.entry
     })
@@ -199,42 +199,6 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
     delete responses[code]
 
     $scope.route.config[$scope.indexVersion].methods[method].responses = responses
-  }
-
-  $scope.showShema = function (schemaId) {
-    var modalInstance = $uibModal.open({
-      size: 'lg',
-      backdrop: 'static',
-      templateUrl: 'app/controller/schema/update.html',
-      controller: 'SchemaUpdateCtrl',
-      resolve: {
-        schema: function () {
-          return { id: schemaId }
-        }
-      }
-    })
-
-    modalInstance.result.then(function (response) {
-    }, function () {
-    })
-  }
-
-  $scope.showAction = function (actionId) {
-    var modalInstance = $uibModal.open({
-      size: 'lg',
-      backdrop: 'static',
-      templateUrl: 'app/controller/action/update.html',
-      controller: 'ActionUpdateCtrl',
-      resolve: {
-        action: function () {
-          return { id: actionId }
-        }
-      }
-    })
-
-    modalInstance.result.then(function (response) {
-    }, function () {
-    })
   }
 
   $scope.addVersion()
