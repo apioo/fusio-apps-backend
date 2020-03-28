@@ -165,7 +165,8 @@ fusioApp.run(function ($rootScope, $window, $location, $http, helpLoader, versio
     for (var i = 0; i < $rootScope.nav.length; i++) {
       var found = false
       for (var j = 0; j < $rootScope.nav[i].children.length; j++) {
-        if ($rootScope.nav[i].children[j].path === path) {
+        var navPath = $rootScope.nav[i].children[j].path
+        if (navPath === path.substr(0, navPath.length)) {
           found = true
           break
         }
