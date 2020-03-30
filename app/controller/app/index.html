@@ -6,7 +6,7 @@
         <div class="input-group">
             <input type="text" class="form-control" ng-model="search" placeholder="Search i.e. app-name" />
             <div class="input-group-btn">
-                <a class="btn btn-primary" ng-click="openCreateDialog()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+                <a class="btn btn-primary fusio-btn-create" ng-click="openCreateDialog()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
             </div>
             <div class="input-group-btn">
                 <a class="btn btn-default" ng-click="help.showDialog('help/app.md')"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>
@@ -43,8 +43,8 @@
         <td>{{app.appKey}}</td>
         <td>
             <div class="fusio-options">
-                <a ng-click="openUpdateDialog(app)" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
-                <a ng-click="openDeleteDialog(app)" class="btn btn-default"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                <a ng-click="openUpdateDialog(app)" class="btn btn-default fusio-btn-update"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                <a ng-click="openDeleteDialog(app)" class="btn btn-default fusio-btn-delete"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
             </div>
         </td>
     </tr>

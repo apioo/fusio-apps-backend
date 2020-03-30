@@ -8,7 +8,7 @@
                 <div class="input-group">
                     <input type="text" class="form-control" ng-model="search" placeholder="Search i.e. contract-name" />
                     <div class="input-group-btn">
-                        <a class="btn btn-primary" ng-click="openCreateDialog()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+                        <a class="btn btn-primary fusio-btn-create" ng-click="openCreateDialog()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
                     </div>
                     <div class="input-group-btn">
                         <a class="btn btn-default" ng-click="help.showDialog('help/contract.md')"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>
@@ -64,7 +64,7 @@
         </td>
         <td>
             <div class="fusio-options">
-                <a ng-click="openDeleteDialog(contract)" class="btn btn-default"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                <a ng-click="openDeleteDialog(contract)" class="btn btn-default fusio-btn-delete"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
             </div>
         </td>
     </tr>

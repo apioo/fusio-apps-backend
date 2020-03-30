@@ -6,7 +6,7 @@
         <div class="input-group">
             <input type="text" class="form-control" ng-model="filter.search" placeholder="Search i.e. paypal" />
             <div class="input-group-btn">
-                <a class="btn btn-primary" ng-click="openFilterDialog()"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span></a>
+                <a class="btn btn-primary fusio-btn-filter" ng-click="openFilterDialog()"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span></a>
             </div>
         </div>
     </form>
@@ -35,7 +35,7 @@
         <td>{{transaction.insertDate | date: 'short'}}</td>
         <td>
             <div class="fusio-options">
-                <a ng-click="openDetailDialog(transaction)" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                <a ng-click="openDetailDialog(transaction)" class="btn btn-default fusio-btn-detail"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
             </div>
         </td>
     </tr>

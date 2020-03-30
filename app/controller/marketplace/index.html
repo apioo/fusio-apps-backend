@@ -29,11 +29,11 @@
             <td><b>{{ name }} ({{ app.version }})</b><br>{{ app.description }}</td>
             <td>
                 <div class="fusio-options">
-                    <a ng-if="app.local" href="{{ app.local.startUrl }}" target="_blank" class="btn btn-primary"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></a>
-                    <a href="{{ app.website }}" target="_blank" class="btn btn-default"><span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span></a>
-                    <a ng-click="install(name)" ng-disabled="working || app.local" class="btn btn-default"><span class="glyphicon glyphicon-download" aria-hidden="true"></span></a>
-                    <a ng-click="update(name)" ng-disabled="working || !app.local" class="btn btn-default"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></a>
-                    <a ng-click="remove(name)" ng-disabled="working || !app.local" class="btn btn-default"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+                    <a ng-if="app.local" href="{{ app.local.startUrl }}" target="_blank" class="btn btn-primary fusio-btn-url"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></a>
+                    <a href="{{ app.website }}" target="_blank" class="btn btn-default fusio-btn-website"><span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span></a>
+                    <a ng-click="install(name)" ng-disabled="working || app.local" class="btn btn-default fusio-btn-install"><span class="glyphicon glyphicon-download" aria-hidden="true"></span></a>
+                    <a ng-click="update(name)" ng-disabled="working || !app.local" class="btn btn-default fusio-btn-update"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></a>
+                    <a ng-click="remove(name)" ng-disabled="working || !app.local" class="btn btn-default fusio-btn-remove"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
                 </div>
             </td>
         </tr>
