@@ -7,7 +7,7 @@ describe('Routes tests', function() {
   it('List routes', function() {
     browser.get('#!/routes');
 
-    var routes = element.all(by.repeater('route in routes'));
+    var routes = element.all(by.repeater('row in routes'));
     expect(routes.count()).toEqual(3);
     expect(routes.get(0).getText()).toEqual('/inspect/:foo');
     expect(routes.get(1).getText()).toEqual('/foo');
@@ -19,7 +19,7 @@ describe('Routes tests', function() {
 
     var EC = protractor.ExpectedConditions;
 
-    $('a.btn-primary').click();
+    $('.fusio-btn-create').click();
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
@@ -47,7 +47,7 @@ describe('Routes tests', function() {
 
     var EC = protractor.ExpectedConditions;
 
-    element.all(by.css('div.fusio-options a:nth-child(1)')).first().click();
+    $('.fusio-btn-edit').click();
 
     browser.wait(EC.visibilityOf($('select.form-control')), 5000);
 
@@ -94,7 +94,7 @@ describe('Routes tests', function() {
 
     var EC = protractor.ExpectedConditions;
 
-    element.all(by.css('div.fusio-options a:nth-child(1)')).first().click();
+    $('.fusio-btn-edit').click();
 
     browser.wait(EC.visibilityOf($('select.form-control')), 5000);
 
@@ -141,7 +141,7 @@ describe('Routes tests', function() {
 
     var EC = protractor.ExpectedConditions;
 
-    element.all(by.css('div.fusio-options a:nth-child(1)')).first().click();
+    $('.fusio-btn-edit').click();
 
     browser.wait(EC.visibilityOf($('select.form-control')), 5000);
 
@@ -188,7 +188,7 @@ describe('Routes tests', function() {
 
     var EC = protractor.ExpectedConditions;
 
-    element.all(by.css('div.fusio-options a:nth-child(1)')).first().click();
+    $('.fusio-btn-edit').click();
 
     browser.wait(EC.visibilityOf($('select.form-control')), 5000);
 
@@ -224,7 +224,7 @@ describe('Routes tests', function() {
 
     var EC = protractor.ExpectedConditions;
 
-    element.all(by.css('div.fusio-options a:nth-child(1)')).first().click();
+    $('.fusio-btn-edit').click();
 
     browser.wait(EC.visibilityOf($('select.form-control')), 5000);
 
@@ -247,7 +247,7 @@ describe('Routes tests', function() {
 
     var EC = protractor.ExpectedConditions;
 
-    element.all(by.css('div.fusio-options a:nth-child(2)')).first().click();
+    $('.fusio-btn-delete').click();
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
@@ -265,7 +265,7 @@ describe('Routes tests', function() {
 
     var EC = protractor.ExpectedConditions;
 
-    element.all(by.css('a.btn-primary')).get(1).click();
+    $('.fusio-btn-provider').click();
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
