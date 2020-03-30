@@ -47,7 +47,7 @@ describe('Routes tests', function() {
 
     var EC = protractor.ExpectedConditions;
 
-    $('.fusio-btn-edit').click();
+    $('.fusio-btn-update').click();
 
     browser.wait(EC.visibilityOf($('select.form-control')), 5000);
 
@@ -94,7 +94,7 @@ describe('Routes tests', function() {
 
     var EC = protractor.ExpectedConditions;
 
-    $('.fusio-btn-edit').click();
+    $('.fusio-btn-update').click();
 
     browser.wait(EC.visibilityOf($('select.form-control')), 5000);
 
@@ -141,7 +141,7 @@ describe('Routes tests', function() {
 
     var EC = protractor.ExpectedConditions;
 
-    $('.fusio-btn-edit').click();
+    $('.fusio-btn-update').click();
 
     browser.wait(EC.visibilityOf($('select.form-control')), 5000);
 
@@ -188,7 +188,7 @@ describe('Routes tests', function() {
 
     var EC = protractor.ExpectedConditions;
 
-    $('.fusio-btn-edit').click();
+    $('.fusio-btn-update').click();
 
     browser.wait(EC.visibilityOf($('select.form-control')), 5000);
 
@@ -224,7 +224,7 @@ describe('Routes tests', function() {
 
     var EC = protractor.ExpectedConditions;
 
-    $('.fusio-btn-edit').click();
+    $('.fusio-btn-update').click();
 
     browser.wait(EC.visibilityOf($('select.form-control')), 5000);
 
