@@ -35,7 +35,7 @@ describe('Routes tests', function() {
 
     actionOptions.get(1).click();
 
-    $('button.btn-primary').click();
+    $('.fusio-btn-save').click();
 
     browser.wait(EC.visibilityOf($('div.alert-success')), 5000);
 
@@ -54,7 +54,7 @@ describe('Routes tests', function() {
     var statusOptions = element.all(by.options('status.key as status.value for status in statuuus'));
     statusOptions.get(0).click();
 
-    $('button.btn-primary').click();
+    $('.fusio-btn-save').click();
 
     browser.wait(EC.visibilityOf($('div.alert-success')), 5000);
 
@@ -101,7 +101,7 @@ describe('Routes tests', function() {
     var statusOptions = element.all(by.options('status.key as status.value for status in statuuus'));
     statusOptions.get(1).click();
 
-    $('button.btn-primary').click();
+    $('.fusio-btn-save').click();
 
     browser.wait(EC.visibilityOf($('div.alert-success')), 5000);
 
@@ -148,7 +148,7 @@ describe('Routes tests', function() {
     var statusOptions = element.all(by.options('status.key as status.value for status in statuuus'));
     statusOptions.get(2).click();
 
-    $('button.btn-primary').click();
+    $('.fusio-btn-save').click();
 
     browser.wait(EC.visibilityOf($('div.alert-success')), 5000);
 
@@ -195,7 +195,7 @@ describe('Routes tests', function() {
     var statusOptions = element.all(by.options('status.key as status.value for status in statuuus'));
     statusOptions.get(3).click();
 
-    $('button.btn-primary').click();
+    $('.fusio-btn-save').click();
 
     browser.wait(EC.visibilityOf($('div.alert-success')), 5000);
 
@@ -235,7 +235,7 @@ describe('Routes tests', function() {
     expect(element.all(by.model('config.responses[code]')).get(0).getAttribute('value')).toEqual('number:1');
     expect(element.all(by.model('config.action')).get(0).getAttribute('value')).toEqual('number:6');
 
-    $('button.btn-primary').click();
+    $('.fusio-btn-save').click();
 
     browser.wait(EC.visibilityOf($('div.alert-success')), 5000);
 
@@ -253,7 +253,7 @@ describe('Routes tests', function() {
 
     expect(element(by.model('route.path')).getAttribute('value')).toEqual('/test');
 
-    $('button.btn-primary').click();
+    $('.fusio-btn-save').click();
 
     browser.wait(EC.visibilityOf($('div.alert-success')), 5000);
 
@@ -279,7 +279,7 @@ describe('Routes tests', function() {
     element(by.cssContainingText('#config-connection option', 'System')).click();
     element(by.css('#config-table')).sendKeys('app_news');
 
-    $('button.btn-primary').click();
+    $('.fusio-btn-save').click();
 
     browser.wait(EC.visibilityOf($('div.alert-success')), 5000);
 
