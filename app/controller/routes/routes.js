@@ -166,6 +166,24 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, $route, $time
     })
   }
 
+  $scope.showPreview = function (schemaId) {
+    var modalInstance = $uibModal.open({
+      size: 'lg',
+      backdrop: 'static',
+      templateUrl: 'app/controller/schema/preview.html',
+      controller: 'SchemaPreviewCtrl',
+      resolve: {
+        schema: function () {
+          return { id: schemaId }
+        }
+      }
+    })
+
+    modalInstance.result.then(function (response) {
+    }, function () {
+    })
+  }
+
   $scope.showAction = function (actionId) {
     var modalInstance = $uibModal.open({
       size: 'lg',
