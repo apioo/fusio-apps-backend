@@ -45,9 +45,9 @@
             </div>
         </div>
     </div>
-    <div class="col-md-10" ng-if="route">
+    <div class="col-md-10">
         <div class="panel panel-default">
-            <div class="panel-heading"><a href="{{baseUrl}}{{route.path}}" class="fusio-route-path">{{route.path}}</a></div>
+            <div class="panel-heading"><a href="{{baseUrl}}{{route.path}}" class="fusio-route-path">&nbsp;{{route.path}}</a></div>
             <div class="panel-body">
                 <div class="btn-group" role="group">
                     <button type="button" ng-click="openUpdateDialog(route)" class="btn btn-primary fusio-btn-update">Edit</button>
@@ -157,13 +157,6 @@
                         </uib-tabset>
                     </uib-tab>
                 </uib-tabset>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-10" ng-if="!route">
-        <div class="panel panel-default">
-            <div class="panel-heading"><a href="{{baseUrl}}">/</a></div>
-            <div class="panel-body">
             </div>
         </div>
     </div>
