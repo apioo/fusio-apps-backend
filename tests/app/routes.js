@@ -58,7 +58,7 @@ describe('Routes tests', function() {
 
     browser.wait(EC.visibilityOf($('div.alert-success')), 5000);
 
-    expect($('div.alert-success > div').getText()).toEqual('Routes successful updated');
+    expect($('div.alert-success > div').getText()).toEqual('Route successful updated');
 
     $('div.alert-success > div').getText().then(function(){
       // make a request to the endpoint
@@ -105,7 +105,7 @@ describe('Routes tests', function() {
 
     browser.wait(EC.visibilityOf($('div.alert-success')), 5000);
 
-    expect($('div.alert-success > div').getText()).toEqual('Routes successful updated');
+    expect($('div.alert-success > div').getText()).toEqual('Route successful updated');
 
     $('div.alert-success > div').getText().then(function(){
       // make a request to the endpoint
@@ -152,7 +152,7 @@ describe('Routes tests', function() {
 
     browser.wait(EC.visibilityOf($('div.alert-success')), 5000);
 
-    expect($('div.alert-success > div').getText()).toEqual('Routes successful updated');
+    expect($('div.alert-success > div').getText()).toEqual('Route successful updated');
 
     $('div.alert-success > div').getText().then(function(){
       // make a request to the endpoint
@@ -199,7 +199,7 @@ describe('Routes tests', function() {
 
     browser.wait(EC.visibilityOf($('div.alert-success')), 5000);
 
-    expect($('div.alert-success > div').getText()).toEqual('Routes successful updated');
+    expect($('div.alert-success > div').getText()).toEqual('Route successful updated');
 
     $('div.alert-success > div').getText().then(function(){
       // make a request to the endpoint
@@ -239,7 +239,7 @@ describe('Routes tests', function() {
 
     browser.wait(EC.visibilityOf($('div.alert-success')), 5000);
 
-    expect($('div.alert-success > div').getText()).toEqual('Routes successful updated');
+    expect($('div.alert-success > div').getText()).toEqual('Route successful updated');
   });
 
   it('Delete route', function() {
@@ -257,7 +257,7 @@ describe('Routes tests', function() {
 
     browser.wait(EC.visibilityOf($('div.alert-success')), 5000);
 
-    expect($('div.alert-success > div').getText()).toEqual('Routes successful deleted');
+    expect($('div.alert-success > div').getText()).toEqual('Route successful deleted');
   });
 
   it('Create route provider', function() {
