@@ -61,7 +61,10 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, $route, $time
       $cacheFactory.get('$http').removeAll();
 
       $scope.response = response
-      $scope.load()
+      if (response.success) {
+        $location.search('success', 1);
+        $location.path('/routes');
+      }
     }, function () {
     })
   }
@@ -80,9 +83,11 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, $route, $time
     })
 
     modalInstance.result.then(function (response) {
-      $route.reload()
-
       $scope.response = response
+      if (response.success) {
+        $location.search('success', 2);
+        $location.path('/routes/' + route.id);
+      }
     }, function () {
     })
   }
@@ -104,10 +109,9 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, $route, $time
       $cacheFactory.get('$http').removeAll();
 
       $scope.response = response
-      $scope.load()
-
       if (response.success) {
-        $scope.route = null
+        $location.search('success', 3);
+        $location.path('/routes');
       }
     }, function () {
     })
@@ -220,6 +224,13 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, $route, $time
     })
   }
 
+  $scope.closeResponse = function () {
+    $scope.response = null
+    if ($routeParams.success) {
+      $location.search('success', null)
+    }
+  }
+
   $scope.normalizeBaseUrl = function (url) {
     if (url.charAt(url.length - 1) === '/') {
       return url.substr(0, url.length - 1);
@@ -253,5 +264,20 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, $route, $time
 
   if ($routeParams.route_id) {
     $scope.showDetail($routeParams.route_id)
+  }
+
+  if ($routeParams.success) {
+    var message
+    if ($routeParams.success === 2) {
+      message = 'Route successful updated'
+    } else if ($routeParams.success === 3) {
+      message = 'Route successful deleted'
+    } else {
+      message = 'Route successful created'
+    }
+    $scope.response = {
+      success: true,
+      message: message
+    }
   }
 }
