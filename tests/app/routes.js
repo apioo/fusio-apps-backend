@@ -60,11 +60,11 @@ describe('Routes tests', function() {
 
     expect($('div.alert-success > div').getText()).toEqual('Route successful updated');
 
-    $('div.alert-success > div').getText().then(function(){
+    $('.fusio-route-path').attr('href').then(function(url){
       // make a request to the endpoint
       expect(http({
         method: 'GET',
-        uri: browser.baseUrl.replace('/fusio/index.htm', '/test'),
+        uri: url,
         headers: {
           'User-Agent': 'Fusio-Test'
         },
@@ -107,11 +107,11 @@ describe('Routes tests', function() {
 
     expect($('div.alert-success > div').getText()).toEqual('Route successful updated');
 
-    $('div.alert-success > div').getText().then(function(){
+    $('.fusio-route-path').attr('href').then(function(url){
       // make a request to the endpoint
       expect(http({
         method: 'GET',
-        uri: browser.baseUrl.replace('/fusio/index.htm', '/test'),
+        uri: url,
         headers: {
           'User-Agent': 'Fusio-Test'
         },
@@ -154,11 +154,11 @@ describe('Routes tests', function() {
 
     expect($('div.alert-success > div').getText()).toEqual('Route successful updated');
 
-    $('div.alert-success > div').getText().then(function(){
+    $('.fusio-route-path').attr('href').then(function(url){
       // make a request to the endpoint
       expect(http({
         method: 'GET',
-        uri: browser.baseUrl.replace('/fusio/index.htm', '/test'),
+        uri: url,
         headers: {
           'User-Agent': 'Fusio-Test'
         },
@@ -201,11 +201,11 @@ describe('Routes tests', function() {
 
     expect($('div.alert-success > div').getText()).toEqual('Route successful updated');
 
-    $('div.alert-success > div').getText().then(function(){
+    $('.fusio-route-path').attr('href').then(function(url){
       // make a request to the endpoint
       expect(http({
         method: 'GET',
-        uri: browser.baseUrl.replace('/fusio/index.htm', '/test'),
+        uri: url,
         headers: {
           'User-Agent': 'Fusio-Test'
         },
