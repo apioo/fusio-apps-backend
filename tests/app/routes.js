@@ -60,7 +60,7 @@ describe('Routes tests', function() {
 
     expect($('div.alert-success > div').getText()).toEqual('Route successful updated');
 
-    $('.fusio-route-path').attr('href').then(function(url){
+    $('.fusio-route-path').getAttribute('href').then(function(url){
       // make a request to the endpoint
       expect(http({
         method: 'GET',
@@ -107,7 +107,7 @@ describe('Routes tests', function() {
 
     expect($('div.alert-success > div').getText()).toEqual('Route successful updated');
 
-    $('.fusio-route-path').attr('href').then(function(url){
+    $('.fusio-route-path').getAttribute('href').then(function(url){
       // make a request to the endpoint
       expect(http({
         method: 'GET',
@@ -154,7 +154,7 @@ describe('Routes tests', function() {
 
     expect($('div.alert-success > div').getText()).toEqual('Route successful updated');
 
-    $('.fusio-route-path').attr('href').then(function(url){
+    $('.fusio-route-path').getAttribute('href').then(function(url){
       // make a request to the endpoint
       expect(http({
         method: 'GET',
@@ -201,7 +201,7 @@ describe('Routes tests', function() {
 
     expect($('div.alert-success > div').getText()).toEqual('Route successful updated');
 
-    $('.fusio-route-path').attr('href').then(function(url){
+    $('.fusio-route-path').getAttribute('href').then(function(url){
       // make a request to the endpoint
       expect(http({
         method: 'GET',
