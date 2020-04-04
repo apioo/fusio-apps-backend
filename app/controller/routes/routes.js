@@ -126,6 +126,8 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, $route, $time
     })
 
     modalInstance.result.then(function (response) {
+      $cacheFactory.get('$http').removeAll();
+
       $scope.response = response
       $scope.load()
     }, function () {
