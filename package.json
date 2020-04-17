@@ -5,9 +5,6 @@
   "main": "Gruntfile.js",
   "author": "Christoph Kappestein",
   "license": "AGPLv3",
-  "scripts": {
-    "cs": "standard \"app/**/*.js\" --fix"
-  },
   "dependencies": {
     "ace-builds": "^1.4.11",
     "angular": "^1.7.9",
@@ -32,7 +29,6 @@
     "protractor": "^5.4.4",
     "request": "^2.88.2",
     "request-promise": "^4.2.5",
-    "standard": "^12.0.1",
     "webdriver-manager": "12.1.5"
   }
 }
