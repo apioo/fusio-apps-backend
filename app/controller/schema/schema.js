@@ -1,9 +1,10 @@
 'use strict'
 
-module.exports = function ($scope, $http, $uibModal, $routeParams, $cacheFactory, fusio) {
+module.exports = function ($scope, $http, $uibModal, $routeParams, $location, $cacheFactory, fusio) {
   $scope.response = null
   $scope.search = ''
-  $scope.routes = []
+  $scope.schema = null
+  $scope.schemas = []
 
   $scope.load = function () {
     var search = encodeURIComponent($scope.search ? $scope.search : '')
@@ -14,13 +15,11 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, $cacheFactory
         $scope.totalResults = data.totalResults
         $scope.startIndex = 0
         $scope.schemas = data.entry
-      })
-  }
 
-  $scope.loadRoutes = function () {
-    $http.get(fusio.baseUrl + 'backend/routes')
-      .then(function (response) {
-        $scope.routes = response.data.entry
+        if (!$routeParams.schema_id && $scope.schemas[0].id) {
+          // redirect in case we are on the first page without id
+          $location.path('/schema/' + $scope.schemas[0].id);
+        }
       })
   }
 
@@ -58,7 +57,10 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, $cacheFactory
       $cacheFactory.get('$http').removeAll();
 
       $scope.response = response
-      $scope.load()
+      if (response.success) {
+        $location.search('success', 1);
+        $location.path('/schema');
+      }
     }, function () {
     })
   }
@@ -80,7 +82,10 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, $cacheFactory
       $cacheFactory.get('$http').removeAll();
 
       $scope.response = response
-      $scope.load()
+      if (response.success) {
+        $location.search('success', 2);
+        $location.path('/schema/' + schema.id);
+      }
     }, function () {
     })
   }
@@ -102,9 +107,53 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, $cacheFactory
       $cacheFactory.get('$http').removeAll();
 
       $scope.response = response
-      $scope.load()
+      if (response.success) {
+        $location.search('success', 3);
+        $location.path('/schema');
+      }
     }, function () {
     })
+  }
+
+  $scope.openUIDialog = function (schema) {
+    var modalInstance = $uibModal.open({
+      size: 'lg',
+      backdrop: 'static',
+      templateUrl: 'app/controller/schema/ui.html',
+      controller: 'SchemaUpdateCtrl',
+      resolve: {
+        schema: function () {
+          return schema
+        }
+      }
+    })
+
+    modalInstance.result.then(function (response) {
+      $cacheFactory.get('$http').removeAll();
+
+      $scope.response = response
+      if (response.success) {
+        $location.search('success', 2);
+        $location.path('/schema/' + schema.id);
+      }
+    }, function () {
+    })
+  }
+
+  $scope.generatePreview = function (schemaId) {
+    $http.post(fusio.baseUrl + 'backend/schema/preview/' + schemaId, null)
+      .then(function (response) {
+        var data = response.data
+        $scope.schema.preview = data.preview.replace(/href="#([A-z0-9_]+)"/g, 'href="#!/schema/' + schemaId + '"')
+      })
+  }
+
+  $scope.showDetail = function (schemaId) {
+    $http.get(fusio.baseUrl + 'backend/schema/' + schemaId)
+      .then(function (response) {
+        $scope.schema = response.data
+        $scope.generatePreview(schemaId);
+      })
   }
 
   $scope.closeResponse = function () {
@@ -112,5 +161,23 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, $cacheFactory
   }
 
   $scope.load()
-  $scope.loadRoutes()
+
+  if ($routeParams.schema_id) {
+    $scope.showDetail($routeParams.schema_id)
+  }
+
+  if ($routeParams.success) {
+    var message
+    if ($routeParams.success === 2) {
+      message = 'Schema successful updated'
+    } else if ($routeParams.success === 3) {
+      message = 'Schema successful deleted'
+    } else {
+      message = 'Schema successful created'
+    }
+    $scope.response = {
+      success: true,
+      message: message
+    }
+  }
 }

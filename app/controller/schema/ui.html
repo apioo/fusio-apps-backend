@@ -1,0 +1,21 @@
+
+<div class="modal-header">
+    <h3 class="modal-title">Update</h3>
+</div>
+
+<div class="modal-body">
+    <div uib-alert class="alert-danger" close="closeResponse()" ng-if="response.success === false">
+        {{response.message}}
+    </div>
+    <form name="updateUpdateForm" ng-submit="update(schema)">
+        <input type="hidden" ng-model="schema.id" value="{{schema.id}}" />
+        <div class="form-group">
+            <label for="form">UI Schema:</label>
+            <div ui-ace="{mode: 'json'}" id="form" ng-model="schema.form" aria-describedby="formHelp"></div>
+            <span class="help-block" id="formHelp">Optional an UI schema which arguments the schema. This can be used by clients to build a fitting UI based on the schema.</span>
+        </div>
+
+        <button type="submit" class="btn btn-primary fusio-btn-save">Save</button>
+        <button type="button" ng-click="close()" class="btn btn-default fusio-btn-cancel">Cancel</button>
+    </form>
+</div>

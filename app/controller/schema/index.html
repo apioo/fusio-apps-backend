@@ -27,31 +27,37 @@
     {{response.message}}
 </div>
 
-<div class="fusio-grid">
-    <table class="table">
-    <colgroup>
-        <col width="*" />
-        <col width="150" />
-    </colgroup>
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr ng-repeat="schema in schemas">
-        <td>{{schema.name}}</td>
-        <td>
-            <div class="fusio-options">
-                <a ng-href="#!/schema/designer/{{schema.id}}" class="btn btn-default"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span></a>
-                <a ng-click="openUpdateDialog(schema)" class="btn btn-default fusio-btn-update"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
-                <a ng-click="openDeleteDialog(schema)" class="btn btn-default fusio-btn-delete"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+<div class="row">
+    <div class="col-md-2">
+        <div class="panel panel-default">
+            <div class="panel-heading">Path</div>
+            <div class="panel-body">
+                <div class="fusio-route-navigation">
+                    <ul>
+                        <li ng-repeat="row in schemas">
+                            <a ng-href="#!/schema/{{row.id}}" title="{{row.name}}">
+                                <b ng-if="schema.name == row.name">{{row.name}}</b>
+                                <span ng-if="schema.name != row.name">{{row.name}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <ul uib-pager total-items="totalResults" items-per-page="16" ng-model="startIndex" ng-change="pageChanged()" max-size="10"></ul>
             </div>
-        </td>
-    </tr>
-    </tbody>
-    </table>
+        </div>
+    </div>
+    <div class="col-md-10">
+        <div class="panel panel-default">
+            <div class="panel-heading">{{schema.name}}</div>
+            <div class="panel-body">
+                <div class="btn-group" role="group">
+                    <button type="button" ng-click="openUpdateDialog(schema)" class="btn btn-primary fusio-btn-update">Edit</button>
+                    <button type="button" ng-click="openUIDialog(schema)" class="btn btn-default fusio-btn-ui">UI-Schema</button>
+                    <button type="button" ng-click="openDeleteDialog(schema)" class="btn btn-danger fusio-btn-delete">Delete</button>
+                </div>
+                <br><br>
+                <div ng-if="schema" ng-bind-html="schema.preview"></div>
+            </div>
+        </div>
+    </div>
 </div>
-
-<ul uib-pagination total-items="totalResults" items-per-page="16" ng-model="startIndex" ng-change="pageChanged()" max-size="10"></ul>

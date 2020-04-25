@@ -9,9 +9,9 @@ angular.module('fusioApp.schema', ['ngRoute', 'ui.bootstrap'])
       templateUrl: 'app/controller/schema/index.html',
       controller: 'SchemaCtrl'
     })
-    $routeProvider.when('/schema/designer/:schema_id', {
-      templateUrl: 'app/controller/schema/designer.html',
-      controller: 'SchemaDesignerCtrl'
+    $routeProvider.when('/schema/:schema_id', {
+      templateUrl: 'app/controller/schema/index.html',
+      controller: 'SchemaCtrl'
     })
   }])
 
@@ -19,5 +19,4 @@ angular.module('fusioApp.schema', ['ngRoute', 'ui.bootstrap'])
   .controller('SchemaCreateCtrl', require('./create'))
   .controller('SchemaUpdateCtrl', require('./update'))
   .controller('SchemaDeleteCtrl', require('./delete'))
-  .controller('SchemaDesignerCtrl', require('./designer'))
   .controller('SchemaPreviewCtrl', require('./preview'))
