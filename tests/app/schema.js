@@ -5,7 +5,7 @@ describe('Schema tests', function() {
   it('List schema', function() {
     browser.get('#!/schema');
 
-    var schemas = element.all(by.repeater('schema in schemas'));
+    var schemas = element.all(by.repeater('row in schemas'));
     expect(schemas.count()).toEqual(7);
     expect(schemas.get(0).getText()).toEqual('Provider-Entity');
     expect(schemas.get(1).getText()).toEqual('Provider-Collection');
@@ -21,7 +21,7 @@ describe('Schema tests', function() {
 
     var EC = protractor.ExpectedConditions;
 
-    $('a.btn-primary').click();
+    $('.fusio-btn-create').click();
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
     browser.wait(EC.visibilityOf($('.ace_editor')), 5000);
@@ -42,7 +42,7 @@ describe('Schema tests', function() {
 
     var EC = protractor.ExpectedConditions;
 
-    element.all(by.css('div.fusio-options a:nth-child(2)')).first().click();
+    $('.fusio-btn-update').click();
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
@@ -60,7 +60,7 @@ describe('Schema tests', function() {
 
     var EC = protractor.ExpectedConditions;
 
-    element.all(by.css('div.fusio-options a:nth-child(3)')).first().click();
+    $('.fusio-btn-delete').click();
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
