@@ -25,13 +25,13 @@ exports.config = {
     'app/user.js',
     'app/import.js'
   ],
-  baseUrl: 'http://127.0.0.1:8008/apps/fusio/index.html',
+  baseUrl: 'http://127.0.0.1:8008/fusio/index.html',
   capabilities: {
     browserName: 'firefox'
   },
   onPrepare: function() {
     // login
-    browser.driver.get('http://127.0.0.1:8008/apps/fusio/index.html#!/login');
+    browser.driver.get('http://127.0.0.1:8008/fusio/index.html#!/login');
 
     browser.driver.findElement(by.id('username')).sendKeys('Developer');
     browser.driver.findElement(by.id('password')).sendKeys('qf2vX10Ec3wFZHx0K1eL');
