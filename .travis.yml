@@ -28,6 +28,7 @@ before_script:
   - cp -r fonts fusio/public/fusio/fonts/
   - cp -r help fusio/public/fusio/help/
   - cp -r img fusio/public/fusio/img/
+  - sed -i 's/\${API_URL}/http:\/\/127.0.0.1:8008\//g' index.html
   - cp index.html fusio/public/fusio/index.html
   - pushd fusio/public
   - php server.php --warmup
