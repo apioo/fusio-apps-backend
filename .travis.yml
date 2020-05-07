@@ -23,7 +23,11 @@ install:
 before_script:
   - cp .env fusio/.env
   - cp server.php fusio/public/server.php
-  - cp -r dist fusio/public/fusio/
+  - mkdir fusio/public/fusio/
+  - cp -r dist fusio/public/fusio/dist/
+  - cp -r fonts fusio/public/fusio/fonts/
+  - cp -r help fusio/public/fusio/help/
+  - cp -r img fusio/public/fusio/img/
   - cp index.html fusio/public/fusio/index.html
   - pushd fusio/public
   - php server.php --warmup
