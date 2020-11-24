@@ -44,9 +44,9 @@ module.exports = function(grunt){
         dest: './dist/fusio.min.css'
       }
     },
-    uglify: {
+    terser: {
       options: {
-        banner: '/*\n fusio\n Copyright (C) 2015-2018 Christoph Kappestein\n License: AGPLv3\n*/\n',
+        ecma: 2016,
         mangle: false
       },
       dist: {
@@ -87,10 +87,10 @@ module.exports = function(grunt){
   });
 
   grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-terser');
   grunt.loadNpmTasks('grunt-angular-templates');
   grunt.loadNpmTasks('grunt-browserify');
 
-  grunt.registerTask('default', ['browserify', 'ngtemplates', 'uglify', 'concat']);
+  grunt.registerTask('default', ['browserify', 'ngtemplates', 'terser', 'concat']);
 
 };
