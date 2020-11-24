@@ -95,29 +95,29 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group" ng-if="schemas[config.parameters]">
+                                <div class="form-group" ng-if="config.parameters">
                                     <label>Parameters:</label>
                                     <div class="row">
                                         <div class="col-md-10 fusio-route-parameters">
-                                            {{schemas[config.parameters]}}
+                                            {{config.parameters}}
                                         </div>
                                         <div class="col-md-2 text-right">
-                                            <a ng-if="config.parameters > 1 && version.status == 4" ng-click="showPreview(config.parameters)" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                                            <a ng-if="config.parameters > 1 && version.status == 4" ng-click="showShema(config.parameters)" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
-                                            <a ng-if="!(config.parameters > 1 && version.status == 4)" ng-disabled="true" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                                            <a ng-if="config.parameters && version.status == 4" ng-click="showPreview(config.parameters)" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                                            <a ng-if="config.parameters && version.status == 4" ng-click="showShema(config.parameters)" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                                            <a ng-if="!(config.parameters && version.status == 4)" ng-disabled="true" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group" ng-if="schemas[config.request]">
+                                <div class="form-group" ng-if="config.request">
                                     <label>Request:</label>
                                     <div class="row">
                                         <div class="col-md-10 fusio-route-request">
-                                            {{schemas[config.request]}}
+                                            {{config.request}}
                                         </div>
                                         <div class="col-md-2 text-right">
-                                            <a ng-if="config.request > 1 && version.status == 4" ng-click="showPreview(config.request)" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                                            <a ng-if="config.request > 1 && version.status == 4" ng-click="showShema(config.request)" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
-                                            <a ng-if="!(config.request > 1 && version.status == 4)" ng-disabled="true" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                                            <a ng-if="config.request && version.status == 4" ng-click="showPreview(config.request)" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                                            <a ng-if="config.request && version.status == 4" ng-click="showShema(config.request)" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                                            <a ng-if="!(config.request && version.status == 4)" ng-disabled="true" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
                                         </div>
                                     </div>
                                 </div>
@@ -128,12 +128,12 @@
                                             <div style="margin-top:8px;"><code>{{code}}</code></div>
                                         </div>
                                         <div class="col-md-8 fusio-route-responses">
-                                            {{schemas[schema]}}
+                                            {{schema}}
                                         </div>
                                         <div class="col-md-2 text-right">
-                                            <a ng-if="schema > 1 && version.status == 4" ng-click="showPreview(schema)" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                                            <a ng-if="schema > 1 && version.status == 4" ng-click="showShema(schema)" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
-                                            <a ng-if="!(schema > 1 && version.status == 4)" ng-disabled="true" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                                            <a ng-if="schema && version.status == 4" ng-click="showPreview(schema)" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                                            <a ng-if="schema && version.status == 4" ng-click="showShema(schema)" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                                            <a ng-if="!(schema && version.status == 4)" ng-disabled="true" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
                                         </div>
                                     </div>
                                 </div>
@@ -141,11 +141,11 @@
                                     <label>Action:</label>
                                     <div class="row">
                                         <div class="col-md-10 fusio-route-action">
-                                            {{actions[config.action]}}
+                                            {{config.action}}
                                         </div>
                                         <div class="col-md-2 text-right">
-                                            <a ng-if="config.action > 0 && version.status == 4" ng-click="showAction(config.action)" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
-                                            <a ng-if="!(config.action > 0 && version.status == 4)" ng-disabled="true" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                                            <a ng-if="config.action && version.status == 4" ng-click="showAction(config.action)" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                                            <a ng-if="!(config.action && version.status == 4)" ng-disabled="true" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
                                         </div>
                                     </div>
                                 </div>

@@ -5,9 +5,6 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, $route, $time
   $scope.search = ''
   $scope.route = null
 
-  $scope.schemas = []
-  $scope.actions = []
-
   $scope.indexVersion = -1
 
   $scope.load = function () {
@@ -240,26 +237,6 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, $route, $time
 
     return url;
   }
-
-  $http.get(fusio.baseUrl + 'backend/action?count=1024', {cache: true})
-    .then(function (response) {
-      var result = {};
-      for (var i = 0; i < response.data.entry.length; i++) {
-        result[response.data.entry[i].id] = response.data.entry[i].name
-      }
-
-      $scope.actions = result
-    })
-
-  $http.get(fusio.baseUrl + 'backend/schema?count=1024', {cache: true})
-    .then(function (response) {
-      var result = {};
-      for (var i = 0; i < response.data.entry.length; i++) {
-        result[response.data.entry[i].id] = response.data.entry[i].name
-      }
-
-      $scope.schemas = result
-    })
 
   $scope.baseUrl = $scope.normalizeBaseUrl(fusio.baseUrl)
   $scope.load()

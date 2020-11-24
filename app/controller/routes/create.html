@@ -53,7 +53,7 @@
                             <label>Parameters:</label>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <select class="form-control" ng-model="config.parameters" ng-options="schema.id as schema.name for schema in schemas" ng-disabled="version.status != 4" aria-describedby="parametersHelp">
+                                    <select class="form-control" ng-model="config.parameters" ng-options="schema.name as schema.name for schema in schemas" ng-disabled="version.status != 4" aria-describedby="parametersHelp">
                                         <option value="">No schema</option>
                                     </select>
                                 </div>
@@ -64,7 +64,7 @@
                             <label>Request:</label>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <select class="form-control" ng-model="config.request" ng-options="schema.id as schema.name for schema in schemas" ng-disabled="method == 'GET' || version.status != 4" aria-describedby="requestHelp">
+                                    <select class="form-control" ng-model="config.request" ng-options="schema.name as schema.name for schema in schemas" ng-disabled="method == 'GET' || version.status != 4" aria-describedby="requestHelp">
                                         <option value="">No schema</option>
                                     </select>
                                 </div>
@@ -78,7 +78,7 @@
                                     <div style="margin-top:8px;"><code>{{code}}</code></div>
                                 </div>
                                 <div class="col-md-10">
-                                    <select class="form-control" ng-model="config.responses[code]" ng-options="schema.id as schema.name for schema in schemas" ng-disabled="version.status != 4" aria-describedby="responsesHelp">
+                                    <select class="form-control" ng-model="config.responses[code]" ng-options="schema.name as schema.name for schema in schemas" ng-disabled="version.status != 4" aria-describedby="responsesHelp">
                                         <option value="">No schema</option>
                                     </select>
                                 </div>
@@ -98,7 +98,7 @@
                             <label>Action:</label>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <select class="form-control" ng-model="config.action" ng-options="action.id as action.name for action in actions" ng-disabled="version.status != 4" aria-describedby="actionHelp">
+                                    <select class="form-control" ng-model="config.action" ng-options="action.name as action.name for action in actions" ng-disabled="version.status != 4" aria-describedby="actionHelp">
                                         <option value="">No action</option>
                                     </select>
                                 </div>
