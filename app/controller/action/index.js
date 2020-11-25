@@ -9,6 +9,10 @@ angular.module('fusioApp.action', ['ngRoute', 'ui.ace'])
       templateUrl: 'app/controller/action/index.html',
       controller: 'ActionCtrl'
     })
+    $routeProvider.when('/action/:action_id', {
+      templateUrl: 'app/controller/action/index.html',
+      controller: 'ActionCtrl'
+    })
     $routeProvider.when('/action/designer/:action_id', {
       templateUrl: 'app/controller/action/designer.html',
       controller: 'ActionDesignerCtrl'

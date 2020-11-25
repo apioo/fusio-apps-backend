@@ -1,9 +1,10 @@
 'use strict'
 
-module.exports = function ($scope, $http, $uibModal, $routeParams, $cacheFactory, fusio) {
+module.exports = function ($scope, $http, $uibModal, $routeParams, $location, $cacheFactory, fusio) {
   $scope.response = null
   $scope.search = ''
-  $scope.routes = []
+  $scope.action = null
+  $scope.actions = []
 
   $scope.load = function () {
     var search = encodeURIComponent($scope.search ? $scope.search : '')
@@ -14,14 +15,11 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, $cacheFactory
         $scope.totalResults = data.totalResults
         $scope.startIndex = 0
         $scope.actions = data.entry
-      })
-  }
 
-  $scope.loadRoutes = function () {
-    $http.get(fusio.baseUrl + 'backend/routes')
-      .then(function (response) {
-        var data = response.data
-        $scope.routes = data.entry
+        if (!$routeParams.action_id && $scope.actions[0].id) {
+          // redirect in case we are on the first page without id
+          $location.path('/action/' + $scope.actions[0].id);
+        }
       })
   }
 
@@ -59,7 +57,10 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, $cacheFactory
       $cacheFactory.get('$http').removeAll();
 
       $scope.response = response
-      $scope.load()
+      if (response.success) {
+        $location.search('success', 1);
+        $location.path('/action');
+      }
     }, function () {
     })
   }
@@ -81,7 +82,10 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, $cacheFactory
       $cacheFactory.get('$http').removeAll();
 
       $scope.response = response
-      $scope.load()
+      if (response.success) {
+        $location.search('success', 2);
+        $location.path('/schema/' + schema.id);
+      }
     }, function () {
     })
   }
@@ -103,9 +107,21 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, $cacheFactory
       $cacheFactory.get('$http').removeAll();
 
       $scope.response = response
-      $scope.load()
+      if (response.success) {
+        $location.search('success', 3);
+        $location.path('/schema');
+      }
     }, function () {
     })
+  }
+
+  $scope.showDetail = function (actionId) {
+    $http.get(fusio.baseUrl + 'backend/action/' + actionId)
+      .then(function (response) {
+        var action = response.data;
+        action.config = JSON.stringify(action.config, null, 2);
+        $scope.action = action
+      })
   }
 
   $scope.closeResponse = function () {
@@ -113,5 +129,23 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, $cacheFactory
   }
 
   $scope.load()
-  $scope.loadRoutes()
+
+  if ($routeParams.action_id) {
+    $scope.showDetail($routeParams.action_id)
+  }
+
+  if ($routeParams.success) {
+    var message
+    if ($routeParams.success === 2) {
+      message = 'Action successful updated'
+    } else if ($routeParams.success === 3) {
+      message = 'Action successful deleted'
+    } else {
+      message = 'Action successful created'
+    }
+    $scope.response = {
+      success: true,
+      message: message
+    }
+  }
 }
