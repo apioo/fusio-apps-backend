@@ -39,8 +39,8 @@ if (isset($_SERVER['REQUEST_URI'])) {
     }
 }
 
-$loader    = require(__DIR__ . '/../vendor/autoload.php');
-$container = require_once(__DIR__ . '/../container.php');
+$loader    = require __DIR__ . '/../vendor/autoload.php';
+$container = require_once __DIR__ . '/../container.php';
 
 if (isset($_SERVER['argv']) && in_array('--warmup', $_SERVER['argv'])) {
     // run migrations
@@ -69,8 +69,7 @@ if (isset($_SERVER['argv']) && in_array('--warmup', $_SERVER['argv'])) {
 
     echo 'Warmup successful' . "\n";
 } else {
-    $engine      = new \PSX\Framework\Environment\WebServer\Engine();
-    $environment = new \PSX\Framework\Environment\Environment($container, $engine);
-
-    return $environment->serve();
+    $engine      = null;
+    $environment = \PSX\Framework\Environment\Environment::fromContainer($container, $engine);
+    $environment->serve();
 }
