@@ -6,6 +6,7 @@ module.exports = function ($scope, $http, $uibModalInstance, formBuilder, fusio)
   $scope.action = {
     name: '',
     class: '',
+    async: false,
     engine: 'Fusio\\Engine\\Factory\\Resolver\\PhpClass',
     config: {}
   }

@@ -19,6 +19,11 @@
             <input type="text" id="class" ng-model="action.class" class="form-control" value="{{action.class}}" disabled="disabled" aria-describedby="classHelp">
             <span class="help-block" id="classHelp">Action class which gets executed</span>
         </div>
+        <div class="form-group">
+            <label for="async">Async:</label><br>
+            <input type="checkbox" id="async" ng-model="action.async" aria-describedby="asyncHelp">
+            <span class="help-block" id="asyncHelp">Whether to execute the action in async mode. In async mode the action gets executed in the background this is useful i.e. for expensive actions.</span>
+        </div>
 
         <div id="config-form"></div>
 
