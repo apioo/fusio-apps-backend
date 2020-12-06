@@ -146,6 +146,9 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, $location, $c
         var data = response.data
         $scope.schema.preview = data.preview.replace(/href="#([A-z0-9_]+)"/g, 'href="#!/schema/' + schemaId + '"')
       })
+      .catch(function (response) {
+        $scope.schema.preview = '<div class="alert alert-danger">' + response.data.message + '</code></div>';
+      })
   }
 
   $scope.showDetail = function (schemaId) {
