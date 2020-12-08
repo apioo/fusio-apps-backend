@@ -103,8 +103,6 @@
                                         </div>
                                         <div class="col-md-2 text-right">
                                             <a ng-if="config.parameters && version.status == 4" ng-click="showPreview(config.parameters)" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                                            <a ng-if="config.parameters && version.status == 4" ng-click="showShema(config.parameters)" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
-                                            <a ng-if="!(config.parameters && version.status == 4)" ng-disabled="true" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
                                         </div>
                                     </div>
                                 </div>
@@ -116,8 +114,6 @@
                                         </div>
                                         <div class="col-md-2 text-right">
                                             <a ng-if="config.request && version.status == 4" ng-click="showPreview(config.request)" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                                            <a ng-if="config.request && version.status == 4" ng-click="showShema(config.request)" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
-                                            <a ng-if="!(config.request && version.status == 4)" ng-disabled="true" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
                                         </div>
                                     </div>
                                 </div>
@@ -132,8 +128,6 @@
                                         </div>
                                         <div class="col-md-2 text-right">
                                             <a ng-if="schema && version.status == 4" ng-click="showPreview(schema)" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                                            <a ng-if="schema && version.status == 4" ng-click="showShema(schema)" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
-                                            <a ng-if="!(schema && version.status == 4)" ng-disabled="true" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
                                         </div>
                                     </div>
                                 </div>
@@ -144,8 +138,6 @@
                                             {{config.action}}
                                         </div>
                                         <div class="col-md-2 text-right">
-                                            <a ng-if="config.action && version.status == 4" ng-click="showAction(config.action)" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
-                                            <a ng-if="!(config.action && version.status == 4)" ng-disabled="true" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
                                         </div>
                                     </div>
                                 </div>
