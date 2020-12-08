@@ -8,6 +8,8 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
     description: ''
   }
 
+  $scope.schemas = []
+
   $scope.create = function (event) {
     var data = angular.copy(event)
 
@@ -31,4 +33,9 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   $scope.closeResponse = function () {
     $scope.response = null
   }
+
+  $http.get(fusio.baseUrl + 'backend/schema?count=1024', {cache: true})
+    .then(function (response) {
+      $scope.schemas = response.data.entry
+    })
 }
