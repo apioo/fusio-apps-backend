@@ -200,6 +200,10 @@ fusioApp.run(function ($rootScope, $window, $location, $http, helpLoader, versio
       title: 'Connection',
       icon: 'glyphicon-log-in',
       path: '/connection'
+    }, {
+      title: 'Event',
+      icon: 'glyphicon-retweet',
+      path: '/event'
     }]
   }, {
     title: 'Consumer',
@@ -276,10 +280,6 @@ fusioApp.run(function ($rootScope, $window, $location, $http, helpLoader, versio
       title: 'Marketplace',
       icon: 'glyphicon-shopping-cart',
       path: '/marketplace'
-    }, {
-      title: 'Event',
-      icon: 'glyphicon-retweet',
-      path: '/event'
     }, {
       title: 'Cronjob',
       icon: 'glyphicon-time',
@@ -524,6 +524,7 @@ module.exports = function ($scope, $http, $uibModalInstance, formBuilder, fusio)
   $scope.action = {
     name: '',
     class: '',
+    async: false,
     engine: 'Fusio\\Engine\\Factory\\Resolver\\PhpClass',
     config: {}
   }
@@ -2546,6 +2547,8 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
     description: ''
   }
 
+  $scope.schemas = []
+
   $scope.create = function (event) {
     var data = angular.copy(event)
 
@@ -2569,6 +2572,11 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   $scope.closeResponse = function () {
     $scope.response = null
   }
+
+  $http.get(fusio.baseUrl + 'backend/schema?count=1024', {cache: true})
+    .then(function (response) {
+      $scope.schemas = response.data.entry
+    })
 }
 
 },{"angular":133}],44:[function(require,module,exports){
@@ -2731,6 +2739,8 @@ var angular = require('angular')
 module.exports = function ($scope, $http, $uibModalInstance, $uibModal, fusio, event) {
   $scope.event = event
 
+  $scope.schemas = []
+
   $scope.update = function (event) {
     var data = angular.copy(event)
 
@@ -2763,6 +2773,11 @@ module.exports = function ($scope, $http, $uibModalInstance, $uibModal, fusio, e
       }
 
       $scope.event = data
+    })
+
+  $http.get(fusio.baseUrl + 'backend/schema?count=1024', {cache: true})
+    .then(function (response) {
+      $scope.schemas = response.data.entry
     })
 }
 
@@ -5386,6 +5401,9 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, $location, $c
       .then(function (response) {
         var data = response.data
         $scope.schema.preview = data.preview.replace(/href="#([A-z0-9_]+)"/g, 'href="#!/schema/' + schemaId + '"')
+      })
+      .catch(function (response) {
+        $scope.schema.preview = '<div class="alert alert-danger">' + response.data.message + '</code></div>';
       })
   }
 
