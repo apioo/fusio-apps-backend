@@ -199,6 +199,10 @@ fusioApp.run(function ($rootScope, $window, $location, $http, helpLoader, versio
       title: 'Connection',
       icon: 'glyphicon-log-in',
       path: '/connection'
+    }, {
+      title: 'Event',
+      icon: 'glyphicon-retweet',
+      path: '/event'
     }]
   }, {
     title: 'Consumer',
@@ -275,10 +279,6 @@ fusioApp.run(function ($rootScope, $window, $location, $http, helpLoader, versio
       title: 'Marketplace',
       icon: 'glyphicon-shopping-cart',
       path: '/marketplace'
-    }, {
-      title: 'Event',
-      icon: 'glyphicon-retweet',
-      path: '/event'
     }, {
       title: 'Cronjob',
       icon: 'glyphicon-time',
