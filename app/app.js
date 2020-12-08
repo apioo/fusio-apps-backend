@@ -23,7 +23,6 @@ var fusioApp = angular.module('fusioApp', [
   'fusioApp.dashboard',
   'fusioApp.error',
   'fusioApp.event',
-  'fusioApp.import',
   'fusioApp.invoice',
   'fusioApp.log',
   'fusioApp.login',
@@ -61,7 +60,6 @@ require('./controller/connection')
 require('./controller/contract')
 require('./controller/cronjob')
 require('./controller/dashboard')
-require('./controller/import')
 require('./controller/invoice')
 require('./controller/error')
 require('./controller/event')
@@ -283,10 +281,6 @@ fusioApp.run(function ($rootScope, $window, $location, $http, helpLoader, versio
       title: 'Cronjob',
       icon: 'glyphicon-time',
       path: '/cronjob'
-    }, {
-      title: 'Import',
-      icon: 'glyphicon-import',
-      path: '/import'
     }, {
       title: 'Settings',
       icon: 'glyphicon-cog',
