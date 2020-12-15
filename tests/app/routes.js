@@ -25,7 +25,7 @@ describe('Routes tests', function() {
 
     element(by.model('route.path')).sendKeys('/test');
 
-    var actionOptions = element.all(by.options('action.id as action.name for action in actions'));
+    var actionOptions = element.all(by.options('action.name as action.name for action in actions'));
     expect(actionOptions.get(0).getText()).toEqual('No action');
     expect(actionOptions.get(1).getText()).toEqual('app-action');
     expect(actionOptions.get(2).getText()).toEqual('Inspect-Action');
