@@ -18,7 +18,7 @@ describe('User tests', function() {
 
     var EC = protractor.ExpectedConditions;
 
-    $('a.btn-primary').click();
+    $('.fusio-btn-create').click();
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
@@ -46,7 +46,7 @@ describe('User tests', function() {
 
     var EC = protractor.ExpectedConditions;
 
-    element.all(by.css('div.fusio-options a:nth-child(1)')).first().click();
+    $('.fusio-btn-update').click();
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
@@ -58,7 +58,6 @@ describe('User tests', function() {
     expect(scopes.get(0).getAttribute('checked')).toBeTruthy();
     expect(scopes.get(1).getAttribute('checked')).toBeTruthy();
     expect(scopes.get(2).getAttribute('checked')).toBeTruthy();
-    expect(scopes.get(3).getAttribute('checked')).toBeTruthy();
 
     // we remove all selected scopes so that we can delete the user
     element.all(by.model('user.scopes[$index]')).click();
@@ -75,7 +74,7 @@ describe('User tests', function() {
 
     var EC = protractor.ExpectedConditions;
 
-    element.all(by.css('div.fusio-options a:nth-child(2)')).first().click();
+    $('.fusio-btn-delete').click();
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
