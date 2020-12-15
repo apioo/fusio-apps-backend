@@ -6,7 +6,7 @@ describe('Event tests', function() {
     browser.get('#!/event');
 
     var events = element.all(by.repeater('event in events'));
-    expect(events.count()).toEqual(16);
+    expect(events.count()).toEqual(1);
     expect(events.get(0).getText()).toEqual('foo-event');
   });
 
@@ -15,7 +15,7 @@ describe('Event tests', function() {
 
     var EC = protractor.ExpectedConditions;
 
-    $('a.btn-primary').click();
+    $('.fusio-btn-create').click();
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
@@ -34,7 +34,7 @@ describe('Event tests', function() {
 
     var EC = protractor.ExpectedConditions;
 
-    element.all(by.css('div.fusio-options a:nth-child(1)')).first().click();
+    $('.fusio-btn-update').click();
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
@@ -52,7 +52,7 @@ describe('Event tests', function() {
 
     var EC = protractor.ExpectedConditions;
 
-    element.all(by.css('div.fusio-options a:nth-child(2)')).first().click();
+    $('.fusio-btn-delete').click();
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
