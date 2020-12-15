@@ -64,7 +64,7 @@ describe('Action tests', function() {
 
     var EC = protractor.ExpectedConditions;
 
-    element.all(by.css('.fusio-btn-update')).first().click();
+    $('.fusio-btn-update').click();
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
@@ -87,7 +87,7 @@ describe('Action tests', function() {
 
     var EC = protractor.ExpectedConditions;
 
-    element.all(by.css('.fusio-btn-delete')).first().click();
+    $('.fusio-btn-delete').click();
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
@@ -105,7 +105,7 @@ describe('Action tests', function() {
 
     var EC = protractor.ExpectedConditions;
 
-    $('a.btn-primary').click();
+    $('.fusio-btn-create').click();
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
