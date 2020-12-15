@@ -15,14 +15,14 @@ describe('Cronjob tests', function() {
 
     var EC = protractor.ExpectedConditions;
 
-    $('a.btn-primary').click();
+    $('.fusio-btn-create').click();
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
     element(by.model('cronjob.name')).sendKeys('New-Cron');
     element(by.model('cronjob.cron')).sendKeys('5 * * * *');
 
-    var actionOptions = element.all(by.options('action.id as action.name for action in actions'));
+    var actionOptions = element.all(by.options('action.name as action.name for action in actions'));
     expect(actionOptions.get(0).getText()).toEqual('No action');
     expect(actionOptions.get(1).getText()).toEqual('app-action');
     expect(actionOptions.get(2).getText()).toEqual('Inspect-Action');
@@ -44,7 +44,7 @@ describe('Cronjob tests', function() {
 
     var EC = protractor.ExpectedConditions;
 
-    element.all(by.css('div.fusio-options a:nth-child(1)')).first().click();
+    $('.fusio-btn-update').click();
 
     browser.wait(EC.visibilityOf($('select.form-control')), 5000);
 
@@ -64,7 +64,7 @@ describe('Cronjob tests', function() {
 
     var EC = protractor.ExpectedConditions;
 
-    element.all(by.css('div.fusio-options a:nth-child(2)')).first().click();
+    $('.fusio-btn-delete').click();
 
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
