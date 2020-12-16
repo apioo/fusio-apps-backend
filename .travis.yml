@@ -7,7 +7,7 @@ env:
 sudo: required
 dist: bionic
 addons:
-  firefox: latest
+  firefox: '83'
 services:
   - xvfb
   - mysql
