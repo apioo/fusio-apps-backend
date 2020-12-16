@@ -22,8 +22,7 @@ exports.config = {
     'app/subscription.js',
     'app/token.js',
     'app/transaction.js',
-    'app/user.js',
-    'app/import.js'
+    'app/user.js'
   ],
   baseUrl: 'http://127.0.0.1:8008/fusio/index.html',
   capabilities: {
