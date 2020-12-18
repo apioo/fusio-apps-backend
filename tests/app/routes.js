@@ -285,7 +285,7 @@ describe('Routes tests', function() {
 
     browser.wait(EC.visibilityOf($('div.alert-success')), 5000);
 
-    expect($('div.alert-success > div').getText()).toEqual('Route successful created');
+    expect($('div.alert-success > div').getText()).toEqual('Provider successful created');
   });
 
 });
