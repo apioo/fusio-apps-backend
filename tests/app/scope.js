@@ -6,12 +6,10 @@ describe('Scope tests', function() {
     browser.get('#!/scope');
 
     var routes = element.all(by.repeater('scope in scopes'));
-    expect(routes.count()).toEqual(16);
+    expect(routes.count()).toEqual(3);
     expect(routes.get(0).getText()).toEqual('bar');
     expect(routes.get(1).getText()).toEqual('foo');
-    expect(routes.get(2).getText()).toEqual('consumer.user');
-    expect(routes.get(3).getText()).toEqual('consumer.transaction');
-    expect(routes.get(4).getText()).toEqual('consumer.subscription');
+    expect(routes.get(2).getText()).toEqual('default');
   });
 
   it('Create scope', function() {
