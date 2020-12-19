@@ -31,7 +31,7 @@ describe('Connection tests', function() {
 
     browser.wait(EC.visibilityOf($('#config-url')), 5000);
 
-    element(by.css('#config-url')).sendKeys('sqlite:///:memory:');
+    element(by.css('#config-url')).sendKeys('sqlite://:memory:');
 
     $('button.btn-primary').click();
 
