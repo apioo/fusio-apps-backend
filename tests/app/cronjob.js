@@ -30,7 +30,7 @@ describe('Cronjob tests', function() {
     expect(actionOptions.get(4).getText()).toEqual('Sql-Insert');
     expect(actionOptions.get(5).getText()).toEqual('Sql-Select-All');
     expect(actionOptions.get(6).getText()).toEqual('Util-Static-Response');
-    expect(actionOptions.get(7).getText()).toEqual('Welcome');
+    expect(actionOptions.get(7).getText()).toEqual('Action_Welcome');
 
     actionOptions.get(6).click();
 
@@ -52,7 +52,7 @@ describe('Cronjob tests', function() {
 
     expect(element(by.model('cronjob.name')).getAttribute('value')).toEqual('New-Cron');
     expect(element(by.model('cronjob.cron')).getAttribute('value')).toEqual('5 * * * *');
-    expect(element(by.model('cronjob.action')).getAttribute('value')).toEqual('number:6');
+    expect(element(by.model('cronjob.action')).getAttribute('value')).toEqual('string:Util-Static-Response');
 
     $('button.btn-primary').click();
 

@@ -11,7 +11,7 @@ describe('Action tests', function() {
     expect(actions.get(1).getText()).toEqual('Sql-Insert');
     expect(actions.get(2).getText()).toEqual('Sql-Select-All');
     expect(actions.get(3).getText()).toEqual('Util-Static-Response');
-    expect(actions.get(4).getText()).toEqual('Welcome');
+    expect(actions.get(4).getText()).toEqual('Action_Welcome');
   });
 
   it('Create action', function() {
