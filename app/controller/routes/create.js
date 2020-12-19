@@ -159,9 +159,9 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
       active: true,
       public: true,
       responses: {
-        '200': 1
+        '200': 'Passthru'
       },
-      action: 1
+      action: ''
     }
   }
 
