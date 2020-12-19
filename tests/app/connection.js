@@ -52,6 +52,10 @@ describe('Connection tests', function() {
     expect(element(by.model('connection.name')).getAttribute('value')).toEqual('test-connection');
     expect(element(by.model('connection.class')).getAttribute('value')).toEqual('Fusio\\Adapter\\Sql\\Connection\\SqlAdvanced');
 
+    browser.wait(EC.visibilityOf($('#config-url')), 5000);
+
+    expect(element(by.css('#config-url')).getAttribute('value')).toEqual('sqlite://:memory:');
+
     $('button.btn-primary').click();
 
     browser.wait(EC.visibilityOf($('div.alert-success')), 5000);
