@@ -234,8 +234,8 @@ describe('Routes tests', function() {
     expect(element.all(by.model('config.active')).get(0).getAttribute('value')).toEqual('on');
     expect(element.all(by.model('config.public')).get(0).getAttribute('value')).toEqual('on');
     expect(element.all(by.model('config.parameters')).get(0).getAttribute('value')).toEqual('');
-    expect(element.all(by.model('config.responses[code]')).get(0).getAttribute('value')).toEqual('number:1');
-    expect(element.all(by.model('config.action')).get(0).getAttribute('value')).toEqual('number:6');
+    expect(element.all(by.model('config.responses[code]')).get(0).getAttribute('value')).toEqual('string:Passthru');
+    expect(element.all(by.model('config.action')).get(0).getAttribute('value')).toEqual('string:app-action');
 
     $('.fusio-btn-save').click();
 
