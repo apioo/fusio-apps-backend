@@ -84,7 +84,7 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, $location, $c
       $scope.response = response
       if (response.success) {
         $location.search('success', 2);
-        $location.path('/schema/' + schema.id);
+        $location.path('/action/' + action.id);
       }
     }, function () {
     })
@@ -109,7 +109,7 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, $location, $c
       $scope.response = response
       if (response.success) {
         $location.search('success', 3);
-        $location.path('/schema');
+        $location.path('/action');
       }
     }, function () {
     })
