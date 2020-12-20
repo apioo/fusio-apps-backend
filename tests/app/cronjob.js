@@ -30,7 +30,6 @@ describe('Cronjob tests', function() {
     expect(actionOptions.get(4).getText()).toEqual('Sql-Insert');
     expect(actionOptions.get(5).getText()).toEqual('Sql-Select-All');
     expect(actionOptions.get(6).getText()).toEqual('Util-Static-Response');
-    expect(actionOptions.get(7).getText()).toEqual('Action_Welcome');
 
     actionOptions.get(6).click();
 

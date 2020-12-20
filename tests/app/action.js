@@ -6,12 +6,11 @@ describe('Action tests', function() {
     browser.get('#!/action');
 
     var actions = element.all(by.repeater('row in actions'));
-    expect(actions.count()).toEqual(5);
+    expect(actions.count()).toEqual(4);
     expect(actions.get(0).getText()).toEqual('Inspect-Action');
     expect(actions.get(1).getText()).toEqual('Sql-Insert');
     expect(actions.get(2).getText()).toEqual('Sql-Select-All');
     expect(actions.get(3).getText()).toEqual('Util-Static-Response');
-    expect(actions.get(4).getText()).toEqual('Action_Welcome');
   });
 
   it('Create action', function() {
