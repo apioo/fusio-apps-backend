@@ -10,8 +10,12 @@
     <form name="contractDeleteForm" ng-submit="delete(contract)">
         <input type="hidden" ng-model="contract.id" value="{{contract.id}}" />
         <div class="form-group">
-            <label for="name">Name:</label>
-            <input type="text" id="name" ng-model="contract.id" ng-disabled="true" class="form-control">
+            <label for="user">User:</label>
+            <input type="text" id="user" ng-model="contract.user.name" ng-disabled="true" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="plan">Plan:</label>
+            <input type="text" id="plan" ng-model="contract.plan.name" ng-disabled="true" class="form-control">
         </div>
         <button type="submit" class="btn btn-primary fusio-btn-save">Save</button>
         <button type="button" ng-click="close()" class="btn btn-default fusio-btn-cancel">Cancel</button>
