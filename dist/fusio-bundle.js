@@ -1057,6 +1057,7 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
     $http.get(fusio.baseUrl + 'backend/app/' + app.id)
       .then(function (response) {
         $scope.app = response.data
+        $scope.selected = response.data.scopes
       })
   }
 
@@ -1091,6 +1092,7 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
         })
   }
 
+  $scope.loadApp()
   $scope.getScopeCategories()
 }
 
@@ -3142,7 +3144,11 @@ module.exports = function ($scope, $http, $location, $window, $rootScope, fusio,
 
             $rootScope.buildNavigation(data.scope)
 
-            $location.path('/dashboard')
+            // redirect to first menu entry
+            let firstPath = $rootScope.nav[0].children[0].path
+            if (firstPath) {
+              $location.path(firstPath)
+            }
           } else {
             $scope.response = 'Could not decode access token'
           }
@@ -3177,7 +3183,7 @@ angular.module('fusioApp.logout', ['ngRoute'])
 },{"./logout":61,"angular":138}],61:[function(require,module,exports){
 'use strict'
 
-module.exports = function ($scope, $http, $location, $window, $rootScope, fusio) {
+module.exports = function ($scope, $http, $location, $window, $rootScope, $cacheFactory, fusio) {
   var removeToken = function (response) {
     delete $http.defaults.headers.common['Authorization']
 
@@ -3187,6 +3193,8 @@ module.exports = function ($scope, $http, $location, $window, $rootScope, fusio)
     $rootScope.userAuthenticated = false
     $rootScope.user = null
     $rootScope.nav = null
+
+    $cacheFactory.get('$http').removeAll();
 
     $location.path('/login')
   }
@@ -6902,6 +6910,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio, user) {
     $http.get(fusio.baseUrl + 'backend/user/' + user.id)
       .then(function (response) {
         $scope.user = response.data
+        $scope.selected = response.data.scopes
       })
   }
 
