@@ -46,7 +46,7 @@
                 <span ng-switch-when="1"><span class="label label-success fusio-badge">Active</span></span>
             </span>
         </td>
-        <td><span ng-repeat="scope in token.scope" class="label label-primary fusio-badge">{{scope}}</span></td>
+        <td><span ng-repeat="scope in token.scope.slice(0, 2)" class="label label-primary fusio-badge">{{scope}}</span> <span ng-if="token.scope.length > 2">(+{{ token.scope.length - 2 }} scopes)</span></td>
         <td>{{token.ip}}</td>
         <td>{{token.date | date: 'short'}}</td>
         <td>
