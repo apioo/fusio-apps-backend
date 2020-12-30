@@ -1,8 +1,8 @@
 
 ## Connection
 
-A connection enables Fusio to connect to other remote sources. This can be i.e. 
-a database or message queue server. Please take a look at the [adapter](https://www.fusio-project.org/adapter)
+A connection enables Fusio to connect to other remote services. This can be i.e. 
+a database or message queue service. Please take a look at the [adapter](https://www.fusio-project.org/adapter)
 to see a list of all available connections. It is also easy possible to develop
 your own custom connection.
 

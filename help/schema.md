@@ -2,31 +2,29 @@
 ## Schema
 
 The schema defines the format of the request and response data. It uses the 
-[JsonSchema] format. Inside a schema it is possible to refer to other schema 
-definitions by using the <code>$ref</code> key and the <code>schema</code> 
-protocol i.e. <code>schema:///[schema-name]</code>. More detailed information
-about the json schema format at the [RFC].
+[TypeSchema] specification. The following example shows a simple object.
 
 ### Example
 
     {
-        "id": "http://acme.com/schema",
-        "type": "object",
-        "title": "schema",
-        "properties": {
-            "name": {
-                "type": "string"
+      "definitions": {
+        "Student": {
+          "type": "object",
+          "properties": {
+            "firstName": {
+              "type": "string"
             },
-            "author": {
-                "$ref": "schema:///author"
+            "lastName": {
+              "type": "string"
             },
-            "date": {
-                "type": "string",
-                "format": "date-time"
+            "age": {
+              "type": "integer"
             }
+          }
         }
+      },
+      "$ref": "Student"
     }
 
 
-[JsonSchema]: http://json-schema.org/
-[RFC]: http://tools.ietf.org/html/draft-zyp-json-schema-04
+[TypeSchema]: https://typeschema.org/
