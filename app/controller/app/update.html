@@ -48,7 +48,7 @@
                         <col width="*" />
                     </colgroup>
                     <tbody>
-                    <tr ng-repeat="scope in scopes[category.id]">
+                    <tr ng-repeat="scope in category.scopes">
                         <td><input type="checkbox" value="{{scope.name}}" id="scope-{{scope.id}}" ng-checked="selected.indexOf(scope.name) > -1" ng-click="toggleScope(scope.name)"></td>
                         <td><label for="scope-{{scope.id}}">{{scope.name}}</label></td>
                     </tr>
