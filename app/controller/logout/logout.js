@@ -1,6 +1,6 @@
 'use strict'
 
-module.exports = function ($scope, $http, $location, $window, $rootScope, fusio) {
+module.exports = function ($scope, $http, $location, $window, $rootScope, $cacheFactory, fusio) {
   var removeToken = function (response) {
     delete $http.defaults.headers.common['Authorization']
 
@@ -10,6 +10,8 @@ module.exports = function ($scope, $http, $location, $window, $rootScope, fusio)
     $rootScope.userAuthenticated = false
     $rootScope.user = null
     $rootScope.nav = null
+
+    $cacheFactory.get('$http').removeAll();
 
     $location.path('/login')
   }
