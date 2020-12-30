@@ -53,6 +53,7 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
     $http.get(fusio.baseUrl + 'backend/app/' + app.id)
       .then(function (response) {
         $scope.app = response.data
+        $scope.selected = response.data.scopes
       })
   }
 
@@ -87,5 +88,6 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
         })
   }
 
+  $scope.loadApp()
   $scope.getScopeCategories()
 }

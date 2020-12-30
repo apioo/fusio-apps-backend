@@ -51,6 +51,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio, user) {
     $http.get(fusio.baseUrl + 'backend/user/' + user.id)
       .then(function (response) {
         $scope.user = response.data
+        $scope.selected = response.data.scopes
       })
   }
 
