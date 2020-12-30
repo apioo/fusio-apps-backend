@@ -2,33 +2,17 @@
 
 var angular = require('angular')
 
-module.exports = function ($scope, $http, $uibModalInstance, fusio) {
-  $scope.app = {
-    status: 1,
-    name: '',
-    url: '',
-    scopes: []
-  }
-
-  $scope.states = [{
-    key: 1,
-    value: 'Active'
-  }, {
-    key: 2,
-    value: 'Pending'
-  }, {
-    key: 3,
-    value: 'Deactivated'
-  }]
+module.exports = function ($scope, $http, $uibModalInstance, role, fusio) {
+  $scope.role = role
 
   $scope.categories = []
   $scope.selected = []
 
-  $scope.create = function (app) {
-    var data = angular.copy(app)
+  $scope.update = function (role) {
+    var data = angular.copy(role)
     data.scopes = $scope.selected
 
-    $http.post(fusio.baseUrl + 'backend/app', data)
+    $http.put(fusio.baseUrl + 'backend/role/' + role.id, data)
       .then(function (response) {
         var data = response.data
         $scope.response = data
@@ -41,19 +25,18 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
       })
   }
 
+  $http.get(fusio.baseUrl + 'backend/role/' + role.id)
+    .then(function (response) {
+      $scope.selected = response.data.scopes
+      $scope.role = response.data
+    })
+
   $scope.close = function () {
     $uibModalInstance.dismiss('cancel')
   }
 
   $scope.closeResponse = function () {
     $scope.response = null
-  }
-
-  $scope.getUsers = function () {
-    $http.get(fusio.baseUrl + 'backend/user?count=1024')
-      .then(function (response) {
-        $scope.users = response.data.entry
-      })
   }
 
   $scope.getScopeCategories = function () {
@@ -63,6 +46,15 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
         })
   }
 
-  $scope.getUsers()
+  $scope.toggleScope = function (name) {
+    let index = $scope.selected.indexOf(name);
+    if (index > -1) {
+      $scope.selected.splice(index, 1);
+    } else {
+      $scope.selected.push(name);
+    }
+  };
+
   $scope.getScopeCategories()
+
 }

@@ -6,38 +6,24 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio, user) {
   $scope.user = user
 
   $scope.statuuus = [{
-    id: 0,
-    name: 'Consumer'
-  }, {
     id: 1,
-    name: 'Administrator'
+    name: 'Active'
   }, {
     id: 2,
     name: 'Disabled'
   }]
 
-  $scope.scopes = []
-
-  $http.get(fusio.baseUrl + 'backend/scope?count=1024')
-    .then(function (response) {
-      $scope.scopes = response.data.entry
-
-      $scope.loadUser()
-    })
+  $scope.roles = []
+  $scope.categories = []
+  $scope.selected = []
 
   $scope.update = function (user) {
     var data = angular.copy(user)
+    data.scopes = $scope.selected
 
     // remove app data
     if (data.apps) {
       delete data.apps
-    }
-
-    // filter scopes
-    if (data.scopes && angular.isArray(data.scopes)) {
-      data.scopes = data.scopes.filter(function (value) {
-        return value !== null
-      })
     }
 
     $http.put(fusio.baseUrl + 'backend/user/' + data.id, data)
@@ -64,23 +50,34 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio, user) {
   $scope.loadUser = function () {
     $http.get(fusio.baseUrl + 'backend/user/' + user.id)
       .then(function (response) {
-        var data = response.data
-        var scopes = []
-        if (angular.isArray(data.scopes)) {
-          for (var i = 0; i < $scope.scopes.length; i++) {
-            var found = null
-            for (var j = 0; j < data.scopes.length; j++) {
-              if ($scope.scopes[i].name === data.scopes[j]) {
-                found = $scope.scopes[i].name
-                break
-              }
-            }
-            scopes.push(found)
-          }
-        }
-        data.scopes = scopes
-
-        $scope.user = data
+        $scope.user = response.data
       })
   }
+
+  $scope.getRoles = function () {
+    $http.get(fusio.baseUrl + 'backend/role?count=1024')
+      .then(function (response) {
+        $scope.roles = response.data.entry
+      })
+  }
+
+  $scope.getScopeCategories = function () {
+    $http.get(fusio.baseUrl + 'backend/scope/categories')
+        .then(function (response) {
+          $scope.categories = response.data.categories
+        })
+  }
+
+  $scope.toggleScope = function (name) {
+    let index = $scope.selected.indexOf(name);
+    if (index > -1) {
+      $scope.selected.splice(index, 1);
+    } else {
+      $scope.selected.push(name);
+    }
+  };
+
+  $scope.loadUser()
+  $scope.getScopeCategories()
+  
 }

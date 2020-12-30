@@ -14,7 +14,7 @@ module.exports = function ($scope, $http, $location, $window, $rootScope, fusio,
 
     var req = {
       method: 'POST',
-      url: fusio.baseUrl + 'backend/token',
+      url: fusio.baseUrl + 'authorization/token',
       headers: {
         'Authorization': 'Basic ' + btoa(credentials.username + ':' + credentials.password),
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -33,9 +33,12 @@ module.exports = function ($scope, $http, $location, $window, $rootScope, fusio,
 
             // store access token
             $window.sessionStorage.setItem('fusio_access_token', data.access_token)
+            $window.sessionStorage.setItem('fusio_scope', data.scope)
 
             $rootScope.userAuthenticated = true
             $rootScope.user = user
+
+            $rootScope.buildNavigation(data.scope)
 
             $location.path('/dashboard')
           } else {

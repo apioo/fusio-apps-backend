@@ -20,13 +20,8 @@
         </div>
         <div class="form-group">
             <label>Action:</label>
-            <div class="row">
-                <div class="col-md-12">
-                    <select class="form-control" ng-model="cronjob.action" ng-options="action.name as action.name for action in actions" aria-describedby="actionHelp">
-                        <option value="">No action</option>
-                    </select>
-                </div>
-            </div>
+            <select class="form-control" ng-model="cronjob.action" ng-options="action.name as action.name for action in actions" aria-describedby="actionHelp">
+            </select>
             <span class="help-block" id="actionHelp">The action which gets executed</span>
         </div>
         <button type="submit" class="btn btn-primary fusio-btn-save">Save</button>

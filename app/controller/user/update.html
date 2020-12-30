@@ -13,7 +13,7 @@
             <label for="status">Status:</label>
             <select id="status" ng-model="user.status" ng-options="status.id as status.name for status in statuuus" aria-describedby="statusHelp" class="form-control">
             </select>
-            <span class="help-block" id="statusHelp">The status of the user. An <b>Administrator</b> account can request an access token to the backend API with the user name and password. A <b>Consumer</b> account can only get an access token through an app.</span>
+            <span class="help-block" id="statusHelp">The status of the user</span>
         </div>
         <div class="form-group">
             <label for="name">Name:</label>
@@ -30,34 +30,24 @@
             <input type="number" id="points" ng-model="user.points" ng-disabled="true" aria-describedby="pointsHelp" class="form-control">
             <span class="help-block" id="pointsHelp">The amount of available points</span>
         </div>
+
         <uib-tabset>
-            <uib-tab heading="Scopes">
+            <uib-tab heading="{{ category.name }}" ng-repeat="category in categories">
                 <table class="table fusio-table-tab">
-                <colgroup>
-                    <col width="20" />
-                    <col width="*" />
-                </colgroup>
-                <tbody>
-                <tr ng-repeat="scope in scopes">
-                    <td><input type="checkbox" ng-model="user.scopes[$index]" ng-true-value="'{{scope.name}}'" ng-false-value="''" id="scope-{{scope.id}}" /></td>
-                    <td><label for="scope-{{scope.id}}">{{scope.name}}</label></td>
-                </tr>
-                </tbody>
+                    <colgroup>
+                        <col width="20" />
+                        <col width="*" />
+                    </colgroup>
+                    <tbody>
+                    <tr ng-repeat="scope in category.scopes">
+                        <td><input type="checkbox" value="{{scope.name}}" id="scope-{{scope.id}}" ng-checked="selected.indexOf(scope.name) > -1" ng-change="toggleScope(scope.name)"></td>
+                        <td><label for="scope-{{scope.id}}">{{scope.name}}</label></td>
+                    </tr>
+                    </tbody>
                 </table>
             </uib-tab>
-            <uib-tab heading="Apps">
-                <table class="table fusio-table-tab fusio-table-tab-token">
-                <tbody>
-                <tr ng-repeat="app in user.apps">
-                    <td>
-                        <pre>{{app.appKey}}</pre>
-                        <small>{{app.name}} / {{app.url}}</small>
-                    </td>
-                </tr>
-                </tbody>
-                </table>        
-            </uib-tab>
         </uib-tabset>
+
         <button type="submit" class="btn btn-primary fusio-btn-save">Save</button>
         <button type="button" ng-click="close()" class="btn btn-default fusio-btn-cancel">Cancel</button>
     </form>

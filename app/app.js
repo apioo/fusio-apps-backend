@@ -16,6 +16,7 @@ var fusioApp = angular.module('fusioApp', [
   'fusioApp.action',
   'fusioApp.app',
   'fusioApp.audit',
+  'fusioApp.category',
   'fusioApp.config',
   'fusioApp.connection',
   'fusioApp.contract',
@@ -30,6 +31,7 @@ var fusioApp = angular.module('fusioApp', [
   'fusioApp.marketplace',
   'fusioApp.plan',
   'fusioApp.rate',
+  'fusioApp.role',
   'fusioApp.routes',
   'fusioApp.schema',
   'fusioApp.scope',
@@ -55,6 +57,7 @@ require('./controller/account')
 require('./controller/action')
 require('./controller/app')
 require('./controller/audit')
+require('./controller/category')
 require('./controller/config')
 require('./controller/connection')
 require('./controller/contract')
@@ -69,6 +72,7 @@ require('./controller/logout')
 require('./controller/marketplace')
 require('./controller/plan')
 require('./controller/rate')
+require('./controller/role')
 require('./controller/routes')
 require('./controller/schema')
 require('./controller/scope')
@@ -80,6 +84,7 @@ require('./controller/transaction')
 require('./controller/user')
 
 fusioApp.value('version', require('../package.json').version)
+fusioApp.value('navigation', require('../navigation.json'))
 
 fusioApp.factory('formBuilder', require('./service/form_builder'))
 fusioApp.factory('helpLoader', require('./service/help_loader'))
@@ -134,29 +139,46 @@ fusioApp.config(['cfpLoadingBarProvider', function (cfpLoadingBarProvider) {
   cfpLoadingBarProvider.parentSelector = '.fusio-loading-container'
 }])
 
-fusioApp.run(function ($rootScope, $window, $location, $http, helpLoader, version, tokenParser) {
-  var token = $window.sessionStorage.getItem('fusio_access_token')
-  if (token) {
-    var user = tokenParser.decode(token)
-    if (user) {
-      $http.defaults.headers.common['Authorization'] = 'Bearer ' + token
-
-      $rootScope.user = user
-      $rootScope.userAuthenticated = true
-    } else {
-      $location.path('/login')
-    }
-  } else {
-    $location.path('/login')
-  }
-
+fusioApp.run(function ($rootScope, $window, $location, $http, helpLoader, version, navigation, tokenParser) {
   $rootScope.changeNavHeading = function (item) {
-    for (var i = 0; i < $rootScope.nav.length; i++) {
+    if (!angular.isArray($rootScope.nav)) {
+      return;
+    }
+
+    for (let i = 0; i < $rootScope.nav.length; i++) {
       $rootScope.nav[i].visible = $rootScope.nav[i].title === item.title
     }
   }
 
+  $rootScope.buildNavigation = function (scope) {
+    let scopes = []
+    if (angular.isString(scope)) {
+      scopes = scope.split(',')
+    }
+
+    if (!angular.isArray(navigation)) {
+      return;
+    }
+
+    let nav = navigation;
+    nav.forEach((category) => {
+      category.children = category.children.filter((item) => {
+        return scopes.includes(item.scope)
+      })
+    })
+
+    nav = nav.filter((category) => {
+      return category.children.length > 0
+    })
+
+    $rootScope.nav = nav
+  }
+
   $rootScope.$on('$routeChangeStart', function (event, next, current) {
+    if (!angular.isArray($rootScope.nav)) {
+      return;
+    }
+
     var path = next.$$route ? next.$$route.originalPath : ''
 
     // mark current panel as visible
@@ -173,125 +195,6 @@ fusioApp.run(function ($rootScope, $window, $location, $http, helpLoader, versio
     }
   })
 
-  // navigation
-  $rootScope.nav = [{
-    title: 'API',
-    visible: true,
-    children: [{
-      title: 'Dashboard',
-      icon: 'glyphicon-th',
-      path: '/dashboard'
-    }, {
-      title: 'Routes',
-      icon: 'glyphicon-road',
-      path: '/routes'
-    }, {
-      title: 'Action',
-      icon: 'glyphicon-transfer',
-      path: '/action'
-    }, {
-      title: 'Schema',
-      icon: 'glyphicon-list-alt',
-      path: '/schema'
-    }, {
-      title: 'Connection',
-      icon: 'glyphicon-log-in',
-      path: '/connection'
-    }, {
-      title: 'Event',
-      icon: 'glyphicon-retweet',
-      path: '/event'
-    }]
-  }, {
-    title: 'Consumer',
-    visible: false,
-    children: [{
-      title: 'App',
-      icon: 'glyphicon-book',
-      path: '/app'
-    }, {
-      title: 'Scope',
-      icon: 'glyphicon-eye-open',
-      path: '/scope'
-    }, {
-      title: 'User',
-      icon: 'glyphicon-user',
-      path: '/user'
-    }, {
-      title: 'Rate',
-      icon: 'glyphicon-filter',
-      path: '/rate'
-    }, {
-      title: 'SDK',
-      icon: 'glyphicon-download',
-      path: '/sdk'
-    }, {
-      title: 'Subscription',
-      icon: 'glyphicon-fire',
-      path: '/subscription'
-    }]
-  }, {
-    title: 'Analytics',
-    visible: false,
-    children: [{
-      title: 'Log',
-      icon: 'glyphicon-briefcase',
-      path: '/log'
-    }, {
-      title: 'Statistic',
-      icon: 'glyphicon-stats',
-      path: '/statistic'
-    }, {
-      title: 'Error',
-      icon: 'glyphicon-bell',
-      path: '/error'
-    }, {
-      title: 'Token',
-      icon: 'glyphicon-map-marker',
-      path: '/token'
-    }]
-  }, {
-    title: 'Monetization',
-    visible: false,
-    children: [{
-      title: 'Plan',
-      icon: 'glyphicon-hdd',
-      path: '/plan'
-    }, {
-      title: 'Contract',
-      icon: 'glyphicon-file',
-      path: '/contract'
-    }, {
-      title: 'Invoice',
-      icon: 'glyphicon-envelope',
-      path: '/invoice'
-    }, {
-      title: 'Transaction',
-      icon: 'glyphicon-equalizer',
-      path: '/transaction'
-    }]
-  }, {
-    title: 'System',
-    visible: false,
-    children: [{
-      title: 'Marketplace',
-      icon: 'glyphicon-shopping-cart',
-      path: '/marketplace'
-    }, {
-      title: 'Cronjob',
-      icon: 'glyphicon-time',
-      path: '/cronjob'
-    }, {
-      title: 'Settings',
-      icon: 'glyphicon-cog',
-      path: '/config'
-    }, {
-      title: 'Audit',
-      icon: 'glyphicon-facetime-video',
-      path: '/audit'
-    }]
-  }]
-
   // user dropdown menu
   $rootScope.menu = [{
     title: 'Change password',
@@ -306,6 +209,25 @@ fusioApp.run(function ($rootScope, $window, $location, $http, helpLoader, versio
 
   // set version
   $rootScope.version = version
+
+  // check auth
+  let token = $window.sessionStorage.getItem('fusio_access_token')
+  let scope = $window.sessionStorage.getItem('fusio_scope')
+  if (token) {
+    let user = tokenParser.decode(token)
+    if (user) {
+      $http.defaults.headers.common['Authorization'] = 'Bearer ' + token
+
+      $rootScope.userAuthenticated = true
+      $rootScope.user = user
+
+      $rootScope.buildNavigation(scope)
+    } else {
+      $location.path('/login')
+    }
+  } else {
+    $location.path('/login')
+  }
 })
 
 if (window) {
