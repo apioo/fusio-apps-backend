@@ -40,7 +40,11 @@ module.exports = function ($scope, $http, $location, $window, $rootScope, fusio,
 
             $rootScope.buildNavigation(data.scope)
 
-            $location.path('/dashboard')
+            // redirect to first menu entry
+            let firstPath = $rootScope.nav[0].children[0].path
+            if (firstPath) {
+              $location.path(firstPath)
+            }
           } else {
             $scope.response = 'Could not decode access token'
           }
