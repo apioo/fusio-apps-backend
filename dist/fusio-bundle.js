@@ -17,6 +17,7 @@ var fusioApp = angular.module('fusioApp', [
   'fusioApp.action',
   'fusioApp.app',
   'fusioApp.audit',
+  'fusioApp.category',
   'fusioApp.config',
   'fusioApp.connection',
   'fusioApp.contract',
@@ -24,7 +25,6 @@ var fusioApp = angular.module('fusioApp', [
   'fusioApp.dashboard',
   'fusioApp.error',
   'fusioApp.event',
-  'fusioApp.import',
   'fusioApp.invoice',
   'fusioApp.log',
   'fusioApp.login',
@@ -32,6 +32,7 @@ var fusioApp = angular.module('fusioApp', [
   'fusioApp.marketplace',
   'fusioApp.plan',
   'fusioApp.rate',
+  'fusioApp.role',
   'fusioApp.routes',
   'fusioApp.schema',
   'fusioApp.scope',
@@ -57,12 +58,12 @@ require('./controller/account')
 require('./controller/action')
 require('./controller/app')
 require('./controller/audit')
+require('./controller/category')
 require('./controller/config')
 require('./controller/connection')
 require('./controller/contract')
 require('./controller/cronjob')
 require('./controller/dashboard')
-require('./controller/import')
 require('./controller/invoice')
 require('./controller/error')
 require('./controller/event')
@@ -72,6 +73,7 @@ require('./controller/logout')
 require('./controller/marketplace')
 require('./controller/plan')
 require('./controller/rate')
+require('./controller/role')
 require('./controller/routes')
 require('./controller/schema')
 require('./controller/scope')
@@ -83,6 +85,7 @@ require('./controller/transaction')
 require('./controller/user')
 
 fusioApp.value('version', require('../package.json').version)
+fusioApp.value('navigation', require('../navigation.json'))
 
 fusioApp.factory('formBuilder', require('./service/form_builder'))
 fusioApp.factory('helpLoader', require('./service/help_loader'))
@@ -137,29 +140,46 @@ fusioApp.config(['cfpLoadingBarProvider', function (cfpLoadingBarProvider) {
   cfpLoadingBarProvider.parentSelector = '.fusio-loading-container'
 }])
 
-fusioApp.run(function ($rootScope, $window, $location, $http, helpLoader, version, tokenParser) {
-  var token = $window.sessionStorage.getItem('fusio_access_token')
-  if (token) {
-    var user = tokenParser.decode(token)
-    if (user) {
-      $http.defaults.headers.common['Authorization'] = 'Bearer ' + token
-
-      $rootScope.user = user
-      $rootScope.userAuthenticated = true
-    } else {
-      $location.path('/login')
-    }
-  } else {
-    $location.path('/login')
-  }
-
+fusioApp.run(function ($rootScope, $window, $location, $http, helpLoader, version, navigation, tokenParser) {
   $rootScope.changeNavHeading = function (item) {
-    for (var i = 0; i < $rootScope.nav.length; i++) {
+    if (!angular.isArray($rootScope.nav)) {
+      return;
+    }
+
+    for (let i = 0; i < $rootScope.nav.length; i++) {
       $rootScope.nav[i].visible = $rootScope.nav[i].title === item.title
     }
   }
 
+  $rootScope.buildNavigation = function (scope) {
+    let scopes = []
+    if (angular.isString(scope)) {
+      scopes = scope.split(',')
+    }
+
+    if (!angular.isArray(navigation)) {
+      return;
+    }
+
+    let nav = navigation;
+    nav.forEach((category) => {
+      category.children = category.children.filter((item) => {
+        return scopes.includes(item.scope)
+      })
+    })
+
+    nav = nav.filter((category) => {
+      return category.children.length > 0
+    })
+
+    $rootScope.nav = nav
+  }
+
   $rootScope.$on('$routeChangeStart', function (event, next, current) {
+    if (!angular.isArray($rootScope.nav)) {
+      return;
+    }
+
     var path = next.$$route ? next.$$route.originalPath : ''
 
     // mark current panel as visible
@@ -176,129 +196,6 @@ fusioApp.run(function ($rootScope, $window, $location, $http, helpLoader, versio
     }
   })
 
-  // navigation
-  $rootScope.nav = [{
-    title: 'API',
-    visible: true,
-    children: [{
-      title: 'Dashboard',
-      icon: 'glyphicon-th',
-      path: '/dashboard'
-    }, {
-      title: 'Routes',
-      icon: 'glyphicon-road',
-      path: '/routes'
-    }, {
-      title: 'Action',
-      icon: 'glyphicon-transfer',
-      path: '/action'
-    }, {
-      title: 'Schema',
-      icon: 'glyphicon-list-alt',
-      path: '/schema'
-    }, {
-      title: 'Connection',
-      icon: 'glyphicon-log-in',
-      path: '/connection'
-    }, {
-      title: 'Event',
-      icon: 'glyphicon-retweet',
-      path: '/event'
-    }]
-  }, {
-    title: 'Consumer',
-    visible: false,
-    children: [{
-      title: 'App',
-      icon: 'glyphicon-book',
-      path: '/app'
-    }, {
-      title: 'Scope',
-      icon: 'glyphicon-eye-open',
-      path: '/scope'
-    }, {
-      title: 'User',
-      icon: 'glyphicon-user',
-      path: '/user'
-    }, {
-      title: 'Rate',
-      icon: 'glyphicon-filter',
-      path: '/rate'
-    }, {
-      title: 'SDK',
-      icon: 'glyphicon-download',
-      path: '/sdk'
-    }, {
-      title: 'Subscription',
-      icon: 'glyphicon-fire',
-      path: '/subscription'
-    }]
-  }, {
-    title: 'Analytics',
-    visible: false,
-    children: [{
-      title: 'Log',
-      icon: 'glyphicon-briefcase',
-      path: '/log'
-    }, {
-      title: 'Statistic',
-      icon: 'glyphicon-stats',
-      path: '/statistic'
-    }, {
-      title: 'Error',
-      icon: 'glyphicon-bell',
-      path: '/error'
-    }, {
-      title: 'Token',
-      icon: 'glyphicon-map-marker',
-      path: '/token'
-    }]
-  }, {
-    title: 'Monetization',
-    visible: false,
-    children: [{
-      title: 'Plan',
-      icon: 'glyphicon-hdd',
-      path: '/plan'
-    }, {
-      title: 'Contract',
-      icon: 'glyphicon-file',
-      path: '/contract'
-    }, {
-      title: 'Invoice',
-      icon: 'glyphicon-envelope',
-      path: '/invoice'
-    }, {
-      title: 'Transaction',
-      icon: 'glyphicon-equalizer',
-      path: '/transaction'
-    }]
-  }, {
-    title: 'System',
-    visible: false,
-    children: [{
-      title: 'Marketplace',
-      icon: 'glyphicon-shopping-cart',
-      path: '/marketplace'
-    }, {
-      title: 'Cronjob',
-      icon: 'glyphicon-time',
-      path: '/cronjob'
-    }, {
-      title: 'Import',
-      icon: 'glyphicon-import',
-      path: '/import'
-    }, {
-      title: 'Settings',
-      icon: 'glyphicon-cog',
-      path: '/config'
-    }, {
-      title: 'Audit',
-      icon: 'glyphicon-facetime-video',
-      path: '/audit'
-    }]
-  }]
-
   // user dropdown menu
   $rootScope.menu = [{
     title: 'Change password',
@@ -313,6 +210,25 @@ fusioApp.run(function ($rootScope, $window, $location, $http, helpLoader, versio
 
   // set version
   $rootScope.version = version
+
+  // check auth
+  let token = $window.sessionStorage.getItem('fusio_access_token')
+  let scope = $window.sessionStorage.getItem('fusio_scope')
+  if (token) {
+    let user = tokenParser.decode(token)
+    if (user) {
+      $http.defaults.headers.common['Authorization'] = 'Bearer ' + token
+
+      $rootScope.userAuthenticated = true
+      $rootScope.user = user
+
+      $rootScope.buildNavigation(scope)
+    } else {
+      $location.path('/login')
+    }
+  } else {
+    $location.path('/login')
+  }
 })
 
 if (window) {
@@ -321,7 +237,7 @@ if (window) {
 
 module.exports = fusioApp
 
-},{"../package.json":374,"./controller/account":3,"./controller/action":8,"./controller/app":13,"./controller/audit":18,"./controller/config":20,"./controller/connection":25,"./controller/contract":30,"./controller/cronjob":36,"./controller/dashboard":39,"./controller/error":42,"./controller/event":46,"./controller/import":50,"./controller/invoice":54,"./controller/log":57,"./controller/login":59,"./controller/logout":61,"./controller/marketplace":63,"./controller/plan":67,"./controller/rate":72,"./controller/routes":78,"./controller/schema":85,"./controller/scope":91,"./controller/sdk":94,"./controller/statistic":97,"./controller/subscription":101,"./controller/token":106,"./controller/transaction":109,"./controller/user":113,"./service/form_builder":116,"./service/help_loader":117,"./service/token_parser":118,"angular":133,"angular-animate":120,"angular-chart.js":121,"angular-highlightjs":122,"angular-loading-bar":124,"angular-route":126,"angular-sanitize":128,"angular-ui-ace":129,"angular-ui-bootstrap":131,"ng-showdown":371,"ng-tags-input":372}],2:[function(require,module,exports){
+},{"../navigation.json":123,"../package.json":379,"./controller/account":3,"./controller/action":8,"./controller/app":13,"./controller/audit":18,"./controller/category":22,"./controller/config":25,"./controller/connection":30,"./controller/contract":35,"./controller/cronjob":41,"./controller/dashboard":44,"./controller/error":47,"./controller/event":51,"./controller/invoice":53,"./controller/log":56,"./controller/login":58,"./controller/logout":60,"./controller/marketplace":62,"./controller/plan":66,"./controller/rate":71,"./controller/role":76,"./controller/routes":82,"./controller/schema":89,"./controller/scope":95,"./controller/sdk":98,"./controller/statistic":101,"./controller/subscription":105,"./controller/token":110,"./controller/transaction":113,"./controller/user":117,"./service/form_builder":120,"./service/help_loader":121,"./service/token_parser":122,"angular":138,"angular-animate":125,"angular-chart.js":126,"angular-highlightjs":127,"angular-loading-bar":129,"angular-route":131,"angular-sanitize":133,"angular-ui-ace":134,"angular-ui-bootstrap":136,"ng-showdown":376,"ng-tags-input":377}],2:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, fusio) {
@@ -362,7 +278,7 @@ angular.module('fusioApp.account', ['ngRoute'])
 
   .controller('ChangePasswordCtrl', require('./change_password'))
 
-},{"./change_password":2,"angular":133}],4:[function(require,module,exports){
+},{"./change_password":2,"angular":138}],4:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $routeParams, $location, $cacheFactory, fusio) {
@@ -449,7 +365,7 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, $location, $c
       $scope.response = response
       if (response.success) {
         $location.search('success', 2);
-        $location.path('/schema/' + schema.id);
+        $location.path('/action/' + action.id);
       }
     }, function () {
     })
@@ -474,7 +390,7 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, $location, $c
       $scope.response = response
       if (response.success) {
         $location.search('success', 3);
-        $location.path('/schema');
+        $location.path('/action');
       }
     }, function () {
     })
@@ -592,7 +508,7 @@ module.exports = function ($scope, $http, $uibModalInstance, formBuilder, fusio)
   }
 }
 
-},{"angular":133}],6:[function(require,module,exports){
+},{"angular":138}],6:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, action, fusio) {
@@ -771,7 +687,7 @@ module.exports = function ($scope, $http, $routeParams, fusio, formBuilder) {
     })
 }
 
-},{"angular":133}],8:[function(require,module,exports){
+},{"angular":138}],8:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -799,7 +715,7 @@ angular.module('fusioApp.action', ['ngRoute', 'ui.ace'])
   .controller('ActionDeleteCtrl', require('./delete'))
   .controller('ActionDesignerCtrl', require('./designer'))
 
-},{"./action":4,"./create":5,"./delete":6,"./designer":7,"./update":9,"angular":133}],9:[function(require,module,exports){
+},{"./action":4,"./create":5,"./delete":6,"./designer":7,"./update":9,"angular":138}],9:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -864,7 +780,7 @@ module.exports = function ($scope, $http, $uibModalInstance, $uibModal, action, 
     })
 }
 
-},{"angular":133}],10:[function(require,module,exports){
+},{"angular":138}],10:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, fusio) {
@@ -991,18 +907,12 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
     value: 'Deactivated'
   }]
 
-  $scope.scopes = [];
-  $scope.toggle = true;
+  $scope.categories = []
+  $scope.selected = []
 
   $scope.create = function (app) {
     var data = angular.copy(app)
-
-    // remove null values from scope
-    if (angular.isArray(data.scopes)) {
-      data.scopes = data.scopes.filter(function (val) {
-        return !!val
-      })
-    }
+    data.scopes = $scope.selected
 
     $http.post(fusio.baseUrl + 'backend/app', data)
       .then(function (response) {
@@ -1025,19 +935,6 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
     $scope.response = null
   }
 
-  $scope.bulkSelect = function () {
-    if ($scope.toggle) {
-      var scopes = [];
-      for (var i = 0; i < $scope.scopes.length; i++) {
-        scopes.push($scope.scopes[i].name);
-      }
-      $scope.app.scopes = scopes;
-    } else {
-      $scope.app.scopes = [];
-    }
-    $scope.toggle = !$scope.toggle;
-  }
-
   $scope.getUsers = function () {
     $http.get(fusio.baseUrl + 'backend/user?count=1024')
       .then(function (response) {
@@ -1045,18 +942,18 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
       })
   }
 
-  $scope.getScopes = function () {
-    $http.get(fusio.baseUrl + 'backend/scope?count=1024')
-      .then(function (response) {
-        $scope.scopes = response.data.entry
-      })
+  $scope.getScopeCategories = function () {
+    $http.get(fusio.baseUrl + 'backend/scope/categories')
+        .then(function (response) {
+          $scope.categories = response.data.categories
+        })
   }
 
   $scope.getUsers()
-  $scope.getScopes()
+  $scope.getScopeCategories()
 }
 
-},{"angular":133}],12:[function(require,module,exports){
+},{"angular":138}],12:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, app, fusio) {
@@ -1104,7 +1001,7 @@ angular.module('fusioApp.app', ['ngRoute', 'ui.bootstrap'])
   .controller('AppUpdateCtrl', require('./update'))
   .controller('AppDeleteCtrl', require('./delete'))
 
-},{"./app":10,"./create":11,"./delete":12,"./update":14,"angular":133}],14:[function(require,module,exports){
+},{"./app":10,"./create":11,"./delete":12,"./update":14,"angular":138}],14:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -1123,22 +1020,16 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
     value: 'Deactivated'
   }]
 
-  $scope.scopes = [];
-  $scope.toggle = true;
+  $scope.categories = []
+  $scope.selected = []
 
   $scope.update = function (app) {
     var data = angular.copy(app)
+    data.scopes = $scope.selected
 
     // remove tokens
     if (data.tokens) {
       delete data.tokens
-    }
-
-    // remove null values from scope
-    if (angular.isArray(data.scopes)) {
-      data.scopes = data.scopes.filter(function (val) {
-        return !!val
-      })
     }
 
     $http.put(fusio.baseUrl + 'backend/app/' + app.id, data)
@@ -1162,55 +1053,10 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
     $scope.response = null
   }
 
-  $scope.bulkSelect = function () {
-    if ($scope.toggle) {
-      var scopes = [];
-      for (var i = 0; i < $scope.scopes.length; i++) {
-        scopes.push($scope.scopes[i].name);
-      }
-      $scope.app.scopes = scopes;
-    } else {
-      $scope.app.scopes = [];
-    }
-    $scope.toggle = !$scope.toggle;
-  }
-
   $scope.loadApp = function () {
     $http.get(fusio.baseUrl + 'backend/app/' + app.id)
       .then(function (response) {
-        var data = response.data
-        var scopes = []
-        if (angular.isArray(data.scopes)) {
-          for (var i = 0; i < $scope.scopes.length; i++) {
-            var found = null
-            for (var j = 0; j < data.scopes.length; j++) {
-              if ($scope.scopes[i].name === data.scopes[j]) {
-                found = $scope.scopes[i].name
-                break
-              }
-            }
-            scopes.push(found)
-          }
-        }
-        data.scopes = scopes
-
-        $scope.app = data
-      })
-  }
-
-  $scope.removeToken = function (token) {
-    $http.delete(fusio.baseUrl + 'backend/app/' + app.id + '/token/' + token.id)
-      .then(function (response) {
-        if ($scope.app.tokens) {
-          var tokens = []
-          for (var i = 0; i < $scope.app.tokens.length; i++) {
-            if ($scope.app.tokens[i].id !== token.id) {
-              tokens.push($scope.app.tokens[i])
-              break
-            }
-          }
-          $scope.app.tokens = tokens
-        }
+        $scope.app = response.data
       })
   }
 
@@ -1238,19 +1084,17 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
     })
   }
 
-  $scope.getScopes = function () {
-    $http.get(fusio.baseUrl + 'backend/scope?count=1024')
-      .then(function (response) {
-        $scope.scopes = response.data.entry
-
-        $scope.loadApp()
-      })
+  $scope.getScopeCategories = function () {
+    $http.get(fusio.baseUrl + 'backend/scope/categories')
+        .then(function (response) {
+          $scope.categories = response.data.categories
+        })
   }
 
-  $scope.getScopes()
+  $scope.getScopeCategories()
 }
 
-},{"angular":133}],15:[function(require,module,exports){
+},{"angular":138}],15:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $timeout, fusio) {
@@ -1431,7 +1275,233 @@ angular.module('fusioApp.audit', ['ngRoute', 'ui.bootstrap'])
   .controller('AuditDetailCtrl', require('./detail'))
   .controller('AuditFilterCtrl', require('./filter'))
 
-},{"./audit":15,"./detail":16,"./filter":17,"angular":133}],19:[function(require,module,exports){
+},{"./audit":15,"./detail":16,"./filter":17,"angular":138}],19:[function(require,module,exports){
+'use strict'
+
+module.exports = function ($scope, $http, $uibModal, fusio) {
+  $scope.response = null
+  $scope.search = ''
+
+  $scope.load = function () {
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
+
+    $http.get(fusio.baseUrl + 'backend/category?search=' + search)
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.categories = data.entry
+      })
+  }
+
+  $scope.pageChanged = function () {
+    var startIndex = ($scope.startIndex - 1) * 16
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
+
+    $http.get(fusio.baseUrl + 'backend/category?startIndex=' + startIndex + '&search=' + search)
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.categories = data.entry
+      })
+  }
+
+  $scope.doSearch = function (search) {
+    $http.get(fusio.baseUrl + 'backend/category?search=' + encodeURIComponent(search || ''))
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.categories = data.entry
+      })
+  }
+
+  $scope.openCreateDialog = function () {
+    var modalInstance = $uibModal.open({
+      size: 'lg',
+      backdrop: 'static',
+      templateUrl: 'app/controller/category/create.html',
+      controller: 'CategoryCreateCtrl'
+    })
+
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
+
+  $scope.openUpdateDialog = function (category) {
+    var modalInstance = $uibModal.open({
+      size: 'lg',
+      backdrop: 'static',
+      templateUrl: 'app/controller/category/update.html',
+      controller: 'CategoryUpdateCtrl',
+      resolve: {
+        category: function () {
+          return category
+        }
+      }
+    })
+
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
+
+  $scope.openDeleteDialog = function (category) {
+    var modalInstance = $uibModal.open({
+      size: 'lg',
+      backdrop: 'static',
+      templateUrl: 'app/controller/category/delete.html',
+      controller: 'CategoryDeleteCtrl',
+      resolve: {
+        category: function () {
+          return category
+        }
+      }
+    })
+
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
+
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
+
+  $scope.load()
+}
+
+},{}],20:[function(require,module,exports){
+'use strict'
+
+var angular = require('angular')
+
+module.exports = function ($scope, $http, $uibModalInstance, fusio) {
+  $scope.category = {
+    name: '',
+  }
+
+  $scope.create = function (category) {
+    var data = angular.copy(category)
+
+    $http.post(fusio.baseUrl + 'backend/category', data)
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
+        if (data.success === true) {
+          $uibModalInstance.close(data)
+        }
+      })
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
+
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
+
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
+
+}
+
+},{"angular":138}],21:[function(require,module,exports){
+'use strict'
+
+module.exports = function ($scope, $http, $uibModalInstance, category, fusio) {
+  $scope.category = category
+
+  $scope.delete = function (category) {
+    $http.delete(fusio.baseUrl + 'backend/category/' + category.id)
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
+        if (data.success === true) {
+          $uibModalInstance.close(data)
+        }
+      })
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
+
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
+
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
+}
+
+},{}],22:[function(require,module,exports){
+'use strict'
+
+var angular = require('angular')
+
+angular.module('fusioApp.category', ['ngRoute', 'ui.bootstrap'])
+
+  .config(['$routeProvider', function ($routeProvider) {
+    $routeProvider.when('/category', {
+      templateUrl: 'app/controller/category/index.html',
+      controller: 'CategoryCtrl'
+    })
+  }])
+
+  .controller('CategoryCtrl', require('./category'))
+  .controller('CategoryCreateCtrl', require('./create'))
+  .controller('CategoryUpdateCtrl', require('./update'))
+  .controller('CategoryDeleteCtrl', require('./delete'))
+
+},{"./category":19,"./create":20,"./delete":21,"./update":23,"angular":138}],23:[function(require,module,exports){
+'use strict'
+
+var angular = require('angular')
+
+module.exports = function ($scope, $http, $uibModalInstance, category, fusio) {
+  $scope.category = category
+
+  $scope.update = function (category) {
+    var data = angular.copy(category)
+
+    $http.put(fusio.baseUrl + 'backend/category/' + category.id, data)
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
+        if (data.success === true) {
+          $uibModalInstance.close(data)
+        }
+      })
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
+
+  $http.get(fusio.baseUrl + 'backend/category/' + category.id)
+    .then(function (response) {
+      $scope.category = response.data
+    })
+
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
+
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
+
+}
+
+},{"angular":138}],24:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, fusio) {
@@ -1499,7 +1569,7 @@ module.exports = function ($scope, $http, $uibModal, fusio) {
   $scope.load()
 }
 
-},{}],20:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -1516,7 +1586,7 @@ angular.module('fusioApp.config', ['ngRoute', 'ui.bootstrap'])
   .controller('ConfigCtrl', require('./config'))
   .controller('ConfigUpdateCtrl', require('./update'))
 
-},{"./config":19,"./update":21,"angular":133}],21:[function(require,module,exports){
+},{"./config":24,"./update":26,"angular":138}],26:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -1562,7 +1632,7 @@ module.exports = function ($scope, $http, $uibModalInstance, config, fusio) {
   }
 }
 
-},{"angular":133}],22:[function(require,module,exports){
+},{"angular":138}],27:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, fusio) {
@@ -1665,7 +1735,7 @@ module.exports = function ($scope, $http, $uibModal, fusio) {
   $scope.load()
 }
 
-},{}],23:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -1740,7 +1810,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio, formBuilder)
   }
 }
 
-},{"angular":133}],24:[function(require,module,exports){
+},{"angular":138}],29:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, fusio, connection) {
@@ -1769,7 +1839,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio, connection) 
   }
 }
 
-},{}],25:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -1788,7 +1858,7 @@ angular.module('fusioApp.connection', ['ngRoute', 'ui.bootstrap'])
   .controller('ConnectionUpdateCtrl', require('./update'))
   .controller('ConnectionDeleteCtrl', require('./delete'))
 
-},{"./connection":22,"./create":23,"./delete":24,"./update":26,"angular":133}],26:[function(require,module,exports){
+},{"./connection":27,"./create":28,"./delete":29,"./update":31,"angular":138}],31:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -1854,7 +1924,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio, formBuilder,
     })
 }
 
-},{"angular":133}],27:[function(require,module,exports){
+},{"angular":138}],32:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $routeParams, $location, fusio) {
@@ -1938,7 +2008,7 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, $location, fu
   $scope.load()
 }
 
-},{}],28:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -1991,7 +2061,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   $scope.getPlans()
 }
 
-},{"angular":133}],29:[function(require,module,exports){
+},{"angular":138}],34:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, fusio, contract) {
@@ -2020,7 +2090,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio, contract) {
   }
 }
 
-},{}],30:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -2038,7 +2108,7 @@ angular.module('fusioApp.contract', ['ngRoute', 'ui.bootstrap'])
   .controller('ContractCreateCtrl', require('./create'))
   .controller('ContractDeleteCtrl', require('./delete'))
 
-},{"./contract":27,"./create":28,"./delete":29,"angular":133}],31:[function(require,module,exports){
+},{"./contract":32,"./create":33,"./delete":34,"angular":138}],36:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -2110,7 +2180,7 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio) {
   }
 }
 
-},{"angular":133}],32:[function(require,module,exports){
+},{"angular":138}],37:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, fusio) {
@@ -2233,7 +2303,7 @@ module.exports = function ($scope, $http, $uibModal, fusio) {
   $scope.load()
 }
 
-},{}],33:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, fusio, cronjob) {
@@ -2262,7 +2332,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio, cronjob) {
   }
 }
 
-},{}],34:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, cronjob) {
@@ -2296,7 +2366,7 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, c
     })
 }
 
-},{}],35:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, error) {
@@ -2307,7 +2377,7 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, e
   }
 }
 
-},{}],36:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -2328,7 +2398,7 @@ angular.module('fusioApp.cronjob', ['ngRoute', 'ui.bootstrap'])
   .controller('CronjobErrorCtrl', require('./error'))
   .controller('CronjobErrorDetailCtrl', require('./error/detail'))
 
-},{"./create":31,"./cronjob":32,"./delete":33,"./error":34,"./error/detail":35,"./update":37,"angular":133}],37:[function(require,module,exports){
+},{"./create":36,"./cronjob":37,"./delete":38,"./error":39,"./error/detail":40,"./update":42,"angular":138}],42:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -2401,7 +2471,7 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, c
     })
 }
 
-},{"angular":133}],38:[function(require,module,exports){
+},{"angular":138}],43:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, fusio) {
@@ -2426,7 +2496,7 @@ module.exports = function ($scope, $http, $uibModal, fusio) {
     })
 }
 
-},{}],39:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -2442,7 +2512,7 @@ angular.module('fusioApp.dashboard', ['ngRoute', 'chart.js'])
 
   .controller('DashboardCtrl', require('./dashboard'))
 
-},{"./dashboard":38,"angular":133}],40:[function(require,module,exports){
+},{"./dashboard":43,"angular":138}],45:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, error) {
@@ -2458,7 +2528,7 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, e
     })
 }
 
-},{}],41:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $timeout, fusio) {
@@ -2519,7 +2589,7 @@ module.exports = function ($scope, $http, $uibModal, $timeout, fusio) {
   $scope.load()
 }
 
-},{}],42:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -2536,7 +2606,7 @@ angular.module('fusioApp.error', ['ngRoute', 'ui.bootstrap'])
   .controller('ErrorCtrl', require('./error'))
   .controller('ErrorDetailCtrl', require('./detail'))
 
-},{"./detail":40,"./error":41,"angular":133}],43:[function(require,module,exports){
+},{"./detail":45,"./error":46,"angular":138}],48:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -2579,7 +2649,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
     })
 }
 
-},{"angular":133}],44:[function(require,module,exports){
+},{"angular":138}],49:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, fusio, event) {
@@ -2608,7 +2678,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio, event) {
   }
 }
 
-},{}],45:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $routeParams, $location, fusio) {
@@ -2712,7 +2782,7 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, $location, fu
   $scope.load()
 }
 
-},{}],46:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -2731,7 +2801,7 @@ angular.module('fusioApp.event', ['ngRoute', 'ui.bootstrap'])
   .controller('EventUpdateCtrl', require('./update'))
   .controller('EventDeleteCtrl', require('./delete'))
 
-},{"./create":43,"./delete":44,"./event":45,"./update":47,"angular":133}],47:[function(require,module,exports){
+},{"./create":48,"./delete":49,"./event":50,"./update":52,"angular":138}],52:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -2781,238 +2851,7 @@ module.exports = function ($scope, $http, $uibModalInstance, $uibModal, fusio, e
     })
 }
 
-},{"angular":133}],48:[function(require,module,exports){
-'use strict'
-
-var angular = require('angular')
-
-module.exports = function ($scope, $http, $uibModalInstance, action) {
-  $scope.action = angular.copy(action)
-
-  $scope.close = function () {
-    action.name = $scope.action.name
-
-    if (angular.isObject($scope.action.config)) {
-      action.config = $scope.action.config
-    }
-
-    $uibModalInstance.dismiss('cancel')
-  }
-}
-
-},{"angular":133}],49:[function(require,module,exports){
-'use strict'
-
-module.exports = function ($scope, $http, $uibModal, fusio) {
-  $scope.openapi = null
-  $scope.raml = null
-  $scope.swagger = null
-
-  $scope.error = null
-  $scope.success = false
-
-  $scope.transform = function (source, format) {
-    $http.post(fusio.baseUrl + 'backend/import/' + format, { schema: source })
-      .then(function (response) {
-        var data = response.data
-        if ('success' in data && data.success === false) {
-          $scope.error = data.message
-          return
-        } else {
-          $scope.error = null
-        }
-
-        $scope.openPreviewDialog(data)
-      })
-      .catch(function (response) {
-        var data = response.data
-        if ('success' in data && data.success === false) {
-          $scope.error = data.message
-        } else {
-          $scope.error = 'An unknown error occured'
-        }
-      })
-  }
-
-  $scope.openPreviewDialog = function (data) {
-    var modalInstance = $uibModal.open({
-      size: 'lg',
-      backdrop: 'static',
-      templateUrl: 'app/controller/import/preview.html',
-      controller: 'ImportPreviewCtrl',
-      resolve: {
-        data: function () {
-          return data
-        }
-      }
-    })
-
-    modalInstance.result.then(function (response) {
-      $scope.success = true
-    }, function () {
-    })
-  }
-}
-
-},{}],50:[function(require,module,exports){
-'use strict'
-
-var angular = require('angular')
-
-angular.module('fusioApp.import', ['ngRoute', 'ui.bootstrap'])
-
-  .config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.when('/import', {
-      templateUrl: 'app/controller/import/index.html',
-      controller: 'ImportCtrl'
-    })
-  }])
-
-  .controller('ImportCtrl', require('./import'))
-  .controller('ImportPreviewCtrl', require('./preview'))
-  .controller('ImportRouteCtrl', require('./route'))
-  .controller('ImportActionCtrl', require('./action'))
-  .controller('ImportSchemaCtrl', require('./schema'))
-
-},{"./action":48,"./import":49,"./preview":51,"./route":52,"./schema":53,"angular":133}],51:[function(require,module,exports){
-'use strict'
-
-module.exports = function ($scope, $http, $uibModalInstance, $uibModal, fusio, data) {
-  $scope.data = data
-
-  $scope.doProcess = function () {
-    $http.post(fusio.baseUrl + 'backend/import/process', data)
-      .then(function (response) {
-        var data = response.data
-        if ('success' in data && data.success === false) {
-          $scope.error = data.message
-          return
-        } else {
-          $scope.error = null
-        }
-
-        $uibModalInstance.close()
-      })
-      .catch(function (response) {
-        var data = response.data
-        if ('success' in data && data.success === false) {
-          $scope.error = data.message
-        } else {
-          $scope.error = 'An unknown error occured'
-        }
-      })
-  }
-
-  $scope.openRouteDialog = function (route) {
-    var modalInstance = $uibModal.open({
-      size: 'lg',
-      backdrop: 'static',
-      templateUrl: 'app/controller/import/route.html',
-      controller: 'ImportRouteCtrl',
-      resolve: {
-        route: function () {
-          return route
-        }
-      }
-    })
-
-    modalInstance.result.then(function (response) {
-    }, function () {
-    })
-  }
-
-  $scope.openActionDialog = function (action) {
-    var modalInstance = $uibModal.open({
-      size: 'lg',
-      backdrop: 'static',
-      templateUrl: 'app/controller/import/action.html',
-      controller: 'ImportActionCtrl',
-      resolve: {
-        action: function () {
-          return action
-        }
-      }
-    })
-
-    modalInstance.result.then(function (response) {
-    }, function () {
-    })
-  }
-
-  $scope.openSchemaDialog = function (schema) {
-    var modalInstance = $uibModal.open({
-      size: 'lg',
-      backdrop: 'static',
-      templateUrl: 'app/controller/import/schema.html',
-      controller: 'ImportSchemaCtrl',
-      resolve: {
-        schema: function () {
-          return schema
-        }
-      }
-    })
-
-    modalInstance.result.then(function (response) {
-    }, function () {
-    })
-  }
-
-  $scope.close = function () {
-    $uibModalInstance.dismiss('cancel')
-  }
-}
-
-},{}],52:[function(require,module,exports){
-'use strict'
-
-module.exports = function ($scope, $http, $uibModalInstance, fusio, route) {
-  $scope.route = route
-
-  $scope.statuuus = [{
-    key: 4,
-    value: 'Development'
-  }, {
-    key: 1,
-    value: 'Production'
-  }, {
-    key: 2,
-    value: 'Deprecated'
-  }, {
-    key: 3,
-    value: 'Closed'
-  }]
-
-  $scope.close = function () {
-    $uibModalInstance.dismiss('cancel')
-  }
-}
-
-},{}],53:[function(require,module,exports){
-'use strict'
-
-var angular = require('angular')
-
-module.exports = function ($scope, $http, $uibModalInstance, schema) {
-  var copySchema = angular.copy(schema)
-
-  if (angular.isObject(copySchema.source)) {
-    copySchema.source = JSON.stringify(copySchema.source, null, 4)
-  }
-
-  $scope.schema = copySchema
-
-  $scope.close = function () {
-    schema.name = $scope.schema.name
-
-    if (angular.isString($scope.schema.source)) {
-      schema.source = JSON.parse($scope.schema.source)
-    }
-
-    $uibModalInstance.dismiss('cancel')
-  }
-}
-
-},{"angular":133}],54:[function(require,module,exports){
+},{"angular":138}],53:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -3028,7 +2867,7 @@ angular.module('fusioApp.invoice', ['ngRoute', 'ui.bootstrap'])
 
   .controller('InvoiceCtrl', require('./invoice'))
 
-},{"./invoice":55,"angular":133}],55:[function(require,module,exports){
+},{"./invoice":54,"angular":138}],54:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $routeParams, $location, fusio) {
@@ -3077,7 +2916,7 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, $location, fu
   $scope.load()
 }
 
-},{}],56:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, log) {
@@ -3111,7 +2950,7 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, l
     })
 }
 
-},{}],57:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -3128,7 +2967,7 @@ angular.module('fusioApp.log', ['ngRoute', 'ui.bootstrap'])
   .controller('LogCtrl', require('./log'))
   .controller('LogDetailCtrl', require('./detail'))
 
-},{"./detail":56,"./log":58,"angular":133}],58:[function(require,module,exports){
+},{"./detail":55,"./log":57,"angular":138}],57:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $timeout, fusio) {
@@ -3244,7 +3083,7 @@ module.exports = function ($scope, $http, $uibModal, $timeout, fusio) {
   $scope.load()
 }
 
-},{}],59:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -3260,7 +3099,7 @@ angular.module('fusioApp.login', ['ngRoute'])
 
   .controller('LoginCtrl', require('./login'))
 
-},{"./login":60,"angular":133}],60:[function(require,module,exports){
+},{"./login":59,"angular":138}],59:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $location, $window, $rootScope, fusio, tokenParser) {
@@ -3277,7 +3116,7 @@ module.exports = function ($scope, $http, $location, $window, $rootScope, fusio,
 
     var req = {
       method: 'POST',
-      url: fusio.baseUrl + 'backend/token',
+      url: fusio.baseUrl + 'authorization/token',
       headers: {
         'Authorization': 'Basic ' + btoa(credentials.username + ':' + credentials.password),
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -3296,9 +3135,12 @@ module.exports = function ($scope, $http, $location, $window, $rootScope, fusio,
 
             // store access token
             $window.sessionStorage.setItem('fusio_access_token', data.access_token)
+            $window.sessionStorage.setItem('fusio_scope', data.scope)
 
             $rootScope.userAuthenticated = true
             $rootScope.user = user
+
+            $rootScope.buildNavigation(data.scope)
 
             $location.path('/dashboard')
           } else {
@@ -3316,7 +3158,7 @@ module.exports = function ($scope, $http, $location, $window, $rootScope, fusio,
   }
 }
 
-},{}],61:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -3332,7 +3174,7 @@ angular.module('fusioApp.logout', ['ngRoute'])
 
   .controller('LogoutCtrl', require('./logout'))
 
-},{"./logout":62,"angular":133}],62:[function(require,module,exports){
+},{"./logout":61,"angular":138}],61:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $location, $window, $rootScope, fusio) {
@@ -3340,9 +3182,11 @@ module.exports = function ($scope, $http, $location, $window, $rootScope, fusio)
     delete $http.defaults.headers.common['Authorization']
 
     $window.sessionStorage.removeItem('fusio_access_token')
-    $window.sessionStorage.removeItem('fusio_user')
+    $window.sessionStorage.removeItem('fusio_scope')
 
     $rootScope.userAuthenticated = false
+    $rootScope.user = null
+    $rootScope.nav = null
 
     $location.path('/login')
   }
@@ -3352,7 +3196,7 @@ module.exports = function ($scope, $http, $location, $window, $rootScope, fusio)
     .catch(removeToken)
 }
 
-},{}],63:[function(require,module,exports){
+},{}],62:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -3368,7 +3212,7 @@ angular.module('fusioApp.marketplace', ['ngRoute', 'ui.bootstrap'])
 
   .controller('MarketplaceCtrl', require('./marketplace'))
 
-},{"./marketplace":64,"angular":133}],64:[function(require,module,exports){
+},{"./marketplace":63,"angular":138}],63:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, fusio) {
@@ -3443,7 +3287,7 @@ module.exports = function ($scope, $http, $uibModal, fusio) {
   $scope.load()
 }
 
-},{}],65:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -3499,7 +3343,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   }
 }
 
-},{"angular":133}],66:[function(require,module,exports){
+},{"angular":138}],65:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, fusio, plan) {
@@ -3528,7 +3372,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio, plan) {
   }
 }
 
-},{}],67:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -3547,7 +3391,7 @@ angular.module('fusioApp.plan', ['ngRoute', 'ui.bootstrap'])
   .controller('PlanUpdateCtrl', require('./update'))
   .controller('PlanDeleteCtrl', require('./delete'))
 
-},{"./create":65,"./delete":66,"./plan":68,"./update":69,"angular":133}],68:[function(require,module,exports){
+},{"./create":64,"./delete":65,"./plan":67,"./update":68,"angular":138}],67:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $routeParams, $location, fusio) {
@@ -3651,7 +3495,7 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, $location, fu
   $scope.load()
 }
 
-},{}],69:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -3711,7 +3555,7 @@ module.exports = function ($scope, $http, $uibModalInstance, $uibModal, fusio, p
     })
 }
 
-},{"angular":133}],70:[function(require,module,exports){
+},{"angular":138}],69:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -3857,7 +3701,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   $scope.getRoutes()
 }
 
-},{"angular":133}],71:[function(require,module,exports){
+},{"angular":138}],70:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, rate, fusio) {
@@ -3886,7 +3730,7 @@ module.exports = function ($scope, $http, $uibModalInstance, rate, fusio) {
   }
 }
 
-},{}],72:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -3905,7 +3749,7 @@ angular.module('fusioApp.rate', ['ngRoute', 'ui.bootstrap'])
   .controller('RateUpdateCtrl', require('./update'))
   .controller('RateDeleteCtrl', require('./delete'))
 
-},{"./create":70,"./delete":71,"./rate":73,"./update":74,"angular":133}],73:[function(require,module,exports){
+},{"./create":69,"./delete":70,"./rate":72,"./update":73,"angular":138}],72:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, fusio) {
@@ -4008,7 +3852,7 @@ module.exports = function ($scope, $http, $uibModal, fusio) {
   $scope.load()
 }
 
-},{}],74:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -4199,7 +4043,279 @@ module.exports = function ($scope, $http, $uibModalInstance, rate, fusio) {
   $scope.getRoutes()
 }
 
-},{"angular":133}],75:[function(require,module,exports){
+},{"angular":138}],74:[function(require,module,exports){
+'use strict'
+
+var angular = require('angular')
+
+module.exports = function ($scope, $http, $uibModalInstance, fusio) {
+  $scope.role = {
+    categoryId: null,
+    name: '',
+    scopes: {}
+  }
+
+  $scope.categories = []
+  $scope.selected = []
+
+  $scope.create = function (role) {
+    var data = angular.copy(role)
+    data.scopes = $scope.selected
+
+    $http.post(fusio.baseUrl + 'backend/role', data)
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
+        if (data.success === true) {
+          $uibModalInstance.close(data)
+        }
+      })
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
+
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
+
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
+
+  $scope.getScopeCategories = function () {
+    $http.get(fusio.baseUrl + 'backend/scope/categories')
+      .then(function (response) {
+        $scope.categories = response.data.categories
+      })
+  }
+
+  $scope.toggleScope = function (name) {
+    let index = $scope.selected.indexOf(name);
+    if (index > -1) {
+      $scope.selected.splice(index, 1);
+    } else {
+      $scope.selected.push(name);
+    }
+  };
+
+  $scope.getScopeCategories()
+}
+
+},{"angular":138}],75:[function(require,module,exports){
+'use strict'
+
+module.exports = function ($scope, $http, $uibModalInstance, role, fusio) {
+  $scope.role = role
+
+  $scope.delete = function (role) {
+    $http.delete(fusio.baseUrl + 'backend/role/' + role.id)
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
+        if (data.success === true) {
+          $uibModalInstance.close(data)
+        }
+      })
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
+
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
+
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
+}
+
+},{}],76:[function(require,module,exports){
+'use strict'
+
+var angular = require('angular')
+
+angular.module('fusioApp.role', ['ngRoute', 'ui.bootstrap'])
+
+  .config(['$routeProvider', function ($routeProvider) {
+    $routeProvider.when('/role', {
+      templateUrl: 'app/controller/role/index.html',
+      controller: 'RoleCtrl'
+    })
+  }])
+
+  .controller('RoleCtrl', require('./role'))
+  .controller('RoleCreateCtrl', require('./create'))
+  .controller('RoleUpdateCtrl', require('./update'))
+  .controller('RoleDeleteCtrl', require('./delete'))
+
+},{"./create":74,"./delete":75,"./role":77,"./update":78,"angular":138}],77:[function(require,module,exports){
+'use strict'
+
+module.exports = function ($scope, $http, $uibModal, fusio) {
+  $scope.response = null
+  $scope.search = ''
+
+  $scope.load = function () {
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
+
+    $http.get(fusio.baseUrl + 'backend/role?search=' + search)
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.roles = data.entry
+      })
+  }
+
+  $scope.pageChanged = function () {
+    var startIndex = ($scope.startIndex - 1) * 16
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
+
+    $http.get(fusio.baseUrl + 'backend/role?startIndex=' + startIndex + '&search=' + search)
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.roles = data.entry
+      })
+  }
+
+  $scope.doSearch = function (search) {
+    $http.get(fusio.baseUrl + 'backend/role?search=' + encodeURIComponent(search || ''))
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.roles = data.entry
+      })
+  }
+
+  $scope.openCreateDialog = function () {
+    var modalInstance = $uibModal.open({
+      size: 'lg',
+      backdrop: 'static',
+      templateUrl: 'app/controller/role/create.html',
+      controller: 'RoleCreateCtrl'
+    })
+
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
+
+  $scope.openUpdateDialog = function (role) {
+    var modalInstance = $uibModal.open({
+      size: 'lg',
+      backdrop: 'static',
+      templateUrl: 'app/controller/role/update.html',
+      controller: 'RoleUpdateCtrl',
+      resolve: {
+        role: function () {
+          return role
+        }
+      }
+    })
+
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
+
+  $scope.openDeleteDialog = function (role) {
+    var modalInstance = $uibModal.open({
+      size: 'lg',
+      backdrop: 'static',
+      templateUrl: 'app/controller/role/delete.html',
+      controller: 'RoleDeleteCtrl',
+      resolve: {
+        role: function () {
+          return role
+        }
+      }
+    })
+
+    modalInstance.result.then(function (response) {
+      $scope.response = response
+      $scope.load()
+    }, function () {
+    })
+  }
+
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
+
+  $scope.load()
+}
+
+},{}],78:[function(require,module,exports){
+'use strict'
+
+var angular = require('angular')
+
+module.exports = function ($scope, $http, $uibModalInstance, role, fusio) {
+  $scope.role = role
+
+  $scope.categories = []
+  $scope.selected = []
+
+  $scope.update = function (role) {
+    var data = angular.copy(role)
+    data.scopes = $scope.selected
+
+    $http.put(fusio.baseUrl + 'backend/role/' + role.id, data)
+      .then(function (response) {
+        var data = response.data
+        $scope.response = data
+        if (data.success === true) {
+          $uibModalInstance.close(data)
+        }
+      })
+      .catch(function (response) {
+        $scope.response = response.data
+      })
+  }
+
+  $http.get(fusio.baseUrl + 'backend/role/' + role.id)
+    .then(function (response) {
+      $scope.selected = response.data.scopes
+      $scope.role = response.data
+    })
+
+  $scope.close = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
+
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
+
+  $scope.getScopeCategories = function () {
+    $http.get(fusio.baseUrl + 'backend/scope/categories')
+        .then(function (response) {
+          $scope.categories = response.data.categories
+        })
+  }
+
+  $scope.toggleScope = function (name) {
+    let index = $scope.selected.indexOf(name);
+    if (index > -1) {
+      $scope.selected.splice(index, 1);
+    } else {
+      $scope.selected.push(name);
+    }
+  };
+
+  $scope.getScopeCategories()
+
+}
+
+},{"angular":138}],79:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, provider, config) {
@@ -4221,7 +4337,7 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, p
   $scope.loadChangelog();
 }
 
-},{}],76:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -4383,9 +4499,9 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
       active: true,
       public: true,
       responses: {
-        '200': 1
+        '200': 'Passthru'
       },
-      action: 1
+      action: ''
     }
   }
 
@@ -4428,7 +4544,7 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
   $scope.addVersion()
 }
 
-},{"angular":133}],77:[function(require,module,exports){
+},{"angular":138}],81:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, fusio, route) {
@@ -4457,7 +4573,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio, route) {
   }
 }
 
-},{}],78:[function(require,module,exports){
+},{}],82:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -4483,7 +4599,7 @@ angular.module('fusioApp.routes', ['ngRoute', 'ui.bootstrap'])
   .controller('RoutesChangelogCtrl', require('./changelog'))
   .controller('RoutesLogCtrl', require('./log'))
 
-},{"./changelog":75,"./create":76,"./delete":77,"./log":79,"./provider":80,"./routes":81,"./update":82,"angular":133}],79:[function(require,module,exports){
+},{"./changelog":79,"./create":80,"./delete":81,"./log":83,"./provider":84,"./routes":85,"./update":86,"angular":138}],83:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, route) {
@@ -4523,7 +4639,7 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, r
   $scope.loadLogs();
 }
 
-},{}],80:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -4631,7 +4747,7 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
 
 }
 
-},{"angular":133}],81:[function(require,module,exports){
+},{"angular":138}],85:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $routeParams, $route, $timeout, $cacheFactory, $location, fusio) {
@@ -4895,7 +5011,7 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, $route, $time
   }
 }
 
-},{}],82:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -5137,7 +5253,7 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
   $scope.load()
 }
 
-},{"angular":133}],83:[function(require,module,exports){
+},{"angular":138}],87:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -5178,7 +5294,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   }
 }
 
-},{"angular":133}],84:[function(require,module,exports){
+},{"angular":138}],88:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, fusio, schema) {
@@ -5207,7 +5323,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio, schema) {
   }
 }
 
-},{}],85:[function(require,module,exports){
+},{}],89:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -5231,7 +5347,7 @@ angular.module('fusioApp.schema', ['ngRoute', 'ui.bootstrap'])
   .controller('SchemaDeleteCtrl', require('./delete'))
   .controller('SchemaPreviewCtrl', require('./preview'))
 
-},{"./create":83,"./delete":84,"./preview":86,"./schema":87,"./update":88,"angular":133}],86:[function(require,module,exports){
+},{"./create":87,"./delete":88,"./preview":90,"./schema":91,"./update":92,"angular":138}],90:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -5253,7 +5369,7 @@ module.exports = function ($scope, $http, $uibModalInstance, $uibModal, fusio, s
   $scope.loadPreview(schema.id)
 }
 
-},{"angular":133}],87:[function(require,module,exports){
+},{"angular":138}],91:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $routeParams, $location, $cacheFactory, fusio) {
@@ -5441,7 +5557,7 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, $location, $c
   }
 }
 
-},{}],88:[function(require,module,exports){
+},{}],92:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -5497,7 +5613,7 @@ module.exports = function ($scope, $http, $uibModalInstance, $uibModal, fusio, s
     })
 }
 
-},{"angular":133}],89:[function(require,module,exports){
+},{"angular":138}],93:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -5561,7 +5677,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   }
 }
 
-},{"angular":133}],90:[function(require,module,exports){
+},{"angular":138}],94:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, fusio, scope) {
@@ -5590,7 +5706,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio, scope) {
   }
 }
 
-},{}],91:[function(require,module,exports){
+},{}],95:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -5609,7 +5725,7 @@ angular.module('fusioApp.scope', ['ngRoute', 'ui.bootstrap'])
   .controller('ScopeUpdateCtrl', require('./update'))
   .controller('ScopeDeleteCtrl', require('./delete'))
 
-},{"./create":89,"./delete":90,"./scope":92,"./update":93,"angular":133}],92:[function(require,module,exports){
+},{"./create":93,"./delete":94,"./scope":96,"./update":97,"angular":138}],96:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, fusio) {
@@ -5720,7 +5836,7 @@ module.exports = function ($scope, $http, $uibModal, fusio) {
   $scope.load()
 }
 
-},{}],93:[function(require,module,exports){
+},{}],97:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -5816,7 +5932,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio, scope) {
     })
 }
 
-},{"angular":133}],94:[function(require,module,exports){
+},{"angular":138}],98:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -5832,7 +5948,7 @@ angular.module('fusioApp.sdk', ['ngRoute', 'ui.bootstrap'])
 
   .controller('SdkCtrl', require('./sdk'))
 
-},{"./sdk":95,"angular":133}],95:[function(require,module,exports){
+},{"./sdk":99,"angular":138}],99:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $window, fusio) {
@@ -5876,7 +5992,7 @@ module.exports = function ($scope, $http, $uibModal, $window, fusio) {
   $scope.load()
 }
 
-},{}],96:[function(require,module,exports){
+},{}],100:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, fusio, filter) {
@@ -5919,7 +6035,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio, filter) {
   $scope.getRoutes()
 }
 
-},{}],97:[function(require,module,exports){
+},{}],101:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -5936,7 +6052,7 @@ angular.module('fusioApp.statistic', ['ngRoute', 'ui.bootstrap'])
   .controller('StatisticCtrl', require('./statistic'))
   .controller('StatisticFilterCtrl', require('./filter'))
 
-},{"./filter":96,"./statistic":98,"angular":133}],98:[function(require,module,exports){
+},{"./filter":100,"./statistic":102,"angular":138}],102:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $compile, fusio) {
@@ -6035,7 +6151,7 @@ module.exports = function ($scope, $http, $uibModal, $compile, fusio) {
   $scope.doFilter()
 }
 
-},{}],99:[function(require,module,exports){
+},{}],103:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -6092,7 +6208,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   $scope.getUsers();
 }
 
-},{"angular":133}],100:[function(require,module,exports){
+},{"angular":138}],104:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, fusio, subscription) {
@@ -6121,7 +6237,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio, subscription
   }
 }
 
-},{}],101:[function(require,module,exports){
+},{}],105:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -6140,7 +6256,7 @@ angular.module('fusioApp.subscription', ['ngRoute', 'ui.bootstrap'])
   .controller('SubscriptionUpdateCtrl', require('./update'))
   .controller('SubscriptionDeleteCtrl', require('./delete'))
 
-},{"./create":99,"./delete":100,"./subscription":102,"./update":103,"angular":133}],102:[function(require,module,exports){
+},{"./create":103,"./delete":104,"./subscription":106,"./update":107,"angular":138}],106:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $routeParams, $location, fusio) {
@@ -6244,7 +6360,7 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, $location, fu
   $scope.load()
 }
 
-},{}],103:[function(require,module,exports){
+},{}],107:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -6287,7 +6403,7 @@ module.exports = function ($scope, $http, $uibModalInstance, $uibModal, fusio, s
     })
 }
 
-},{"angular":133}],104:[function(require,module,exports){
+},{"angular":138}],108:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, token) {
@@ -6311,9 +6427,9 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, t
     })
 }
 
-},{}],105:[function(require,module,exports){
+},{}],109:[function(require,module,exports){
 arguments[4][17][0].apply(exports,arguments)
-},{"dup":17}],106:[function(require,module,exports){
+},{"dup":17}],110:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -6331,7 +6447,7 @@ angular.module('fusioApp.token', ['ngRoute', 'ui.bootstrap'])
   .controller('TokenDetailCtrl', require('./detail'))
   .controller('TokenFilterCtrl', require('./filter'))
 
-},{"./detail":104,"./filter":105,"./token":107,"angular":133}],107:[function(require,module,exports){
+},{"./detail":108,"./filter":109,"./token":111,"angular":138}],111:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $timeout, fusio) {
@@ -6467,7 +6583,7 @@ module.exports = function ($scope, $http, $uibModal, $timeout, fusio) {
   $scope.load()
 }
 
-},{}],108:[function(require,module,exports){
+},{}],112:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, transaction) {
@@ -6483,7 +6599,7 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, t
     })
 }
 
-},{}],109:[function(require,module,exports){
+},{}],113:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -6500,7 +6616,7 @@ angular.module('fusioApp.transaction', ['ngRoute', 'ui.bootstrap'])
   .controller('TransactionCtrl', require('./transaction'))
   .controller('TransactionDetailCtrl', require('./detail'))
 
-},{"./detail":108,"./transaction":110,"angular":133}],110:[function(require,module,exports){
+},{"./detail":112,"./transaction":114,"angular":138}],114:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $timeout, fusio) {
@@ -6616,36 +6732,28 @@ module.exports = function ($scope, $http, $uibModal, $timeout, fusio) {
   $scope.load()
 }
 
-},{}],111:[function(require,module,exports){
+},{}],115:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
 
 module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   $scope.user = {
-    status: 0,
+    status: 1,
+    roleId: 0,
     name: '',
-    email: '',
-    scopes: []
+    email: ''
   }
 
   $scope.statuuus = [{
-    id: 0,
-    name: 'Consumer'
-  }, {
     id: 1,
-    name: 'Administrator'
+    name: 'Active'
   }, {
     id: 2,
     name: 'Disabled'
   }]
 
-  $scope.scopes = []
-
-  $http.get(fusio.baseUrl + 'backend/scope?count=1024')
-    .then(function (response) {
-      $scope.scopes = response.data.entry
-    })
+  $scope.roles = []
 
   $scope.create = function (user) {
     var data = angular.copy(user)
@@ -6655,11 +6763,9 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
       delete data.apps
     }
 
-    // filter scopes
-    if (data.scopes && angular.isArray(data.scopes)) {
-      data.scopes = data.scopes.filter(function (value) {
-        return value !== null
-      })
+    // remove scopes
+    if (data.scopes) {
+      delete data.scopes
     }
 
     $http.post(fusio.baseUrl + 'backend/user', data)
@@ -6682,9 +6788,19 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   $scope.closeResponse = function () {
     $scope.response = null
   }
+
+  $scope.getRoles = function () {
+    $http.get(fusio.baseUrl + 'backend/role?count=1024')
+      .then(function (response) {
+        $scope.roles = response.data.entry
+      })
+  }
+
+  $scope.getRoles()
+
 }
 
-},{"angular":133}],112:[function(require,module,exports){
+},{"angular":138}],116:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, fusio, user) {
@@ -6713,7 +6829,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio, user) {
   }
 }
 
-},{}],113:[function(require,module,exports){
+},{}],117:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -6732,7 +6848,7 @@ angular.module('fusioApp.user', ['ngRoute', 'ui.bootstrap'])
   .controller('UserUpdateCtrl', require('./update'))
   .controller('UserDeleteCtrl', require('./delete'))
 
-},{"./create":111,"./delete":112,"./update":114,"./user":115,"angular":133}],114:[function(require,module,exports){
+},{"./create":115,"./delete":116,"./update":118,"./user":119,"angular":138}],118:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -6741,38 +6857,24 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio, user) {
   $scope.user = user
 
   $scope.statuuus = [{
-    id: 0,
-    name: 'Consumer'
-  }, {
     id: 1,
-    name: 'Administrator'
+    name: 'Active'
   }, {
     id: 2,
     name: 'Disabled'
   }]
 
-  $scope.scopes = []
-
-  $http.get(fusio.baseUrl + 'backend/scope?count=1024')
-    .then(function (response) {
-      $scope.scopes = response.data.entry
-
-      $scope.loadUser()
-    })
+  $scope.roles = []
+  $scope.categories = []
+  $scope.selected = []
 
   $scope.update = function (user) {
     var data = angular.copy(user)
+    data.scopes = $scope.selected
 
     // remove app data
     if (data.apps) {
       delete data.apps
-    }
-
-    // filter scopes
-    if (data.scopes && angular.isArray(data.scopes)) {
-      data.scopes = data.scopes.filter(function (value) {
-        return value !== null
-      })
     }
 
     $http.put(fusio.baseUrl + 'backend/user/' + data.id, data)
@@ -6799,28 +6901,39 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio, user) {
   $scope.loadUser = function () {
     $http.get(fusio.baseUrl + 'backend/user/' + user.id)
       .then(function (response) {
-        var data = response.data
-        var scopes = []
-        if (angular.isArray(data.scopes)) {
-          for (var i = 0; i < $scope.scopes.length; i++) {
-            var found = null
-            for (var j = 0; j < data.scopes.length; j++) {
-              if ($scope.scopes[i].name === data.scopes[j]) {
-                found = $scope.scopes[i].name
-                break
-              }
-            }
-            scopes.push(found)
-          }
-        }
-        data.scopes = scopes
-
-        $scope.user = data
+        $scope.user = response.data
       })
   }
+
+  $scope.getRoles = function () {
+    $http.get(fusio.baseUrl + 'backend/role?count=1024')
+      .then(function (response) {
+        $scope.roles = response.data.entry
+      })
+  }
+
+  $scope.getScopeCategories = function () {
+    $http.get(fusio.baseUrl + 'backend/scope/categories')
+        .then(function (response) {
+          $scope.categories = response.data.categories
+        })
+  }
+
+  $scope.toggleScope = function (name) {
+    let index = $scope.selected.indexOf(name);
+    if (index > -1) {
+      $scope.selected.splice(index, 1);
+    } else {
+      $scope.selected.push(name);
+    }
+  };
+
+  $scope.loadUser()
+  $scope.getScopeCategories()
+  
 }
 
-},{"angular":133}],115:[function(require,module,exports){
+},{"angular":138}],119:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, fusio) {
@@ -6923,7 +7036,7 @@ module.exports = function ($scope, $http, $uibModal, fusio) {
   $scope.load()
 }
 
-},{}],116:[function(require,module,exports){
+},{}],120:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -7077,7 +7190,7 @@ module.exports = function ($sce, $compile) {
   return builder
 }
 
-},{"angular":133}],117:[function(require,module,exports){
+},{"angular":138}],121:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($http, $showdown, $q, $uibModal) {
@@ -7135,7 +7248,7 @@ module.exports = function ($http, $showdown, $q, $uibModal) {
   return helper
 }
 
-},{}],118:[function(require,module,exports){
+},{}],122:[function(require,module,exports){
 'use strict'
 
 module.exports = function () {
@@ -7163,7 +7276,197 @@ module.exports = function () {
   return parser
 }
 
-},{}],119:[function(require,module,exports){
+},{}],123:[function(require,module,exports){
+module.exports=[
+  {
+    "title": "API",
+    "visible": true,
+    "children": [
+      {
+        "title": "Dashboard",
+        "icon": "glyphicon-th",
+        "path": "/dashboard",
+        "scope": "backend.dashboard"
+      },
+      {
+        "title": "Routes",
+        "icon": "glyphicon-road",
+        "path": "/routes",
+        "scope": "backend.route"
+      },
+      {
+        "title": "Action",
+        "icon": "glyphicon-transfer",
+        "path": "/action",
+        "scope": "backend.action"
+      },
+      {
+        "title": "Schema",
+        "icon": "glyphicon-list-alt",
+        "path": "/schema",
+        "scope": "backend.schema"
+      },
+      {
+        "title": "Connection",
+        "icon": "glyphicon-log-in",
+        "path": "/connection",
+        "scope": "backend.connection"
+      },
+      {
+        "title": "Event",
+        "icon": "glyphicon-retweet",
+        "path": "/event",
+        "scope": "backend.event"
+      },
+      {
+        "title": "Cronjob",
+        "icon": "glyphicon-time",
+        "path": "/cronjob",
+        "scope": "backend.cronjob"
+      }
+    ]
+  },
+  {
+    "title": "Consumer",
+    "visible": false,
+    "children": [
+      {
+        "title": "App",
+        "icon": "glyphicon-book",
+        "path": "/app",
+        "scope": "backend.app"
+      },
+      {
+        "title": "Scope",
+        "icon": "glyphicon-eye-open",
+        "path": "/scope",
+        "scope": "backend.scope"
+      },
+      {
+        "title": "User",
+        "icon": "glyphicon-user",
+        "path": "/user",
+        "scope": "backend.user"
+      },
+      {
+        "title": "Rate",
+        "icon": "glyphicon-filter",
+        "path": "/rate",
+        "scope": "backend.rate"
+      },
+      {
+        "title": "SDK",
+        "icon": "glyphicon-download",
+        "path": "/sdk",
+        "scope": "backend.sdk"
+      },
+      {
+        "title": "Subscription",
+        "icon": "glyphicon-fire",
+        "path": "/subscription",
+        "scope": "backend.event"
+      }
+    ]
+  },
+  {
+    "title": "Analytics",
+    "visible": false,
+    "children": [
+      {
+        "title": "Log",
+        "icon": "glyphicon-briefcase",
+        "path": "/log",
+        "scope": "backend.log"
+      },
+      {
+        "title": "Statistic",
+        "icon": "glyphicon-stats",
+        "path": "/statistic",
+        "scope": "backend.statistic"
+      },
+      {
+        "title": "Error",
+        "icon": "glyphicon-bell",
+        "path": "/error",
+        "scope": "backend.log"
+      },
+      {
+        "title": "Token",
+        "icon": "glyphicon-map-marker",
+        "path": "/token",
+        "scope": "backend.app"
+      }
+    ]
+  },
+  {
+    "title": "Monetization",
+    "visible": false,
+    "children": [
+      {
+        "title": "Plan",
+        "icon": "glyphicon-hdd",
+        "path": "/plan",
+        "scope": "backend.plan"
+      },
+      {
+        "title": "Contract",
+        "icon": "glyphicon-file",
+        "path": "/contract",
+        "scope": "backend.plan"
+      },
+      {
+        "title": "Invoice",
+        "icon": "glyphicon-envelope",
+        "path": "/invoice",
+        "scope": "backend.plan"
+      },
+      {
+        "title": "Transaction",
+        "icon": "glyphicon-equalizer",
+        "path": "/transaction",
+        "scope": "backend.transaction"
+      }
+    ]
+  },
+  {
+    "title": "System",
+    "visible": false,
+    "children": [
+      {
+        "title": "Category",
+        "icon": "glyphicon-record",
+        "path": "/category",
+        "scope": "backend.category"
+      },
+      {
+        "title": "Role",
+        "icon": "glyphicon-certificate",
+        "path": "/role",
+        "scope": "backend.role"
+      },
+      {
+        "title": "Marketplace",
+        "icon": "glyphicon-shopping-cart",
+        "path": "/marketplace",
+        "scope": "backend.marketplace"
+      },
+      {
+        "title": "Settings",
+        "icon": "glyphicon-cog",
+        "path": "/config",
+        "scope": "backend.config"
+      },
+      {
+        "title": "Audit",
+        "icon": "glyphicon-facetime-video",
+        "path": "/audit",
+        "scope": "backend.audit"
+      }
+    ]
+  }
+]
+
+},{}],124:[function(require,module,exports){
 /**
  * @license AngularJS v1.8.2
  * (c) 2010-2020 Google LLC. http://angularjs.org
@@ -11437,11 +11740,11 @@ angular.module('ngAnimate', [], function initAngularHelpers() {
 
 })(window, window.angular);
 
-},{}],120:[function(require,module,exports){
+},{}],125:[function(require,module,exports){
 require('./angular-animate');
 module.exports = 'ngAnimate';
 
-},{"./angular-animate":119}],121:[function(require,module,exports){
+},{"./angular-animate":124}],126:[function(require,module,exports){
 /*!
  * angular-chart.js - An angular.js wrapper for Chart.js
  * http://jtblin.github.io/angular-chart.js/
@@ -11843,7 +12146,7 @@ module.exports = 'ngAnimate';
   }
 }));
 
-},{"angular":133,"chart.js":134}],122:[function(require,module,exports){
+},{"angular":138,"chart.js":139}],127:[function(require,module,exports){
 /*! angular-highlightjs
 version: 0.7.1
 build date: 2017-02-28
@@ -12366,7 +12669,7 @@ includeDirFactory = function (dirName) {
 
   return "hljs";
 }));
-},{"angular":133,"highlight.js":180}],123:[function(require,module,exports){
+},{"angular":138,"highlight.js":185}],128:[function(require,module,exports){
 /*! 
  * angular-loading-bar v0.9.0
  * https://chieffancypants.github.io/angular-loading-bar
@@ -12709,11 +13012,11 @@ angular.module('cfp.loadingBar', [])
   });       // wtf javascript. srsly
 })();       //
 
-},{}],124:[function(require,module,exports){
+},{}],129:[function(require,module,exports){
 require('./build/loading-bar');
 module.exports = 'angular-loading-bar';
 
-},{"./build/loading-bar":123}],125:[function(require,module,exports){
+},{"./build/loading-bar":128}],130:[function(require,module,exports){
 /**
  * @license AngularJS v1.8.2
  * (c) 2010-2020 Google LLC. http://angularjs.org
@@ -13981,11 +14284,11 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
 })(window, window.angular);
 
-},{}],126:[function(require,module,exports){
+},{}],131:[function(require,module,exports){
 require('./angular-route');
 module.exports = 'ngRoute';
 
-},{"./angular-route":125}],127:[function(require,module,exports){
+},{"./angular-route":130}],132:[function(require,module,exports){
 /**
  * @license AngularJS v1.8.2
  * (c) 2010-2020 Google LLC. http://angularjs.org
@@ -14878,11 +15181,11 @@ angular.module('ngSanitize').filter('linky', ['$sanitize', function($sanitize) {
 
 })(window, window.angular);
 
-},{}],128:[function(require,module,exports){
+},{}],133:[function(require,module,exports){
 require('./angular-sanitize');
 module.exports = 'ngSanitize';
 
-},{"./angular-sanitize":127}],129:[function(require,module,exports){
+},{"./angular-sanitize":132}],134:[function(require,module,exports){
 'use strict';
 
 /**
@@ -15212,7 +15515,7 @@ angular.module('ui.ace', [])
     };
   }]);
 
-},{}],130:[function(require,module,exports){
+},{}],135:[function(require,module,exports){
 /*
  * angular-ui-bootstrap
  * http://angular-ui.github.io/bootstrap/
@@ -23016,12 +23319,12 @@ angular.module('ui.bootstrap.datepickerPopup').run(function() {!angular.$$csp().
 angular.module('ui.bootstrap.tooltip').run(function() {!angular.$$csp().noInlineStyle && !angular.$$uibTooltipCss && angular.element(document).find('head').prepend('<style type="text/css">[uib-tooltip-popup].tooltip.top-left > .tooltip-arrow,[uib-tooltip-popup].tooltip.top-right > .tooltip-arrow,[uib-tooltip-popup].tooltip.bottom-left > .tooltip-arrow,[uib-tooltip-popup].tooltip.bottom-right > .tooltip-arrow,[uib-tooltip-popup].tooltip.left-top > .tooltip-arrow,[uib-tooltip-popup].tooltip.left-bottom > .tooltip-arrow,[uib-tooltip-popup].tooltip.right-top > .tooltip-arrow,[uib-tooltip-popup].tooltip.right-bottom > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.top-left > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.top-right > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.bottom-left > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.bottom-right > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.left-top > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.left-bottom > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.right-top > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.right-bottom > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.top-left > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.top-right > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.bottom-left > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.bottom-right > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.left-top > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.left-bottom > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.right-top > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.right-bottom > .tooltip-arrow,[uib-popover-popup].popover.top-left > .arrow,[uib-popover-popup].popover.top-right > .arrow,[uib-popover-popup].popover.bottom-left > .arrow,[uib-popover-popup].popover.bottom-right > .arrow,[uib-popover-popup].popover.left-top > .arrow,[uib-popover-popup].popover.left-bottom > .arrow,[uib-popover-popup].popover.right-top > .arrow,[uib-popover-popup].popover.right-bottom > .arrow,[uib-popover-html-popup].popover.top-left > .arrow,[uib-popover-html-popup].popover.top-right > .arrow,[uib-popover-html-popup].popover.bottom-left > .arrow,[uib-popover-html-popup].popover.bottom-right > .arrow,[uib-popover-html-popup].popover.left-top > .arrow,[uib-popover-html-popup].popover.left-bottom > .arrow,[uib-popover-html-popup].popover.right-top > .arrow,[uib-popover-html-popup].popover.right-bottom > .arrow,[uib-popover-template-popup].popover.top-left > .arrow,[uib-popover-template-popup].popover.top-right > .arrow,[uib-popover-template-popup].popover.bottom-left > .arrow,[uib-popover-template-popup].popover.bottom-right > .arrow,[uib-popover-template-popup].popover.left-top > .arrow,[uib-popover-template-popup].popover.left-bottom > .arrow,[uib-popover-template-popup].popover.right-top > .arrow,[uib-popover-template-popup].popover.right-bottom > .arrow{top:auto;bottom:auto;left:auto;right:auto;margin:0;}[uib-popover-popup].popover,[uib-popover-html-popup].popover,[uib-popover-template-popup].popover{display:block !important;}</style>'); angular.$$uibTooltipCss = true; });
 angular.module('ui.bootstrap.timepicker').run(function() {!angular.$$csp().noInlineStyle && !angular.$$uibTimepickerCss && angular.element(document).find('head').prepend('<style type="text/css">.uib-time input{width:50px;}</style>'); angular.$$uibTimepickerCss = true; });
 angular.module('ui.bootstrap.typeahead').run(function() {!angular.$$csp().noInlineStyle && !angular.$$uibTypeaheadCss && angular.element(document).find('head').prepend('<style type="text/css">[uib-typeahead-popup].dropdown-menu{display:block;}</style>'); angular.$$uibTypeaheadCss = true; });
-},{}],131:[function(require,module,exports){
+},{}],136:[function(require,module,exports){
 require('./dist/ui-bootstrap-tpls');
 
 module.exports = 'ui.bootstrap';
 
-},{"./dist/ui-bootstrap-tpls":130}],132:[function(require,module,exports){
+},{"./dist/ui-bootstrap-tpls":135}],137:[function(require,module,exports){
 /**
  * @license AngularJS v1.8.2
  * (c) 2010-2020 Google LLC. http://angularjs.org
@@ -59622,11 +59925,11 @@ $provide.value("$locale", {
 })(window);
 
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend(window.angular.element('<style>').text('@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}'));
-},{}],133:[function(require,module,exports){
+},{}],138:[function(require,module,exports){
 require('./angular');
 module.exports = angular;
 
-},{"./angular":132}],134:[function(require,module,exports){
+},{"./angular":137}],139:[function(require,module,exports){
 /**
  * @namespace Chart
  */
@@ -59677,7 +59980,7 @@ require('./charts/Chart.Scatter')(Chart);
 
 window.Chart = module.exports = Chart;
 
-},{"./charts/Chart.Bar":135,"./charts/Chart.Bubble":136,"./charts/Chart.Doughnut":137,"./charts/Chart.Line":138,"./charts/Chart.PolarArea":139,"./charts/Chart.Radar":140,"./charts/Chart.Scatter":141,"./controllers/controller.bar":142,"./controllers/controller.bubble":143,"./controllers/controller.doughnut":144,"./controllers/controller.line":145,"./controllers/controller.polarArea":146,"./controllers/controller.radar":147,"./core/core.animation":148,"./core/core.canvasHelpers":149,"./core/core.controller":150,"./core/core.datasetController":151,"./core/core.element":152,"./core/core.helpers":153,"./core/core.js":154,"./core/core.layoutService":155,"./core/core.legend":156,"./core/core.plugin.js":157,"./core/core.scale":158,"./core/core.scaleService":159,"./core/core.title":160,"./core/core.tooltip":161,"./elements/element.arc":162,"./elements/element.line":163,"./elements/element.point":164,"./elements/element.rectangle":165,"./scales/scale.category":166,"./scales/scale.linear":167,"./scales/scale.linearbase.js":168,"./scales/scale.logarithmic":169,"./scales/scale.radialLinear":170,"./scales/scale.time":171}],135:[function(require,module,exports){
+},{"./charts/Chart.Bar":140,"./charts/Chart.Bubble":141,"./charts/Chart.Doughnut":142,"./charts/Chart.Line":143,"./charts/Chart.PolarArea":144,"./charts/Chart.Radar":145,"./charts/Chart.Scatter":146,"./controllers/controller.bar":147,"./controllers/controller.bubble":148,"./controllers/controller.doughnut":149,"./controllers/controller.line":150,"./controllers/controller.polarArea":151,"./controllers/controller.radar":152,"./core/core.animation":153,"./core/core.canvasHelpers":154,"./core/core.controller":155,"./core/core.datasetController":156,"./core/core.element":157,"./core/core.helpers":158,"./core/core.js":159,"./core/core.layoutService":160,"./core/core.legend":161,"./core/core.plugin.js":162,"./core/core.scale":163,"./core/core.scaleService":164,"./core/core.title":165,"./core/core.tooltip":166,"./elements/element.arc":167,"./elements/element.line":168,"./elements/element.point":169,"./elements/element.rectangle":170,"./scales/scale.category":171,"./scales/scale.linear":172,"./scales/scale.linearbase.js":173,"./scales/scale.logarithmic":174,"./scales/scale.radialLinear":175,"./scales/scale.time":176}],140:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -59690,7 +59993,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],136:[function(require,module,exports){
+},{}],141:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -59702,7 +60005,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],137:[function(require,module,exports){
+},{}],142:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -59715,7 +60018,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],138:[function(require,module,exports){
+},{}],143:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -59728,7 +60031,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],139:[function(require,module,exports){
+},{}],144:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -59741,7 +60044,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],140:[function(require,module,exports){
+},{}],145:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -59755,7 +60058,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],141:[function(require,module,exports){
+},{}],146:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -59804,7 +60107,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],142:[function(require,module,exports){
+},{}],147:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -60379,7 +60682,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],143:[function(require,module,exports){
+},{}],148:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -60503,7 +60806,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],144:[function(require,module,exports){
+},{}],149:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -60796,7 +61099,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],145:[function(require,module,exports){
+},{}],150:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -61148,7 +61451,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],146:[function(require,module,exports){
+},{}],151:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -61365,7 +61668,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],147:[function(require,module,exports){
+},{}],152:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -61555,7 +61858,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],148:[function(require,module,exports){
+},{}],153:[function(require,module,exports){
 /* global window: false */
 'use strict';
 
@@ -61688,7 +61991,7 @@ module.exports = function(Chart) {
 	};
 };
 
-},{}],149:[function(require,module,exports){
+},{}],154:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -61794,7 +62097,7 @@ module.exports = function(Chart) {
 	};
 };
 
-},{}],150:[function(require,module,exports){
+},{}],155:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -62486,7 +62789,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],151:[function(require,module,exports){
+},{}],156:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -62652,7 +62955,7 @@ module.exports = function(Chart) {
 	Chart.DatasetController.extend = helpers.inherits;
 };
 
-},{}],152:[function(require,module,exports){
+},{}],157:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -62750,7 +63053,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],153:[function(require,module,exports){
+},{}],158:[function(require,module,exports){
 /* global window: false */
 /* global document: false */
 'use strict';
@@ -63796,7 +64099,7 @@ module.exports = function(Chart) {
 	};
 };
 
-},{"chartjs-color":173}],154:[function(require,module,exports){
+},{"chartjs-color":178}],159:[function(require,module,exports){
 'use strict';
 
 module.exports = function() {
@@ -63908,7 +64211,7 @@ module.exports = function() {
 
 };
 
-},{}],155:[function(require,module,exports){
+},{}],160:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -64231,7 +64534,7 @@ module.exports = function(Chart) {
 	};
 };
 
-},{}],156:[function(require,module,exports){
+},{}],161:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -64717,7 +65020,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],157:[function(require,module,exports){
+},{}],162:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -64848,7 +65151,7 @@ module.exports = function(Chart) {
 	Chart.pluginService = Chart.plugins;
 };
 
-},{}],158:[function(require,module,exports){
+},{}],163:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -65608,7 +65911,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],159:[function(require,module,exports){
+},{}],164:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -65650,7 +65953,7 @@ module.exports = function(Chart) {
 	};
 };
 
-},{}],160:[function(require,module,exports){
+},{}],165:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -65856,7 +66159,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],161:[function(require,module,exports){
+},{}],166:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -66572,7 +66875,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],162:[function(require,module,exports){
+},{}],167:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -66665,7 +66968,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],163:[function(require,module,exports){
+},{}],168:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -66842,7 +67145,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],164:[function(require,module,exports){
+},{}],169:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -66901,7 +67204,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],165:[function(require,module,exports){
+},{}],170:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -66998,7 +67301,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],166:[function(require,module,exports){
+},{}],171:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -67129,7 +67432,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],167:[function(require,module,exports){
+},{}],172:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -67323,7 +67626,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],168:[function(require,module,exports){
+},{}],173:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -67450,7 +67753,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],169:[function(require,module,exports){
+},{}],174:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -67718,7 +68021,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],170:[function(require,module,exports){
+},{}],175:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -68134,7 +68437,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],171:[function(require,module,exports){
+},{}],176:[function(require,module,exports){
 /* global window: false */
 'use strict';
 
@@ -68596,7 +68899,7 @@ module.exports = function(Chart) {
 
 };
 
-},{"moment":370}],172:[function(require,module,exports){
+},{"moment":375}],177:[function(require,module,exports){
 /* MIT license */
 var colorNames = require('color-name');
 
@@ -68835,7 +69138,7 @@ for (var name in colorNames) {
    reverseNames[colorNames[name]] = name;
 }
 
-},{"color-name":178}],173:[function(require,module,exports){
+},{"color-name":183}],178:[function(require,module,exports){
 /* MIT license */
 var convert = require('color-convert');
 var string = require('chartjs-color-string');
@@ -69322,7 +69625,7 @@ if (typeof window !== 'undefined') {
 
 module.exports = Color;
 
-},{"chartjs-color-string":172,"color-convert":175}],174:[function(require,module,exports){
+},{"chartjs-color-string":177,"color-convert":180}],179:[function(require,module,exports){
 /* MIT license */
 var cssKeywords = require('color-name');
 
@@ -70192,7 +70495,7 @@ convert.rgb.gray = function (rgb) {
 	return [val / 255 * 100];
 };
 
-},{"color-name":176}],175:[function(require,module,exports){
+},{"color-name":181}],180:[function(require,module,exports){
 var conversions = require('./conversions');
 var route = require('./route');
 
@@ -70272,7 +70575,7 @@ models.forEach(function (fromModel) {
 
 module.exports = convert;
 
-},{"./conversions":174,"./route":177}],176:[function(require,module,exports){
+},{"./conversions":179,"./route":182}],181:[function(require,module,exports){
 'use strict'
 
 module.exports = {
@@ -70426,7 +70729,7 @@ module.exports = {
 	"yellowgreen": [154, 205, 50]
 };
 
-},{}],177:[function(require,module,exports){
+},{}],182:[function(require,module,exports){
 var conversions = require('./conversions');
 
 /*
@@ -70525,9 +70828,9 @@ module.exports = function (fromModel) {
 };
 
 
-},{"./conversions":174}],178:[function(require,module,exports){
-arguments[4][176][0].apply(exports,arguments)
-},{"dup":176}],179:[function(require,module,exports){
+},{"./conversions":179}],183:[function(require,module,exports){
+arguments[4][181][0].apply(exports,arguments)
+},{"dup":181}],184:[function(require,module,exports){
 // https://github.com/substack/deep-freeze/blob/master/index.js
 /** @param {any} obj */
 function deepFreeze(obj) {
@@ -72736,7 +73039,7 @@ var highlight = HLJS({});
 
 module.exports = highlight;
 
-},{}],180:[function(require,module,exports){
+},{}],185:[function(require,module,exports){
 var hljs = require('./core');
 
 hljs.registerLanguage('1c', require('./languages/1c'));
@@ -72930,7 +73233,7 @@ hljs.registerLanguage('xquery', require('./languages/xquery'));
 hljs.registerLanguage('zephir', require('./languages/zephir'));
 
 module.exports = hljs;
-},{"./core":179,"./languages/1c":181,"./languages/abnf":182,"./languages/accesslog":183,"./languages/actionscript":184,"./languages/ada":185,"./languages/angelscript":186,"./languages/apache":187,"./languages/applescript":188,"./languages/arcade":189,"./languages/arduino":190,"./languages/armasm":191,"./languages/asciidoc":192,"./languages/aspectj":193,"./languages/autohotkey":194,"./languages/autoit":195,"./languages/avrasm":196,"./languages/awk":197,"./languages/axapta":198,"./languages/bash":199,"./languages/basic":200,"./languages/bnf":201,"./languages/brainfuck":202,"./languages/c":204,"./languages/c-like":203,"./languages/cal":205,"./languages/capnproto":206,"./languages/ceylon":207,"./languages/clean":208,"./languages/clojure":210,"./languages/clojure-repl":209,"./languages/cmake":211,"./languages/coffeescript":212,"./languages/coq":213,"./languages/cos":214,"./languages/cpp":215,"./languages/crmsh":216,"./languages/crystal":217,"./languages/csharp":218,"./languages/csp":219,"./languages/css":220,"./languages/d":221,"./languages/dart":222,"./languages/delphi":223,"./languages/diff":224,"./languages/django":225,"./languages/dns":226,"./languages/dockerfile":227,"./languages/dos":228,"./languages/dsconfig":229,"./languages/dts":230,"./languages/dust":231,"./languages/ebnf":232,"./languages/elixir":233,"./languages/elm":234,"./languages/erb":235,"./languages/erlang":237,"./languages/erlang-repl":236,"./languages/excel":238,"./languages/fix":239,"./languages/flix":240,"./languages/fortran":241,"./languages/fsharp":242,"./languages/gams":243,"./languages/gauss":244,"./languages/gcode":245,"./languages/gherkin":246,"./languages/glsl":247,"./languages/gml":248,"./languages/go":249,"./languages/golo":250,"./languages/gradle":251,"./languages/groovy":252,"./languages/haml":253,"./languages/handlebars":254,"./languages/haskell":255,"./languages/haxe":256,"./languages/hsp":257,"./languages/htmlbars":258,"./languages/http":259,"./languages/hy":260,"./languages/inform7":261,"./languages/ini":262,"./languages/irpf90":263,"./languages/isbl":264,"./languages/java":265,"./languages/javascript":266,"./languages/jboss-cli":267,"./languages/json":268,"./languages/julia":270,"./languages/julia-repl":269,"./languages/kotlin":271,"./languages/lasso":272,"./languages/latex":273,"./languages/ldif":274,"./languages/leaf":275,"./languages/less":276,"./languages/lisp":277,"./languages/livecodeserver":278,"./languages/livescript":279,"./languages/llvm":280,"./languages/lsl":281,"./languages/lua":282,"./languages/makefile":283,"./languages/markdown":284,"./languages/mathematica":285,"./languages/matlab":286,"./languages/maxima":287,"./languages/mel":288,"./languages/mercury":289,"./languages/mipsasm":290,"./languages/mizar":291,"./languages/mojolicious":292,"./languages/monkey":293,"./languages/moonscript":294,"./languages/n1ql":295,"./languages/nginx":296,"./languages/nim":297,"./languages/nix":298,"./languages/nsis":299,"./languages/objectivec":300,"./languages/ocaml":301,"./languages/openscad":302,"./languages/oxygene":303,"./languages/parser3":304,"./languages/perl":305,"./languages/pf":306,"./languages/pgsql":307,"./languages/php":309,"./languages/php-template":308,"./languages/plaintext":310,"./languages/pony":311,"./languages/powershell":312,"./languages/processing":313,"./languages/profile":314,"./languages/prolog":315,"./languages/properties":316,"./languages/protobuf":317,"./languages/puppet":318,"./languages/purebasic":319,"./languages/python":321,"./languages/python-repl":320,"./languages/q":322,"./languages/qml":323,"./languages/r":324,"./languages/reasonml":325,"./languages/rib":326,"./languages/roboconf":327,"./languages/routeros":328,"./languages/rsl":329,"./languages/ruby":330,"./languages/ruleslanguage":331,"./languages/rust":332,"./languages/sas":333,"./languages/scala":334,"./languages/scheme":335,"./languages/scilab":336,"./languages/scss":337,"./languages/shell":338,"./languages/smali":339,"./languages/smalltalk":340,"./languages/sml":341,"./languages/sqf":342,"./languages/sql":343,"./languages/stan":344,"./languages/stata":345,"./languages/step21":346,"./languages/stylus":347,"./languages/subunit":348,"./languages/swift":349,"./languages/taggerscript":350,"./languages/tap":351,"./languages/tcl":352,"./languages/thrift":353,"./languages/tp":354,"./languages/twig":355,"./languages/typescript":356,"./languages/vala":357,"./languages/vbnet":358,"./languages/vbscript":360,"./languages/vbscript-html":359,"./languages/verilog":361,"./languages/vhdl":362,"./languages/vim":363,"./languages/x86asm":364,"./languages/xl":365,"./languages/xml":366,"./languages/xquery":367,"./languages/yaml":368,"./languages/zephir":369}],181:[function(require,module,exports){
+},{"./core":184,"./languages/1c":186,"./languages/abnf":187,"./languages/accesslog":188,"./languages/actionscript":189,"./languages/ada":190,"./languages/angelscript":191,"./languages/apache":192,"./languages/applescript":193,"./languages/arcade":194,"./languages/arduino":195,"./languages/armasm":196,"./languages/asciidoc":197,"./languages/aspectj":198,"./languages/autohotkey":199,"./languages/autoit":200,"./languages/avrasm":201,"./languages/awk":202,"./languages/axapta":203,"./languages/bash":204,"./languages/basic":205,"./languages/bnf":206,"./languages/brainfuck":207,"./languages/c":209,"./languages/c-like":208,"./languages/cal":210,"./languages/capnproto":211,"./languages/ceylon":212,"./languages/clean":213,"./languages/clojure":215,"./languages/clojure-repl":214,"./languages/cmake":216,"./languages/coffeescript":217,"./languages/coq":218,"./languages/cos":219,"./languages/cpp":220,"./languages/crmsh":221,"./languages/crystal":222,"./languages/csharp":223,"./languages/csp":224,"./languages/css":225,"./languages/d":226,"./languages/dart":227,"./languages/delphi":228,"./languages/diff":229,"./languages/django":230,"./languages/dns":231,"./languages/dockerfile":232,"./languages/dos":233,"./languages/dsconfig":234,"./languages/dts":235,"./languages/dust":236,"./languages/ebnf":237,"./languages/elixir":238,"./languages/elm":239,"./languages/erb":240,"./languages/erlang":242,"./languages/erlang-repl":241,"./languages/excel":243,"./languages/fix":244,"./languages/flix":245,"./languages/fortran":246,"./languages/fsharp":247,"./languages/gams":248,"./languages/gauss":249,"./languages/gcode":250,"./languages/gherkin":251,"./languages/glsl":252,"./languages/gml":253,"./languages/go":254,"./languages/golo":255,"./languages/gradle":256,"./languages/groovy":257,"./languages/haml":258,"./languages/handlebars":259,"./languages/haskell":260,"./languages/haxe":261,"./languages/hsp":262,"./languages/htmlbars":263,"./languages/http":264,"./languages/hy":265,"./languages/inform7":266,"./languages/ini":267,"./languages/irpf90":268,"./languages/isbl":269,"./languages/java":270,"./languages/javascript":271,"./languages/jboss-cli":272,"./languages/json":273,"./languages/julia":275,"./languages/julia-repl":274,"./languages/kotlin":276,"./languages/lasso":277,"./languages/latex":278,"./languages/ldif":279,"./languages/leaf":280,"./languages/less":281,"./languages/lisp":282,"./languages/livecodeserver":283,"./languages/livescript":284,"./languages/llvm":285,"./languages/lsl":286,"./languages/lua":287,"./languages/makefile":288,"./languages/markdown":289,"./languages/mathematica":290,"./languages/matlab":291,"./languages/maxima":292,"./languages/mel":293,"./languages/mercury":294,"./languages/mipsasm":295,"./languages/mizar":296,"./languages/mojolicious":297,"./languages/monkey":298,"./languages/moonscript":299,"./languages/n1ql":300,"./languages/nginx":301,"./languages/nim":302,"./languages/nix":303,"./languages/nsis":304,"./languages/objectivec":305,"./languages/ocaml":306,"./languages/openscad":307,"./languages/oxygene":308,"./languages/parser3":309,"./languages/perl":310,"./languages/pf":311,"./languages/pgsql":312,"./languages/php":314,"./languages/php-template":313,"./languages/plaintext":315,"./languages/pony":316,"./languages/powershell":317,"./languages/processing":318,"./languages/profile":319,"./languages/prolog":320,"./languages/properties":321,"./languages/protobuf":322,"./languages/puppet":323,"./languages/purebasic":324,"./languages/python":326,"./languages/python-repl":325,"./languages/q":327,"./languages/qml":328,"./languages/r":329,"./languages/reasonml":330,"./languages/rib":331,"./languages/roboconf":332,"./languages/routeros":333,"./languages/rsl":334,"./languages/ruby":335,"./languages/ruleslanguage":336,"./languages/rust":337,"./languages/sas":338,"./languages/scala":339,"./languages/scheme":340,"./languages/scilab":341,"./languages/scss":342,"./languages/shell":343,"./languages/smali":344,"./languages/smalltalk":345,"./languages/sml":346,"./languages/sqf":347,"./languages/sql":348,"./languages/stan":349,"./languages/stata":350,"./languages/step21":351,"./languages/stylus":352,"./languages/subunit":353,"./languages/swift":354,"./languages/taggerscript":355,"./languages/tap":356,"./languages/tcl":357,"./languages/thrift":358,"./languages/tp":359,"./languages/twig":360,"./languages/typescript":361,"./languages/vala":362,"./languages/vbnet":363,"./languages/vbscript":365,"./languages/vbscript-html":364,"./languages/verilog":366,"./languages/vhdl":367,"./languages/vim":368,"./languages/x86asm":369,"./languages/xl":370,"./languages/xml":371,"./languages/xquery":372,"./languages/yaml":373,"./languages/zephir":374}],186:[function(require,module,exports){
 /*
 Language: 1C:Enterprise
 Author: Stanislav Belov <stbelov@gmail.com>
@@ -73453,7 +73756,7 @@ function _1c(hljs) {
 
 module.exports = _1c;
 
-},{}],182:[function(require,module,exports){
+},{}],187:[function(require,module,exports){
 /*
 Language: Augmented Backus-Naur Form
 Author: Alex McKibben <alex@nullscope.net>
@@ -73532,7 +73835,7 @@ function abnf(hljs) {
 
 module.exports = abnf;
 
-},{}],183:[function(require,module,exports){
+},{}],188:[function(require,module,exports){
 /*
  Language: Apache Access Log
  Author: Oleg Efimov <efimovov@gmail.com>
@@ -73609,7 +73912,7 @@ function accesslog(hljs) {
 
 module.exports = accesslog;
 
-},{}],184:[function(require,module,exports){
+},{}],189:[function(require,module,exports){
 /*
 Language: ActionScript
 Author: Alexander Myadzel <myadzel@gmail.com>
@@ -73694,7 +73997,7 @@ function actionscript(hljs) {
 
 module.exports = actionscript;
 
-},{}],185:[function(require,module,exports){
+},{}],190:[function(require,module,exports){
 /*
 Language: Ada
 Author: Lars Schulna <kartoffelbrei.mit.muskatnuss@gmail.org>
@@ -73881,7 +74184,7 @@ function ada(hljs) {
 
 module.exports = ada;
 
-},{}],186:[function(require,module,exports){
+},{}],191:[function(require,module,exports){
 /*
 Language: AngelScript
 Author: Melissa Geels <melissa@nimble.tools>
@@ -74005,7 +74308,7 @@ function angelscript(hljs) {
 
 module.exports = angelscript;
 
-},{}],187:[function(require,module,exports){
+},{}],192:[function(require,module,exports){
 /*
 Language: Apache config
 Author: Ruslan Keba <rukeba@gmail.com>
@@ -74083,7 +74386,7 @@ function apache(hljs) {
 
 module.exports = apache;
 
-},{}],188:[function(require,module,exports){
+},{}],193:[function(require,module,exports){
 /*
 Language: AppleScript
 Authors: Nathan Grigg <nathan@nathanamy.org>, Dr. Drang <drdrang@gmail.com>
@@ -74181,7 +74484,7 @@ function applescript(hljs) {
 
 module.exports = applescript;
 
-},{}],189:[function(require,module,exports){
+},{}],194:[function(require,module,exports){
 /*
  Language: ArcGIS Arcade
  Category: scripting
@@ -74331,7 +74634,7 @@ function arcade(hljs) {
 
 module.exports = arcade;
 
-},{}],190:[function(require,module,exports){
+},{}],195:[function(require,module,exports){
 /*
 Language: Arduino
 Author: Stefania Mellai <s.mellai@arduino.cc>
@@ -74445,7 +74748,7 @@ function arduino(hljs) {
 
 module.exports = arduino;
 
-},{}],191:[function(require,module,exports){
+},{}],196:[function(require,module,exports){
 /*
 Language: ARM Assembly
 Author: Dan Panzarella <alsoelp@gmail.com>
@@ -74558,7 +74861,7 @@ function armasm(hljs) {
 
 module.exports = armasm;
 
-},{}],192:[function(require,module,exports){
+},{}],197:[function(require,module,exports){
 /*
 Language: AsciiDoc
 Requires: xml.js
@@ -74760,7 +75063,7 @@ function asciidoc(hljs) {
 
 module.exports = asciidoc;
 
-},{}],193:[function(require,module,exports){
+},{}],198:[function(require,module,exports){
 /*
 Language: AspectJ
 Author: Hakan Ozler <ozler.hakan@gmail.com>
@@ -74917,7 +75220,7 @@ function aspectj(hljs) {
 
 module.exports = aspectj;
 
-},{}],194:[function(require,module,exports){
+},{}],199:[function(require,module,exports){
 /*
 Language: AutoHotkey
 Author: Seongwon Lee <dlimpid@gmail.com>
@@ -74987,7 +75290,7 @@ function autohotkey(hljs) {
 
 module.exports = autohotkey;
 
-},{}],195:[function(require,module,exports){
+},{}],200:[function(require,module,exports){
 /*
 Language: AutoIt
 Author: Manh Tuan <junookyo@gmail.com>
@@ -75135,7 +75438,7 @@ function autoit(hljs) {
 
 module.exports = autoit;
 
-},{}],196:[function(require,module,exports){
+},{}],201:[function(require,module,exports){
 /*
 Language: AVR Assembly
 Author: Vladimir Ermakov <vooon341@gmail.com>
@@ -75209,7 +75512,7 @@ function avrasm(hljs) {
 
 module.exports = avrasm;
 
-},{}],197:[function(require,module,exports){
+},{}],202:[function(require,module,exports){
 /*
 Language: Awk
 Author: Matthew Daly <matthewbdaly@gmail.com>
@@ -75274,7 +75577,7 @@ function awk(hljs) {
 
 module.exports = awk;
 
-},{}],198:[function(require,module,exports){
+},{}],203:[function(require,module,exports){
 /*
 Language: Microsoft X++
 Description: X++ is a language used in Microsoft Dynamics 365, Dynamics AX, and Axapta.
@@ -75450,7 +75753,7 @@ function axapta(hljs) {
 
 module.exports = axapta;
 
-},{}],199:[function(require,module,exports){
+},{}],204:[function(require,module,exports){
 /*
 Language: Bash
 Author: vah <vahtenberg@gmail.com>
@@ -75593,7 +75896,7 @@ function bash(hljs) {
 
 module.exports = bash;
 
-},{}],200:[function(require,module,exports){
+},{}],205:[function(require,module,exports){
 /*
 Language: BASIC
 Author: Raphaël Assénat <raph@raphnet.net>
@@ -75656,7 +75959,7 @@ function basic(hljs) {
 
 module.exports = basic;
 
-},{}],201:[function(require,module,exports){
+},{}],206:[function(require,module,exports){
 /*
 Language: Backus–Naur Form
 Website: https://en.wikipedia.org/wiki/Backus–Naur_form
@@ -75694,7 +75997,7 @@ function bnf(hljs) {
 
 module.exports = bnf;
 
-},{}],202:[function(require,module,exports){
+},{}],207:[function(require,module,exports){
 /*
 Language: Brainfuck
 Author: Evgeny Stepanischev <imbolk@gmail.com>
@@ -75742,7 +76045,7 @@ function brainfuck(hljs) {
 
 module.exports = brainfuck;
 
-},{}],203:[function(require,module,exports){
+},{}],208:[function(require,module,exports){
 /*
 Language: C-like foundation grammar for C/C++ grammars
 Author: Ivan Sagalaev <maniac@softwaremaniacs.org>
@@ -75993,7 +76296,7 @@ function cLike(hljs) {
 
 module.exports = cLike;
 
-},{}],204:[function(require,module,exports){
+},{}],209:[function(require,module,exports){
 /*
 Language: C
 Category: common, system
@@ -76018,7 +76321,7 @@ function c(hljs) {
 
 module.exports = c;
 
-},{}],205:[function(require,module,exports){
+},{}],210:[function(require,module,exports){
 /*
 Language: C/AL
 Author: Kenneth Fuglsang Christensen <kfuglsang@gmail.com>
@@ -76110,7 +76413,7 @@ function cal(hljs) {
 
 module.exports = cal;
 
-},{}],206:[function(require,module,exports){
+},{}],211:[function(require,module,exports){
 /*
 Language: Cap’n Proto
 Author: Oleg Efimov <efimovov@gmail.com>
@@ -76172,7 +76475,7 @@ function capnproto(hljs) {
 
 module.exports = capnproto;
 
-},{}],207:[function(require,module,exports){
+},{}],212:[function(require,module,exports){
 /*
 Language: Ceylon
 Author: Lucas Werkmeister <mail@lucaswerkmeister.de>
@@ -76250,7 +76553,7 @@ function ceylon(hljs) {
 
 module.exports = ceylon;
 
-},{}],208:[function(require,module,exports){
+},{}],213:[function(require,module,exports){
 /*
 Language: Clean
 Author: Camil Staps <info@camilstaps.nl>
@@ -76289,7 +76592,7 @@ function clean(hljs) {
 
 module.exports = clean;
 
-},{}],209:[function(require,module,exports){
+},{}],214:[function(require,module,exports){
 /*
 Language: Clojure REPL
 Description: Clojure REPL sessions
@@ -76318,7 +76621,7 @@ function clojureRepl(hljs) {
 
 module.exports = clojureRepl;
 
-},{}],210:[function(require,module,exports){
+},{}],215:[function(require,module,exports){
 /*
 Language: Clojure
 Description: Clojure syntax (based on lisp.js)
@@ -76445,7 +76748,7 @@ function clojure(hljs) {
 
 module.exports = clojure;
 
-},{}],211:[function(require,module,exports){
+},{}],216:[function(require,module,exports){
 /*
 Language: CMake
 Description: CMake is an open-source cross-platform system for build automation.
@@ -76510,7 +76813,7 @@ function cmake(hljs) {
 
 module.exports = cmake;
 
-},{}],212:[function(require,module,exports){
+},{}],217:[function(require,module,exports){
 const KEYWORDS = [
   "as", // for exports
   "in",
@@ -76829,7 +77132,7 @@ function coffeescript(hljs) {
 
 module.exports = coffeescript;
 
-},{}],213:[function(require,module,exports){
+},{}],218:[function(require,module,exports){
 /*
 Language: Coq
 Author: Stephan Boyer <stephan@stephanboyer.com>
@@ -76908,7 +77211,7 @@ function coq(hljs) {
 
 module.exports = coq;
 
-},{}],214:[function(require,module,exports){
+},{}],219:[function(require,module,exports){
 /*
 Language: Caché Object Script
 Author: Nikita Savchenko <zitros.lab@gmail.com>
@@ -77044,7 +77347,7 @@ function cos (hljs) {
 
 module.exports = cos;
 
-},{}],215:[function(require,module,exports){
+},{}],220:[function(require,module,exports){
 /*
 Language: C++
 Category: common, system
@@ -77064,7 +77367,7 @@ function cpp(hljs) {
 
 module.exports = cpp;
 
-},{}],216:[function(require,module,exports){
+},{}],221:[function(require,module,exports){
 /*
 Language: crmsh
 Author: Kristoffer Gronlund <kgronlund@suse.com>
@@ -77171,7 +77474,7 @@ function crmsh(hljs) {
 
 module.exports = crmsh;
 
-},{}],217:[function(require,module,exports){
+},{}],222:[function(require,module,exports){
 /*
 Language: Crystal
 Author: TSUYUSATO Kitsune <make.just.on@gmail.com>
@@ -77370,7 +77673,7 @@ function crystal(hljs) {
 
 module.exports = crystal;
 
-},{}],218:[function(require,module,exports){
+},{}],223:[function(require,module,exports){
 /*
 Language: C#
 Author: Jason Diamond <jason@diamond.name>
@@ -77730,7 +78033,7 @@ function csharp(hljs) {
 
 module.exports = csharp;
 
-},{}],219:[function(require,module,exports){
+},{}],224:[function(require,module,exports){
 /*
 Language: CSP
 Description: Content Security Policy definition highlighting
@@ -77766,7 +78069,7 @@ function csp(hljs) {
 
 module.exports = csp;
 
-},{}],220:[function(require,module,exports){
+},{}],225:[function(require,module,exports){
 /*
 Language: CSS
 Category: common, css
@@ -77902,7 +78205,7 @@ function css(hljs) {
 
 module.exports = css;
 
-},{}],221:[function(require,module,exports){
+},{}],226:[function(require,module,exports){
 /*
 Language: D
 Author: Aleksandar Ruzicic <aleksandar@ruzicic.info>
@@ -78174,7 +78477,7 @@ function d(hljs) {
 
 module.exports = d;
 
-},{}],222:[function(require,module,exports){
+},{}],227:[function(require,module,exports){
 /*
 Language: Dart
 Requires: markdown.js
@@ -78354,7 +78657,7 @@ function dart(hljs) {
 
 module.exports = dart;
 
-},{}],223:[function(require,module,exports){
+},{}],228:[function(require,module,exports){
 /*
 Language: Delphi
 Website: https://www.embarcadero.com/products/delphi
@@ -78453,7 +78756,7 @@ function delphi(hljs) {
 
 module.exports = delphi;
 
-},{}],224:[function(require,module,exports){
+},{}],229:[function(require,module,exports){
 /*
 Language: Diff
 Description: Unified and context diff
@@ -78506,7 +78809,7 @@ function diff(hljs) {
 
 module.exports = diff;
 
-},{}],225:[function(require,module,exports){
+},{}],230:[function(require,module,exports){
 /*
 Language: Django
 Description: Django is a high-level Python Web framework that encourages rapid development and clean, pragmatic design.
@@ -78584,7 +78887,7 @@ function django(hljs) {
 
 module.exports = django;
 
-},{}],226:[function(require,module,exports){
+},{}],231:[function(require,module,exports){
 /*
 Language: DNS Zone
 Author: Tim Schumacher <tim@datenknoten.me>
@@ -78625,7 +78928,7 @@ function dns(hljs) {
 
 module.exports = dns;
 
-},{}],227:[function(require,module,exports){
+},{}],232:[function(require,module,exports){
 /*
 Language: Dockerfile
 Requires: bash.js
@@ -78660,7 +78963,7 @@ function dockerfile(hljs) {
 
 module.exports = dockerfile;
 
-},{}],228:[function(require,module,exports){
+},{}],233:[function(require,module,exports){
 /*
 Language: Batch file (DOS)
 Author: Alexander Makarov <sam@rmcreative.ru>
@@ -78723,7 +79026,7 @@ function dos(hljs) {
 
 module.exports = dos;
 
-},{}],229:[function(require,module,exports){
+},{}],234:[function(require,module,exports){
 /*
  Language: dsconfig
  Description: dsconfig batch configuration language for LDAP directory servers
@@ -78779,7 +79082,7 @@ function dsconfig(hljs) {
 
 module.exports = dsconfig;
 
-},{}],230:[function(require,module,exports){
+},{}],235:[function(require,module,exports){
 /*
 Language: Device Tree
 Description: *.dts files used in the Linux kernel
@@ -78915,7 +79218,7 @@ function dts(hljs) {
 
 module.exports = dts;
 
-},{}],231:[function(require,module,exports){
+},{}],236:[function(require,module,exports){
 /*
 Language: Dust
 Requires: xml.js
@@ -78960,7 +79263,7 @@ function dust(hljs) {
 
 module.exports = dust;
 
-},{}],232:[function(require,module,exports){
+},{}],237:[function(require,module,exports){
 /*
 Language: Extended Backus-Naur Form
 Author: Alex McKibben <alex@nullscope.net>
@@ -79010,7 +79313,7 @@ function ebnf(hljs) {
 
 module.exports = ebnf;
 
-},{}],233:[function(require,module,exports){
+},{}],238:[function(require,module,exports){
 /*
 Language: Elixir
 Author: Josh Adams <josh@isotope11.com>
@@ -79195,7 +79498,7 @@ function elixir(hljs) {
 
 module.exports = elixir;
 
-},{}],234:[function(require,module,exports){
+},{}],239:[function(require,module,exports){
 /*
 Language: Elm
 Author: Janis Voigtlaender <janis.voigtlaender@gmail.com>
@@ -79296,7 +79599,7 @@ function elm(hljs) {
 
 module.exports = elm;
 
-},{}],235:[function(require,module,exports){
+},{}],240:[function(require,module,exports){
 /*
 Language: ERB (Embedded Ruby)
 Requires: xml.js, ruby.js
@@ -79325,7 +79628,7 @@ function erb(hljs) {
 
 module.exports = erb;
 
-},{}],236:[function(require,module,exports){
+},{}],241:[function(require,module,exports){
 /*
 Language: Erlang REPL
 Author: Sergey Ignatov <sergey@ignatov.spb.su>
@@ -79382,7 +79685,7 @@ function erlangRepl(hljs) {
 
 module.exports = erlangRepl;
 
-},{}],237:[function(require,module,exports){
+},{}],242:[function(require,module,exports){
 /*
 Language: Erlang
 Description: Erlang is a general-purpose functional language, with strict evaluation, single assignment, and dynamic typing.
@@ -79541,7 +79844,7 @@ function erlang(hljs) {
 
 module.exports = erlang;
 
-},{}],238:[function(require,module,exports){
+},{}],243:[function(require,module,exports){
 /*
 Language: Excel formulae
 Author: Victor Zhou <OiCMudkips@users.noreply.github.com>
@@ -79600,7 +79903,7 @@ function excel(hljs) {
 
 module.exports = excel;
 
-},{}],239:[function(require,module,exports){
+},{}],244:[function(require,module,exports){
 /*
 Language: FIX
 Author: Brent Bradbury <brent@brentium.com>
@@ -79638,7 +79941,7 @@ function fix(hljs) {
 
 module.exports = fix;
 
-},{}],240:[function(require,module,exports){
+},{}],245:[function(require,module,exports){
 /*
  Language: Flix
  Category: functional
@@ -79694,7 +79997,7 @@ function flix (hljs) {
 
 module.exports = flix;
 
-},{}],241:[function(require,module,exports){
+},{}],246:[function(require,module,exports){
 /*
 Language: Fortran
 Author: Anthony Scemama <scemama@irsamc.ups-tlse.fr>
@@ -79804,7 +80107,7 @@ function fortran(hljs) {
 
 module.exports = fortran;
 
-},{}],242:[function(require,module,exports){
+},{}],247:[function(require,module,exports){
 /*
 Language: F#
 Author: Jonas Follesø <jonas@follesoe.no>
@@ -79890,7 +80193,7 @@ function fsharp(hljs) {
 
 module.exports = fsharp;
 
-},{}],243:[function(require,module,exports){
+},{}],248:[function(require,module,exports){
 /*
  Language: GAMS
  Author: Stefan Bechert <stefan.bechert@gmx.net>
@@ -80057,7 +80360,7 @@ function gams (hljs) {
 
 module.exports = gams;
 
-},{}],244:[function(require,module,exports){
+},{}],249:[function(require,module,exports){
 /*
 Language: GAUSS
 Author: Matt Evans <matt@aptech.com>
@@ -80359,7 +80662,7 @@ function gauss(hljs) {
 
 module.exports = gauss;
 
-},{}],245:[function(require,module,exports){
+},{}],250:[function(require,module,exports){
 /*
  Language: G-code (ISO 6983)
  Contributors: Adam Joseph Cook <adam.joseph.cook@gmail.com>
@@ -80438,7 +80741,7 @@ function gcode(hljs) {
 
 module.exports = gcode;
 
-},{}],246:[function(require,module,exports){
+},{}],251:[function(require,module,exports){
 /*
  Language: Gherkin
  Author: Sam Pikesley (@pikesley) <sam.pikesley@theodi.org>
@@ -80486,7 +80789,7 @@ function gherkin (hljs) {
 
 module.exports = gherkin;
 
-},{}],247:[function(require,module,exports){
+},{}],252:[function(require,module,exports){
 /*
 Language: GLSL
 Description: OpenGL Shading Language
@@ -80615,7 +80918,7 @@ function glsl(hljs) {
 
 module.exports = glsl;
 
-},{}],248:[function(require,module,exports){
+},{}],253:[function(require,module,exports){
 /*
 Language: GML
 Author: Meseta <meseta@gmail.com>
@@ -81500,7 +81803,7 @@ function gml(hljs) {
 
 module.exports = gml;
 
-},{}],249:[function(require,module,exports){
+},{}],254:[function(require,module,exports){
 /*
 Language: Go
 Author: Stephan Kountso aka StepLg <steplg@gmail.com>
@@ -81567,7 +81870,7 @@ function go(hljs) {
 
 module.exports = go;
 
-},{}],250:[function(require,module,exports){
+},{}],255:[function(require,module,exports){
 /*
 Language: Golo
 Author: Philippe Charriere <ph.charriere@gmail.com>
@@ -81601,7 +81904,7 @@ function golo(hljs) {
 
 module.exports = golo;
 
-},{}],251:[function(require,module,exports){
+},{}],256:[function(require,module,exports){
 /*
 Language: Gradle
 Description: Gradle is an open-source build automation tool focused on flexibility and performance.
@@ -81647,7 +81950,7 @@ function gradle(hljs) {
 
 module.exports = gradle;
 
-},{}],252:[function(require,module,exports){
+},{}],257:[function(require,module,exports){
 /**
  * @param {string} value
  * @returns {RegExp}
@@ -81808,7 +82111,7 @@ function groovy(hljs) {
 
 module.exports = groovy;
 
-},{}],253:[function(require,module,exports){
+},{}],258:[function(require,module,exports){
 /*
 Language: HAML
 Requires: ruby.js
@@ -81927,7 +82230,7 @@ function haml(hljs) {
 
 module.exports = haml;
 
-},{}],254:[function(require,module,exports){
+},{}],259:[function(require,module,exports){
 /**
  * @param {string} value
  * @returns {RegExp}
@@ -82205,7 +82508,7 @@ function handlebars(hljs) {
 
 module.exports = handlebars;
 
-},{}],255:[function(require,module,exports){
+},{}],260:[function(require,module,exports){
 /*
 Language: Haskell
 Author: Jeremy Hull <sourdrums@gmail.com>
@@ -82339,7 +82642,7 @@ function haskell(hljs) {
 
 module.exports = haskell;
 
-},{}],256:[function(require,module,exports){
+},{}],261:[function(require,module,exports){
 /*
 Language: Haxe
 Description: Haxe is an open source toolkit based on a modern, high level, strictly typed programming language.
@@ -82461,7 +82764,7 @@ function haxe(hljs) {
 
 module.exports = haxe;
 
-},{}],257:[function(require,module,exports){
+},{}],262:[function(require,module,exports){
 /*
 Language: HSP
 Author: prince <MC.prince.0203@gmail.com>
@@ -82520,7 +82823,7 @@ function hsp(hljs) {
 
 module.exports = hsp;
 
-},{}],258:[function(require,module,exports){
+},{}],263:[function(require,module,exports){
 /**
  * @param {string} value
  * @returns {RegExp}
@@ -82826,7 +83129,7 @@ function htmlbars(hljs) {
 
 module.exports = htmlbars;
 
-},{}],259:[function(require,module,exports){
+},{}],264:[function(require,module,exports){
 /*
 Language: HTTP
 Description: HTTP request and response headers with automatic body highlighting
@@ -82879,7 +83182,7 @@ function http(hljs) {
 
 module.exports = http;
 
-},{}],260:[function(require,module,exports){
+},{}],265:[function(require,module,exports){
 /*
 Language: Hy
 Description: Hy is a wonderful dialect of Lisp that’s embedded in Python.
@@ -82988,7 +83291,7 @@ function hy(hljs) {
 
 module.exports = hy;
 
-},{}],261:[function(require,module,exports){
+},{}],266:[function(require,module,exports){
 /*
 Language: Inform 7
 Author: Bruno Dias <bruno.r.dias@gmail.com>
@@ -83056,7 +83359,7 @@ function inform7(hljs) {
 
 module.exports = inform7;
 
-},{}],262:[function(require,module,exports){
+},{}],267:[function(require,module,exports){
 /**
  * @param {string} value
  * @returns {RegExp}
@@ -83201,7 +83504,7 @@ function ini(hljs) {
 
 module.exports = ini;
 
-},{}],263:[function(require,module,exports){
+},{}],268:[function(require,module,exports){
 /*
 Language: IRPF90
 Author: Anthony Scemama <scemama@irsamc.ups-tlse.fr>
@@ -83290,7 +83593,7 @@ function irpf90(hljs) {
 
 module.exports = irpf90;
 
-},{}],264:[function(require,module,exports){
+},{}],269:[function(require,module,exports){
 /*
 Language: ISBL
 Author: Dmitriy Tarasov <dimatar@gmail.com>
@@ -86472,7 +86775,7 @@ function isbl(hljs) {
 
 module.exports = isbl;
 
-},{}],265:[function(require,module,exports){
+},{}],270:[function(require,module,exports){
 /**
  * @param {string} value
  * @returns {RegExp}
@@ -86694,7 +86997,7 @@ function java(hljs) {
 
 module.exports = java;
 
-},{}],266:[function(require,module,exports){
+},{}],271:[function(require,module,exports){
 const IDENT_RE = '[A-Za-z$_][0-9A-Za-z$_]*';
 const KEYWORDS = [
   "as", // for exports
@@ -87289,7 +87592,7 @@ function javascript(hljs) {
 
 module.exports = javascript;
 
-},{}],267:[function(require,module,exports){
+},{}],272:[function(require,module,exports){
 /*
  Language: JBoss CLI
  Author: Raphaël Parrëe <rparree@edc4it.com>
@@ -87348,7 +87651,7 @@ function jbossCli (hljs) {
 
 module.exports = jbossCli;
 
-},{}],268:[function(require,module,exports){
+},{}],273:[function(require,module,exports){
 /*
 Language: JSON
 Description: JSON (JavaScript Object Notation) is a lightweight data-interchange format.
@@ -87404,7 +87707,7 @@ function json(hljs) {
 
 module.exports = json;
 
-},{}],269:[function(require,module,exports){
+},{}],274:[function(require,module,exports){
 /*
 Language: Julia REPL
 Description: Julia REPL sessions
@@ -87456,7 +87759,7 @@ function juliaRepl(hljs) {
 
 module.exports = juliaRepl;
 
-},{}],270:[function(require,module,exports){
+},{}],275:[function(require,module,exports){
 /*
 Language: Julia
 Description: Julia is a high-level, high-performance, dynamic programming language.
@@ -87631,7 +87934,7 @@ function julia(hljs) {
 
 module.exports = julia;
 
-},{}],271:[function(require,module,exports){
+},{}],276:[function(require,module,exports){
 /*
  Language: Kotlin
  Description: Kotlin is an OSS statically typed programming language that targets the JVM, Android, JavaScript and Native.
@@ -87859,7 +88162,7 @@ function kotlin(hljs) {
 
 module.exports = kotlin;
 
-},{}],272:[function(require,module,exports){
+},{}],277:[function(require,module,exports){
 /*
 Language: Lasso
 Author: Eric Knibbe <eric@lassosoft.com>
@@ -88032,7 +88335,7 @@ function lasso(hljs) {
 
 module.exports = lasso;
 
-},{}],273:[function(require,module,exports){
+},{}],278:[function(require,module,exports){
 /**
  * @param {string} value
  * @returns {RegExp}
@@ -88310,7 +88613,7 @@ function latex(hljs) {
 
 module.exports = latex;
 
-},{}],274:[function(require,module,exports){
+},{}],279:[function(require,module,exports){
 /*
 Language: LDIF
 Contributors: Jacob Childress <jacobc@gmail.com>
@@ -88343,7 +88646,7 @@ function ldif(hljs) {
 
 module.exports = ldif;
 
-},{}],275:[function(require,module,exports){
+},{}],280:[function(require,module,exports){
 /*
 Language: Leaf
 Author: Hale Chan <halechan@qq.com>
@@ -88393,7 +88696,7 @@ function leaf (hljs) {
 
 module.exports = leaf;
 
-},{}],276:[function(require,module,exports){
+},{}],281:[function(require,module,exports){
 /*
 Language: Less
 Description: It's CSS, with just a little more.
@@ -88545,7 +88848,7 @@ function less(hljs) {
 
 module.exports = less;
 
-},{}],277:[function(require,module,exports){
+},{}],282:[function(require,module,exports){
 /*
 Language: Lisp
 Description: Generic lisp syntax
@@ -88655,7 +88958,7 @@ function lisp(hljs) {
 
 module.exports = lisp;
 
-},{}],278:[function(require,module,exports){
+},{}],283:[function(require,module,exports){
 /*
 Language: LiveCode
 Author: Ralf Bitter <rabit@revigniter.com>
@@ -88829,7 +89132,7 @@ function livecodeserver(hljs) {
 
 module.exports = livecodeserver;
 
-},{}],279:[function(require,module,exports){
+},{}],284:[function(require,module,exports){
 const KEYWORDS = [
   "as", // for exports
   "in",
@@ -89166,7 +89469,7 @@ function livescript(hljs) {
 
 module.exports = livescript;
 
-},{}],280:[function(require,module,exports){
+},{}],285:[function(require,module,exports){
 /*
 Language: LLVM IR
 Author: Michael Rodler <contact@f0rki.at>
@@ -89266,7 +89569,7 @@ function llvm(hljs) {
 
 module.exports = llvm;
 
-},{}],281:[function(require,module,exports){
+},{}],286:[function(require,module,exports){
 /*
 Language: LSL (Linden Scripting Language)
 Description: The Linden Scripting Language is used in Second Life by Linden Labs.
@@ -89362,7 +89665,7 @@ function lsl(hljs) {
 
 module.exports = lsl;
 
-},{}],282:[function(require,module,exports){
+},{}],287:[function(require,module,exports){
 /*
 Language: Lua
 Description: Lua is a powerful, efficient, lightweight, embeddable scripting language.
@@ -89440,7 +89743,7 @@ function lua(hljs) {
 
 module.exports = lua;
 
-},{}],283:[function(require,module,exports){
+},{}],288:[function(require,module,exports){
 /*
 Language: Makefile
 Author: Ivan Sagalaev <maniac@softwaremaniacs.org>
@@ -89528,7 +89831,7 @@ function makefile(hljs) {
 
 module.exports = makefile;
 
-},{}],284:[function(require,module,exports){
+},{}],289:[function(require,module,exports){
 /*
 Language: Markdown
 Requires: xml.js
@@ -89687,7 +89990,7 @@ function markdown(hljs) {
 
 module.exports = markdown;
 
-},{}],285:[function(require,module,exports){
+},{}],290:[function(require,module,exports){
 /*
 Language: Mathematica
 Description: Wolfram Mathematica (usually termed Mathematica) is a modern technical computing system spanning most areas of technical computing.
@@ -89750,7 +90053,7 @@ function mathematica(hljs) {
 
 module.exports = mathematica;
 
-},{}],286:[function(require,module,exports){
+},{}],291:[function(require,module,exports){
 /*
 Language: Matlab
 Author: Denis Bardadym <bardadymchik@gmail.com>
@@ -89858,7 +90161,7 @@ function matlab(hljs) {
 
 module.exports = matlab;
 
-},{}],287:[function(require,module,exports){
+},{}],292:[function(require,module,exports){
 /*
 Language: Maxima
 Author: Robert Dodier <robert.dodier@gmail.com>
@@ -90275,7 +90578,7 @@ function maxima(hljs) {
 
 module.exports = maxima;
 
-},{}],288:[function(require,module,exports){
+},{}],293:[function(require,module,exports){
 /*
 Language: MEL
 Description: Maya Embedded Language
@@ -90512,7 +90815,7 @@ function mel(hljs) {
 
 module.exports = mel;
 
-},{}],289:[function(require,module,exports){
+},{}],294:[function(require,module,exports){
 /*
 Language: Mercury
 Author: mucaho <mkucko@gmail.com>
@@ -90607,7 +90910,7 @@ function mercury(hljs) {
 
 module.exports = mercury;
 
-},{}],290:[function(require,module,exports){
+},{}],295:[function(require,module,exports){
 /*
 Language: MIPS Assembly
 Author: Nebuleon Fumika <nebuleon.fumika@gmail.com>
@@ -90706,7 +91009,7 @@ function mipsasm(hljs) {
 
 module.exports = mipsasm;
 
-},{}],291:[function(require,module,exports){
+},{}],296:[function(require,module,exports){
 /*
 Language: Mizar
 Description: The Mizar Language is a formal language derived from the mathematical vernacular.
@@ -90737,7 +91040,7 @@ function mizar(hljs) {
 
 module.exports = mizar;
 
-},{}],292:[function(require,module,exports){
+},{}],297:[function(require,module,exports){
 /*
 Language: Mojolicious
 Requires: xml.js, perl.js
@@ -90774,7 +91077,7 @@ function mojolicious(hljs) {
 
 module.exports = mojolicious;
 
-},{}],293:[function(require,module,exports){
+},{}],298:[function(require,module,exports){
 /*
 Language: Monkey
 Description: Monkey2 is an easy to use, cross platform, games oriented programming language from Blitz Research.
@@ -90860,7 +91163,7 @@ function monkey(hljs) {
 
 module.exports = monkey;
 
-},{}],294:[function(require,module,exports){
+},{}],299:[function(require,module,exports){
 /*
 Language: MoonScript
 Author: Billy Quith <chinbillybilbo@gmail.com>
@@ -90985,7 +91288,7 @@ function moonscript(hljs) {
 
 module.exports = moonscript;
 
-},{}],295:[function(require,module,exports){
+},{}],300:[function(require,module,exports){
 /*
  Language: N1QL
  Author: Andres Täht <andres.taht@gmail.com>
@@ -91066,7 +91369,7 @@ function n1ql(hljs) {
 
 module.exports = n1ql;
 
-},{}],296:[function(require,module,exports){
+},{}],301:[function(require,module,exports){
 /*
 Language: Nginx config
 Author: Peter Leonov <gojpeg@yandex.ru>
@@ -91171,7 +91474,7 @@ function nginx(hljs) {
 
 module.exports = nginx;
 
-},{}],297:[function(require,module,exports){
+},{}],302:[function(require,module,exports){
 /*
 Language: Nim
 Description: Nim is a statically typed compiled systems programming language.
@@ -91237,7 +91540,7 @@ function nim(hljs) {
 
 module.exports = nim;
 
-},{}],298:[function(require,module,exports){
+},{}],303:[function(require,module,exports){
 /*
 Language: Nix
 Author: Domen Kožar <domen@dev.si>
@@ -91298,7 +91601,7 @@ function nix(hljs) {
 
 module.exports = nix;
 
-},{}],299:[function(require,module,exports){
+},{}],304:[function(require,module,exports){
 /*
 Language: NSIS
 Description: Nullsoft Scriptable Install System
@@ -91415,7 +91718,7 @@ function nsis(hljs) {
 
 module.exports = nsis;
 
-},{}],300:[function(require,module,exports){
+},{}],305:[function(require,module,exports){
 /*
 Language: Objective-C
 Author: Valerii Hiora <valerii.hiora@gmail.com>
@@ -91526,7 +91829,7 @@ function objectivec(hljs) {
 
 module.exports = objectivec;
 
-},{}],301:[function(require,module,exports){
+},{}],306:[function(require,module,exports){
 /*
 Language: OCaml
 Author: Mehdi Dogguy <mehdi@dogguy.org>
@@ -91610,7 +91913,7 @@ function ocaml(hljs) {
 
 module.exports = ocaml;
 
-},{}],302:[function(require,module,exports){
+},{}],307:[function(require,module,exports){
 /*
 Language: OpenSCAD
 Author: Dan Panzarella <alsoelp@gmail.com>
@@ -91679,7 +91982,7 @@ function openscad(hljs) {
 
 module.exports = openscad;
 
-},{}],303:[function(require,module,exports){
+},{}],308:[function(require,module,exports){
 /*
 Language: Oxygene
 Author: Carlo Kok <ck@remobjects.com>
@@ -91762,7 +92065,7 @@ function oxygene(hljs) {
 
 module.exports = oxygene;
 
-},{}],304:[function(require,module,exports){
+},{}],309:[function(require,module,exports){
 /*
 Language: Parser3
 Requires: xml.js
@@ -91822,7 +92125,7 @@ function parser3(hljs) {
 
 module.exports = parser3;
 
-},{}],305:[function(require,module,exports){
+},{}],310:[function(require,module,exports){
 /*
 Language: Perl
 Author: Peter Leonov <gojpeg@yandex.ru>
@@ -91992,7 +92295,7 @@ function perl(hljs) {
 
 module.exports = perl;
 
-},{}],306:[function(require,module,exports){
+},{}],311:[function(require,module,exports){
 /*
 Language: Packet Filter config
 Description: pf.conf — packet filter configuration file (OpenBSD)
@@ -92052,7 +92355,7 @@ function pf(hljs) {
 
 module.exports = pf;
 
-},{}],307:[function(require,module,exports){
+},{}],312:[function(require,module,exports){
 /*
 Language: PostgreSQL and PL/pgSQL
 Author: Egor Rogov (e.rogov@postgrespro.ru)
@@ -92560,7 +92863,7 @@ function pgsql(hljs) {
 
 module.exports = pgsql;
 
-},{}],308:[function(require,module,exports){
+},{}],313:[function(require,module,exports){
 /*
 Language: PHP Template
 Requires: xml.js, php.js
@@ -92594,7 +92897,7 @@ function phpTemplate(hljs) {
 
 module.exports = phpTemplate;
 
-},{}],309:[function(require,module,exports){
+},{}],314:[function(require,module,exports){
 /*
 Language: PHP
 Author: Victor Karamzin <Victor.Karamzin@enterra-inc.com>
@@ -92768,7 +93071,7 @@ function php(hljs) {
 
 module.exports = php;
 
-},{}],310:[function(require,module,exports){
+},{}],315:[function(require,module,exports){
 /*
 Language: Plain text
 Author: Egor Rogov (e.rogov@postgrespro.ru)
@@ -92786,7 +93089,7 @@ function plaintext(hljs) {
 
 module.exports = plaintext;
 
-},{}],311:[function(require,module,exports){
+},{}],316:[function(require,module,exports){
 /*
 Language: Pony
 Author: Joe Eli McIlvain <joe.eli.mac@gmail.com>
@@ -92873,7 +93176,7 @@ function pony(hljs) {
 
 module.exports = pony;
 
-},{}],312:[function(require,module,exports){
+},{}],317:[function(require,module,exports){
 /*
 Language: PowerShell
 Description: PowerShell is a task-based command-line shell and scripting language built on .NET.
@@ -93118,7 +93421,7 @@ function powershell(hljs) {
 
 module.exports = powershell;
 
-},{}],313:[function(require,module,exports){
+},{}],318:[function(require,module,exports){
 /*
 Language: Processing
 Description: Processing is a flexible software sketchbook and a language for learning how to code within the context of the visual arts.
@@ -93178,7 +93481,7 @@ function processing(hljs) {
 
 module.exports = processing;
 
-},{}],314:[function(require,module,exports){
+},{}],319:[function(require,module,exports){
 /*
 Language: Python profiler
 Description: Python profiler results
@@ -93218,7 +93521,7 @@ function profile(hljs) {
 
 module.exports = profile;
 
-},{}],315:[function(require,module,exports){
+},{}],320:[function(require,module,exports){
 /*
 Language: Prolog
 Description: Prolog is a general purpose logic programming language associated with artificial intelligence and computational linguistics.
@@ -93317,7 +93620,7 @@ function prolog(hljs) {
 
 module.exports = prolog;
 
-},{}],316:[function(require,module,exports){
+},{}],321:[function(require,module,exports){
 /*
 Language: .properties
 Contributors: Valentin Aitken <valentin@nalisbg.com>, Egor Rogov <e.rogov@postgrespro.ru>
@@ -93398,7 +93701,7 @@ function properties(hljs) {
 
 module.exports = properties;
 
-},{}],317:[function(require,module,exports){
+},{}],322:[function(require,module,exports){
 /*
 Language: Protocol Buffers
 Author: Dan Tao <daniel.tao@gmail.com>
@@ -93447,7 +93750,7 @@ function protobuf(hljs) {
 
 module.exports = protobuf;
 
-},{}],318:[function(require,module,exports){
+},{}],323:[function(require,module,exports){
 /*
 Language: Puppet
 Author: Jose Molina Colmenero <gaudy41@gmail.com>
@@ -93573,7 +93876,7 @@ function puppet(hljs) {
 
 module.exports = puppet;
 
-},{}],319:[function(require,module,exports){
+},{}],324:[function(require,module,exports){
 /*
 Language: PureBASIC
 Author: Tristano Ajmone <tajmone@gmail.com>
@@ -93670,7 +93973,7 @@ function purebasic(hljs) {
 
 module.exports = purebasic;
 
-},{}],320:[function(require,module,exports){
+},{}],325:[function(require,module,exports){
 /*
 Language: Python REPL
 Requires: python.js
@@ -93703,7 +94006,7 @@ function pythonRepl(hljs) {
 
 module.exports = pythonRepl;
 
-},{}],321:[function(require,module,exports){
+},{}],326:[function(require,module,exports){
 /*
 Language: Python
 Description: Python is an interpreted, object-oriented, high-level programming language with dynamic semantics.
@@ -93965,7 +94268,7 @@ function python(hljs) {
 
 module.exports = python;
 
-},{}],322:[function(require,module,exports){
+},{}],327:[function(require,module,exports){
 /*
 Language: Q
 Description: Q is a vector-based functional paradigm programming language built into the kdb+ database.
@@ -93999,7 +94302,7 @@ function q(hljs) {
 
 module.exports = q;
 
-},{}],323:[function(require,module,exports){
+},{}],328:[function(require,module,exports){
 /*
 Language: QML
 Requires: javascript.js, xml.js
@@ -94182,7 +94485,7 @@ function qml(hljs) {
 
 module.exports = qml;
 
-},{}],324:[function(require,module,exports){
+},{}],329:[function(require,module,exports){
 /*
 Language: R
 Description: R is a free software environment for statistical computing and graphics.
@@ -94368,7 +94671,7 @@ function r(hljs) {
 
 module.exports = r;
 
-},{}],325:[function(require,module,exports){
+},{}],330:[function(require,module,exports){
 /*
 Language: ReasonML
 Description: Reason lets you write simple, fast and quality type safe code while leveraging both the JavaScript & OCaml ecosystems.
@@ -94679,7 +94982,7 @@ function reasonml(hljs) {
 
 module.exports = reasonml;
 
-},{}],326:[function(require,module,exports){
+},{}],331:[function(require,module,exports){
 /*
 Language: RenderMan RIB
 Author: Konstantin Evdokimenko <qewerty@gmail.com>
@@ -94718,7 +95021,7 @@ function rib(hljs) {
 
 module.exports = rib;
 
-},{}],327:[function(require,module,exports){
+},{}],332:[function(require,module,exports){
 /*
 Language: Roboconf
 Author: Vincent Zurczak <vzurczak@linagora.com>
@@ -94797,7 +95100,7 @@ function roboconf(hljs) {
 
 module.exports = roboconf;
 
-},{}],328:[function(require,module,exports){
+},{}],333:[function(require,module,exports){
 /*
 Language: Microtik RouterOS script
 Author: Ivan Dementev <ivan_div@mail.ru>
@@ -94955,7 +95258,7 @@ function routeros(hljs) {
 
 module.exports = routeros;
 
-},{}],329:[function(require,module,exports){
+},{}],334:[function(require,module,exports){
 /*
 Language: RenderMan RSL
 Author: Konstantin Evdokimenko <qewerty@gmail.com>
@@ -95003,7 +95306,7 @@ function rsl(hljs) {
 
 module.exports = rsl;
 
-},{}],330:[function(require,module,exports){
+},{}],335:[function(require,module,exports){
 /*
 Language: Ruby
 Description: Ruby is a dynamic, open source programming language with a focus on simplicity and productivity.
@@ -95201,7 +95504,7 @@ function ruby(hljs) {
 
 module.exports = ruby;
 
-},{}],331:[function(require,module,exports){
+},{}],336:[function(require,module,exports){
 /*
 Language: Oracle Rules Language
 Author: Jason Jacobson <jason.a.jacobson@gmail.com>
@@ -95274,7 +95577,7 @@ function ruleslanguage(hljs) {
 
 module.exports = ruleslanguage;
 
-},{}],332:[function(require,module,exports){
+},{}],337:[function(require,module,exports){
 /*
 Language: Rust
 Author: Andrey Vlasovskikh <andrey.vlasovskikh@gmail.com>
@@ -95394,7 +95697,7 @@ function rust(hljs) {
 
 module.exports = rust;
 
-},{}],333:[function(require,module,exports){
+},{}],338:[function(require,module,exports){
 /*
 Language: SAS
 Author: Mauricio Caceres <mauricio.caceres.bravo@gmail.com>
@@ -95530,7 +95833,7 @@ function sas(hljs) {
 
 module.exports = sas;
 
-},{}],334:[function(require,module,exports){
+},{}],339:[function(require,module,exports){
 /*
 Language: Scala
 Category: functional
@@ -95659,7 +95962,7 @@ function scala(hljs) {
 
 module.exports = scala;
 
-},{}],335:[function(require,module,exports){
+},{}],340:[function(require,module,exports){
 /*
 Language: Scheme
 Description: Scheme is a programming language in the Lisp family.
@@ -95806,7 +96109,7 @@ function scheme(hljs) {
 
 module.exports = scheme;
 
-},{}],336:[function(require,module,exports){
+},{}],341:[function(require,module,exports){
 /*
 Language: Scilab
 Author: Sylvestre Ledru <sylvestre.ledru@scilab-enterprises.com>
@@ -95873,7 +96176,7 @@ function scilab(hljs) {
 
 module.exports = scilab;
 
-},{}],337:[function(require,module,exports){
+},{}],342:[function(require,module,exports){
 /*
 Language: SCSS
 Description: Scss is an extension of the syntax of CSS.
@@ -95999,7 +96302,7 @@ function scss(hljs) {
 
 module.exports = scss;
 
-},{}],338:[function(require,module,exports){
+},{}],343:[function(require,module,exports){
 /*
 Language: Shell Session
 Requires: bash.js
@@ -96025,7 +96328,7 @@ function shell(hljs) {
 
 module.exports = shell;
 
-},{}],339:[function(require,module,exports){
+},{}],344:[function(require,module,exports){
 /*
 Language: Smali
 Author: Dennis Titze <dennis.titze@gmail.com>
@@ -96092,7 +96395,7 @@ function smali(hljs) {
 
 module.exports = smali;
 
-},{}],340:[function(require,module,exports){
+},{}],345:[function(require,module,exports){
 /*
 Language: Smalltalk
 Description: Smalltalk is an object-oriented, dynamically typed reflective programming language.
@@ -96153,7 +96456,7 @@ function smalltalk(hljs) {
 
 module.exports = smalltalk;
 
-},{}],341:[function(require,module,exports){
+},{}],346:[function(require,module,exports){
 /*
 Language: SML (Standard ML)
 Author: Edwin Dalorzo <edwin@dalorzo.org>
@@ -96231,7 +96534,7 @@ function sml(hljs) {
 
 module.exports = sml;
 
-},{}],342:[function(require,module,exports){
+},{}],347:[function(require,module,exports){
 /*
 Language: SQF
 Author: Søren Enevoldsen <senevoldsen90@gmail.com>
@@ -96671,7 +96974,7 @@ function sqf(hljs) {
 
 module.exports = sqf;
 
-},{}],343:[function(require,module,exports){
+},{}],348:[function(require,module,exports){
 /*
  Language: SQL
  Contributors: Nikolay Lisienko <info@neor.ru>, Heiko August <post@auge8472.de>, Travis Odom <travis.a.odom@gmail.com>, Vadimtro <vadimtro@yahoo.com>, Benjamin Auder <benjamin.auder@gmail.com>
@@ -96843,7 +97146,7 @@ function sql(hljs) {
 
 module.exports = sql;
 
-},{}],344:[function(require,module,exports){
+},{}],349:[function(require,module,exports){
 /*
 Language: Stan
 Description: The Stan probabilistic programming language
@@ -97075,7 +97378,7 @@ function stan(hljs) {
 
 module.exports = stan;
 
-},{}],345:[function(require,module,exports){
+},{}],350:[function(require,module,exports){
 /*
 Language: Stata
 Author: Brian Quistorff <bquistorff@gmail.com>
@@ -97130,7 +97433,7 @@ function stata(hljs) {
 
 module.exports = stata;
 
-},{}],346:[function(require,module,exports){
+},{}],351:[function(require,module,exports){
 /*
 Language: STEP Part 21
 Contributors: Adam Joseph Cook <adam.joseph.cook@gmail.com>
@@ -97188,7 +97491,7 @@ function step21(hljs) {
 
 module.exports = step21;
 
-},{}],347:[function(require,module,exports){
+},{}],352:[function(require,module,exports){
 /*
 Language: Stylus
 Author: Bryant Williams <b.n.williams@gmail.com>
@@ -97645,7 +97948,7 @@ function stylus(hljs) {
 
 module.exports = stylus;
 
-},{}],348:[function(require,module,exports){
+},{}],353:[function(require,module,exports){
 /*
 Language: SubUnit
 Author: Sergey Bronnikov <sergeyb@bronevichok.ru>
@@ -97689,7 +97992,7 @@ function subunit(hljs) {
 
 module.exports = subunit;
 
-},{}],349:[function(require,module,exports){
+},{}],354:[function(require,module,exports){
 /*
 Language: Swift
 Description: Swift is a general-purpose programming language built using a modern approach to safety, performance, and software design patterns.
@@ -97834,7 +98137,7 @@ function swift(hljs) {
 
 module.exports = swift;
 
-},{}],350:[function(require,module,exports){
+},{}],355:[function(require,module,exports){
 /*
 Language: Tagger Script
 Author: Philipp Wolfer <ph.wolfer@gmail.com>
@@ -97888,7 +98191,7 @@ function taggerscript(hljs) {
 
 module.exports = taggerscript;
 
-},{}],351:[function(require,module,exports){
+},{}],356:[function(require,module,exports){
 /*
 Language: Test Anything Protocol
 Description: TAP, the Test Anything Protocol, is a simple text-based interface between testing modules in a test harness.
@@ -97936,7 +98239,7 @@ function tap(hljs) {
 
 module.exports = tap;
 
-},{}],352:[function(require,module,exports){
+},{}],357:[function(require,module,exports){
 /*
 Language: Tcl
 Description: Tcl is a very simple programming language.
@@ -98007,7 +98310,7 @@ function tcl(hljs) {
 
 module.exports = tcl;
 
-},{}],353:[function(require,module,exports){
+},{}],358:[function(require,module,exports){
 /*
 Language: Thrift
 Author: Oleg Efimov <efimovov@gmail.com>
@@ -98054,7 +98357,7 @@ function thrift(hljs) {
 
 module.exports = thrift;
 
-},{}],354:[function(require,module,exports){
+},{}],359:[function(require,module,exports){
 /*
 Language: TP
 Author: Jay Strybis <jay.strybis@gmail.com>
@@ -98149,7 +98452,7 @@ function tp(hljs) {
 
 module.exports = tp;
 
-},{}],355:[function(require,module,exports){
+},{}],360:[function(require,module,exports){
 /*
 Language: Twig
 Requires: xml.js
@@ -98228,7 +98531,7 @@ function twig(hljs) {
 
 module.exports = twig;
 
-},{}],356:[function(require,module,exports){
+},{}],361:[function(require,module,exports){
 const IDENT_RE = '[A-Za-z$_][0-9A-Za-z$_]*';
 const KEYWORDS = [
   "as", // for exports
@@ -98916,7 +99219,7 @@ function typescript(hljs) {
 
 module.exports = typescript;
 
-},{}],357:[function(require,module,exports){
+},{}],362:[function(require,module,exports){
 /*
 Language: Vala
 Author: Antono Vasiljev <antono.vasiljev@gmail.com>
@@ -98977,7 +99280,7 @@ function vala(hljs) {
 
 module.exports = vala;
 
-},{}],358:[function(require,module,exports){
+},{}],363:[function(require,module,exports){
 /*
 Language: Visual Basic .NET
 Description: Visual Basic .NET (VB.NET) is a multi-paradigm, object-oriented programming language, implemented on the .NET Framework.
@@ -99044,7 +99347,7 @@ function vbnet(hljs) {
 
 module.exports = vbnet;
 
-},{}],359:[function(require,module,exports){
+},{}],364:[function(require,module,exports){
 /*
 Language: VBScript in HTML
 Requires: xml.js, vbscript.js
@@ -99069,7 +99372,7 @@ function vbscriptHtml(hljs) {
 
 module.exports = vbscriptHtml;
 
-},{}],360:[function(require,module,exports){
+},{}],365:[function(require,module,exports){
 /*
 Language: VBScript
 Description: VBScript ("Microsoft Visual Basic Scripting Edition") is an Active Scripting language developed by Microsoft that is modeled on Visual Basic.
@@ -99121,7 +99424,7 @@ function vbscript(hljs) {
 
 module.exports = vbscript;
 
-},{}],361:[function(require,module,exports){
+},{}],366:[function(require,module,exports){
 /*
 Language: Verilog
 Author: Jon Evans <jon@craftyjon.com>
@@ -99233,7 +99536,7 @@ function verilog(hljs) {
 
 module.exports = verilog;
 
-},{}],362:[function(require,module,exports){
+},{}],367:[function(require,module,exports){
 /*
 Language: VHDL
 Author: Igor Kalnitsky <igor@kalnitsky.org>
@@ -99306,7 +99609,7 @@ function vhdl(hljs) {
 
 module.exports = vhdl;
 
-},{}],363:[function(require,module,exports){
+},{}],368:[function(require,module,exports){
 /*
 Language: Vim Script
 Author: Jun Yang <yangjvn@126.com>
@@ -99428,7 +99731,7 @@ function vim(hljs) {
 
 module.exports = vim;
 
-},{}],364:[function(require,module,exports){
+},{}],369:[function(require,module,exports){
 /*
 Language: Intel x86 Assembly
 Author: innocenat <innocenat@gmail.com>
@@ -99576,7 +99879,7 @@ function x86asm(hljs) {
 
 module.exports = x86asm;
 
-},{}],365:[function(require,module,exports){
+},{}],370:[function(require,module,exports){
 /*
 Language: XL
 Author: Christophe de Dinechin <christophe@taodyne.com>
@@ -99660,7 +99963,7 @@ function xl(hljs) {
 
 module.exports = xl;
 
-},{}],366:[function(require,module,exports){
+},{}],371:[function(require,module,exports){
 /*
 Language: HTML, XML
 Website: https://www.w3.org/XML/
@@ -99803,7 +100106,7 @@ function xml(hljs) {
 
 module.exports = xml;
 
-},{}],367:[function(require,module,exports){
+},{}],372:[function(require,module,exports){
 /*
 Language: XQuery
 Author: Dirk Kirsten <dk@basex.org>
@@ -99979,7 +100282,7 @@ function xquery(hljs) {
 
 module.exports = xquery;
 
-},{}],368:[function(require,module,exports){
+},{}],373:[function(require,module,exports){
 /*
 Language: YAML
 Description: Yet Another Markdown Language
@@ -100157,7 +100460,7 @@ function yaml(hljs) {
 
 module.exports = yaml;
 
-},{}],369:[function(require,module,exports){
+},{}],374:[function(require,module,exports){
 /*
  Language: Zephir
  Description: Zephir, an open source, high-level language designed to ease the creation and maintainability of extensions for PHP with a focus on type and memory safety.
@@ -100278,7 +100581,7 @@ function zephir(hljs) {
 
 module.exports = zephir;
 
-},{}],370:[function(require,module,exports){
+},{}],375:[function(require,module,exports){
 //! moment.js
 //! version : 2.29.1
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -105950,7 +106253,7 @@ module.exports = zephir;
 
 })));
 
-},{}],371:[function(require,module,exports){
+},{}],376:[function(require,module,exports){
 ;/*! ng-showdown 19-10-2015 */
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
@@ -106164,9 +106467,9 @@ module.exports = zephir;
 }));
 
 
-},{"angular":133,"showdown":373}],372:[function(require,module,exports){
+},{"angular":138,"showdown":378}],377:[function(require,module,exports){
 /*! ngTagsInput v3.2.0 License: MIT */!function(){"use strict";var a={backspace:8,tab:9,enter:13,escape:27,space:32,up:38,down:40,left:37,right:39,"delete":46,comma:188},b=9007199254740991,c=["text","email","url"],d=angular.module("ngTagsInput",[]);d.directive("tagsInput",["$timeout","$document","$window","$q","tagsInputConfig","tiUtil",function(d,e,f,g,h,i){function j(a,b,c,d){var e,f,h,j,k={};return e=function(b){return i.safeToString(b[a.displayProperty])},f=function(b,c){b[a.displayProperty]=c},h=function(b){var d=e(b),f=d&&d.length>=a.minLength&&d.length<=a.maxLength&&a.allowedTagsPattern.test(d)&&!i.findInObjectArray(k.items,b,a.keyProperty||a.displayProperty);return g.when(f&&c({$tag:b})).then(i.promisifyValue)},j=function(a){return g.when(d({$tag:a})).then(i.promisifyValue)},k.items=[],k.addText=function(a){var b={};return f(b,a),k.add(b)},k.add=function(c){var d=e(c);return a.replaceSpacesWithDashes&&(d=i.replaceSpacesWithDashes(d)),f(c,d),h(c).then(function(){k.items.push(c),b.trigger("tag-added",{$tag:c})})["catch"](function(){d&&b.trigger("invalid-tag",{$tag:c})})},k.remove=function(a){var c=k.items[a];return j(c).then(function(){return k.items.splice(a,1),k.clearSelection(),b.trigger("tag-removed",{$tag:c}),c})},k.select=function(a){0>a?a=k.items.length-1:a>=k.items.length&&(a=0),k.index=a,k.selected=k.items[a]},k.selectPrior=function(){k.select(--k.index)},k.selectNext=function(){k.select(++k.index)},k.removeSelected=function(){return k.remove(k.index)},k.clearSelection=function(){k.selected=null,k.index=-1},k.getItems=function(){return a.useStrings?k.items.map(e):k.items},k.clearSelection(),k}function k(a){return-1!==c.indexOf(a)}return{restrict:"E",require:"ngModel",scope:{tags:"=ngModel",text:"=?",templateScope:"=?",tagClass:"&",onTagAdding:"&",onTagAdded:"&",onInvalidTag:"&",onTagRemoving:"&",onTagRemoved:"&",onTagClicked:"&"},replace:!1,transclude:!0,templateUrl:"ngTagsInput/tags-input.html",controller:["$scope","$attrs","$element",function(a,c,d){a.events=i.simplePubSub(),h.load("tagsInput",a,c,{template:[String,"ngTagsInput/tag-item.html"],type:[String,"text",k],placeholder:[String,"Add a tag"],tabindex:[Number,null],removeTagSymbol:[String,String.fromCharCode(215)],replaceSpacesWithDashes:[Boolean,!0],minLength:[Number,3],maxLength:[Number,b],addOnEnter:[Boolean,!0],addOnSpace:[Boolean,!1],addOnComma:[Boolean,!0],addOnBlur:[Boolean,!0],addOnPaste:[Boolean,!1],pasteSplitPattern:[RegExp,/,/],allowedTagsPattern:[RegExp,/.+/],enableEditingLastTag:[Boolean,!1],minTags:[Number,0],maxTags:[Number,b],displayProperty:[String,"text"],keyProperty:[String,""],allowLeftoverText:[Boolean,!1],addFromAutocompleteOnly:[Boolean,!1],spellcheck:[Boolean,!0],useStrings:[Boolean,!1]}),a.tagList=new j(a.options,a.events,i.handleUndefinedResult(a.onTagAdding,!0),i.handleUndefinedResult(a.onTagRemoving,!0)),this.registerAutocomplete=function(){d.find("input");return{addTag:function(b){return a.tagList.add(b)},getTags:function(){return a.tagList.items},getCurrentTagText:function(){return a.newTag.text()},getOptions:function(){return a.options},getTemplateScope:function(){return a.templateScope},on:function(b,c){return a.events.on(b,c,!0),this}}},this.registerTagItem=function(){return{getOptions:function(){return a.options},removeTag:function(b){a.disabled||a.tagList.remove(b)}}}}],link:function(b,c,g,h){var j,k,l=[a.enter,a.comma,a.space,a.backspace,a["delete"],a.left,a.right],m=b.tagList,n=b.events,o=b.options,p=c.find("input"),q=["minTags","maxTags","allowLeftoverText"];j=function(){h.$setValidity("maxTags",m.items.length<=o.maxTags),h.$setValidity("minTags",m.items.length>=o.minTags),h.$setValidity("leftoverText",b.hasFocus||o.allowLeftoverText?!0:!b.newTag.text())},k=function(){d(function(){p[0].focus()})},h.$isEmpty=function(a){return!a||!a.length},b.newTag={text:function(a){return angular.isDefined(a)?(b.text=a,void n.trigger("input-change",a)):b.text||""},invalid:null},b.track=function(a){return a[o.keyProperty||o.displayProperty]},b.getTagClass=function(a,c){var d=a===m.selected;return[b.tagClass({$tag:a,$index:c,$selected:d}),{selected:d}]},b.$watch("tags",function(a){if(a){if(m.items=i.makeObjectArray(a,o.displayProperty),o.useStrings)return;b.tags=m.items}else m.items=[]}),b.$watch("tags.length",function(){j(),h.$validate()}),g.$observe("disabled",function(a){b.disabled=a}),b.eventHandlers={input:{keydown:function(a){n.trigger("input-keydown",a)},focus:function(){b.hasFocus||(b.hasFocus=!0,n.trigger("input-focus"))},blur:function(){d(function(){var a=e.prop("activeElement"),d=a===p[0],f=c[0].contains(a);(d||!f)&&(b.hasFocus=!1,n.trigger("input-blur"))})},paste:function(a){a.getTextData=function(){var b=a.clipboardData||a.originalEvent&&a.originalEvent.clipboardData;return b?b.getData("text/plain"):f.clipboardData.getData("Text")},n.trigger("input-paste",a)}},host:{click:function(){b.disabled||k()}},tag:{click:function(a){n.trigger("tag-clicked",{$tag:a})}}},n.on("tag-added",b.onTagAdded).on("invalid-tag",b.onInvalidTag).on("tag-removed",b.onTagRemoved).on("tag-clicked",b.onTagClicked).on("tag-added",function(){b.newTag.text("")}).on("tag-added tag-removed",function(){b.tags=m.getItems(),h.$setDirty(),k()}).on("invalid-tag",function(){b.newTag.invalid=!0}).on("option-change",function(a){-1!==q.indexOf(a.name)&&j()}).on("input-change",function(){m.clearSelection(),b.newTag.invalid=null}).on("input-focus",function(){c.triggerHandler("focus"),h.$setValidity("leftoverText",!0)}).on("input-blur",function(){o.addOnBlur&&!o.addFromAutocompleteOnly&&m.addText(b.newTag.text()),c.triggerHandler("blur"),j()}).on("input-keydown",function(c){var d,e,f,g,h=c.keyCode,j={};i.isModifierOn(c)||-1===l.indexOf(h)||(j[a.enter]=o.addOnEnter,j[a.comma]=o.addOnComma,j[a.space]=o.addOnSpace,d=!o.addFromAutocompleteOnly&&j[h],e=(h===a.backspace||h===a["delete"])&&m.selected,g=h===a.backspace&&0===b.newTag.text().length&&o.enableEditingLastTag,f=(h===a.backspace||h===a.left||h===a.right)&&0===b.newTag.text().length&&!o.enableEditingLastTag,d?m.addText(b.newTag.text()):g?(m.selectPrior(),m.removeSelected().then(function(a){a&&b.newTag.text(a[o.displayProperty])})):e?m.removeSelected():f&&(h===a.left||h===a.backspace?m.selectPrior():h===a.right&&m.selectNext()),(d||f||e||g)&&c.preventDefault())}).on("input-paste",function(a){if(o.addOnPaste){var b=a.getTextData(),c=b.split(o.pasteSplitPattern);c.length>1&&(c.forEach(function(a){m.addText(a)}),a.preventDefault())}})}}}]),d.directive("tiTagItem",["tiUtil",function(a){return{restrict:"E",require:"^tagsInput",template:'<ng-include src="$$template"></ng-include>',scope:{$scope:"=scope",data:"="},link:function(b,c,d,e){var f=e.registerTagItem(),g=f.getOptions();b.$$template=g.template,b.$$removeTagSymbol=g.removeTagSymbol,b.$getDisplayText=function(){return a.safeToString(b.data[g.displayProperty])},b.$removeTag=function(){f.removeTag(b.$index)},b.$watch("$parent.$index",function(a){b.$index=a})}}}]),d.directive("autoComplete",["$document","$timeout","$sce","$q","tagsInputConfig","tiUtil",function(b,c,d,e,f,g){function h(a,b,c){var d,f,h,i={};return h=function(){return b.tagsInput.keyProperty||b.tagsInput.displayProperty},d=function(a,c){return a.filter(function(a){return!g.findInObjectArray(c,a,h(),function(a,c){return b.tagsInput.replaceSpacesWithDashes&&(a=g.replaceSpacesWithDashes(a),c=g.replaceSpacesWithDashes(c)),g.defaultComparer(a,c)})})},i.reset=function(){f=null,i.items=[],i.visible=!1,i.index=-1,i.selected=null,i.query=null},i.show=function(){b.selectFirstMatch?i.select(0):i.selected=null,i.visible=!0},i.load=g.debounce(function(c,j){i.query=c;var k=e.when(a({$query:c}));f=k,k.then(function(a){k===f&&(a=g.makeObjectArray(a.data||a,h()),a=d(a,j),i.items=a.slice(0,b.maxResultsToShow),i.items.length>0?i.show():i.reset())})},b.debounceDelay),i.selectNext=function(){i.select(++i.index)},i.selectPrior=function(){i.select(--i.index)},i.select=function(a){0>a?a=i.items.length-1:a>=i.items.length&&(a=0),i.index=a,i.selected=i.items[a],c.trigger("suggestion-selected",a)},i.reset(),i}function i(a,b){var c=a.find("li").eq(b),d=c.parent(),e=c.prop("offsetTop"),f=c.prop("offsetHeight"),g=d.prop("clientHeight"),h=d.prop("scrollTop");h>e?d.prop("scrollTop",e):e+f>g+h&&d.prop("scrollTop",e+f-g)}return{restrict:"E",require:"^tagsInput",scope:{source:"&",matchClass:"&"},templateUrl:"ngTagsInput/auto-complete.html",controller:["$scope","$element","$attrs",function(a,b,c){a.events=g.simplePubSub(),f.load("autoComplete",a,c,{template:[String,"ngTagsInput/auto-complete-match.html"],debounceDelay:[Number,100],minLength:[Number,3],highlightMatchedText:[Boolean,!0],maxResultsToShow:[Number,10],loadOnDownArrow:[Boolean,!1],loadOnEmpty:[Boolean,!1],loadOnFocus:[Boolean,!1],selectFirstMatch:[Boolean,!0],displayProperty:[String,""]}),a.suggestionList=new h(a.source,a.options,a.events),this.registerAutocompleteMatch=function(){return{getOptions:function(){return a.options},getQuery:function(){return a.suggestionList.query}}}}],link:function(b,c,d,e){var f,h=[a.enter,a.tab,a.escape,a.up,a.down],j=b.suggestionList,k=e.registerAutocomplete(),l=b.options,m=b.events;l.tagsInput=k.getOptions(),f=function(a){return a&&a.length>=l.minLength||!a&&l.loadOnEmpty},b.templateScope=k.getTemplateScope(),b.addSuggestionByIndex=function(a){j.select(a),b.addSuggestion()},b.addSuggestion=function(){var a=!1;return j.selected&&(k.addTag(angular.copy(j.selected)),j.reset(),a=!0),a},b.track=function(a){return a[l.tagsInput.keyProperty||l.tagsInput.displayProperty]},b.getSuggestionClass=function(a,c){var d=a===j.selected;return[b.matchClass({$match:a,$index:c,$selected:d}),{selected:d}]},k.on("tag-added tag-removed invalid-tag input-blur",function(){j.reset()}).on("input-change",function(a){f(a)?j.load(a,k.getTags()):j.reset()}).on("input-focus",function(){var a=k.getCurrentTagText();l.loadOnFocus&&f(a)&&j.load(a,k.getTags())}).on("input-keydown",function(c){var d=c.keyCode,e=!1;if(!g.isModifierOn(c)&&-1!==h.indexOf(d))return j.visible?d===a.down?(j.selectNext(),e=!0):d===a.up?(j.selectPrior(),e=!0):d===a.escape?(j.reset(),e=!0):(d===a.enter||d===a.tab)&&(e=b.addSuggestion()):d===a.down&&b.options.loadOnDownArrow&&(j.load(k.getCurrentTagText(),k.getTags()),e=!0),e?(c.preventDefault(),c.stopImmediatePropagation(),!1):void 0}),m.on("suggestion-selected",function(a){i(c,a)})}}}]),d.directive("tiAutocompleteMatch",["$sce","tiUtil",function(a,b){return{restrict:"E",require:"^autoComplete",template:'<ng-include src="$$template"></ng-include>',scope:{$scope:"=scope",data:"="},link:function(c,d,e,f){var g=f.registerAutocompleteMatch(),h=g.getOptions();c.$$template=h.template,c.$index=c.$parent.$index,c.$highlight=function(c){return h.highlightMatchedText&&(c=b.safeHighlight(c,g.getQuery())),a.trustAsHtml(c)},c.$getDisplayText=function(){return b.safeToString(c.data[h.displayProperty||h.tagsInput.displayProperty])}}}}]),d.directive("tiTranscludeAppend",function(){return function(a,b,c,d,e){e(function(a){b.append(a)})}}),d.directive("tiAutosize",["tagsInputConfig",function(a){return{restrict:"A",require:"ngModel",link:function(b,c,d,e){var f,g,h=a.getTextAutosizeThreshold();f=angular.element('<span class="input"></span>'),f.css("display","none").css("visibility","hidden").css("width","auto").css("white-space","pre"),c.parent().append(f),g=function(a){var b,e=a;return angular.isString(e)&&0===e.length&&(e=d.placeholder),e&&(f.text(e),f.css("display",""),b=f.prop("offsetWidth"),f.css("display","none")),c.css("width",b?b+h+"px":""),a},e.$parsers.unshift(g),e.$formatters.unshift(g),d.$observe("placeholder",function(a){e.$modelValue||g(a)})}}}]),d.directive("tiBindAttrs",function(){return function(a,b,c){a.$watch(c.tiBindAttrs,function(a){angular.forEach(a,function(a,b){c.$set(b,a)})},!0)}}),d.provider("tagsInputConfig",function(){var a={},b={},c=3;this.setDefaults=function(b,c){return a[b]=c,this},this.setActiveInterpolation=function(a,c){return b[a]=c,this},this.setTextAutosizeThreshold=function(a){return c=a,this},this.$get=["$interpolate",function(d){var e={};return e[String]=function(a){return a},e[Number]=function(a){return parseInt(a,10)},e[Boolean]=function(a){return"true"===a.toLowerCase()},e[RegExp]=function(a){return new RegExp(a)},{load:function(c,f,g,h){var i=function(){return!0};f.options={},angular.forEach(h,function(h,j){var k,l,m,n,o,p;k=h[0],l=h[1],m=h[2]||i,n=e[k],o=function(){var b=a[c]&&a[c][j];return angular.isDefined(b)?b:l},p=function(a){f.options[j]=a&&m(a)?n(a):o()},b[c]&&b[c][j]?g.$observe(j,function(a){p(a),f.events.trigger("option-change",{name:j,newValue:a})}):p(g[j]&&d(g[j])(f.$parent))})},getTextAutosizeThreshold:function(){return c}}}]}),d.factory("tiUtil",["$timeout","$q",function(a,b){var c={};return c.debounce=function(b,c){var d;return function(){var e=arguments;a.cancel(d),d=a(function(){b.apply(null,e)},c)}},c.makeObjectArray=function(a,b){if(!angular.isArray(a)||0===a.length||angular.isObject(a[0]))return a;var c=[];return a.forEach(function(a){var d={};d[b]=a,c.push(d)}),c},c.findInObjectArray=function(a,b,d,e){var f=null;return e=e||c.defaultComparer,a.some(function(a){return e(a[d],b[d])?(f=a,!0):void 0}),f},c.defaultComparer=function(a,b){return c.safeToString(a).toLowerCase()===c.safeToString(b).toLowerCase()},c.safeHighlight=function(a,b){function d(a){return a.replace(/([.?*+^$[\]\\(){}|-])/g,"\\$1")}if(a=c.encodeHTML(a),b=c.encodeHTML(b),!b)return a;var e=new RegExp("&[^;]+;|"+d(b),"gi");return a.replace(e,function(a){return a.toLowerCase()===b.toLowerCase()?"<em>"+a+"</em>":a})},c.safeToString=function(a){return angular.isUndefined(a)||null==a?"":a.toString().trim()},c.encodeHTML=function(a){return c.safeToString(a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")},c.handleUndefinedResult=function(a,b){return function(){var c=a.apply(null,arguments);return angular.isUndefined(c)?b:c}},c.replaceSpacesWithDashes=function(a){return c.safeToString(a).replace(/\s/g,"-")},c.isModifierOn=function(a){return a.shiftKey||a.ctrlKey||a.altKey||a.metaKey},c.promisifyValue=function(a){return a=angular.isUndefined(a)?!0:a,b[a?"when":"reject"]()},c.simplePubSub=function(){var a={};return{on:function(b,c,d){return b.split(" ").forEach(function(b){a[b]||(a[b]=[]);var e=d?[].unshift:[].push;e.call(a[b],c)}),this},trigger:function(b,d){var e=a[b]||[];return e.every(function(a){return c.handleUndefinedResult(a,!0)(d)}),this}}},c}]),d.run(["$templateCache",function(a){a.put("ngTagsInput/tags-input.html",'<div class="host" tabindex="-1" ng-click="eventHandlers.host.click()" ti-transclude-append><div class="tags" ng-class="{focused: hasFocus}"><ul class="tag-list"><li class="tag-item" ng-repeat="tag in tagList.items track by track(tag)" ng-class="getTagClass(tag, $index)" ng-click="eventHandlers.tag.click(tag)"><ti-tag-item scope="templateScope" data="::tag"></ti-tag-item></li></ul><input class="input" autocomplete="off" ng-model="newTag.text" ng-model-options="{getterSetter: true}" ng-keydown="eventHandlers.input.keydown($event)" ng-focus="eventHandlers.input.focus($event)" ng-blur="eventHandlers.input.blur($event)" ng-paste="eventHandlers.input.paste($event)" ng-trim="false" ng-class="{\'invalid-tag\': newTag.invalid}" ng-disabled="disabled" ti-bind-attrs="{type: options.type, placeholder: options.placeholder, tabindex: options.tabindex, spellcheck: options.spellcheck}" ti-autosize></div></div>'),a.put("ngTagsInput/tag-item.html",'<span ng-bind="$getDisplayText()"></span> <a class="remove-button" ng-click="$removeTag()" ng-bind="::$$removeTagSymbol"></a>'),a.put("ngTagsInput/auto-complete.html",'<div class="autocomplete" ng-if="suggestionList.visible"><ul class="suggestion-list"><li class="suggestion-item" ng-repeat="item in suggestionList.items track by track(item)" ng-class="getSuggestionClass(item, $index)" ng-click="addSuggestionByIndex($index)" ng-mouseenter="suggestionList.select($index)"><ti-autocomplete-match scope="templateScope" data="::item"></ti-autocomplete-match></li></ul></div>'),a.put("ngTagsInput/auto-complete-match.html",'<span ng-bind-html="$highlight($getDisplayText())"></span>')}])}();
-},{}],373:[function(require,module,exports){
+},{}],378:[function(require,module,exports){
 ;/*! showdown v 1.9.1 - 02-11-2019 */
 (function(){
 /**
@@ -111311,7 +111614,7 @@ if (typeof define === 'function' && define.amd) {
 
 
 
-},{}],374:[function(require,module,exports){
+},{}],379:[function(require,module,exports){
 module.exports={
   "name": "fusio",
   "version": "0.7.0",
