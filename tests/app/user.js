@@ -23,16 +23,23 @@ describe('User tests', function() {
     browser.wait(EC.visibilityOf($('div.modal-body')), 5000);
 
     var statusOptions = element.all(by.options('status.id as status.name for status in statuuus'));
-    expect(statusOptions.get(0).getText()).toEqual('Consumer');
-    expect(statusOptions.get(1).getText()).toEqual('Administrator');
-    expect(statusOptions.get(2).getText()).toEqual('Disabled');
+    expect(statusOptions.count()).toEqual(2);
+    expect(statusOptions.get(0).getText()).toEqual('Active');
+    expect(statusOptions.get(1).getText()).toEqual('Disabled');
 
-    statusOptions.get(1).click();
+    statusOptions.get(2).click();
+
+    var roleOptions = element.all(by.options('role.id as role.name for role in roles'));
+    expect(roleOptions.count()).toEqual(3);
+    expect(roleOptions.get(0).getText()).toEqual('Administrator');
+    expect(roleOptions.get(1).getText()).toEqual('Backend');
+    expect(roleOptions.get(2).getText()).toEqual('Consumer');
+
+    roleOptions.get(0).click();
 
     element(by.model('user.name')).sendKeys('test-user');
     element(by.model('user.email')).sendKeys('foo@bar.com');
     element(by.model('user.password')).sendKeys('test1234!');
-    element.all(by.model('user.scopes[$index]')).click();
 
     $('button.btn-primary').click();
 
