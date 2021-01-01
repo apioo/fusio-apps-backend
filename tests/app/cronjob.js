@@ -24,14 +24,13 @@ describe('Cronjob tests', function() {
 
     var actionOptions = element.all(by.options('action.name as action.name for action in actions'));
     expect(actionOptions.get(0).getText()).toEqual('');
-    expect(actionOptions.get(1).getText()).toEqual('No action');
-    expect(actionOptions.get(2).getText()).toEqual('app-action');
-    expect(actionOptions.get(3).getText()).toEqual('Inspect-Action');
-    expect(actionOptions.get(4).getText()).toEqual('Sql-Insert');
-    expect(actionOptions.get(5).getText()).toEqual('Sql-Select-All');
-    expect(actionOptions.get(6).getText()).toEqual('Util-Static-Response');
+    expect(actionOptions.get(1).getText()).toEqual('app-action');
+    expect(actionOptions.get(2).getText()).toEqual('Inspect-Action');
+    expect(actionOptions.get(3).getText()).toEqual('Sql-Insert');
+    expect(actionOptions.get(4).getText()).toEqual('Sql-Select-All');
+    expect(actionOptions.get(5).getText()).toEqual('Util-Static-Response');
 
-    actionOptions.get(6).click();
+    actionOptions.get(5).click();
 
     $('button.btn-primary').click();
 
