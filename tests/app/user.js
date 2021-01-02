@@ -27,7 +27,7 @@ describe('User tests', function() {
     expect(statusOptions.get(0).getText()).toEqual('Active');
     expect(statusOptions.get(1).getText()).toEqual('Disabled');
 
-    statusOptions.get(2).click();
+    statusOptions.get(0).click();
 
     var roleOptions = element.all(by.options('role.id as role.name for role in roles'));
     expect(roleOptions.count()).toEqual(3);
