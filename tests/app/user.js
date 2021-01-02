@@ -60,15 +60,8 @@ describe('User tests', function() {
     expect(element(by.model('user.status')).getAttribute('value')).toEqual('number:1');
     expect(element(by.model('user.name')).getAttribute('value')).toEqual('test-user');
 
-    var scopes = element.all(by.model('user.scopes[$index]'));
-
-    expect(scopes.get(0).getAttribute('checked')).toBeTruthy();
-    expect(scopes.get(1).getAttribute('checked')).toBeTruthy();
-    expect(scopes.get(2).getAttribute('checked')).toBeTruthy();
-
-    // we remove all selected scopes so that we can delete the user
-    element.all(by.model('user.scopes[$index]')).click();
-
+    // @TODO check and edit scopes
+    
     $('button.btn-primary').click();
 
     browser.wait(EC.visibilityOf($('div.alert-success')), 5000);
