@@ -30,12 +30,13 @@ describe('User tests', function() {
     statusOptions.get(0).click();
 
     var roleOptions = element.all(by.options('role.id as role.name for role in roles'));
-    expect(roleOptions.count()).toEqual(3);
-    expect(roleOptions.get(0).getText()).toEqual('Administrator');
-    expect(roleOptions.get(1).getText()).toEqual('Backend');
-    expect(roleOptions.get(2).getText()).toEqual('Consumer');
+    expect(roleOptions.count()).toEqual(4);
+    expect(roleOptions.get(0).getText()).toEqual('');
+    expect(roleOptions.get(1).getText()).toEqual('Administrator');
+    expect(roleOptions.get(2).getText()).toEqual('Backend');
+    expect(roleOptions.get(3).getText()).toEqual('Consumer');
 
-    roleOptions.get(0).click();
+    roleOptions.get(1).click();
 
     element(by.model('user.name')).sendKeys('test-user');
     element(by.model('user.email')).sendKeys('foo@bar.com');
