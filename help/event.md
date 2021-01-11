@@ -8,13 +8,9 @@ subscriber in the background.
 
 ### Installation
 
-To enable Fusio to send messages in the background you need to setup a cronjob
-which executes the HTTP requests. The cronjob must execute the `event:execute`
-command i.e.:
-
-```
-php /bin/fusio event:execute
-```
+To enable Fusio to send messages in the background you need to activate the
+cronjob logic which enables the execution of an action at specific intervals.
+Please take a look at the cronjob section for installation instructions.
 
 ### Subscribe
 
