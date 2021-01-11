@@ -9,8 +9,8 @@ push data to a message queue.
 ### Async
 
 It is possible to execute an action in async mode which means that the action
-directly returns a 202 accepted response and request gets executed later on at
-the background. To enable the async feature you need to setup a cronjob,
+directly returns a 202 accepted response and the request gets executed later on
+at the background. To enable the async feature you need to setup a cronjob,
 please take a look at the cronjob section for installation instructions.
 
 ### Development
