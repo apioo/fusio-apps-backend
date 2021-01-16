@@ -111626,7 +111626,7 @@ if (typeof define === 'function' && define.amd) {
 },{}],379:[function(require,module,exports){
 module.exports={
   "name": "fusio",
-  "version": "0.7.0",
+  "version": "1.0.0",
   "private": true,
   "main": "Gruntfile.js",
   "author": "Christoph Kappestein",
