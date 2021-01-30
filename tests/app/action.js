@@ -25,25 +25,27 @@ describe('Action tests', function() {
     element(by.model('action.name')).sendKeys('test-action');
 
     var actionOptions = element.all(by.options('action.class as action.name for action in actions'));
-    expect(actionOptions.get(0).getText()).toEqual('File-Processor');
-    expect(actionOptions.get(1).getText()).toEqual('GraphQL-Processor');
-    expect(actionOptions.get(2).getText()).toEqual('HTTP-Processor');
-    expect(actionOptions.get(3).getText()).toEqual('PHP-Processor');
-    expect(actionOptions.get(4).getText()).toEqual('PHP-Sandbox');
-    expect(actionOptions.get(5).getText()).toEqual('SMTP-Send');
-    expect(actionOptions.get(6).getText()).toEqual('SQL-Select-All');
-    expect(actionOptions.get(7).getText()).toEqual('SQL-Select-Row');
-    expect(actionOptions.get(8).getText()).toEqual('SQL-Insert');
-    expect(actionOptions.get(9).getText()).toEqual('SQL-Update');
-    expect(actionOptions.get(10).getText()).toEqual('SQL-Delete');
-    expect(actionOptions.get(11).getText()).toEqual('SQL-Query-All');
-    expect(actionOptions.get(12).getText()).toEqual('SQL-Query-Row');
-    expect(actionOptions.get(13).getText()).toEqual('Util-Static-Response');
-    expect(actionOptions.get(14).getText()).toEqual('Util-A/B-Test');
-    expect(actionOptions.get(15).getText()).toEqual('Util-Cache');
-    expect(actionOptions.get(16).getText()).toEqual('Util-JSON-Patch');
+    expect(actionOptions.get(0).getText()).toEqual('CLI-Processor');
+    expect(actionOptions.get(1).getText()).toEqual('FastCGI-Processor');
+    expect(actionOptions.get(2).getText()).toEqual('File-Processor');
+    expect(actionOptions.get(3).getText()).toEqual('GraphQL-Processor');
+    expect(actionOptions.get(4).getText()).toEqual('HTTP-Processor');
+    expect(actionOptions.get(5).getText()).toEqual('PHP-Processor');
+    expect(actionOptions.get(6).getText()).toEqual('PHP-Sandbox');
+    expect(actionOptions.get(7).getText()).toEqual('SMTP-Send');
+    expect(actionOptions.get(8).getText()).toEqual('SQL-Select-All');
+    expect(actionOptions.get(9).getText()).toEqual('SQL-Select-Row');
+    expect(actionOptions.get(10).getText()).toEqual('SQL-Insert');
+    expect(actionOptions.get(11).getText()).toEqual('SQL-Update');
+    expect(actionOptions.get(12).getText()).toEqual('SQL-Delete');
+    expect(actionOptions.get(13).getText()).toEqual('SQL-Query-All');
+    expect(actionOptions.get(14).getText()).toEqual('SQL-Query-Row');
+    expect(actionOptions.get(15).getText()).toEqual('Util-Static-Response');
+    expect(actionOptions.get(16).getText()).toEqual('Util-A/B-Test');
+    expect(actionOptions.get(17).getText()).toEqual('Util-Cache');
+    expect(actionOptions.get(18).getText()).toEqual('Util-JSON-Patch');
 
-    actionOptions.get(13).click();
+    actionOptions.get(15).click();
 
     browser.wait(EC.visibilityOf($('#config-statusCode')), 5000);
     browser.wait(EC.visibilityOf($('.ace_editor')), 5000);
