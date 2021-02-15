@@ -949,6 +949,15 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
         })
   }
 
+  $scope.toggleScope = function (name) {
+    let index = $scope.selected.indexOf(name);
+    if (index > -1) {
+      $scope.selected.splice(index, 1);
+    } else {
+      $scope.selected.push(name);
+    }
+  };
+
   $scope.getUsers()
   $scope.getScopeCategories()
 }
@@ -1057,7 +1066,7 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
     $http.get(fusio.baseUrl + 'backend/app/' + app.id)
       .then(function (response) {
         $scope.app = response.data
-        $scope.selected = response.data.scopes
+        $scope.selected = angular.isArray(response.data.scopes) ? response.data.scopes : []
       })
   }
 
@@ -1091,6 +1100,15 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
           $scope.categories = response.data.categories
         })
   }
+
+  $scope.toggleScope = function (name) {
+    let index = $scope.selected.indexOf(name);
+    if (index > -1) {
+      $scope.selected.splice(index, 1);
+    } else {
+      $scope.selected.push(name);
+    }
+  };
 
   $scope.loadApp()
   $scope.getScopeCategories()
@@ -4291,7 +4309,7 @@ module.exports = function ($scope, $http, $uibModalInstance, role, fusio) {
 
   $http.get(fusio.baseUrl + 'backend/role/' + role.id)
     .then(function (response) {
-      $scope.selected = response.data.scopes
+      $scope.selected = angular.isArray(response.data.scopes) ? response.data.scopes : []
       $scope.role = response.data
     })
 
