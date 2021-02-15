@@ -27,7 +27,7 @@ module.exports = function ($scope, $http, $uibModalInstance, role, fusio) {
 
   $http.get(fusio.baseUrl + 'backend/role/' + role.id)
     .then(function (response) {
-      $scope.selected = response.data.scopes
+      $scope.selected = angular.isArray(response.data.scopes) ? response.data.scopes : []
       $scope.role = response.data
     })
 

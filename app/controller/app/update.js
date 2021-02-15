@@ -53,7 +53,7 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
     $http.get(fusio.baseUrl + 'backend/app/' + app.id)
       .then(function (response) {
         $scope.app = response.data
-        $scope.selected = response.data.scopes
+        $scope.selected = angular.isArray(response.data.scopes) ? response.data.scopes : []
       })
   }
 
@@ -87,6 +87,15 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
           $scope.categories = response.data.categories
         })
   }
+
+  $scope.toggleScope = function (name) {
+    let index = $scope.selected.indexOf(name);
+    if (index > -1) {
+      $scope.selected.splice(index, 1);
+    } else {
+      $scope.selected.push(name);
+    }
+  };
 
   $scope.loadApp()
   $scope.getScopeCategories()

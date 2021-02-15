@@ -63,6 +63,15 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
         })
   }
 
+  $scope.toggleScope = function (name) {
+    let index = $scope.selected.indexOf(name);
+    if (index > -1) {
+      $scope.selected.splice(index, 1);
+    } else {
+      $scope.selected.push(name);
+    }
+  };
+
   $scope.getUsers()
   $scope.getScopeCategories()
 }
