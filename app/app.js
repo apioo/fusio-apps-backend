@@ -29,6 +29,7 @@ var fusioApp = angular.module('fusioApp', [
   'fusioApp.login',
   'fusioApp.logout',
   'fusioApp.marketplace',
+  'fusioApp.page',
   'fusioApp.plan',
   'fusioApp.rate',
   'fusioApp.role',
@@ -70,6 +71,7 @@ require('./controller/log')
 require('./controller/login')
 require('./controller/logout')
 require('./controller/marketplace')
+require('./controller/page')
 require('./controller/plan')
 require('./controller/rate')
 require('./controller/role')

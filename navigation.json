@@ -76,6 +76,12 @@
         "scope": "backend.rate"
       },
       {
+        "title": "Page",
+        "icon": "glyphicon-text-background",
+        "path": "/page",
+        "scope": "backend.page"
+      },
+      {
         "title": "SDK",
         "icon": "glyphicon-download",
         "path": "/sdk",

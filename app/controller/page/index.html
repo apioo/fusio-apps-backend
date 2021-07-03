@@ -1,0 +1,62 @@
+
+<h1>Page</h1>
+
+<div class="fusio-search">
+    <form name="pageSearchForm" ng-submit="doSearch(search)">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="input-group">
+                    <input type="text" class="form-control" ng-model="search" placeholder="Search i.e. page-title" />
+                    <div class="input-group-btn">
+                        <a class="btn btn-primary fusio-btn-create" ng-click="openCreateDialog()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+                    </div>
+                    <div class="input-group-btn">
+                        <a class="btn btn-default" ng-click="help.showDialog('help/page.md')"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div uib-alert class="alert-success" close="closeResponse()" ng-if="response.success === true">
+    {{response.message}}
+</div>
+
+<div uib-alert class="alert-danger" close="closeResponse()" ng-if="response.success === false">
+    {{response.message}}
+</div>
+
+<div class="row">
+    <div class="col-md-2">
+        <div class="panel panel-default">
+            <div class="panel-heading">Page</div>
+            <div class="panel-body">
+                <div class="fusio-route-navigation">
+                    <ul>
+                        <li ng-repeat="row in pages">
+                            <a ng-href="#!/page/{{row.id}}" title="{{row.title}}">
+                                <b ng-if="page.slug == row.slug">{{row.title}}</b>
+                                <span ng-if="page.slug != row.slug">{{row.title}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <ul uib-pager total-items="totalResults" items-per-page="16" ng-model="startIndex" ng-change="pageChanged()" max-size="10"></ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10">
+        <div class="panel panel-default">
+            <div class="panel-heading">&nbsp;{{page.title}}</div>
+            <div class="panel-body">
+                <div class="btn-group" role="group">
+                    <button type="button" ng-click="openUpdateDialog(page)" class="btn btn-primary fusio-btn-update">Edit</button>
+                    <button type="button" ng-click="openDeleteDialog(page)" class="btn btn-danger fusio-btn-delete">Delete</button>
+                </div>
+                <br><br>
+                <div markdown-to-html="page.content"></div>
+            </div>
+        </div>
+    </div>
+</div>
