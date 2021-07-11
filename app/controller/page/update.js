@@ -5,6 +5,14 @@ var angular = require('angular')
 module.exports = function ($scope, $http, $uibModalInstance, $uibModal, page, formBuilder, $timeout, fusio) {
   $scope.page = page
 
+  $scope.statuuus = [{
+    key: 1,
+    value: 'Visible'
+  }, {
+    key: 2,
+    value: 'Invisible'
+  }]
+
   $scope.update = function (page) {
     var data = angular.copy(page)
 

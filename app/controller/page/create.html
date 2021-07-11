@@ -9,14 +9,20 @@
     </div>
     <form name="pageCreateForm" ng-submit="create(page)">
         <div class="form-group">
+            <label for="status">Status:</label>
+            <select id="status" class="form-control" ng-model="page.status" ng-options="status.key as status.value for status in statuuus" aria-describedby="statusHelp">
+            </select>
+            <span class="help-block" id="statusHelp">Status of the page</span>
+        </div>
+        <div class="form-group">
             <label for="title">Title:</label>
             <input type="text" id="title" ng-model="page.title" aria-describedby="titleHelp" class="form-control">
             <span class="help-block" id="titleHelp">Title of the page</span>
         </div>
         <div class="form-group">
             <label for="content">Content:</label>
-            <div ui-ace="{mode: 'markdown'}" id="content" ng-model="page.content" aria-describedby="contentHelp"></div>
-            <span class="help-block" id="contentHelp">Contains the markdown or HTML content of the page.</span>
+            <div ui-ace="{mode: 'html'}" id="content" ng-model="page.content" aria-describedby="contentHelp"></div>
+            <span class="help-block" id="contentHelp">Contains the HTML content of the page.</span>
         </div>
 
         <button type="submit" class="btn btn-primary fusio-btn-save">Save</button>

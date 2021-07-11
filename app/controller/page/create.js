@@ -4,10 +4,19 @@ var angular = require('angular')
 
 module.exports = function ($scope, $http, $uibModalInstance, formBuilder, fusio) {
   $scope.page = {
+    status: 1,
     title: '',
     content: ''
   }
   $scope.pages = []
+
+  $scope.statuuus = [{
+    key: 1,
+    value: 'Visible'
+  }, {
+    key: 2,
+    value: 'Invisible'
+  }]
 
   $scope.create = function (page) {
     var data = angular.copy(page)
