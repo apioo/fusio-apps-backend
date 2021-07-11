@@ -55,7 +55,7 @@
                     <button type="button" ng-click="openDeleteDialog(page)" class="btn btn-danger fusio-btn-delete">Delete</button>
                 </div>
                 <br><br>
-                <div markdown-to-html="page.content"></div>
+                <div ng-bind-html="page.content"></div>
             </div>
         </div>
     </div>
