@@ -61,7 +61,7 @@
                     <pre style="padding:8px;border-bottom:1px solid #aaa">{{error.trace}}</pre>
                 </div>
                 <div ng-if="!error.message" class="fusio-action-designer-response">
-                    <div hljs hljs-source="response.body" hljs-language="json"></div>
+                    <pre>{{ response.body }}</pre>
                 </div>
             </div>
         </uib-accordion>

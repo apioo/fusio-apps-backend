@@ -10,7 +10,6 @@ var fusioApp = angular.module('fusioApp', [
   'ui.ace',
   'chart.js',
   'ng-showdown',
-  'hljs',
   'angular-loading-bar',
   'fusioApp.account',
   'fusioApp.action',
@@ -51,7 +50,6 @@ require('angular-ui-bootstrap')
 require('angular-ui-ace')
 require('angular-chart.js')
 require('angular-loading-bar')
-require('angular-highlightjs')
 require('ng-tags-input')
 require('ng-showdown')
 require('./controller/account')
