@@ -1,7 +1,8 @@
 
 ## Worker-Javascript
 
-The Worker-Javascript executes the provided Javascript code at the remote worker. The following shows a simple example:
+The Worker-Java executes the provided Javascript code at the remote worker. More
+information about the worker at: https://github.com/apioo/fusio-worker-javascript
 
 ### Example
 
