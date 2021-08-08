@@ -12,12 +12,14 @@ module.exports = function(grunt){
         src: [
           './node_modules/ace-builds/src-min-noconflict/ace.js',
           './node_modules/ace-builds/src-min-noconflict/ext-language_tools.js',
+          './node_modules/ace-builds/src-min-noconflict/mode-java.js',
           './node_modules/ace-builds/src-min-noconflict/mode-javascript.js',
           './node_modules/ace-builds/src-min-noconflict/mode-json.js',
           './node_modules/ace-builds/src-min-noconflict/mode-sql.js',
           './node_modules/ace-builds/src-min-noconflict/mode-xml.js',
           './node_modules/ace-builds/src-min-noconflict/mode-yaml.js',
           './node_modules/ace-builds/src-min-noconflict/mode-php.js',
+          './node_modules/ace-builds/src-min-noconflict/mode-python.js',
           './js/ace/php.js',
           './dist/fusio-bundle.min.js',
           './dist/fusio-templates.js'
