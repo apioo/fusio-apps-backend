@@ -1883,7 +1883,7 @@ angular.module('fusioApp.connection', ['ngRoute', 'ui.bootstrap'])
 
 var angular = require('angular')
 
-module.exports = function ($scope, $http, $uibModalInstance, fusio, formBuilder, connection) {
+module.exports = function ($scope, $http, $uibModalInstance, $window, fusio, formBuilder, connection) {
   $scope.connection = connection
   $scope.elements = []
   $scope.config = {}
@@ -1912,6 +1912,25 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio, formBuilder,
 
   $scope.close = function () {
     $uibModalInstance.dismiss('cancel')
+  }
+
+  $scope.authorize = function () {
+    $http.get(fusio.baseUrl + 'backend/connection/' + connection.id + '/redirect')
+      .then(function (response) {
+        var data = response.data;
+        if (data.redirectUri) {
+          $window.location.href = data.redirectUri;
+          return;
+        }
+
+        $scope.response = data
+        if (data.success === true) {
+          $uibModalInstance.close(data)
+        }
+      })
+      .catch(function (response) {
+        $scope.response = response.data
+      })
   }
 
   $scope.closeResponse = function () {
