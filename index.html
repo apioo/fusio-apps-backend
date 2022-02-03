@@ -23,7 +23,10 @@
          * If you change the first argument of guessFusioEndpointUrl from false
          * to true all API calls are made without index.php/
          */
-        fusioProvider.setBaseUrl('${API_URL}');
+        var fusioUrl = fusioProvider.guessFusioEndpointUrl(false);
+        fusioUrl = 'http://127.0.0.1/projects/fusio/public/index.php/';
+
+        fusioProvider.setBaseUrl(fusioUrl);
     }]);
     </script>
 </head>
