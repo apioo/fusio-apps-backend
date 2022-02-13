@@ -2,7 +2,7 @@
 
 var angular = require('angular')
 
-module.exports = function ($scope, $http, $uibModalInstance, $uibModal, action, formBuilder, $timeout, fusio) {
+module.exports = function ($scope, $http, $uibModalInstance, $uibModal, action, formBuilder, $timeout, helpLoader, fusio) {
   $scope.action = action
   $scope.elements = []
   $scope.config = {}
@@ -52,6 +52,19 @@ module.exports = function ($scope, $http, $uibModalInstance, $uibModal, action, 
             containerEl.append(el)
           }
         })
+    }
+  }
+
+  $scope.showHelp = function () {
+    var className = $scope.action.class;
+    if (className) {
+      var action = $scope.actions.find((action) => {
+        return action.class === className;
+      })
+
+      if (action.name) {
+        helpLoader.showDialog('api/action/' + action.name.toLowerCase())
+      }
     }
   }
 

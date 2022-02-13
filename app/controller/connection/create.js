@@ -2,7 +2,7 @@
 
 var angular = require('angular')
 
-module.exports = function ($scope, $http, $uibModalInstance, fusio, formBuilder) {
+module.exports = function ($scope, $http, $uibModalInstance, formBuilder, helpLoader, fusio) {
   $scope.connection = {
     name: '',
     class: '',
@@ -68,6 +68,19 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio, formBuilder)
             containerEl.append(el)
           }
         })
+    }
+  }
+
+  $scope.showHelp = function () {
+    var className = $scope.connection.class;
+    if (className) {
+      var connection = $scope.connections.find((connection) => {
+        return connection.class === className;
+      })
+
+      if (connection.name) {
+        helpLoader.showDialog('api/connection/' + connection.name.toLowerCase())
+      }
     }
   }
 }
