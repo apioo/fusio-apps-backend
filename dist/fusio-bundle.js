@@ -436,7 +436,7 @@ module.exports = function ($scope, $http, $uibModal, $routeParams, $location, $c
 
 var angular = require('angular')
 
-module.exports = function ($scope, $http, $uibModalInstance, formBuilder, fusio) {
+module.exports = function ($scope, $http, $uibModalInstance, formBuilder, helpLoader, fusio) {
   $scope.action = {
     name: '',
     class: '',
@@ -504,6 +504,19 @@ module.exports = function ($scope, $http, $uibModalInstance, formBuilder, fusio)
             containerEl.append(el)
           }
         })
+    }
+  }
+
+  $scope.showHelp = function () {
+    var className = $scope.action.class;
+    if (className) {
+      var action = $scope.actions.find((action) => {
+        return action.class === className;
+      })
+
+      if (action.name) {
+        helpLoader.showDialog('api/action/' + action.name.toLowerCase())
+      }
     }
   }
 }
@@ -720,7 +733,7 @@ angular.module('fusioApp.action', ['ngRoute', 'ui.ace'])
 
 var angular = require('angular')
 
-module.exports = function ($scope, $http, $uibModalInstance, $uibModal, action, formBuilder, $timeout, fusio) {
+module.exports = function ($scope, $http, $uibModalInstance, $uibModal, action, formBuilder, $timeout, helpLoader, fusio) {
   $scope.action = action
   $scope.elements = []
   $scope.config = {}
@@ -770,6 +783,19 @@ module.exports = function ($scope, $http, $uibModalInstance, $uibModal, action, 
             containerEl.append(el)
           }
         })
+    }
+  }
+
+  $scope.showHelp = function () {
+    var className = $scope.action.class;
+    if (className) {
+      var action = $scope.actions.find((action) => {
+        return action.class === className;
+      })
+
+      if (action.name) {
+        helpLoader.showDialog('api/action/' + action.name.toLowerCase())
+      }
     }
   }
 
@@ -1760,7 +1786,7 @@ module.exports = function ($scope, $http, $uibModal, fusio) {
 
 var angular = require('angular')
 
-module.exports = function ($scope, $http, $uibModalInstance, fusio, formBuilder) {
+module.exports = function ($scope, $http, $uibModalInstance, formBuilder, helpLoader, fusio) {
   $scope.connection = {
     name: '',
     class: '',
@@ -1828,6 +1854,19 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio, formBuilder)
         })
     }
   }
+
+  $scope.showHelp = function () {
+    var className = $scope.connection.class;
+    if (className) {
+      var connection = $scope.connections.find((connection) => {
+        return connection.class === className;
+      })
+
+      if (connection.name) {
+        helpLoader.showDialog('api/connection/' + connection.name.toLowerCase())
+      }
+    }
+  }
 }
 
 },{"angular":142}],29:[function(require,module,exports){
@@ -1883,7 +1922,7 @@ angular.module('fusioApp.connection', ['ngRoute', 'ui.bootstrap'])
 
 var angular = require('angular')
 
-module.exports = function ($scope, $http, $uibModalInstance, $window, fusio, formBuilder, connection) {
+module.exports = function ($scope, $http, $uibModalInstance, $window, fusio, formBuilder, helpLoader, connection) {
   $scope.connection = connection
   $scope.elements = []
   $scope.config = {}
@@ -1953,6 +1992,19 @@ module.exports = function ($scope, $http, $uibModalInstance, $window, fusio, for
             containerEl.append(el)
           }
         })
+    }
+  }
+
+  $scope.showHelp = function () {
+    var className = $scope.connection.class;
+    if (className) {
+      var connection = $scope.connections.find((connection) => {
+        return connection.class === className;
+      })
+
+      if (connection.name) {
+        helpLoader.showDialog('api/connection/' + connection.name.toLowerCase())
+      }
     }
   }
 
