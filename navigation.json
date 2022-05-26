@@ -136,18 +136,6 @@
         "scope": "backend.plan"
       },
       {
-        "title": "Contract",
-        "icon": "glyphicon-file",
-        "path": "/contract",
-        "scope": "backend.plan"
-      },
-      {
-        "title": "Invoice",
-        "icon": "glyphicon-envelope",
-        "path": "/invoice",
-        "scope": "backend.plan"
-      },
-      {
         "title": "Transaction",
         "icon": "glyphicon-equalizer",
         "path": "/transaction",

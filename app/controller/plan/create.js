@@ -8,24 +8,16 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
     description: '',
     price: 0,
     points: 0,
-    period: 0
+    period: 0,
+    externalId: ''
   }
 
   $scope.periods = [{
     id: 0,
-    name: 'None'
+    name: 'One-Time'
   }, {
     id: 1,
-    name: '1 Month'
-  }, {
-    id: 2,
-    name: '3 Month'
-  }, {
-    id: 3,
-    name: '6 Month'
-  }, {
-    id: 4,
-    name: '12 Month'
+    name: 'Subscription'
   }]
 
   $scope.create = function (plan) {

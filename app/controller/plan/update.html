@@ -33,7 +33,12 @@
             <label for="status">Period:</label>
             <select id="status" ng-model="plan.period" ng-options="period.id as period.name for period in periods" aria-describedby="periodHelp" class="form-control">
             </select>
-            <span class="help-block" id="periodHelp">The period describes the time frame of the plan. If a period is available the user will receives after each period automatically an invoice.</span>
+            <span class="help-block" id="periodHelp">Indicates whether a plan is a one-time purchase or subscription</span>
+        </div>
+        <div class="form-group">
+            <label for="externalId">External-Id:</label>
+            <input type="text" id="externalId" ng-model="plan.externalId" aria-describedby="externalIdHelp" class="form-control">
+            <span class="help-block" id="externalIdHelp">Optional an external id which can be configured at the payment provider i.e. for stripe this would be a price id</span>
         </div>
 
         <button type="submit" class="btn btn-primary fusio-btn-save">Save</button>
