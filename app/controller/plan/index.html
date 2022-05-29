@@ -52,11 +52,8 @@
         <td>{{plan.points}}</td>
         <td>
             <span ng-switch="plan.period">
-                <span ng-switch-when="0">None</span>
-                <span ng-switch-when="1">1 Month</span>
-                <span ng-switch-when="2">3 Month</span>
-                <span ng-switch-when="3">6 Month</span>
-                <span ng-switch-when="4">12 Month</span>
+                <span ng-switch-when="0">One-Time</span>
+                <span ng-switch-when="1">Subscription</span>
             </span>
         </td>
         <td>
