@@ -176,6 +176,12 @@
         "icon": "glyphicon-facetime-video",
         "path": "/audit",
         "scope": "backend.audit"
+      },
+      {
+        "title": "Trash",
+        "icon": "glyphicon-trash",
+        "path": "/trash",
+        "scope": "backend.trash"
       }
     ]
   }

@@ -38,6 +38,7 @@ var fusioApp = angular.module('fusioApp', [
   'fusioApp.subscription',
   'fusioApp.token',
   'fusioApp.transaction',
+  'fusioApp.trash',
   'fusioApp.user'
 ])
 
@@ -77,6 +78,7 @@ require('./controller/statistic')
 require('./controller/subscription')
 require('./controller/token')
 require('./controller/transaction')
+require('./controller/trash')
 require('./controller/user')
 
 fusioApp.value('version', require('../package.json').version)
