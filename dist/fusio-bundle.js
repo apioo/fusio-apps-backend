@@ -39,6 +39,7 @@ var fusioApp = angular.module('fusioApp', [
   'fusioApp.subscription',
   'fusioApp.token',
   'fusioApp.transaction',
+  'fusioApp.trash',
   'fusioApp.user'
 ])
 
@@ -78,6 +79,7 @@ require('./controller/statistic')
 require('./controller/subscription')
 require('./controller/token')
 require('./controller/transaction')
+require('./controller/trash')
 require('./controller/user')
 
 fusioApp.value('version', require('../package.json').version)
@@ -233,7 +235,7 @@ if (window) {
 
 module.exports = fusioApp
 
-},{"../navigation.json":122,"../package.json":186,"./controller/account":3,"./controller/action":8,"./controller/app":13,"./controller/audit":18,"./controller/category":22,"./controller/config":25,"./controller/connection":30,"./controller/cronjob":37,"./controller/dashboard":40,"./controller/error":43,"./controller/event":47,"./controller/log":50,"./controller/login":52,"./controller/logout":54,"./controller/marketplace":56,"./controller/page":60,"./controller/plan":65,"./controller/rate":70,"./controller/role":75,"./controller/routes":81,"./controller/schema":88,"./controller/scope":94,"./controller/sdk":97,"./controller/statistic":100,"./controller/subscription":104,"./controller/token":109,"./controller/transaction":112,"./controller/user":116,"./service/form_builder":119,"./service/help_loader":120,"./service/token_parser":121,"angular":136,"angular-animate":124,"angular-chart.js":125,"angular-loading-bar":127,"angular-route":129,"angular-sanitize":131,"angular-ui-ace":132,"angular-ui-bootstrap":134,"ng-showdown":183,"ng-tags-input":184}],2:[function(require,module,exports){
+},{"../navigation.json":124,"../package.json":188,"./controller/account":3,"./controller/action":8,"./controller/app":13,"./controller/audit":18,"./controller/category":22,"./controller/config":25,"./controller/connection":30,"./controller/cronjob":37,"./controller/dashboard":40,"./controller/error":43,"./controller/event":47,"./controller/log":50,"./controller/login":52,"./controller/logout":54,"./controller/marketplace":56,"./controller/page":60,"./controller/plan":65,"./controller/rate":70,"./controller/role":75,"./controller/routes":81,"./controller/schema":88,"./controller/scope":94,"./controller/sdk":97,"./controller/statistic":100,"./controller/subscription":104,"./controller/token":109,"./controller/transaction":112,"./controller/trash":114,"./controller/user":118,"./service/form_builder":121,"./service/help_loader":122,"./service/token_parser":123,"angular":138,"angular-animate":126,"angular-chart.js":127,"angular-loading-bar":129,"angular-route":131,"angular-sanitize":133,"angular-ui-ace":134,"angular-ui-bootstrap":136,"ng-showdown":185,"ng-tags-input":186}],2:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, fusio) {
@@ -274,7 +276,7 @@ angular.module('fusioApp.account', ['ngRoute'])
 
   .controller('ChangePasswordCtrl', require('./change_password'))
 
-},{"./change_password":2,"angular":136}],4:[function(require,module,exports){
+},{"./change_password":2,"angular":138}],4:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $routeParams, $location, $cacheFactory, fusio) {
@@ -517,7 +519,7 @@ module.exports = function ($scope, $http, $uibModalInstance, formBuilder, helpLo
   }
 }
 
-},{"angular":136}],6:[function(require,module,exports){
+},{"angular":138}],6:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, action, fusio) {
@@ -696,7 +698,7 @@ module.exports = function ($scope, $http, $routeParams, fusio, formBuilder) {
     })
 }
 
-},{"angular":136}],8:[function(require,module,exports){
+},{"angular":138}],8:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -724,7 +726,7 @@ angular.module('fusioApp.action', ['ngRoute', 'ui.ace'])
   .controller('ActionDeleteCtrl', require('./delete'))
   .controller('ActionDesignerCtrl', require('./designer'))
 
-},{"./action":4,"./create":5,"./delete":6,"./designer":7,"./update":9,"angular":136}],9:[function(require,module,exports){
+},{"./action":4,"./create":5,"./delete":6,"./designer":7,"./update":9,"angular":138}],9:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -802,7 +804,7 @@ module.exports = function ($scope, $http, $uibModalInstance, $uibModal, action, 
     })
 }
 
-},{"angular":136}],10:[function(require,module,exports){
+},{"angular":138}],10:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, fusio) {
@@ -984,7 +986,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   $scope.getScopeCategories()
 }
 
-},{"angular":136}],12:[function(require,module,exports){
+},{"angular":138}],12:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, app, fusio) {
@@ -1032,7 +1034,7 @@ angular.module('fusioApp.app', ['ngRoute', 'ui.bootstrap'])
   .controller('AppUpdateCtrl', require('./update'))
   .controller('AppDeleteCtrl', require('./delete'))
 
-},{"./app":10,"./create":11,"./delete":12,"./update":14,"angular":136}],14:[function(require,module,exports){
+},{"./app":10,"./create":11,"./delete":12,"./update":14,"angular":138}],14:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -1136,7 +1138,7 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
   $scope.getScopeCategories()
 }
 
-},{"angular":136}],15:[function(require,module,exports){
+},{"angular":138}],15:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $timeout, fusio) {
@@ -1317,7 +1319,7 @@ angular.module('fusioApp.audit', ['ngRoute', 'ui.bootstrap'])
   .controller('AuditDetailCtrl', require('./detail'))
   .controller('AuditFilterCtrl', require('./filter'))
 
-},{"./audit":15,"./detail":16,"./filter":17,"angular":136}],19:[function(require,module,exports){
+},{"./audit":15,"./detail":16,"./filter":17,"angular":138}],19:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, fusio) {
@@ -1456,7 +1458,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
 
 }
 
-},{"angular":136}],21:[function(require,module,exports){
+},{"angular":138}],21:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, category, fusio) {
@@ -1504,7 +1506,7 @@ angular.module('fusioApp.category', ['ngRoute', 'ui.bootstrap'])
   .controller('CategoryUpdateCtrl', require('./update'))
   .controller('CategoryDeleteCtrl', require('./delete'))
 
-},{"./category":19,"./create":20,"./delete":21,"./update":23,"angular":136}],23:[function(require,module,exports){
+},{"./category":19,"./create":20,"./delete":21,"./update":23,"angular":138}],23:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -1543,7 +1545,7 @@ module.exports = function ($scope, $http, $uibModalInstance, category, fusio) {
 
 }
 
-},{"angular":136}],24:[function(require,module,exports){
+},{"angular":138}],24:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, fusio) {
@@ -1628,7 +1630,7 @@ angular.module('fusioApp.config', ['ngRoute', 'ui.bootstrap'])
   .controller('ConfigCtrl', require('./config'))
   .controller('ConfigUpdateCtrl', require('./update'))
 
-},{"./config":24,"./update":26,"angular":136}],26:[function(require,module,exports){
+},{"./config":24,"./update":26,"angular":138}],26:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -1674,7 +1676,7 @@ module.exports = function ($scope, $http, $uibModalInstance, config, fusio) {
   }
 }
 
-},{"angular":136}],27:[function(require,module,exports){
+},{"angular":138}],27:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, fusio) {
@@ -1865,7 +1867,7 @@ module.exports = function ($scope, $http, $uibModalInstance, formBuilder, helpLo
   }
 }
 
-},{"angular":136}],29:[function(require,module,exports){
+},{"angular":138}],29:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, fusio, connection) {
@@ -1913,7 +1915,7 @@ angular.module('fusioApp.connection', ['ngRoute', 'ui.bootstrap'])
   .controller('ConnectionUpdateCtrl', require('./update'))
   .controller('ConnectionDeleteCtrl', require('./delete'))
 
-},{"./connection":27,"./create":28,"./delete":29,"./update":31,"angular":136}],31:[function(require,module,exports){
+},{"./connection":27,"./create":28,"./delete":29,"./update":31,"angular":138}],31:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -2011,7 +2013,7 @@ module.exports = function ($scope, $http, $uibModalInstance, $window, fusio, for
     })
 }
 
-},{"angular":136}],32:[function(require,module,exports){
+},{"angular":138}],32:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -2083,7 +2085,7 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio) {
   }
 }
 
-},{"angular":136}],33:[function(require,module,exports){
+},{"angular":138}],33:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, fusio) {
@@ -2301,7 +2303,7 @@ angular.module('fusioApp.cronjob', ['ngRoute', 'ui.bootstrap'])
   .controller('CronjobErrorCtrl', require('./error'))
   .controller('CronjobErrorDetailCtrl', require('./error/detail'))
 
-},{"./create":32,"./cronjob":33,"./delete":34,"./error":35,"./error/detail":36,"./update":38,"angular":136}],38:[function(require,module,exports){
+},{"./create":32,"./cronjob":33,"./delete":34,"./error":35,"./error/detail":36,"./update":38,"angular":138}],38:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -2374,7 +2376,7 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, c
     })
 }
 
-},{"angular":136}],39:[function(require,module,exports){
+},{"angular":138}],39:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, fusio) {
@@ -2415,7 +2417,7 @@ angular.module('fusioApp.dashboard', ['ngRoute', 'chart.js'])
 
   .controller('DashboardCtrl', require('./dashboard'))
 
-},{"./dashboard":39,"angular":136}],41:[function(require,module,exports){
+},{"./dashboard":39,"angular":138}],41:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, error) {
@@ -2509,7 +2511,7 @@ angular.module('fusioApp.error', ['ngRoute', 'ui.bootstrap'])
   .controller('ErrorCtrl', require('./error'))
   .controller('ErrorDetailCtrl', require('./detail'))
 
-},{"./detail":41,"./error":42,"angular":136}],44:[function(require,module,exports){
+},{"./detail":41,"./error":42,"angular":138}],44:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -2552,7 +2554,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
     })
 }
 
-},{"angular":136}],45:[function(require,module,exports){
+},{"angular":138}],45:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, fusio, event) {
@@ -2704,7 +2706,7 @@ angular.module('fusioApp.event', ['ngRoute', 'ui.bootstrap'])
   .controller('EventUpdateCtrl', require('./update'))
   .controller('EventDeleteCtrl', require('./delete'))
 
-},{"./create":44,"./delete":45,"./event":46,"./update":48,"angular":136}],48:[function(require,module,exports){
+},{"./create":44,"./delete":45,"./event":46,"./update":48,"angular":138}],48:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -2754,7 +2756,7 @@ module.exports = function ($scope, $http, $uibModalInstance, $uibModal, fusio, e
     })
 }
 
-},{"angular":136}],49:[function(require,module,exports){
+},{"angular":138}],49:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, log) {
@@ -2805,7 +2807,7 @@ angular.module('fusioApp.log', ['ngRoute', 'ui.bootstrap'])
   .controller('LogCtrl', require('./log'))
   .controller('LogDetailCtrl', require('./detail'))
 
-},{"./detail":49,"./log":51,"angular":136}],51:[function(require,module,exports){
+},{"./detail":49,"./log":51,"angular":138}],51:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $timeout, fusio) {
@@ -2937,7 +2939,7 @@ angular.module('fusioApp.login', ['ngRoute'])
 
   .controller('LoginCtrl', require('./login'))
 
-},{"./login":53,"angular":136}],53:[function(require,module,exports){
+},{"./login":53,"angular":138}],53:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $location, $window, $rootScope, fusio, tokenParser) {
@@ -3016,7 +3018,7 @@ angular.module('fusioApp.logout', ['ngRoute'])
 
   .controller('LogoutCtrl', require('./logout'))
 
-},{"./logout":55,"angular":136}],55:[function(require,module,exports){
+},{"./logout":55,"angular":138}],55:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $location, $window, $rootScope, $cacheFactory, fusio) {
@@ -3056,7 +3058,7 @@ angular.module('fusioApp.marketplace', ['ngRoute', 'ui.bootstrap'])
 
   .controller('MarketplaceCtrl', require('./marketplace'))
 
-},{"./marketplace":57,"angular":136}],57:[function(require,module,exports){
+},{"./marketplace":57,"angular":138}],57:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, fusio) {
@@ -3177,7 +3179,7 @@ module.exports = function ($scope, $http, $uibModalInstance, formBuilder, fusio)
   }
 }
 
-},{"angular":136}],59:[function(require,module,exports){
+},{"angular":138}],59:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, page, fusio) {
@@ -3229,7 +3231,7 @@ angular.module('fusioApp.page', ['ngRoute', 'ui.ace'])
   .controller('PageUpdateCtrl', require('./update'))
   .controller('PageDeleteCtrl', require('./delete'))
 
-},{"./create":58,"./delete":59,"./page":61,"./update":62,"angular":136}],61:[function(require,module,exports){
+},{"./create":58,"./delete":59,"./page":61,"./update":62,"angular":138}],61:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $routeParams, $location, $cacheFactory, fusio) {
@@ -3426,7 +3428,7 @@ module.exports = function ($scope, $http, $uibModalInstance, $uibModal, page, fo
     })
 }
 
-},{"angular":136}],63:[function(require,module,exports){
+},{"angular":138}],63:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -3474,7 +3476,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   }
 }
 
-},{"angular":136}],64:[function(require,module,exports){
+},{"angular":138}],64:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, fusio, plan) {
@@ -3522,7 +3524,7 @@ angular.module('fusioApp.plan', ['ngRoute', 'ui.bootstrap'])
   .controller('PlanUpdateCtrl', require('./update'))
   .controller('PlanDeleteCtrl', require('./delete'))
 
-},{"./create":63,"./delete":64,"./plan":66,"./update":67,"angular":136}],66:[function(require,module,exports){
+},{"./create":63,"./delete":64,"./plan":66,"./update":67,"angular":138}],66:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $routeParams, $location, fusio) {
@@ -3677,7 +3679,7 @@ module.exports = function ($scope, $http, $uibModalInstance, $uibModal, fusio, p
     })
 }
 
-},{"angular":136}],68:[function(require,module,exports){
+},{"angular":138}],68:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -3823,7 +3825,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   $scope.getRoutes()
 }
 
-},{"angular":136}],69:[function(require,module,exports){
+},{"angular":138}],69:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, rate, fusio) {
@@ -3871,7 +3873,7 @@ angular.module('fusioApp.rate', ['ngRoute', 'ui.bootstrap'])
   .controller('RateUpdateCtrl', require('./update'))
   .controller('RateDeleteCtrl', require('./delete'))
 
-},{"./create":68,"./delete":69,"./rate":71,"./update":72,"angular":136}],71:[function(require,module,exports){
+},{"./create":68,"./delete":69,"./rate":71,"./update":72,"angular":138}],71:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, fusio) {
@@ -4165,7 +4167,7 @@ module.exports = function ($scope, $http, $uibModalInstance, rate, fusio) {
   $scope.getRoutes()
 }
 
-},{"angular":136}],73:[function(require,module,exports){
+},{"angular":138}],73:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -4224,7 +4226,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   $scope.getScopeCategories()
 }
 
-},{"angular":136}],74:[function(require,module,exports){
+},{"angular":138}],74:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, role, fusio) {
@@ -4272,7 +4274,7 @@ angular.module('fusioApp.role', ['ngRoute', 'ui.bootstrap'])
   .controller('RoleUpdateCtrl', require('./update'))
   .controller('RoleDeleteCtrl', require('./delete'))
 
-},{"./create":73,"./delete":74,"./role":76,"./update":77,"angular":136}],76:[function(require,module,exports){
+},{"./create":73,"./delete":74,"./role":76,"./update":77,"angular":138}],76:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, fusio) {
@@ -4437,7 +4439,7 @@ module.exports = function ($scope, $http, $uibModalInstance, role, fusio) {
 
 }
 
-},{"angular":136}],78:[function(require,module,exports){
+},{"angular":138}],78:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, provider, config) {
@@ -4666,7 +4668,7 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
   $scope.addVersion()
 }
 
-},{"angular":136}],80:[function(require,module,exports){
+},{"angular":138}],80:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, fusio, route) {
@@ -4721,7 +4723,7 @@ angular.module('fusioApp.routes', ['ngRoute', 'ui.bootstrap'])
   .controller('RoutesChangelogCtrl', require('./changelog'))
   .controller('RoutesLogCtrl', require('./log'))
 
-},{"./changelog":78,"./create":79,"./delete":80,"./log":82,"./provider":83,"./routes":84,"./update":85,"angular":136}],82:[function(require,module,exports){
+},{"./changelog":78,"./create":79,"./delete":80,"./log":82,"./provider":83,"./routes":84,"./update":85,"angular":138}],82:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, route) {
@@ -4869,7 +4871,7 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
 
 }
 
-},{"angular":136}],84:[function(require,module,exports){
+},{"angular":138}],84:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $routeParams, $route, $timeout, $cacheFactory, $location, fusio) {
@@ -5375,7 +5377,7 @@ module.exports = function ($scope, $http, $uibModal, $uibModalInstance, $timeout
   $scope.load()
 }
 
-},{"angular":136}],86:[function(require,module,exports){
+},{"angular":138}],86:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -5416,7 +5418,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   }
 }
 
-},{"angular":136}],87:[function(require,module,exports){
+},{"angular":138}],87:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, fusio, schema) {
@@ -5469,7 +5471,7 @@ angular.module('fusioApp.schema', ['ngRoute', 'ui.bootstrap'])
   .controller('SchemaDeleteCtrl', require('./delete'))
   .controller('SchemaPreviewCtrl', require('./preview'))
 
-},{"./create":86,"./delete":87,"./preview":89,"./schema":90,"./update":91,"angular":136}],89:[function(require,module,exports){
+},{"./create":86,"./delete":87,"./preview":89,"./schema":90,"./update":91,"angular":138}],89:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -5491,7 +5493,7 @@ module.exports = function ($scope, $http, $uibModalInstance, $uibModal, fusio, s
   $scope.loadPreview(schema.id)
 }
 
-},{"angular":136}],90:[function(require,module,exports){
+},{"angular":138}],90:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $routeParams, $location, $cacheFactory, fusio) {
@@ -5735,7 +5737,7 @@ module.exports = function ($scope, $http, $uibModalInstance, $uibModal, fusio, s
     })
 }
 
-},{"angular":136}],92:[function(require,module,exports){
+},{"angular":138}],92:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -5799,7 +5801,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   }
 }
 
-},{"angular":136}],93:[function(require,module,exports){
+},{"angular":138}],93:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, fusio, scope) {
@@ -5847,7 +5849,7 @@ angular.module('fusioApp.scope', ['ngRoute', 'ui.bootstrap'])
   .controller('ScopeUpdateCtrl', require('./update'))
   .controller('ScopeDeleteCtrl', require('./delete'))
 
-},{"./create":92,"./delete":93,"./scope":95,"./update":96,"angular":136}],95:[function(require,module,exports){
+},{"./create":92,"./delete":93,"./scope":95,"./update":96,"angular":138}],95:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, fusio) {
@@ -6054,7 +6056,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio, scope) {
     })
 }
 
-},{"angular":136}],97:[function(require,module,exports){
+},{"angular":138}],97:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -6070,7 +6072,7 @@ angular.module('fusioApp.sdk', ['ngRoute', 'ui.bootstrap'])
 
   .controller('SdkCtrl', require('./sdk'))
 
-},{"./sdk":98,"angular":136}],98:[function(require,module,exports){
+},{"./sdk":98,"angular":138}],98:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $window, fusio) {
@@ -6174,7 +6176,7 @@ angular.module('fusioApp.statistic', ['ngRoute', 'ui.bootstrap'])
   .controller('StatisticCtrl', require('./statistic'))
   .controller('StatisticFilterCtrl', require('./filter'))
 
-},{"./filter":99,"./statistic":101,"angular":136}],101:[function(require,module,exports){
+},{"./filter":99,"./statistic":101,"angular":138}],101:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $compile, fusio) {
@@ -6330,7 +6332,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   $scope.getUsers();
 }
 
-},{"angular":136}],103:[function(require,module,exports){
+},{"angular":138}],103:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, fusio, subscription) {
@@ -6378,7 +6380,7 @@ angular.module('fusioApp.subscription', ['ngRoute', 'ui.bootstrap'])
   .controller('SubscriptionUpdateCtrl', require('./update'))
   .controller('SubscriptionDeleteCtrl', require('./delete'))
 
-},{"./create":102,"./delete":103,"./subscription":105,"./update":106,"angular":136}],105:[function(require,module,exports){
+},{"./create":102,"./delete":103,"./subscription":105,"./update":106,"angular":138}],105:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $routeParams, $location, fusio) {
@@ -6525,7 +6527,7 @@ module.exports = function ($scope, $http, $uibModalInstance, $uibModal, fusio, s
     })
 }
 
-},{"angular":136}],107:[function(require,module,exports){
+},{"angular":138}],107:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $uibModalInstance, fusio, token) {
@@ -6569,7 +6571,7 @@ angular.module('fusioApp.token', ['ngRoute', 'ui.bootstrap'])
   .controller('TokenDetailCtrl', require('./detail'))
   .controller('TokenFilterCtrl', require('./filter'))
 
-},{"./detail":107,"./filter":108,"./token":110,"angular":136}],110:[function(require,module,exports){
+},{"./detail":107,"./filter":108,"./token":110,"angular":138}],110:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $timeout, fusio) {
@@ -6738,7 +6740,7 @@ angular.module('fusioApp.transaction', ['ngRoute', 'ui.bootstrap'])
   .controller('TransactionCtrl', require('./transaction'))
   .controller('TransactionDetailCtrl', require('./detail'))
 
-},{"./detail":111,"./transaction":113,"angular":136}],113:[function(require,module,exports){
+},{"./detail":111,"./transaction":113,"angular":138}],113:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, $timeout, fusio) {
@@ -6859,6 +6861,106 @@ module.exports = function ($scope, $http, $uibModal, $timeout, fusio) {
 
 var angular = require('angular')
 
+angular.module('fusioApp.trash', ['ngRoute', 'ui.bootstrap'])
+
+  .config(['$routeProvider', function ($routeProvider) {
+    $routeProvider.when('/trash', {
+      templateUrl: 'app/controller/trash/index.html',
+      controller: 'TrashCtrl'
+    })
+  }])
+
+  .controller('TrashCtrl', require('./trash'))
+
+},{"./trash":115,"angular":138}],115:[function(require,module,exports){
+'use strict'
+
+module.exports = function ($scope, $http, $uibModal, fusio) {
+  $scope.response = null
+  $scope.search = ''
+  $scope.types = []
+  $scope.type = null
+  $scope.entries = null
+
+  $scope.load = function () {
+    if (!$scope.type) {
+      return;
+    }
+
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
+
+    $http.get(fusio.baseUrl + 'backend/trash/' + $scope.type + '?search=' + search)
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.entries = data.entry
+      })
+  }
+
+  $scope.pageChanged = function () {
+    if (!$scope.type) {
+      return;
+    }
+
+    var startIndex = ($scope.startIndex - 1) * 16
+    var search = encodeURIComponent($scope.search ? $scope.search : '')
+
+    $http.get(fusio.baseUrl + 'backend/trash/' + $scope.type + '?startIndex=' + startIndex + '&search=' + search)
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.entries = data.entry
+      })
+  }
+
+  $scope.doSearch = function (search) {
+    if (!$scope.type) {
+      return;
+    }
+
+    $http.get(fusio.baseUrl + 'backend/trash/' + $scope.type + '?search=' + encodeURIComponent(search || ''))
+      .then(function (response) {
+        var data = response.data
+        $scope.totalResults = data.totalResults
+        $scope.startIndex = 0
+        $scope.entries = data.entry
+      })
+  }
+
+  $scope.loadTypes = function () {
+    $http.get(fusio.baseUrl + 'backend/trash')
+      .then(function (response) {
+        $scope.types = response.data.types
+        $scope.type = $scope.types[0] || null
+        $scope.load()
+      })
+  }
+
+  $scope.restore = function(entry) {
+    if (!$scope.type) {
+      return;
+    }
+
+    $http.post(fusio.baseUrl + 'backend/trash/' + $scope.type + '?id=' + entry.id)
+      .then(function (response) {
+        $scope.response = response.data
+        $scope.load()
+      })
+  }
+
+  $scope.closeResponse = function () {
+    $scope.response = null
+  }
+
+  $scope.loadTypes()
+}
+
+},{}],116:[function(require,module,exports){
+'use strict'
+
+var angular = require('angular')
+
 module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   $scope.user = {
     status: 1,
@@ -6922,7 +7024,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
 
 }
 
-},{"angular":136}],115:[function(require,module,exports){
+},{"angular":138}],117:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModalInstance, fusio, user) {
@@ -6951,7 +7053,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio, user) {
   }
 }
 
-},{}],116:[function(require,module,exports){
+},{}],118:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -6970,7 +7072,7 @@ angular.module('fusioApp.user', ['ngRoute', 'ui.bootstrap'])
   .controller('UserUpdateCtrl', require('./update'))
   .controller('UserDeleteCtrl', require('./delete'))
 
-},{"./create":114,"./delete":115,"./update":117,"./user":118,"angular":136}],117:[function(require,module,exports){
+},{"./create":116,"./delete":117,"./update":119,"./user":120,"angular":138}],119:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -7056,7 +7158,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio, user) {
   
 }
 
-},{"angular":136}],118:[function(require,module,exports){
+},{"angular":138}],120:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($scope, $http, $uibModal, fusio) {
@@ -7159,7 +7261,7 @@ module.exports = function ($scope, $http, $uibModal, fusio) {
   $scope.load()
 }
 
-},{}],119:[function(require,module,exports){
+},{}],121:[function(require,module,exports){
 'use strict'
 
 var angular = require('angular')
@@ -7313,7 +7415,7 @@ module.exports = function ($sce, $compile) {
   return builder
 }
 
-},{"angular":136}],120:[function(require,module,exports){
+},{"angular":138}],122:[function(require,module,exports){
 'use strict'
 
 module.exports = function ($uibModal) {
@@ -7329,7 +7431,7 @@ module.exports = function ($uibModal) {
   return helper
 }
 
-},{}],121:[function(require,module,exports){
+},{}],123:[function(require,module,exports){
 'use strict'
 
 module.exports = function () {
@@ -7357,7 +7459,7 @@ module.exports = function () {
   return parser
 }
 
-},{}],122:[function(require,module,exports){
+},{}],124:[function(require,module,exports){
 module.exports=[
   {
     "title": "API",
@@ -7536,12 +7638,18 @@ module.exports=[
         "icon": "glyphicon-facetime-video",
         "path": "/audit",
         "scope": "backend.audit"
+      },
+      {
+        "title": "Trash",
+        "icon": "glyphicon-trash",
+        "path": "/trash",
+        "scope": "backend.trash"
       }
     ]
   }
 ]
 
-},{}],123:[function(require,module,exports){
+},{}],125:[function(require,module,exports){
 /**
  * @license AngularJS v1.8.3
  * (c) 2010-2020 Google LLC. http://angularjs.org
@@ -11815,11 +11923,11 @@ angular.module('ngAnimate', [], function initAngularHelpers() {
 
 })(window, window.angular);
 
-},{}],124:[function(require,module,exports){
+},{}],126:[function(require,module,exports){
 require('./angular-animate');
 module.exports = 'ngAnimate';
 
-},{"./angular-animate":123}],125:[function(require,module,exports){
+},{"./angular-animate":125}],127:[function(require,module,exports){
 /*!
  * angular-chart.js - An angular.js wrapper for Chart.js
  * http://jtblin.github.io/angular-chart.js/
@@ -12221,7 +12329,7 @@ module.exports = 'ngAnimate';
   }
 }));
 
-},{"angular":136,"chart.js":137}],126:[function(require,module,exports){
+},{"angular":138,"chart.js":139}],128:[function(require,module,exports){
 /*! 
  * angular-loading-bar v0.9.0
  * https://chieffancypants.github.io/angular-loading-bar
@@ -12564,11 +12672,11 @@ angular.module('cfp.loadingBar', [])
   });       // wtf javascript. srsly
 })();       //
 
-},{}],127:[function(require,module,exports){
+},{}],129:[function(require,module,exports){
 require('./build/loading-bar');
 module.exports = 'angular-loading-bar';
 
-},{"./build/loading-bar":126}],128:[function(require,module,exports){
+},{"./build/loading-bar":128}],130:[function(require,module,exports){
 /**
  * @license AngularJS v1.8.3
  * (c) 2010-2020 Google LLC. http://angularjs.org
@@ -13836,11 +13944,11 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
 })(window, window.angular);
 
-},{}],129:[function(require,module,exports){
+},{}],131:[function(require,module,exports){
 require('./angular-route');
 module.exports = 'ngRoute';
 
-},{"./angular-route":128}],130:[function(require,module,exports){
+},{"./angular-route":130}],132:[function(require,module,exports){
 /**
  * @license AngularJS v1.8.3
  * (c) 2010-2020 Google LLC. http://angularjs.org
@@ -14733,11 +14841,11 @@ angular.module('ngSanitize').filter('linky', ['$sanitize', function($sanitize) {
 
 })(window, window.angular);
 
-},{}],131:[function(require,module,exports){
+},{}],133:[function(require,module,exports){
 require('./angular-sanitize');
 module.exports = 'ngSanitize';
 
-},{"./angular-sanitize":130}],132:[function(require,module,exports){
+},{"./angular-sanitize":132}],134:[function(require,module,exports){
 'use strict';
 
 /**
@@ -15067,7 +15175,7 @@ angular.module('ui.ace', [])
     };
   }]);
 
-},{}],133:[function(require,module,exports){
+},{}],135:[function(require,module,exports){
 /*
  * angular-ui-bootstrap
  * http://angular-ui.github.io/bootstrap/
@@ -22871,12 +22979,12 @@ angular.module('ui.bootstrap.datepickerPopup').run(function() {!angular.$$csp().
 angular.module('ui.bootstrap.tooltip').run(function() {!angular.$$csp().noInlineStyle && !angular.$$uibTooltipCss && angular.element(document).find('head').prepend('<style type="text/css">[uib-tooltip-popup].tooltip.top-left > .tooltip-arrow,[uib-tooltip-popup].tooltip.top-right > .tooltip-arrow,[uib-tooltip-popup].tooltip.bottom-left > .tooltip-arrow,[uib-tooltip-popup].tooltip.bottom-right > .tooltip-arrow,[uib-tooltip-popup].tooltip.left-top > .tooltip-arrow,[uib-tooltip-popup].tooltip.left-bottom > .tooltip-arrow,[uib-tooltip-popup].tooltip.right-top > .tooltip-arrow,[uib-tooltip-popup].tooltip.right-bottom > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.top-left > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.top-right > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.bottom-left > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.bottom-right > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.left-top > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.left-bottom > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.right-top > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.right-bottom > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.top-left > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.top-right > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.bottom-left > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.bottom-right > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.left-top > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.left-bottom > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.right-top > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.right-bottom > .tooltip-arrow,[uib-popover-popup].popover.top-left > .arrow,[uib-popover-popup].popover.top-right > .arrow,[uib-popover-popup].popover.bottom-left > .arrow,[uib-popover-popup].popover.bottom-right > .arrow,[uib-popover-popup].popover.left-top > .arrow,[uib-popover-popup].popover.left-bottom > .arrow,[uib-popover-popup].popover.right-top > .arrow,[uib-popover-popup].popover.right-bottom > .arrow,[uib-popover-html-popup].popover.top-left > .arrow,[uib-popover-html-popup].popover.top-right > .arrow,[uib-popover-html-popup].popover.bottom-left > .arrow,[uib-popover-html-popup].popover.bottom-right > .arrow,[uib-popover-html-popup].popover.left-top > .arrow,[uib-popover-html-popup].popover.left-bottom > .arrow,[uib-popover-html-popup].popover.right-top > .arrow,[uib-popover-html-popup].popover.right-bottom > .arrow,[uib-popover-template-popup].popover.top-left > .arrow,[uib-popover-template-popup].popover.top-right > .arrow,[uib-popover-template-popup].popover.bottom-left > .arrow,[uib-popover-template-popup].popover.bottom-right > .arrow,[uib-popover-template-popup].popover.left-top > .arrow,[uib-popover-template-popup].popover.left-bottom > .arrow,[uib-popover-template-popup].popover.right-top > .arrow,[uib-popover-template-popup].popover.right-bottom > .arrow{top:auto;bottom:auto;left:auto;right:auto;margin:0;}[uib-popover-popup].popover,[uib-popover-html-popup].popover,[uib-popover-template-popup].popover{display:block !important;}</style>'); angular.$$uibTooltipCss = true; });
 angular.module('ui.bootstrap.timepicker').run(function() {!angular.$$csp().noInlineStyle && !angular.$$uibTimepickerCss && angular.element(document).find('head').prepend('<style type="text/css">.uib-time input{width:50px;}</style>'); angular.$$uibTimepickerCss = true; });
 angular.module('ui.bootstrap.typeahead').run(function() {!angular.$$csp().noInlineStyle && !angular.$$uibTypeaheadCss && angular.element(document).find('head').prepend('<style type="text/css">[uib-typeahead-popup].dropdown-menu{display:block;}</style>'); angular.$$uibTypeaheadCss = true; });
-},{}],134:[function(require,module,exports){
+},{}],136:[function(require,module,exports){
 require('./dist/ui-bootstrap-tpls');
 
 module.exports = 'ui.bootstrap';
 
-},{"./dist/ui-bootstrap-tpls":133}],135:[function(require,module,exports){
+},{"./dist/ui-bootstrap-tpls":135}],137:[function(require,module,exports){
 /**
  * @license AngularJS v1.8.3
  * (c) 2010-2020 Google LLC. http://angularjs.org
@@ -59477,11 +59585,11 @@ $provide.value("$locale", {
 })(window);
 
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend(window.angular.element('<style>').text('@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}'));
-},{}],136:[function(require,module,exports){
+},{}],138:[function(require,module,exports){
 require('./angular');
 module.exports = angular;
 
-},{"./angular":135}],137:[function(require,module,exports){
+},{"./angular":137}],139:[function(require,module,exports){
 /**
  * @namespace Chart
  */
@@ -59532,7 +59640,7 @@ require('./charts/Chart.Scatter')(Chart);
 
 window.Chart = module.exports = Chart;
 
-},{"./charts/Chart.Bar":138,"./charts/Chart.Bubble":139,"./charts/Chart.Doughnut":140,"./charts/Chart.Line":141,"./charts/Chart.PolarArea":142,"./charts/Chart.Radar":143,"./charts/Chart.Scatter":144,"./controllers/controller.bar":145,"./controllers/controller.bubble":146,"./controllers/controller.doughnut":147,"./controllers/controller.line":148,"./controllers/controller.polarArea":149,"./controllers/controller.radar":150,"./core/core.animation":151,"./core/core.canvasHelpers":152,"./core/core.controller":153,"./core/core.datasetController":154,"./core/core.element":155,"./core/core.helpers":156,"./core/core.js":157,"./core/core.layoutService":158,"./core/core.legend":159,"./core/core.plugin.js":160,"./core/core.scale":161,"./core/core.scaleService":162,"./core/core.title":163,"./core/core.tooltip":164,"./elements/element.arc":165,"./elements/element.line":166,"./elements/element.point":167,"./elements/element.rectangle":168,"./scales/scale.category":169,"./scales/scale.linear":170,"./scales/scale.linearbase.js":171,"./scales/scale.logarithmic":172,"./scales/scale.radialLinear":173,"./scales/scale.time":174}],138:[function(require,module,exports){
+},{"./charts/Chart.Bar":140,"./charts/Chart.Bubble":141,"./charts/Chart.Doughnut":142,"./charts/Chart.Line":143,"./charts/Chart.PolarArea":144,"./charts/Chart.Radar":145,"./charts/Chart.Scatter":146,"./controllers/controller.bar":147,"./controllers/controller.bubble":148,"./controllers/controller.doughnut":149,"./controllers/controller.line":150,"./controllers/controller.polarArea":151,"./controllers/controller.radar":152,"./core/core.animation":153,"./core/core.canvasHelpers":154,"./core/core.controller":155,"./core/core.datasetController":156,"./core/core.element":157,"./core/core.helpers":158,"./core/core.js":159,"./core/core.layoutService":160,"./core/core.legend":161,"./core/core.plugin.js":162,"./core/core.scale":163,"./core/core.scaleService":164,"./core/core.title":165,"./core/core.tooltip":166,"./elements/element.arc":167,"./elements/element.line":168,"./elements/element.point":169,"./elements/element.rectangle":170,"./scales/scale.category":171,"./scales/scale.linear":172,"./scales/scale.linearbase.js":173,"./scales/scale.logarithmic":174,"./scales/scale.radialLinear":175,"./scales/scale.time":176}],140:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -59545,7 +59653,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],139:[function(require,module,exports){
+},{}],141:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -59557,7 +59665,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],140:[function(require,module,exports){
+},{}],142:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -59570,7 +59678,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],141:[function(require,module,exports){
+},{}],143:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -59583,7 +59691,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],142:[function(require,module,exports){
+},{}],144:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -59596,7 +59704,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],143:[function(require,module,exports){
+},{}],145:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -59610,7 +59718,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],144:[function(require,module,exports){
+},{}],146:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -59659,7 +59767,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],145:[function(require,module,exports){
+},{}],147:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -60234,7 +60342,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],146:[function(require,module,exports){
+},{}],148:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -60358,7 +60466,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],147:[function(require,module,exports){
+},{}],149:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -60651,7 +60759,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],148:[function(require,module,exports){
+},{}],150:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -61003,7 +61111,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],149:[function(require,module,exports){
+},{}],151:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -61220,7 +61328,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],150:[function(require,module,exports){
+},{}],152:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -61410,7 +61518,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],151:[function(require,module,exports){
+},{}],153:[function(require,module,exports){
 /* global window: false */
 'use strict';
 
@@ -61543,7 +61651,7 @@ module.exports = function(Chart) {
 	};
 };
 
-},{}],152:[function(require,module,exports){
+},{}],154:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -61649,7 +61757,7 @@ module.exports = function(Chart) {
 	};
 };
 
-},{}],153:[function(require,module,exports){
+},{}],155:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -62341,7 +62449,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],154:[function(require,module,exports){
+},{}],156:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -62507,7 +62615,7 @@ module.exports = function(Chart) {
 	Chart.DatasetController.extend = helpers.inherits;
 };
 
-},{}],155:[function(require,module,exports){
+},{}],157:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -62605,7 +62713,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],156:[function(require,module,exports){
+},{}],158:[function(require,module,exports){
 /* global window: false */
 /* global document: false */
 'use strict';
@@ -63651,7 +63759,7 @@ module.exports = function(Chart) {
 	};
 };
 
-},{"chartjs-color":176}],157:[function(require,module,exports){
+},{"chartjs-color":178}],159:[function(require,module,exports){
 'use strict';
 
 module.exports = function() {
@@ -63763,7 +63871,7 @@ module.exports = function() {
 
 };
 
-},{}],158:[function(require,module,exports){
+},{}],160:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -64086,7 +64194,7 @@ module.exports = function(Chart) {
 	};
 };
 
-},{}],159:[function(require,module,exports){
+},{}],161:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -64572,7 +64680,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],160:[function(require,module,exports){
+},{}],162:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -64703,7 +64811,7 @@ module.exports = function(Chart) {
 	Chart.pluginService = Chart.plugins;
 };
 
-},{}],161:[function(require,module,exports){
+},{}],163:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -65463,7 +65571,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],162:[function(require,module,exports){
+},{}],164:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -65505,7 +65613,7 @@ module.exports = function(Chart) {
 	};
 };
 
-},{}],163:[function(require,module,exports){
+},{}],165:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -65711,7 +65819,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],164:[function(require,module,exports){
+},{}],166:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -66427,7 +66535,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],165:[function(require,module,exports){
+},{}],167:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -66520,7 +66628,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],166:[function(require,module,exports){
+},{}],168:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -66697,7 +66805,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],167:[function(require,module,exports){
+},{}],169:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -66756,7 +66864,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],168:[function(require,module,exports){
+},{}],170:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -66853,7 +66961,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],169:[function(require,module,exports){
+},{}],171:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -66984,7 +67092,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],170:[function(require,module,exports){
+},{}],172:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -67178,7 +67286,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],171:[function(require,module,exports){
+},{}],173:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -67305,7 +67413,7 @@ module.exports = function(Chart) {
 	});
 };
 
-},{}],172:[function(require,module,exports){
+},{}],174:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -67573,7 +67681,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],173:[function(require,module,exports){
+},{}],175:[function(require,module,exports){
 'use strict';
 
 module.exports = function(Chart) {
@@ -67989,7 +68097,7 @@ module.exports = function(Chart) {
 
 };
 
-},{}],174:[function(require,module,exports){
+},{}],176:[function(require,module,exports){
 /* global window: false */
 'use strict';
 
@@ -68451,7 +68559,7 @@ module.exports = function(Chart) {
 
 };
 
-},{"moment":182}],175:[function(require,module,exports){
+},{"moment":184}],177:[function(require,module,exports){
 /* MIT license */
 var colorNames = require('color-name');
 
@@ -68690,7 +68798,7 @@ for (var name in colorNames) {
    reverseNames[colorNames[name]] = name;
 }
 
-},{"color-name":181}],176:[function(require,module,exports){
+},{"color-name":183}],178:[function(require,module,exports){
 /* MIT license */
 var convert = require('color-convert');
 var string = require('chartjs-color-string');
@@ -69177,7 +69285,7 @@ if (typeof window !== 'undefined') {
 
 module.exports = Color;
 
-},{"chartjs-color-string":175,"color-convert":178}],177:[function(require,module,exports){
+},{"chartjs-color-string":177,"color-convert":180}],179:[function(require,module,exports){
 /* MIT license */
 var cssKeywords = require('color-name');
 
@@ -70047,7 +70155,7 @@ convert.rgb.gray = function (rgb) {
 	return [val / 255 * 100];
 };
 
-},{"color-name":179}],178:[function(require,module,exports){
+},{"color-name":181}],180:[function(require,module,exports){
 var conversions = require('./conversions');
 var route = require('./route');
 
@@ -70127,7 +70235,7 @@ models.forEach(function (fromModel) {
 
 module.exports = convert;
 
-},{"./conversions":177,"./route":180}],179:[function(require,module,exports){
+},{"./conversions":179,"./route":182}],181:[function(require,module,exports){
 'use strict'
 
 module.exports = {
@@ -70281,7 +70389,7 @@ module.exports = {
 	"yellowgreen": [154, 205, 50]
 };
 
-},{}],180:[function(require,module,exports){
+},{}],182:[function(require,module,exports){
 var conversions = require('./conversions');
 
 /*
@@ -70380,9 +70488,9 @@ module.exports = function (fromModel) {
 };
 
 
-},{"./conversions":177}],181:[function(require,module,exports){
-arguments[4][179][0].apply(exports,arguments)
-},{"dup":179}],182:[function(require,module,exports){
+},{"./conversions":179}],183:[function(require,module,exports){
+arguments[4][181][0].apply(exports,arguments)
+},{"dup":181}],184:[function(require,module,exports){
 //! moment.js
 //! version : 2.29.3
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -76069,7 +76177,7 @@ arguments[4][179][0].apply(exports,arguments)
 
 })));
 
-},{}],183:[function(require,module,exports){
+},{}],185:[function(require,module,exports){
 ;/*! ng-showdown 19-10-2015 */
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
@@ -76283,9 +76391,9 @@ arguments[4][179][0].apply(exports,arguments)
 }));
 
 
-},{"angular":136,"showdown":185}],184:[function(require,module,exports){
+},{"angular":138,"showdown":187}],186:[function(require,module,exports){
 /*! ngTagsInput v3.2.0 License: MIT */!function(){"use strict";var a={backspace:8,tab:9,enter:13,escape:27,space:32,up:38,down:40,left:37,right:39,"delete":46,comma:188},b=9007199254740991,c=["text","email","url"],d=angular.module("ngTagsInput",[]);d.directive("tagsInput",["$timeout","$document","$window","$q","tagsInputConfig","tiUtil",function(d,e,f,g,h,i){function j(a,b,c,d){var e,f,h,j,k={};return e=function(b){return i.safeToString(b[a.displayProperty])},f=function(b,c){b[a.displayProperty]=c},h=function(b){var d=e(b),f=d&&d.length>=a.minLength&&d.length<=a.maxLength&&a.allowedTagsPattern.test(d)&&!i.findInObjectArray(k.items,b,a.keyProperty||a.displayProperty);return g.when(f&&c({$tag:b})).then(i.promisifyValue)},j=function(a){return g.when(d({$tag:a})).then(i.promisifyValue)},k.items=[],k.addText=function(a){var b={};return f(b,a),k.add(b)},k.add=function(c){var d=e(c);return a.replaceSpacesWithDashes&&(d=i.replaceSpacesWithDashes(d)),f(c,d),h(c).then(function(){k.items.push(c),b.trigger("tag-added",{$tag:c})})["catch"](function(){d&&b.trigger("invalid-tag",{$tag:c})})},k.remove=function(a){var c=k.items[a];return j(c).then(function(){return k.items.splice(a,1),k.clearSelection(),b.trigger("tag-removed",{$tag:c}),c})},k.select=function(a){0>a?a=k.items.length-1:a>=k.items.length&&(a=0),k.index=a,k.selected=k.items[a]},k.selectPrior=function(){k.select(--k.index)},k.selectNext=function(){k.select(++k.index)},k.removeSelected=function(){return k.remove(k.index)},k.clearSelection=function(){k.selected=null,k.index=-1},k.getItems=function(){return a.useStrings?k.items.map(e):k.items},k.clearSelection(),k}function k(a){return-1!==c.indexOf(a)}return{restrict:"E",require:"ngModel",scope:{tags:"=ngModel",text:"=?",templateScope:"=?",tagClass:"&",onTagAdding:"&",onTagAdded:"&",onInvalidTag:"&",onTagRemoving:"&",onTagRemoved:"&",onTagClicked:"&"},replace:!1,transclude:!0,templateUrl:"ngTagsInput/tags-input.html",controller:["$scope","$attrs","$element",function(a,c,d){a.events=i.simplePubSub(),h.load("tagsInput",a,c,{template:[String,"ngTagsInput/tag-item.html"],type:[String,"text",k],placeholder:[String,"Add a tag"],tabindex:[Number,null],removeTagSymbol:[String,String.fromCharCode(215)],replaceSpacesWithDashes:[Boolean,!0],minLength:[Number,3],maxLength:[Number,b],addOnEnter:[Boolean,!0],addOnSpace:[Boolean,!1],addOnComma:[Boolean,!0],addOnBlur:[Boolean,!0],addOnPaste:[Boolean,!1],pasteSplitPattern:[RegExp,/,/],allowedTagsPattern:[RegExp,/.+/],enableEditingLastTag:[Boolean,!1],minTags:[Number,0],maxTags:[Number,b],displayProperty:[String,"text"],keyProperty:[String,""],allowLeftoverText:[Boolean,!1],addFromAutocompleteOnly:[Boolean,!1],spellcheck:[Boolean,!0],useStrings:[Boolean,!1]}),a.tagList=new j(a.options,a.events,i.handleUndefinedResult(a.onTagAdding,!0),i.handleUndefinedResult(a.onTagRemoving,!0)),this.registerAutocomplete=function(){d.find("input");return{addTag:function(b){return a.tagList.add(b)},getTags:function(){return a.tagList.items},getCurrentTagText:function(){return a.newTag.text()},getOptions:function(){return a.options},getTemplateScope:function(){return a.templateScope},on:function(b,c){return a.events.on(b,c,!0),this}}},this.registerTagItem=function(){return{getOptions:function(){return a.options},removeTag:function(b){a.disabled||a.tagList.remove(b)}}}}],link:function(b,c,g,h){var j,k,l=[a.enter,a.comma,a.space,a.backspace,a["delete"],a.left,a.right],m=b.tagList,n=b.events,o=b.options,p=c.find("input"),q=["minTags","maxTags","allowLeftoverText"];j=function(){h.$setValidity("maxTags",m.items.length<=o.maxTags),h.$setValidity("minTags",m.items.length>=o.minTags),h.$setValidity("leftoverText",b.hasFocus||o.allowLeftoverText?!0:!b.newTag.text())},k=function(){d(function(){p[0].focus()})},h.$isEmpty=function(a){return!a||!a.length},b.newTag={text:function(a){return angular.isDefined(a)?(b.text=a,void n.trigger("input-change",a)):b.text||""},invalid:null},b.track=function(a){return a[o.keyProperty||o.displayProperty]},b.getTagClass=function(a,c){var d=a===m.selected;return[b.tagClass({$tag:a,$index:c,$selected:d}),{selected:d}]},b.$watch("tags",function(a){if(a){if(m.items=i.makeObjectArray(a,o.displayProperty),o.useStrings)return;b.tags=m.items}else m.items=[]}),b.$watch("tags.length",function(){j(),h.$validate()}),g.$observe("disabled",function(a){b.disabled=a}),b.eventHandlers={input:{keydown:function(a){n.trigger("input-keydown",a)},focus:function(){b.hasFocus||(b.hasFocus=!0,n.trigger("input-focus"))},blur:function(){d(function(){var a=e.prop("activeElement"),d=a===p[0],f=c[0].contains(a);(d||!f)&&(b.hasFocus=!1,n.trigger("input-blur"))})},paste:function(a){a.getTextData=function(){var b=a.clipboardData||a.originalEvent&&a.originalEvent.clipboardData;return b?b.getData("text/plain"):f.clipboardData.getData("Text")},n.trigger("input-paste",a)}},host:{click:function(){b.disabled||k()}},tag:{click:function(a){n.trigger("tag-clicked",{$tag:a})}}},n.on("tag-added",b.onTagAdded).on("invalid-tag",b.onInvalidTag).on("tag-removed",b.onTagRemoved).on("tag-clicked",b.onTagClicked).on("tag-added",function(){b.newTag.text("")}).on("tag-added tag-removed",function(){b.tags=m.getItems(),h.$setDirty(),k()}).on("invalid-tag",function(){b.newTag.invalid=!0}).on("option-change",function(a){-1!==q.indexOf(a.name)&&j()}).on("input-change",function(){m.clearSelection(),b.newTag.invalid=null}).on("input-focus",function(){c.triggerHandler("focus"),h.$setValidity("leftoverText",!0)}).on("input-blur",function(){o.addOnBlur&&!o.addFromAutocompleteOnly&&m.addText(b.newTag.text()),c.triggerHandler("blur"),j()}).on("input-keydown",function(c){var d,e,f,g,h=c.keyCode,j={};i.isModifierOn(c)||-1===l.indexOf(h)||(j[a.enter]=o.addOnEnter,j[a.comma]=o.addOnComma,j[a.space]=o.addOnSpace,d=!o.addFromAutocompleteOnly&&j[h],e=(h===a.backspace||h===a["delete"])&&m.selected,g=h===a.backspace&&0===b.newTag.text().length&&o.enableEditingLastTag,f=(h===a.backspace||h===a.left||h===a.right)&&0===b.newTag.text().length&&!o.enableEditingLastTag,d?m.addText(b.newTag.text()):g?(m.selectPrior(),m.removeSelected().then(function(a){a&&b.newTag.text(a[o.displayProperty])})):e?m.removeSelected():f&&(h===a.left||h===a.backspace?m.selectPrior():h===a.right&&m.selectNext()),(d||f||e||g)&&c.preventDefault())}).on("input-paste",function(a){if(o.addOnPaste){var b=a.getTextData(),c=b.split(o.pasteSplitPattern);c.length>1&&(c.forEach(function(a){m.addText(a)}),a.preventDefault())}})}}}]),d.directive("tiTagItem",["tiUtil",function(a){return{restrict:"E",require:"^tagsInput",template:'<ng-include src="$$template"></ng-include>',scope:{$scope:"=scope",data:"="},link:function(b,c,d,e){var f=e.registerTagItem(),g=f.getOptions();b.$$template=g.template,b.$$removeTagSymbol=g.removeTagSymbol,b.$getDisplayText=function(){return a.safeToString(b.data[g.displayProperty])},b.$removeTag=function(){f.removeTag(b.$index)},b.$watch("$parent.$index",function(a){b.$index=a})}}}]),d.directive("autoComplete",["$document","$timeout","$sce","$q","tagsInputConfig","tiUtil",function(b,c,d,e,f,g){function h(a,b,c){var d,f,h,i={};return h=function(){return b.tagsInput.keyProperty||b.tagsInput.displayProperty},d=function(a,c){return a.filter(function(a){return!g.findInObjectArray(c,a,h(),function(a,c){return b.tagsInput.replaceSpacesWithDashes&&(a=g.replaceSpacesWithDashes(a),c=g.replaceSpacesWithDashes(c)),g.defaultComparer(a,c)})})},i.reset=function(){f=null,i.items=[],i.visible=!1,i.index=-1,i.selected=null,i.query=null},i.show=function(){b.selectFirstMatch?i.select(0):i.selected=null,i.visible=!0},i.load=g.debounce(function(c,j){i.query=c;var k=e.when(a({$query:c}));f=k,k.then(function(a){k===f&&(a=g.makeObjectArray(a.data||a,h()),a=d(a,j),i.items=a.slice(0,b.maxResultsToShow),i.items.length>0?i.show():i.reset())})},b.debounceDelay),i.selectNext=function(){i.select(++i.index)},i.selectPrior=function(){i.select(--i.index)},i.select=function(a){0>a?a=i.items.length-1:a>=i.items.length&&(a=0),i.index=a,i.selected=i.items[a],c.trigger("suggestion-selected",a)},i.reset(),i}function i(a,b){var c=a.find("li").eq(b),d=c.parent(),e=c.prop("offsetTop"),f=c.prop("offsetHeight"),g=d.prop("clientHeight"),h=d.prop("scrollTop");h>e?d.prop("scrollTop",e):e+f>g+h&&d.prop("scrollTop",e+f-g)}return{restrict:"E",require:"^tagsInput",scope:{source:"&",matchClass:"&"},templateUrl:"ngTagsInput/auto-complete.html",controller:["$scope","$element","$attrs",function(a,b,c){a.events=g.simplePubSub(),f.load("autoComplete",a,c,{template:[String,"ngTagsInput/auto-complete-match.html"],debounceDelay:[Number,100],minLength:[Number,3],highlightMatchedText:[Boolean,!0],maxResultsToShow:[Number,10],loadOnDownArrow:[Boolean,!1],loadOnEmpty:[Boolean,!1],loadOnFocus:[Boolean,!1],selectFirstMatch:[Boolean,!0],displayProperty:[String,""]}),a.suggestionList=new h(a.source,a.options,a.events),this.registerAutocompleteMatch=function(){return{getOptions:function(){return a.options},getQuery:function(){return a.suggestionList.query}}}}],link:function(b,c,d,e){var f,h=[a.enter,a.tab,a.escape,a.up,a.down],j=b.suggestionList,k=e.registerAutocomplete(),l=b.options,m=b.events;l.tagsInput=k.getOptions(),f=function(a){return a&&a.length>=l.minLength||!a&&l.loadOnEmpty},b.templateScope=k.getTemplateScope(),b.addSuggestionByIndex=function(a){j.select(a),b.addSuggestion()},b.addSuggestion=function(){var a=!1;return j.selected&&(k.addTag(angular.copy(j.selected)),j.reset(),a=!0),a},b.track=function(a){return a[l.tagsInput.keyProperty||l.tagsInput.displayProperty]},b.getSuggestionClass=function(a,c){var d=a===j.selected;return[b.matchClass({$match:a,$index:c,$selected:d}),{selected:d}]},k.on("tag-added tag-removed invalid-tag input-blur",function(){j.reset()}).on("input-change",function(a){f(a)?j.load(a,k.getTags()):j.reset()}).on("input-focus",function(){var a=k.getCurrentTagText();l.loadOnFocus&&f(a)&&j.load(a,k.getTags())}).on("input-keydown",function(c){var d=c.keyCode,e=!1;if(!g.isModifierOn(c)&&-1!==h.indexOf(d))return j.visible?d===a.down?(j.selectNext(),e=!0):d===a.up?(j.selectPrior(),e=!0):d===a.escape?(j.reset(),e=!0):(d===a.enter||d===a.tab)&&(e=b.addSuggestion()):d===a.down&&b.options.loadOnDownArrow&&(j.load(k.getCurrentTagText(),k.getTags()),e=!0),e?(c.preventDefault(),c.stopImmediatePropagation(),!1):void 0}),m.on("suggestion-selected",function(a){i(c,a)})}}}]),d.directive("tiAutocompleteMatch",["$sce","tiUtil",function(a,b){return{restrict:"E",require:"^autoComplete",template:'<ng-include src="$$template"></ng-include>',scope:{$scope:"=scope",data:"="},link:function(c,d,e,f){var g=f.registerAutocompleteMatch(),h=g.getOptions();c.$$template=h.template,c.$index=c.$parent.$index,c.$highlight=function(c){return h.highlightMatchedText&&(c=b.safeHighlight(c,g.getQuery())),a.trustAsHtml(c)},c.$getDisplayText=function(){return b.safeToString(c.data[h.displayProperty||h.tagsInput.displayProperty])}}}}]),d.directive("tiTranscludeAppend",function(){return function(a,b,c,d,e){e(function(a){b.append(a)})}}),d.directive("tiAutosize",["tagsInputConfig",function(a){return{restrict:"A",require:"ngModel",link:function(b,c,d,e){var f,g,h=a.getTextAutosizeThreshold();f=angular.element('<span class="input"></span>'),f.css("display","none").css("visibility","hidden").css("width","auto").css("white-space","pre"),c.parent().append(f),g=function(a){var b,e=a;return angular.isString(e)&&0===e.length&&(e=d.placeholder),e&&(f.text(e),f.css("display",""),b=f.prop("offsetWidth"),f.css("display","none")),c.css("width",b?b+h+"px":""),a},e.$parsers.unshift(g),e.$formatters.unshift(g),d.$observe("placeholder",function(a){e.$modelValue||g(a)})}}}]),d.directive("tiBindAttrs",function(){return function(a,b,c){a.$watch(c.tiBindAttrs,function(a){angular.forEach(a,function(a,b){c.$set(b,a)})},!0)}}),d.provider("tagsInputConfig",function(){var a={},b={},c=3;this.setDefaults=function(b,c){return a[b]=c,this},this.setActiveInterpolation=function(a,c){return b[a]=c,this},this.setTextAutosizeThreshold=function(a){return c=a,this},this.$get=["$interpolate",function(d){var e={};return e[String]=function(a){return a},e[Number]=function(a){return parseInt(a,10)},e[Boolean]=function(a){return"true"===a.toLowerCase()},e[RegExp]=function(a){return new RegExp(a)},{load:function(c,f,g,h){var i=function(){return!0};f.options={},angular.forEach(h,function(h,j){var k,l,m,n,o,p;k=h[0],l=h[1],m=h[2]||i,n=e[k],o=function(){var b=a[c]&&a[c][j];return angular.isDefined(b)?b:l},p=function(a){f.options[j]=a&&m(a)?n(a):o()},b[c]&&b[c][j]?g.$observe(j,function(a){p(a),f.events.trigger("option-change",{name:j,newValue:a})}):p(g[j]&&d(g[j])(f.$parent))})},getTextAutosizeThreshold:function(){return c}}}]}),d.factory("tiUtil",["$timeout","$q",function(a,b){var c={};return c.debounce=function(b,c){var d;return function(){var e=arguments;a.cancel(d),d=a(function(){b.apply(null,e)},c)}},c.makeObjectArray=function(a,b){if(!angular.isArray(a)||0===a.length||angular.isObject(a[0]))return a;var c=[];return a.forEach(function(a){var d={};d[b]=a,c.push(d)}),c},c.findInObjectArray=function(a,b,d,e){var f=null;return e=e||c.defaultComparer,a.some(function(a){return e(a[d],b[d])?(f=a,!0):void 0}),f},c.defaultComparer=function(a,b){return c.safeToString(a).toLowerCase()===c.safeToString(b).toLowerCase()},c.safeHighlight=function(a,b){function d(a){return a.replace(/([.?*+^$[\]\\(){}|-])/g,"\\$1")}if(a=c.encodeHTML(a),b=c.encodeHTML(b),!b)return a;var e=new RegExp("&[^;]+;|"+d(b),"gi");return a.replace(e,function(a){return a.toLowerCase()===b.toLowerCase()?"<em>"+a+"</em>":a})},c.safeToString=function(a){return angular.isUndefined(a)||null==a?"":a.toString().trim()},c.encodeHTML=function(a){return c.safeToString(a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")},c.handleUndefinedResult=function(a,b){return function(){var c=a.apply(null,arguments);return angular.isUndefined(c)?b:c}},c.replaceSpacesWithDashes=function(a){return c.safeToString(a).replace(/\s/g,"-")},c.isModifierOn=function(a){return a.shiftKey||a.ctrlKey||a.altKey||a.metaKey},c.promisifyValue=function(a){return a=angular.isUndefined(a)?!0:a,b[a?"when":"reject"]()},c.simplePubSub=function(){var a={};return{on:function(b,c,d){return b.split(" ").forEach(function(b){a[b]||(a[b]=[]);var e=d?[].unshift:[].push;e.call(a[b],c)}),this},trigger:function(b,d){var e=a[b]||[];return e.every(function(a){return c.handleUndefinedResult(a,!0)(d)}),this}}},c}]),d.run(["$templateCache",function(a){a.put("ngTagsInput/tags-input.html",'<div class="host" tabindex="-1" ng-click="eventHandlers.host.click()" ti-transclude-append><div class="tags" ng-class="{focused: hasFocus}"><ul class="tag-list"><li class="tag-item" ng-repeat="tag in tagList.items track by track(tag)" ng-class="getTagClass(tag, $index)" ng-click="eventHandlers.tag.click(tag)"><ti-tag-item scope="templateScope" data="::tag"></ti-tag-item></li></ul><input class="input" autocomplete="off" ng-model="newTag.text" ng-model-options="{getterSetter: true}" ng-keydown="eventHandlers.input.keydown($event)" ng-focus="eventHandlers.input.focus($event)" ng-blur="eventHandlers.input.blur($event)" ng-paste="eventHandlers.input.paste($event)" ng-trim="false" ng-class="{\'invalid-tag\': newTag.invalid}" ng-disabled="disabled" ti-bind-attrs="{type: options.type, placeholder: options.placeholder, tabindex: options.tabindex, spellcheck: options.spellcheck}" ti-autosize></div></div>'),a.put("ngTagsInput/tag-item.html",'<span ng-bind="$getDisplayText()"></span> <a class="remove-button" ng-click="$removeTag()" ng-bind="::$$removeTagSymbol"></a>'),a.put("ngTagsInput/auto-complete.html",'<div class="autocomplete" ng-if="suggestionList.visible"><ul class="suggestion-list"><li class="suggestion-item" ng-repeat="item in suggestionList.items track by track(item)" ng-class="getSuggestionClass(item, $index)" ng-click="addSuggestionByIndex($index)" ng-mouseenter="suggestionList.select($index)"><ti-autocomplete-match scope="templateScope" data="::item"></ti-autocomplete-match></li></ul></div>'),a.put("ngTagsInput/auto-complete-match.html",'<span ng-bind-html="$highlight($getDisplayText())"></span>')}])}();
-},{}],185:[function(require,module,exports){
+},{}],187:[function(require,module,exports){
 ;/*! showdown v 1.9.1 - 02-11-2019 */
 (function(){
 /**
@@ -81430,7 +81538,7 @@ if (typeof define === 'function' && define.amd) {
 
 
 
-},{}],186:[function(require,module,exports){
+},{}],188:[function(require,module,exports){
 module.exports={
   "name": "fusio",
   "version": "1.0.1",
