@@ -9,7 +9,8 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
     price: 0,
     points: 0,
     period: 0,
-    externalId: ''
+    externalId: '',
+    scopes: []
   }
 
   $scope.periods = [{
@@ -20,8 +21,12 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
     name: 'Subscription'
   }]
 
+  $scope.categories = []
+  $scope.selected = []
+
   $scope.create = function (plan) {
     var data = angular.copy(plan)
+    data.scopes = $scope.selected
 
     $http.post(fusio.baseUrl + 'backend/plan', data)
       .then(function (response) {
@@ -36,6 +41,22 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
       })
   }
 
+  $scope.getScopeCategories = function () {
+    $http.get(fusio.baseUrl + 'backend/scope/categories')
+        .then(function (response) {
+          $scope.categories = response.data.categories
+        })
+  }
+
+  $scope.toggleScope = function (name) {
+    let index = $scope.selected.indexOf(name);
+    if (index > -1) {
+      $scope.selected.splice(index, 1);
+    } else {
+      $scope.selected.push(name);
+    }
+  };
+
   $scope.close = function () {
     $uibModalInstance.dismiss('cancel')
   }
@@ -43,4 +64,7 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   $scope.closeResponse = function () {
     $scope.response = null
   }
+
+  $scope.getScopeCategories()
+
 }

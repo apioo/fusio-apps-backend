@@ -41,6 +41,23 @@
             <span class="help-block" id="externalIdHelp">Optional an external id which can be configured at the payment provider i.e. for stripe this would be a price id</span>
         </div>
 
+        <uib-tabset>
+            <uib-tab heading="{{ category.name }}" ng-repeat="category in categories">
+                <table class="table fusio-table-tab">
+                    <colgroup>
+                        <col width="20" />
+                        <col width="*" />
+                    </colgroup>
+                    <tbody>
+                    <tr ng-repeat="scope in category.scopes">
+                        <td><input type="checkbox" value="{{scope.name}}" id="scope-{{scope.id}}" ng-checked="selected.indexOf(scope.name) > -1" ng-click="toggleScope(scope.name)"></td>
+                        <td><label for="scope-{{scope.id}}">{{scope.name}}</label></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </uib-tab>
+        </uib-tabset>
+
         <button type="submit" class="btn btn-primary fusio-btn-save">Save</button>
         <button type="button" ng-click="close()" class="btn btn-default fusio-btn-cancel">Cancel</button>
     </form>

@@ -13,8 +13,12 @@ module.exports = function ($scope, $http, $uibModalInstance, $uibModal, fusio, p
     name: 'Subscription'
   }]
 
+  $scope.categories = []
+  $scope.selected = []
+
   $scope.update = function (plan) {
     var data = angular.copy(plan)
+    data.scopes = $scope.selected
 
     $http.put(fusio.baseUrl + 'backend/plan/' + plan.id, data)
       .then(function (response) {
@@ -37,13 +41,30 @@ module.exports = function ($scope, $http, $uibModalInstance, $uibModal, fusio, p
     $scope.response = null
   }
 
+  $scope.getScopeCategories = function () {
+    $http.get(fusio.baseUrl + 'backend/scope/categories')
+        .then(function (response) {
+          $scope.categories = response.data.categories
+        })
+  }
+
+  $scope.toggleScope = function (name) {
+    let index = $scope.selected.indexOf(name);
+    if (index > -1) {
+      $scope.selected.splice(index, 1);
+    } else {
+      $scope.selected.push(name);
+    }
+  };
+
   $http.get(fusio.baseUrl + 'backend/plan/' + plan.id)
     .then(function (response) {
       var data = response.data
-      if (!angular.isString(data.source)) {
-        data.source = JSON.stringify(data.source, null, 4)
-      }
 
       $scope.plan = data
+      $scope.selected = angular.isArray(data.scopes) ? data.scopes : []
     })
+
+  $scope.getScopeCategories()
+
 }
