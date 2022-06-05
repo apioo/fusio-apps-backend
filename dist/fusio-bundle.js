@@ -3440,7 +3440,8 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
     price: 0,
     points: 0,
     period: 0,
-    externalId: ''
+    externalId: '',
+    scopes: []
   }
 
   $scope.periods = [{
@@ -3451,8 +3452,12 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
     name: 'Subscription'
   }]
 
+  $scope.categories = []
+  $scope.selected = []
+
   $scope.create = function (plan) {
     var data = angular.copy(plan)
+    data.scopes = $scope.selected
 
     $http.post(fusio.baseUrl + 'backend/plan', data)
       .then(function (response) {
@@ -3467,6 +3472,22 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
       })
   }
 
+  $scope.getScopeCategories = function () {
+    $http.get(fusio.baseUrl + 'backend/scope/categories')
+        .then(function (response) {
+          $scope.categories = response.data.categories
+        })
+  }
+
+  $scope.toggleScope = function (name) {
+    let index = $scope.selected.indexOf(name);
+    if (index > -1) {
+      $scope.selected.splice(index, 1);
+    } else {
+      $scope.selected.push(name);
+    }
+  };
+
   $scope.close = function () {
     $uibModalInstance.dismiss('cancel')
   }
@@ -3474,6 +3495,9 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   $scope.closeResponse = function () {
     $scope.response = null
   }
+
+  $scope.getScopeCategories()
+
 }
 
 },{"angular":138}],64:[function(require,module,exports){
@@ -3644,8 +3668,12 @@ module.exports = function ($scope, $http, $uibModalInstance, $uibModal, fusio, p
     name: 'Subscription'
   }]
 
+  $scope.categories = []
+  $scope.selected = []
+
   $scope.update = function (plan) {
     var data = angular.copy(plan)
+    data.scopes = $scope.selected
 
     $http.put(fusio.baseUrl + 'backend/plan/' + plan.id, data)
       .then(function (response) {
@@ -3668,15 +3696,32 @@ module.exports = function ($scope, $http, $uibModalInstance, $uibModal, fusio, p
     $scope.response = null
   }
 
+  $scope.getScopeCategories = function () {
+    $http.get(fusio.baseUrl + 'backend/scope/categories')
+        .then(function (response) {
+          $scope.categories = response.data.categories
+        })
+  }
+
+  $scope.toggleScope = function (name) {
+    let index = $scope.selected.indexOf(name);
+    if (index > -1) {
+      $scope.selected.splice(index, 1);
+    } else {
+      $scope.selected.push(name);
+    }
+  };
+
   $http.get(fusio.baseUrl + 'backend/plan/' + plan.id)
     .then(function (response) {
       var data = response.data
-      if (!angular.isString(data.source)) {
-        data.source = JSON.stringify(data.source, null, 4)
-      }
 
       $scope.plan = data
+      $scope.selected = angular.isArray(data.scopes) ? data.scopes : []
     })
+
+  $scope.getScopeCategories()
+
 }
 
 },{"angular":138}],68:[function(require,module,exports){
@@ -3692,9 +3737,10 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
     timespan: '',
     allocation: [{
       routeId: null,
+      userId: null,
+      planId: null,
       appId: null,
-      authenticated: null,
-      parameters: null
+      authenticated: null
     }]
   }
 
@@ -3732,6 +3778,8 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   }]
 
   $scope.routes = []
+  $scope.users = []
+  $scope.plans = []
   $scope.apps = []
 
   $scope.create = function (rate) {
@@ -3775,12 +3823,58 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
       })
   }
 
+  $scope.getUsers = function () {
+    $http.get(fusio.baseUrl + 'backend/user?count=1024')
+      .then(function (response) {
+        var data = response.data
+        if (angular.isArray(data.entry)) {
+          var users = data.entry
+          users.unshift({
+            id: null,
+            name: 'Every user'
+          })
+          $scope.users = users
+        }
+      })
+  }
+
+  $scope.getPlans = function () {
+    $http.get(fusio.baseUrl + 'backend/plan?count=1024')
+      .then(function (response) {
+        var data = response.data
+        if (angular.isArray(data.entry)) {
+          var plans = data.entry
+          plans.unshift({
+            id: null,
+            name: 'Every plan'
+          })
+          $scope.plans = plans
+        }
+      })
+  }
+
+  $scope.getApps = function () {
+    $http.get(fusio.baseUrl + 'backend/app?count=1024')
+      .then(function (response) {
+        var data = response.data
+        if (angular.isArray(data.entry)) {
+          var apps = data.entry
+          apps.unshift({
+            id: null,
+            name: 'Every app'
+          })
+          $scope.apps = apps
+        }
+      })
+  }
+
   $scope.addAllocation = function () {
     $scope.rate.allocation.push({
       routeId: null,
+      userId: null,
+      planId: null,
       appId: null,
-      authenticated: true,
-      parameters: null
+      authenticated: true
     })
   }
 
@@ -3823,6 +3917,9 @@ module.exports = function ($scope, $http, $uibModalInstance, fusio) {
   }
 
   $scope.getRoutes()
+  $scope.getUsers()
+  $scope.getPlans()
+  $scope.getApps()
 }
 
 },{"angular":138}],69:[function(require,module,exports){
@@ -4018,6 +4115,8 @@ module.exports = function ($scope, $http, $uibModalInstance, rate, fusio) {
   }]
 
   $scope.routes = []
+  $scope.users = []
+  $scope.plans = []
   $scope.apps = []
 
   $scope.update = function (rate) {
@@ -4069,12 +4168,58 @@ module.exports = function ($scope, $http, $uibModalInstance, rate, fusio) {
       })
   }
 
+  $scope.getUsers = function () {
+    $http.get(fusio.baseUrl + 'backend/user?count=1024')
+        .then(function (response) {
+          var data = response.data
+          if (angular.isArray(data.entry)) {
+            var users = data.entry
+            users.unshift({
+              id: null,
+              name: 'Every user'
+            })
+            $scope.users = users
+          }
+        })
+  }
+
+  $scope.getPlans = function () {
+    $http.get(fusio.baseUrl + 'backend/plan?count=1024')
+        .then(function (response) {
+          var data = response.data
+          if (angular.isArray(data.entry)) {
+            var plans = data.entry
+            plans.unshift({
+              id: null,
+              name: 'Every plan'
+            })
+            $scope.plans = plans
+          }
+        })
+  }
+
+  $scope.getApps = function () {
+    $http.get(fusio.baseUrl + 'backend/app?count=1024')
+        .then(function (response) {
+          var data = response.data
+          if (angular.isArray(data.entry)) {
+            var apps = data.entry
+            apps.unshift({
+              id: null,
+              name: 'Every app'
+            })
+            $scope.apps = apps
+          }
+        })
+  }
+
   $scope.addAllocation = function () {
     $scope.rate.allocation.push({
       routeId: null,
+      userId: null,
+      planId: null,
       appId: null,
-      authenticated: true,
-      parameters: null
+      authenticated: true
     })
   }
 
@@ -4109,14 +4254,17 @@ module.exports = function ($scope, $http, $uibModalInstance, rate, fusio) {
       if (!row.hasOwnProperty('routeId')) {
         row.routeId = null
       }
+      if (!row.hasOwnProperty('userId')) {
+        row.userId = null
+      }
+      if (!row.hasOwnProperty('planId')) {
+        row.planId = null
+      }
       if (!row.hasOwnProperty('appId')) {
         row.appId = null
       }
       if (!row.hasOwnProperty('authenticated')) {
         row.authenticated = null
-      }
-      if (!row.hasOwnProperty('parameters')) {
-        row.parameters = null
       }
       data.push(row)
     }
@@ -4165,6 +4313,9 @@ module.exports = function ($scope, $http, $uibModalInstance, rate, fusio) {
   }
 
   $scope.getRoutes()
+  $scope.getUsers()
+  $scope.getPlans()
+  $scope.getApps()
 }
 
 },{"angular":138}],73:[function(require,module,exports){
