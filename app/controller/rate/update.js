@@ -39,6 +39,8 @@ module.exports = function ($scope, $http, $uibModalInstance, rate, fusio) {
   }]
 
   $scope.routes = []
+  $scope.users = []
+  $scope.plans = []
   $scope.apps = []
 
   $scope.update = function (rate) {
@@ -90,12 +92,58 @@ module.exports = function ($scope, $http, $uibModalInstance, rate, fusio) {
       })
   }
 
+  $scope.getUsers = function () {
+    $http.get(fusio.baseUrl + 'backend/user?count=1024')
+        .then(function (response) {
+          var data = response.data
+          if (angular.isArray(data.entry)) {
+            var users = data.entry
+            users.unshift({
+              id: null,
+              name: 'Every user'
+            })
+            $scope.users = users
+          }
+        })
+  }
+
+  $scope.getPlans = function () {
+    $http.get(fusio.baseUrl + 'backend/plan?count=1024')
+        .then(function (response) {
+          var data = response.data
+          if (angular.isArray(data.entry)) {
+            var plans = data.entry
+            plans.unshift({
+              id: null,
+              name: 'Every plan'
+            })
+            $scope.plans = plans
+          }
+        })
+  }
+
+  $scope.getApps = function () {
+    $http.get(fusio.baseUrl + 'backend/app?count=1024')
+        .then(function (response) {
+          var data = response.data
+          if (angular.isArray(data.entry)) {
+            var apps = data.entry
+            apps.unshift({
+              id: null,
+              name: 'Every app'
+            })
+            $scope.apps = apps
+          }
+        })
+  }
+
   $scope.addAllocation = function () {
     $scope.rate.allocation.push({
       routeId: null,
+      userId: null,
+      planId: null,
       appId: null,
-      authenticated: true,
-      parameters: null
+      authenticated: true
     })
   }
 
@@ -130,14 +178,17 @@ module.exports = function ($scope, $http, $uibModalInstance, rate, fusio) {
       if (!row.hasOwnProperty('routeId')) {
         row.routeId = null
       }
+      if (!row.hasOwnProperty('userId')) {
+        row.userId = null
+      }
+      if (!row.hasOwnProperty('planId')) {
+        row.planId = null
+      }
       if (!row.hasOwnProperty('appId')) {
         row.appId = null
       }
       if (!row.hasOwnProperty('authenticated')) {
         row.authenticated = null
-      }
-      if (!row.hasOwnProperty('parameters')) {
-        row.parameters = null
       }
       data.push(row)
     }
@@ -186,4 +237,7 @@ module.exports = function ($scope, $http, $uibModalInstance, rate, fusio) {
   }
 
   $scope.getRoutes()
+  $scope.getUsers()
+  $scope.getPlans()
+  $scope.getApps()
 }

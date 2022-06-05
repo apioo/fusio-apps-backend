@@ -46,13 +46,17 @@
             <colgroup>
                 <col width="25%" />
                 <col width="25%" />
-                <col width="50%" />
+                <col width="25%" />
+                <col width="25%" />
+                <col width="25%" />
                 <col width="50" />
             </colgroup>
             <tr>
                 <th>Route</th>
+                <th>User</th>
+                <th>Plan</th>
+                <th>App</th>
                 <th>Authenticated</th>
-                <th>Parameters</th>
                 <th></th>
             </tr>
             <tr ng-repeat="row in rate.allocation">
@@ -61,11 +65,20 @@
                     </select>
                 </td>
                 <td>
-                    <select ng-model="row.authenticated" ng-options="st.key as st.value for st in status" class="form-control">
+                    <select ng-model="row.userId" ng-options="user.id as user.name for user in users" class="form-control">
                     </select>
                 </td>
                 <td>
-                    <input type="text" ng-model="row.parameters" ng-disabled="row.authenticated != 1" class="form-control">
+                    <select ng-model="row.planId" ng-options="plan.id as plan.name for plan in plans" class="form-control">
+                    </select>
+                </td>
+                <td>
+                    <select ng-model="row.appId" ng-options="app.id as app.name for app in apps" class="form-control">
+                    </select>
+                </td>
+                <td>
+                    <select ng-model="row.authenticated" ng-options="st.key as st.value for st in status" class="form-control">
+                    </select>
                 </td>
                 <td>
                     <a ng-click="removeAllocation($index)" class="btn btn-default"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
