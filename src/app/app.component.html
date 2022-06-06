@@ -1,0 +1,21 @@
+
+<app-navigation></app-navigation>
+
+<div class="fusio-container">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col text-end">
+        <div ngbDropdown class="d-inline-block">
+          <button type="button" class="btn" id="userMenu" ngbDropdownToggle>{{ user.name }} <i class="bi bi-person"></i></button>
+          <div ngbDropdownMenu aria-labelledby="userMenu">
+            <button ngbDropdownItem routerLink="{{ item.path }}" *ngFor="let item of menu">{{ item.title }}</button>
+          </div>
+        </div>
+        <div class="fusio-content">
+          <div class="fusio-loading-container pull-right"></div>
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
