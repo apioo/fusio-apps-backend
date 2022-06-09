@@ -221,15 +221,7 @@ pre
 {
   height:300px;
   overflow:hidden;
-}
-
-.fusio-panel table tbody tr:first-child td
-{
-  border-top:none;
-}
-
-.fusio-panel table
-{
+  margin-bottom:16px;
 }
 
 .fusio-login

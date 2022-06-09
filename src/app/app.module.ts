@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgChartsModule } from 'ng2-charts';
 import { FormsModule } from "@angular/forms";
 import { ChangePasswordComponent } from './account/change-password/change-password.component';
 import { ListComponent } from './action/list/list.component';
@@ -47,7 +48,8 @@ import { NavigationComponent } from './navigation/navigation.component';
     HttpClientModule,
     AppRoutingModule,
     NgbModule,
-    FormsModule
+    FormsModule,
+    NgChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
