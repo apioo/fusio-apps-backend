@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { TokenParserService } from './token-parser.service';
+import { FactoryService } from './factory.service';
 
-describe('TokenParserService', () => {
-  let service: TokenParserService;
+describe('FactoryService', () => {
+  let service: FactoryService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(TokenParserService);
+    service = TestBed.inject(FactoryService);
   });
 
   it('should be created', () => {

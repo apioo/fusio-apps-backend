@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import * as navigation from './../../navigation.json';
-import * as packagejson from './../../../package.json';
+import navigation from './../../navigation.json';
+import packageInfo from './../../../package.json';
 
 @Component({
   selector: 'app-navigation',
@@ -9,8 +9,8 @@ import * as packagejson from './../../../package.json';
 })
 export class NavigationComponent implements OnInit {
 
-  version = packagejson.version;
-  navigation: Array<GroupItem> = navigation;
+  version = packageInfo.version;
+  navigation: Array<GroupItem> = navigation.entries;
 
   constructor() { }
 
@@ -18,8 +18,8 @@ export class NavigationComponent implements OnInit {
   }
 
   changeNavHeading(item: GroupItem): void {
-    for (let i = 0; i < navigation.length; i++) {
-      navigation[i].visible = navigation[i].title === item.title
+    for (let i = 0; i < this.navigation.length; i++) {
+      this.navigation[i].visible = this.navigation[i].title === item.title
     }
   }
 

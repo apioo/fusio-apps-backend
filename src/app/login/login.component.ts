@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import * as packagejson from "../../../package.json";
-import { HttpClient } from '@angular/common/http';
+import packageJson from "../../../package.json";
+import {FactoryService} from "../factory.service";
 
 @Component({
   selector: 'app-login',
@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class LoginComponent implements OnInit {
 
-  version = packagejson.version;
+  version = packageJson.version;
 
   credentials: Credentials = {
     username: '',
@@ -19,24 +19,20 @@ export class LoginComponent implements OnInit {
   response = null
   loading = false
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private factory: FactoryService) {
   }
 
   ngOnInit(): void {
   }
 
-  login(credentials: Credentials): void {
+  async login(credentials: Credentials) {
+    const client = this.factory.getClientWithCredentials(credentials.username, credentials.password);
+    const account = await client.backendAccount();
+    const response = await account.getBackendAccount().backendActionAccountGet();
 
-    this.httpClient.post(fusio.baseUrl + 'authorization/token', 'grant_type=client_credentials', {
-      headers: {
-        'Authorization': 'Basic ' + btoa(credentials.username + ':' + credentials.password),
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    }).subscribe((response) => {
-
-      this.router.navigateByUrl('/');
-    })
-
+    if (response.data.name) {
+      // login successful
+    }
   }
 
 }

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {ListComponent as DashboardList} from "./dashboard/list/list.component";
 import {ListComponent as RouteList} from "./route/list/list.component";
+import {ListComponent as ActionList} from "./action/list/list.component";
 import {ListComponent as SchemaList} from "./schema/list/list.component";
 import {ListComponent as ConnectionList} from "./connection/list/list.component";
 import {ListComponent as EventList} from "./event/list/list.component";
@@ -25,12 +26,15 @@ import {ListComponent as MarketplaceList} from "./marketplace/list/list.componen
 import {ListComponent as ConfigList} from "./config/list/list.component";
 import {ListComponent as AuditList} from "./audit/list/list.component";
 import {ListComponent as TrashList} from "./trash/list/list.component";
+import {LoginComponent} from "./login/login.component";
 
 const routes: Routes = [
   { path: '', component: DashboardList },
+  { path: 'login', component: LoginComponent },
 
   { path: 'dashboard', component: DashboardList },
   { path: 'route', component: RouteList },
+  { path: 'action', component: ActionList },
   { path: 'schema', component: SchemaList },
   { path: 'connection', component: ConnectionList },
   { path: 'event', component: EventList },

@@ -1,188 +1,190 @@
-[
-  {
-    "title": "API",
-    "visible": true,
-    "children": [
-      {
-        "title": "Dashboard",
-        "icon": "glyphicon-th",
-        "path": "/dashboard",
-        "scope": "backend.dashboard"
-      },
-      {
-        "title": "Routes",
-        "icon": "glyphicon-road",
-        "path": "/routes",
-        "scope": "backend.route"
-      },
-      {
-        "title": "Action",
-        "icon": "glyphicon-transfer",
-        "path": "/action",
-        "scope": "backend.action"
-      },
-      {
-        "title": "Schema",
-        "icon": "glyphicon-list-alt",
-        "path": "/schema",
-        "scope": "backend.schema"
-      },
-      {
-        "title": "Connection",
-        "icon": "glyphicon-log-in",
-        "path": "/connection",
-        "scope": "backend.connection"
-      },
-      {
-        "title": "Event",
-        "icon": "glyphicon-retweet",
-        "path": "/event",
-        "scope": "backend.event"
-      },
-      {
-        "title": "Cronjob",
-        "icon": "glyphicon-time",
-        "path": "/cronjob",
-        "scope": "backend.cronjob"
-      }
-    ]
-  },
-  {
-    "title": "Consumer",
-    "visible": false,
-    "children": [
-      {
-        "title": "App",
-        "icon": "glyphicon-book",
-        "path": "/app",
-        "scope": "backend.app"
-      },
-      {
-        "title": "Scope",
-        "icon": "glyphicon-eye-open",
-        "path": "/scope",
-        "scope": "backend.scope"
-      },
-      {
-        "title": "User",
-        "icon": "glyphicon-user",
-        "path": "/user",
-        "scope": "backend.user"
-      },
-      {
-        "title": "Rate",
-        "icon": "glyphicon-filter",
-        "path": "/rate",
-        "scope": "backend.rate"
-      },
-      {
-        "title": "Page",
-        "icon": "glyphicon-text-background",
-        "path": "/page",
-        "scope": "backend.page"
-      },
-      {
-        "title": "SDK",
-        "icon": "glyphicon-download",
-        "path": "/sdk",
-        "scope": "backend.sdk"
-      },
-      {
-        "title": "Subscription",
-        "icon": "glyphicon-fire",
-        "path": "/subscription",
-        "scope": "backend.event"
-      }
-    ]
-  },
-  {
-    "title": "Analytics",
-    "visible": false,
-    "children": [
-      {
-        "title": "Log",
-        "icon": "glyphicon-briefcase",
-        "path": "/log",
-        "scope": "backend.log"
-      },
-      {
-        "title": "Statistic",
-        "icon": "glyphicon-stats",
-        "path": "/statistic",
-        "scope": "backend.statistic"
-      },
-      {
-        "title": "Error",
-        "icon": "glyphicon-bell",
-        "path": "/error",
-        "scope": "backend.log"
-      },
-      {
-        "title": "Token",
-        "icon": "glyphicon-map-marker",
-        "path": "/token",
-        "scope": "backend.app"
-      }
-    ]
-  },
-  {
-    "title": "Monetization",
-    "visible": false,
-    "children": [
-      {
-        "title": "Plan",
-        "icon": "glyphicon-hdd",
-        "path": "/plan",
-        "scope": "backend.plan"
-      },
-      {
-        "title": "Transaction",
-        "icon": "glyphicon-equalizer",
-        "path": "/transaction",
-        "scope": "backend.transaction"
-      }
-    ]
-  },
-  {
-    "title": "System",
-    "visible": false,
-    "children": [
-      {
-        "title": "Category",
-        "icon": "glyphicon-record",
-        "path": "/category",
-        "scope": "backend.category"
-      },
-      {
-        "title": "Role",
-        "icon": "glyphicon-certificate",
-        "path": "/role",
-        "scope": "backend.role"
-      },
-      {
-        "title": "Marketplace",
-        "icon": "glyphicon-shopping-cart",
-        "path": "/marketplace",
-        "scope": "backend.marketplace"
-      },
-      {
-        "title": "Settings",
-        "icon": "glyphicon-cog",
-        "path": "/config",
-        "scope": "backend.config"
-      },
-      {
-        "title": "Audit",
-        "icon": "glyphicon-facetime-video",
-        "path": "/audit",
-        "scope": "backend.audit"
-      },
-      {
-        "title": "Trash",
-        "icon": "glyphicon-trash",
-        "path": "/trash",
-        "scope": "backend.trash"
-      }
-    ]
-  }
-]
+{
+  "entries": [
+    {
+      "title": "API",
+      "visible": true,
+      "children": [
+        {
+          "title": "Dashboard",
+          "icon": "glyphicon-th",
+          "path": "/dashboard",
+          "scope": "backend.dashboard"
+        },
+        {
+          "title": "Route",
+          "icon": "glyphicon-road",
+          "path": "/route",
+          "scope": "backend.route"
+        },
+        {
+          "title": "Action",
+          "icon": "glyphicon-transfer",
+          "path": "/action",
+          "scope": "backend.action"
+        },
+        {
+          "title": "Schema",
+          "icon": "glyphicon-list-alt",
+          "path": "/schema",
+          "scope": "backend.schema"
+        },
+        {
+          "title": "Connection",
+          "icon": "glyphicon-log-in",
+          "path": "/connection",
+          "scope": "backend.connection"
+        },
+        {
+          "title": "Event",
+          "icon": "glyphicon-retweet",
+          "path": "/event",
+          "scope": "backend.event"
+        },
+        {
+          "title": "Cronjob",
+          "icon": "glyphicon-time",
+          "path": "/cronjob",
+          "scope": "backend.cronjob"
+        }
+      ]
+    },
+    {
+      "title": "Consumer",
+      "visible": false,
+      "children": [
+        {
+          "title": "App",
+          "icon": "glyphicon-book",
+          "path": "/app",
+          "scope": "backend.app"
+        },
+        {
+          "title": "Scope",
+          "icon": "glyphicon-eye-open",
+          "path": "/scope",
+          "scope": "backend.scope"
+        },
+        {
+          "title": "User",
+          "icon": "glyphicon-user",
+          "path": "/user",
+          "scope": "backend.user"
+        },
+        {
+          "title": "Rate",
+          "icon": "glyphicon-filter",
+          "path": "/rate",
+          "scope": "backend.rate"
+        },
+        {
+          "title": "Page",
+          "icon": "glyphicon-text-background",
+          "path": "/page",
+          "scope": "backend.page"
+        },
+        {
+          "title": "SDK",
+          "icon": "glyphicon-download",
+          "path": "/sdk",
+          "scope": "backend.sdk"
+        },
+        {
+          "title": "Subscription",
+          "icon": "glyphicon-fire",
+          "path": "/subscription",
+          "scope": "backend.event"
+        }
+      ]
+    },
+    {
+      "title": "Analytics",
+      "visible": false,
+      "children": [
+        {
+          "title": "Log",
+          "icon": "glyphicon-briefcase",
+          "path": "/log",
+          "scope": "backend.log"
+        },
+        {
+          "title": "Statistic",
+          "icon": "glyphicon-stats",
+          "path": "/statistic",
+          "scope": "backend.statistic"
+        },
+        {
+          "title": "Error",
+          "icon": "glyphicon-bell",
+          "path": "/error",
+          "scope": "backend.log"
+        },
+        {
+          "title": "Token",
+          "icon": "glyphicon-map-marker",
+          "path": "/token",
+          "scope": "backend.app"
+        }
+      ]
+    },
+    {
+      "title": "Monetization",
+      "visible": false,
+      "children": [
+        {
+          "title": "Plan",
+          "icon": "glyphicon-hdd",
+          "path": "/plan",
+          "scope": "backend.plan"
+        },
+        {
+          "title": "Transaction",
+          "icon": "glyphicon-equalizer",
+          "path": "/transaction",
+          "scope": "backend.transaction"
+        }
+      ]
+    },
+    {
+      "title": "System",
+      "visible": false,
+      "children": [
+        {
+          "title": "Category",
+          "icon": "glyphicon-record",
+          "path": "/category",
+          "scope": "backend.category"
+        },
+        {
+          "title": "Role",
+          "icon": "glyphicon-certificate",
+          "path": "/role",
+          "scope": "backend.role"
+        },
+        {
+          "title": "Marketplace",
+          "icon": "glyphicon-shopping-cart",
+          "path": "/marketplace",
+          "scope": "backend.marketplace"
+        },
+        {
+          "title": "Settings",
+          "icon": "glyphicon-cog",
+          "path": "/config",
+          "scope": "backend.config"
+        },
+        {
+          "title": "Audit",
+          "icon": "glyphicon-facetime-video",
+          "path": "/audit",
+          "scope": "backend.audit"
+        },
+        {
+          "title": "Trash",
+          "icon": "glyphicon-trash",
+          "path": "/trash",
+          "scope": "backend.trash"
+        }
+      ]
+    }
+  ]
+}

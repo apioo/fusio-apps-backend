@@ -54,3 +54,7 @@ import { NavigationComponent } from './navigation/navigation.component';
 })
 export class AppModule {
 }
+
+declare global {
+  var FUSIO_URL: string|undefined;
+}

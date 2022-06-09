@@ -9,11 +9,11 @@
       <form name="loginForm" method="post" (submit)="login(credentials)" novalidate>
         <div class="form-group">
           <label for="username">Username:</label>
-          <input type="text" id="username" [(ngModel)]="credentials.username" class="form-control">
+          <input type="text" id="username" name="username" [(ngModel)]="credentials.username" class="form-control">
         </div>
         <div class="form-group">
           <label for="password">Password:</label>
-          <input type="password" id="password" [(ngModel)]="credentials.password" class="form-control">
+          <input type="password" id="password" name="password" [(ngModel)]="credentials.password" class="form-control">
         </div>
         <button type="submit" class="btn btn-default" [disabled]="loading">Login</button>
       </form>
