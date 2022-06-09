@@ -7,15 +7,15 @@
     <div class="fusio-login-panel-body">
       <ngb-alert *ngIf="response" type="danger">{{ response }}</ngb-alert>
       <form name="loginForm" method="post" (submit)="login(credentials)" novalidate>
-        <div class="form-group">
+        <div class="mb-3">
           <label for="username">Username:</label>
           <input type="text" id="username" name="username" [(ngModel)]="credentials.username" class="form-control">
         </div>
-        <div class="form-group">
+        <div class="mb-3">
           <label for="password">Password:</label>
           <input type="password" id="password" name="password" [(ngModel)]="credentials.password" class="form-control">
         </div>
-        <button type="submit" class="btn btn-default" [disabled]="loading">Login</button>
+        <button type="submit" class="btn btn-primary" [disabled]="loading">Login</button>
       </form>
     </div>
   </div>

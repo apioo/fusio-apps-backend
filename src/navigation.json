@@ -6,43 +6,43 @@
       "children": [
         {
           "title": "Dashboard",
-          "icon": "glyphicon-th",
+          "icon": "bi-tablet",
           "path": "/dashboard",
           "scope": "backend.dashboard"
         },
         {
           "title": "Route",
-          "icon": "glyphicon-road",
+          "icon": "bi-router",
           "path": "/route",
           "scope": "backend.route"
         },
         {
           "title": "Action",
-          "icon": "glyphicon-transfer",
+          "icon": "bi-code",
           "path": "/action",
           "scope": "backend.action"
         },
         {
           "title": "Schema",
-          "icon": "glyphicon-list-alt",
+          "icon": "bi-star",
           "path": "/schema",
           "scope": "backend.schema"
         },
         {
           "title": "Connection",
-          "icon": "glyphicon-log-in",
+          "icon": "bi-cloud",
           "path": "/connection",
           "scope": "backend.connection"
         },
         {
           "title": "Event",
-          "icon": "glyphicon-retweet",
+          "icon": "bi-calendar-event",
           "path": "/event",
           "scope": "backend.event"
         },
         {
           "title": "Cronjob",
-          "icon": "glyphicon-time",
+          "icon": "bi-alarm",
           "path": "/cronjob",
           "scope": "backend.cronjob"
         }
@@ -54,43 +54,43 @@
       "children": [
         {
           "title": "App",
-          "icon": "glyphicon-book",
+          "icon": "bi-book",
           "path": "/app",
           "scope": "backend.app"
         },
         {
           "title": "Scope",
-          "icon": "glyphicon-eye-open",
+          "icon": "bi-eye-open",
           "path": "/scope",
           "scope": "backend.scope"
         },
         {
           "title": "User",
-          "icon": "glyphicon-user",
+          "icon": "bi-user",
           "path": "/user",
           "scope": "backend.user"
         },
         {
           "title": "Rate",
-          "icon": "glyphicon-filter",
+          "icon": "bi-filter",
           "path": "/rate",
           "scope": "backend.rate"
         },
         {
           "title": "Page",
-          "icon": "glyphicon-text-background",
+          "icon": "bi-text-background",
           "path": "/page",
           "scope": "backend.page"
         },
         {
           "title": "SDK",
-          "icon": "glyphicon-download",
+          "icon": "bi-download",
           "path": "/sdk",
           "scope": "backend.sdk"
         },
         {
           "title": "Subscription",
-          "icon": "glyphicon-fire",
+          "icon": "bi-fire",
           "path": "/subscription",
           "scope": "backend.event"
         }
@@ -102,25 +102,25 @@
       "children": [
         {
           "title": "Log",
-          "icon": "glyphicon-briefcase",
+          "icon": "bi-briefcase",
           "path": "/log",
           "scope": "backend.log"
         },
         {
           "title": "Statistic",
-          "icon": "glyphicon-stats",
+          "icon": "bi-stats",
           "path": "/statistic",
           "scope": "backend.statistic"
         },
         {
           "title": "Error",
-          "icon": "glyphicon-bell",
+          "icon": "bi-bell",
           "path": "/error",
           "scope": "backend.log"
         },
         {
           "title": "Token",
-          "icon": "glyphicon-map-marker",
+          "icon": "bi-map-marker",
           "path": "/token",
           "scope": "backend.app"
         }
@@ -132,13 +132,13 @@
       "children": [
         {
           "title": "Plan",
-          "icon": "glyphicon-hdd",
+          "icon": "bi-hdd",
           "path": "/plan",
           "scope": "backend.plan"
         },
         {
           "title": "Transaction",
-          "icon": "glyphicon-equalizer",
+          "icon": "bi-equalizer",
           "path": "/transaction",
           "scope": "backend.transaction"
         }
@@ -150,37 +150,37 @@
       "children": [
         {
           "title": "Category",
-          "icon": "glyphicon-record",
+          "icon": "bi-record",
           "path": "/category",
           "scope": "backend.category"
         },
         {
           "title": "Role",
-          "icon": "glyphicon-certificate",
+          "icon": "bi-certificate",
           "path": "/role",
           "scope": "backend.role"
         },
         {
           "title": "Marketplace",
-          "icon": "glyphicon-shopping-cart",
+          "icon": "bi-shopping-cart",
           "path": "/marketplace",
           "scope": "backend.marketplace"
         },
         {
           "title": "Settings",
-          "icon": "glyphicon-cog",
+          "icon": "bi-cog",
           "path": "/config",
           "scope": "backend.config"
         },
         {
           "title": "Audit",
-          "icon": "glyphicon-facetime-video",
+          "icon": "bi-facetime-video",
           "path": "/audit",
           "scope": "backend.audit"
         },
         {
           "title": "Trash",
-          "icon": "glyphicon-trash",
+          "icon": "bi-trash",
           "path": "/trash",
           "scope": "backend.trash"
         }

@@ -1,4 +1,6 @@
 
+@import "~bootstrap-icons/font/bootstrap-icons.css";
+
 body
 {
   background-color:#fff;
@@ -15,28 +17,14 @@ pre
 
 .fusio-header-profile
 {
-  margin:10px 0;
+  float:right;
+  margin-top:2px;
 }
 
-.fusio-header-profile a
+#userMenu,
+#userMenu:hover
 {
   color:#fff;
-}
-
-.fusio-header-profile a > span
-{
-  vertical-align:top;
-  margin-left:4px;
-}
-
-.fusio-header-profile a:hover, a:focus
-{
-  text-decoration:none;
-}
-
-.fusio-header-profile a span
-{
-  margin-right:4px;
 }
 
 .fusio-sidebar
@@ -81,24 +69,25 @@ pre
   color:#666;
 }
 
-.fusio-navigation ul > li > a,
-.fusio-navigation ul > li > a:link,
-.fusio-navigation ul > li > a:visited,
-.fusio-navigation ul > li > a:hover,
-.fusio-navigation ul > li > a:active
+.fusio-navigation div > ul > li > a,
+.fusio-navigation div > ul > li > a:link,
+.fusio-navigation div > ul > li > a:visited,
+.fusio-navigation div > ul > li > a:hover,
+.fusio-navigation div > ul > li > a:active
 {
   color:#fff;
   white-space:nowrap;
   padding-left:0;
   background-color:#021c35;
+  margin:0 -5px;
 }
 
-.fusio-navigation ul > li > a:hover
+.fusio-navigation div > ul > li > a:hover
 {
   color:#55acee;
 }
 
-.fusio-navigation .glyphicon
+.fusio-navigation i
 {
   margin-right:6px;
 }
@@ -148,11 +137,11 @@ pre
   background-color:#fff;
 }
 
-.fusio-content > div > h1
+.fusio-content h1
 {
   color:#eee;
   padding:12px 15px;
-  margin:0px -15px;
+  margin:0 -15px;
   margin-bottom:10px;
   border-bottom:1px solid #021c35;
   font-size:1em;

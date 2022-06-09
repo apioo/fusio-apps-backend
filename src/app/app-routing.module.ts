@@ -6,7 +6,7 @@ import {ListComponent as ActionList} from "./action/list/list.component";
 import {ListComponent as SchemaList} from "./schema/list/list.component";
 import {ListComponent as ConnectionList} from "./connection/list/list.component";
 import {ListComponent as EventList} from "./event/list/list.component";
-import {ListComponent as CronjobList} from "./event/list/list.component";
+import {ListComponent as CronjobList} from "./cronjob/list/list.component";
 import {ListComponent as AppList} from "./app/list/list.component";
 import {ListComponent as ScopeList} from "./scope/list/list.component";
 import {ListComponent as UserList} from "./user/list/list.component";
