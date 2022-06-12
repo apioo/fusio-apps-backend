@@ -27,8 +27,7 @@ export class FactoryService {
       clientId,
       clientSecret,
       this.baseUrl + '/authorization/token',
-      '',
-      this.baseUrl + '/authorization/token'
+      ''
     );
 
     return new Client(this.baseUrl, credentials, this.store);
@@ -40,7 +39,14 @@ export class FactoryService {
    * an exception
    */
   public getClient(): Client {
-    return new Client(this.baseUrl, null, this.store);
+    const credentials = new ClientCredentials(
+      '',
+      '',
+      this.baseUrl + '/authorization/token',
+      ''
+    );
+
+    return new Client(this.baseUrl, credentials, this.store);
   }
 
   private static guessFusioEndpointUrl(urlRewrite: boolean) {

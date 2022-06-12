@@ -5,6 +5,13 @@
     <div class="card fusio-panel">
       <div class="card-header">Incoming request chart</div>
       <div class="card-body">
+        <canvas baseChart
+                [datasets]="incomingRequests?.datasets"
+                [labels]="incomingRequests?.labels"
+                [options]="{'responsive':true,'maintainAspectRatio':false}"
+                [type]="'line'"
+                height="220">
+        </canvas>
       </div>
     </div>
   </div>
@@ -12,6 +19,13 @@
     <div class="card fusio-panel">
       <div class="card-header">Most used routes</div>
       <div class="card-body">
+        <canvas baseChart
+                [datasets]="mostUsedRoutes?.datasets"
+                [labels]="mostUsedRoutes?.labels"
+                [options]="{'responsive':true,'maintainAspectRatio':false}"
+                [type]="'line'"
+                height="220">
+        </canvas>
       </div>
     </div>
   </div>
@@ -19,6 +33,13 @@
     <div class="card fusio-panel">
       <div class="card-header">Execution time per route (ms)</div>
       <div class="card-body">
+        <canvas baseChart
+                [datasets]="timePerRoute?.datasets"
+                [labels]="timePerRoute?.labels"
+                [options]="{'responsive':true,'maintainAspectRatio':false}"
+                [type]="'line'"
+                height="220">
+        </canvas>
       </div>
     </div>
   </div>
@@ -29,6 +50,13 @@
     <div class="card fusio-panel">
       <div class="card-header">Latest users</div>
       <div class="card-body">
+        <table class="table">
+          <tbody>
+          <tr *ngFor="let user of latestUsers?.entry">
+            <td>{{ user.name }}</td>
+          </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -36,6 +64,13 @@
     <div class="card fusio-panel">
       <div class="card-header">Errors per route</div>
       <div class="card-body">
+        <canvas baseChart
+                [datasets]="errorsPerRoute?.datasets"
+                [labels]="errorsPerRoute?.labels"
+                [options]="{'responsive':true,'maintainAspectRatio':false}"
+                [type]="'line'"
+                height="220">
+        </canvas>
       </div>
     </div>
   </div>
@@ -43,6 +78,13 @@
     <div class="card fusio-panel">
       <div class="card-header">Incoming transactions</div>
       <div class="card-body">
+        <canvas baseChart
+                [datasets]="incomingTransactions?.datasets"
+                [labels]="incomingTransactions?.labels"
+                [options]="{'responsive':true,'maintainAspectRatio':false}"
+                [type]="'line'"
+                height="220">
+        </canvas>
       </div>
     </div>
   </div>
@@ -53,6 +95,13 @@
     <div class="card fusio-panel">
       <div class="card-header">Latest requests</div>
       <div class="card-body">
+        <table class="table">
+          <tbody>
+          <tr *ngFor="let request of latestRequests?.entry">
+            <td>{{ request.path }}</td>
+          </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -60,6 +109,13 @@
     <div class="card fusio-panel">
       <div class="card-header">Latest apps</div>
       <div class="card-body">
+        <table class="table">
+          <tbody>
+          <tr *ngFor="let app of latestApps?.entry">
+            <td>{{ app.name }}</td>
+          </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -67,6 +123,14 @@
     <div class="card fusio-panel">
       <div class="card-header">Latest transactions</div>
       <div class="card-body">
+        <table class="table">
+          <tbody>
+          <tr *ngFor="let transaction of latestTransactions?.entry">
+            <td>{{ transaction.transactionId }}</td>
+            <td>{{ transaction.amount|currency }}</td>
+          </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>

@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 import {ListComponent as DashboardList} from "./dashboard/list/list.component";
 import {ListComponent as RouteList} from "./route/list/list.component";
 import {ListComponent as ActionList} from "./action/list/list.component";
