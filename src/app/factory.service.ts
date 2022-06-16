@@ -49,6 +49,10 @@ export class FactoryService {
     return new Client(this.baseUrl, credentials, this.store);
   }
 
+  public getBaseUrl(): string {
+    return this.baseUrl;
+  }
+
   private static guessFusioEndpointUrl(urlRewrite: boolean) {
     let url = window.location.href
     const pos = url.lastIndexOf('/fusio')

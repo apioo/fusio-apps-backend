@@ -1,5 +1,6 @@
 
 @import "~bootstrap-icons/font/bootstrap-icons.css";
+@import "~bootstrap/dist/css/bootstrap.min.css";
 
 body
 {
@@ -289,6 +290,37 @@ pre
 {
 }
 
+.fusio-route-method
+{
+  margin:8px 0;
+}
+
+.fusio-route-method > .row
+{
+}
+
+.fusio-route-method > .row:nth-child(even)
+{
+  background-color:rgba(0,0,0,.03);
+}
+
+.fusio-route-method > .row > div
+{
+  margin-top:12px;
+  height:48px;
+}
+
+.fusio-route-method > .row > div:first-child
+{
+  font-weight:bold;
+  font-size:14px;
+}
+
+.fusio-route-method .badge
+{
+  margin-right:4px;
+}
+
 .fusio-log-detail-header,
 .fusio-log-detail-body,
 .fusio-error-detail-trace,
@@ -341,13 +373,6 @@ pre
   overflow:auto;
 }
 
-.fusio-badge
-{
-  font-size:90%;
-  margin-right:4px;
-  font-weight:normal;
-}
-
 .fusio-route-navigation
 {
   min-height:600px;
@@ -369,10 +394,13 @@ pre
 .fusio-route-navigation a
 {
   font-family:monospace;
+  font-size: 14px;
   cursor:pointer;
   padding:8px 0;
   display:block;
   overflow:hidden;
+  white-space:nowrap;
+  text-decoration:none;
 }
 
 .fusio-route-navigation a:hover

@@ -34,6 +34,7 @@ const routes: Routes = [
 
   { path: 'dashboard', component: DashboardList },
   { path: 'route', component: RouteList },
+  { path: 'route/:id', component: RouteList },
   { path: 'action', component: ActionList },
   { path: 'schema', component: SchemaList },
   { path: 'connection', component: ConnectionList },
