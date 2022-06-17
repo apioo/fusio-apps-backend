@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import packageJson from "../../../package.json";
 import {FactoryService} from "../factory.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,7 @@ export class LoginComponent implements OnInit {
   response = null
   loading = false
 
-  constructor(private factory: FactoryService) {
+  constructor(private factory: FactoryService, private router: Router) {
   }
 
   ngOnInit(): void {
@@ -28,11 +29,11 @@ export class LoginComponent implements OnInit {
   async login(credentials: Credentials) {
     const client = this.factory.getClientWithCredentials(credentials.username, credentials.password);
     const account = await client.backendAccount();
-    const response = await account.getBackendAccount().backendActionAccountGet();
 
-    if (response.data.name) {
-      // login successful
-    }
+    account.getBackendAccount().backendActionAccountGet().then(() => {
+      this.router.navigate(['/route']);
+    }).catch(() => {
+    });
   }
 
 }
