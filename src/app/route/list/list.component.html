@@ -1,6 +1,8 @@
 
 <h1>Route</h1>
 
+<app-message [response]="response"></app-message>
+
 <div class="fusio-search">
   <form name="routesSearchForm" (submit)="doSearch()">
     <div class="input-group">
@@ -40,15 +42,15 @@
       <div class="card-header"><a href="{{baseUrl}}{{selected?.path}}" class="fusio-route-path">{{selected?.path}}</a></div>
       <div class="card-body">
         <div class="btn-group" role="group">
-          <button type="button" (click)="openUpdateDialog(selected)" class="btn btn-primary fusio-btn-update">Edit</button>
-          <button type="button" (click)="showLogs(selected)" class="btn btn-secondary fusio-btn-logs">Logs</button>
-          <button type="button" (click)="openDeleteDialog(selected)" class="btn btn-danger fusio-btn-delete">Delete</button>
+          <button type="button" (click)="openUpdateDialog()" class="btn btn-primary fusio-btn-update">Update</button>
+          <button type="button" (click)="showLogs()" class="btn btn-secondary fusio-btn-logs">Logs</button>
+          <button type="button" (click)="openDeleteDialog()" class="btn btn-danger fusio-btn-delete">Delete</button>
         </div>
         <div class="float-end fusio-route-scope">
           <span *ngFor="let scope of selected?.scopes">&nbsp;<span class="badge bg-primary">{{scope}}</span></span>
         </div>
         <br><br>
-        <ul ngbNav #versionNav="ngbNav" activeId="1" class="nav-tabs">
+        <ul ngbNav #versionNav="ngbNav" [(activeId)]="activeVersion" class="nav-tabs">
           <li [ngbNavItem]="config?.version" [destroyOnHide]="true" *ngFor="let config of selected?.config">
             <a ngbNavLink>v{{config?.version}}</a>
             <ng-template ngbNavContent>
@@ -59,7 +61,7 @@
                 <span *ngIf="config?.status === 3" class="badge bg-secondary fusio-route-status">Closed</span>
               </div>
               <br>
-              <ul ngbNav #methodNav="ngbNav" activeId="GET" class="nav-tabs">
+              <ul ngbNav #methodNav="ngbNav" [(activeId)]="activeMethod" class="nav-tabs">
                 <li [ngbNavItem]="method?.method" [destroyOnHide]="true" *ngFor="let method of transformMethods(config?.methods)">
                   <a ngbNavLink>{{method?.method}}</a>
                   <ng-template ngbNavContent>

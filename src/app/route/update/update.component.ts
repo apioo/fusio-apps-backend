@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
+import {Route as ModelRoute} from "fusio-sdk/dist/src/generated/backend/Route";
 
 @Component({
   selector: 'app-update',
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UpdateComponent implements OnInit {
 
-  constructor() { }
+  @Input() route?: ModelRoute;
+
+  constructor(public modal: NgbActiveModal) { }
 
   ngOnInit(): void {
+  }
+
+  submit() {
+
   }
 
 }

@@ -8,6 +8,13 @@ import {HelpService} from "../../help.service";
 import {Route_Methods} from "fusio-sdk/dist/src/generated/backend/Route_Methods";
 import {Route_Method} from "fusio-sdk/dist/src/generated/backend/Route_Method";
 import {Route_Method_Responses} from "fusio-sdk/dist/src/generated/backend/Route_Method_Responses";
+import {Route_Version} from "fusio-sdk/dist/src/generated/backend/Route_Version";
+import {CreateComponent} from "../create/create.component";
+import {UpdateComponent} from "../update/update.component";
+import {DeleteComponent} from "../delete/delete.component";
+import {ProviderComponent} from "../provider/provider.component";
+import {LogComponent} from "../log/log.component";
+import {Response} from "../../message/message.component";
 
 @Component({
   selector: 'app-list',
@@ -23,6 +30,9 @@ export class ListComponent implements OnInit {
   public selected?: ModelRoute = undefined;
   public page: number = 1;
   public pageSize: number = 16;
+  public activeVersion: number = 1;
+  public activeMethod: string = 'GET';
+  public response?: Response;
 
   constructor(private factory: FactoryService, private help: HelpService, private route: ActivatedRoute, private router: Router, private modalService: NgbModal) {
   }
@@ -70,6 +80,48 @@ export class ListComponent implements OnInit {
     const response = await route.getBackendRoutesByRouteId(id).backendActionRouteGet();
 
     this.selected = response.data;
+
+    let version = this.getActiveVersion();
+    if (version === null) {
+      this.activeVersion = 1;
+      version = this.getActiveVersion();
+    }
+
+    const method = this.getActiveMethod()
+    if (method === null && version && version.methods) {
+      this.activeMethod = Object.keys(version.methods)[0];
+    }
+  }
+
+  public getActiveVersion(): Route_Version|null {
+    if (!this.selected || !this.selected.config) {
+      return null;
+    }
+    if (!this.activeVersion) {
+      return null;
+    }
+    for (let i = 0; i < this.selected.config.length; i++) {
+      if (this.selected.config[i].version === this.activeVersion) {
+        return this.selected.config[i];
+      }
+    }
+    return null;
+  }
+
+  public getActiveMethod(): Route_Method|null {
+    const version = this.getActiveVersion();
+    if (!version || !version.methods) {
+      return null;
+    }
+    if (!this.activeMethod) {
+      return null;
+    }
+    for (const [methodName, value] of Object.entries(version.methods)) {
+      if (methodName === this.activeMethod) {
+        return value;
+      }
+    }
+    return null;
   }
 
   doSearch() {
@@ -86,31 +138,59 @@ export class ListComponent implements OnInit {
   }
 
   openCreateDialog() {
+    const modalRef = this.modalService.open(CreateComponent, {
+      size: 'xl'
+    });
+    modalRef.closed.subscribe((response) => {
+      this.response = response;
+    })
+  }
+
+  openUpdateDialog() {
+    if (!this.selected) {
+      return;
+    }
+
+    const modalRef = this.modalService.open(UpdateComponent, {
+      size: 'xl'
+    });
+    modalRef.componentInstance.route = this.selected;
+    modalRef.closed.subscribe((response) => {
+      this.response = response;
+    })
 
   }
 
-  openUpdateDialog(route?: ModelRoute) {
-    if (!route) {
-      return;
-    }
-  }
-
-  openDeleteDialog(route?: ModelRoute) {
-    if (!route) {
+  openDeleteDialog() {
+    if (!this.selected) {
       return;
     }
 
+    const modalRef = this.modalService.open(DeleteComponent, {
+      size: 'xl'
+    });
+    modalRef.componentInstance.route = this.selected;
+    modalRef.closed.subscribe((response) => {
+      this.response = response;
+    })
   }
 
   openProviderDialog() {
-
+    const modalRef = this.modalService.open(ProviderComponent);
+    modalRef.closed.subscribe((response) => {
+      this.response = response;
+    })
   }
 
-  showLogs(route?: ModelRoute) {
-    if (!route) {
+  showLogs() {
+    if (!this.selected) {
       return;
     }
 
+    const modalRef = this.modalService.open(LogComponent, {
+      size: 'xl'
+    });
+    modalRef.componentInstance.route = this.selected;
   }
 
   showHelp(path: string) {

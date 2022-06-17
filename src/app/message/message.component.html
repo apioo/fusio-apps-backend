@@ -1,0 +1,8 @@
+
+<ngb-alert type="success" *ngIf="response && response?.success === true && response?.message" [dismissible]="true">
+  {{response.message}}
+</ngb-alert>
+
+<ngb-alert type="danger" *ngIf="response && response?.success === false && response?.message" [dismissible]="true">
+  {{response.message}}
+</ngb-alert>

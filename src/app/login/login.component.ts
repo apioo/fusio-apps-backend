@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import packageJson from "../../../package.json";
 import {FactoryService} from "../factory.service";
 import {Router} from "@angular/router";
+import {Response} from "../message/message.component";
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,7 @@ export class LoginComponent implements OnInit {
     password: ''
   }
 
-  response = null
+  response?: Response;
   loading = false
 
   constructor(private factory: FactoryService, private router: Router) {
@@ -30,9 +31,10 @@ export class LoginComponent implements OnInit {
     const client = this.factory.getClientWithCredentials(credentials.username, credentials.password);
     const account = await client.backendAccount();
 
-    account.getBackendAccount().backendActionAccountGet().then(() => {
+    account.getBackendAccount().backendActionAccountGet().then((resp) => {
       this.router.navigate(['/route']);
-    }).catch(() => {
+    }).catch((error) => {
+      this.response = error.response.data;
     });
   }
 

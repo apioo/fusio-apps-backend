@@ -1,1 +1,27 @@
-<p>create works!</p>
+
+<div class="modal-header">
+  <h4 class="modal-title">Create</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+</div>
+<div class="modal-body">
+  <app-message [response]="response"></app-message>
+  <form>
+    <div class="mb-3">
+      <label for="path" class="form-label">Path:</label>
+      <input type="text" id="path" [(ngModel)]="route.path" aria-describedby="pathHelp" class="form-control">
+      <span class="form-text" id="pathHelp">Path of the API endpoint i.e. <code>/acme/news</code>. It is possible to
+      use variable path fragments i.e. <code>/acme/:news</code>. Click <a (click)="showHelp('api/routes#path')">here</a>
+      for more information</span>
+    </div>
+    <div class="mb-3">
+      <label for="scope" class="form-label">Scopes:</label>
+      <input type="text" id="scope" [(ngModel)]="route.scopes" aria-describedby="scopeHelp" class="form-control">
+      <span class="form-text" id="scopeHelp">Assign specific scopes to this route</span>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" (click)="submit()">Create</button>
+  <button type="button" class="btn btn-light" (click)="modal.close()">Close</button>
+</div>
+

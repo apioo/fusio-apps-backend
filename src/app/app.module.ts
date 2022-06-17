@@ -90,6 +90,7 @@ import {ListComponent as AuditList} from "./audit/list/list.component";
 import {DetailComponent as AuditDetail} from './audit/detail/detail.component';
 import {FilterComponent as AuditFilter} from './audit/filter/filter.component';
 import {ListComponent as TrashList} from "./trash/list/list.component";
+import { MessageComponent } from './message/message.component';
 
 @NgModule({
   declarations: [
@@ -178,6 +179,7 @@ import {ListComponent as TrashList} from "./trash/list/list.component";
     AuditDetail,
     AuditFilter,
     TrashList,
+    MessageComponent,
   ],
   imports: [
     BrowserModule,

@@ -5,7 +5,7 @@
       <h1>Fusio <span>({{ version }})</span></h1>
     </header>
     <div class="fusio-login-panel-body">
-      <ngb-alert *ngIf="response" type="danger">{{ response }}</ngb-alert>
+      <app-message [response]="response"></app-message>
       <form name="loginForm" method="post" (submit)="login(credentials)" novalidate>
         <div class="mb-3">
           <label for="username">Username:</label>
