@@ -27,42 +27,45 @@ import {ListComponent as ConfigList} from "./config/list/list.component";
 import {ListComponent as AuditList} from "./audit/list/list.component";
 import {ListComponent as TrashList} from "./trash/list/list.component";
 import {LoginComponent} from "./login/login.component";
+import {AuthenticationGuard} from "./authentication.guard";
+import {LogoutComponent} from "./logout/logout.component";
 
 const routes: Routes = [
-  { path: '', component: DashboardList },
+  { path: '', component: DashboardList, canActivate: [AuthenticationGuard] },
   { path: 'login', component: LoginComponent },
+  { path: 'logout', component: LogoutComponent },
 
-  { path: 'dashboard', component: DashboardList },
-  { path: 'route', component: RouteList },
-  { path: 'route/:id', component: RouteList },
-  { path: 'action', component: ActionList },
-  { path: 'schema', component: SchemaList },
-  { path: 'connection', component: ConnectionList },
-  { path: 'event', component: EventList },
-  { path: 'cronjob', component: CronjobList },
+  { path: 'dashboard', component: DashboardList, canActivate: [AuthenticationGuard] },
+  { path: 'route', component: RouteList, canActivate: [AuthenticationGuard] },
+  { path: 'route/:id', component: RouteList, canActivate: [AuthenticationGuard] },
+  { path: 'action', component: ActionList, canActivate: [AuthenticationGuard] },
+  { path: 'schema', component: SchemaList, canActivate: [AuthenticationGuard] },
+  { path: 'connection', component: ConnectionList, canActivate: [AuthenticationGuard] },
+  { path: 'event', component: EventList, canActivate: [AuthenticationGuard] },
+  { path: 'cronjob', component: CronjobList, canActivate: [AuthenticationGuard] },
 
-  { path: 'app', component: AppList },
-  { path: 'scope', component: ScopeList },
-  { path: 'user', component: UserList },
-  { path: 'rate', component: RateList },
-  { path: 'page', component: PageList },
-  { path: 'sdk', component: SdkList },
-  { path: 'subscription', component: SubscriptionList },
+  { path: 'app', component: AppList, canActivate: [AuthenticationGuard] },
+  { path: 'scope', component: ScopeList, canActivate: [AuthenticationGuard] },
+  { path: 'user', component: UserList, canActivate: [AuthenticationGuard] },
+  { path: 'rate', component: RateList, canActivate: [AuthenticationGuard] },
+  { path: 'page', component: PageList, canActivate: [AuthenticationGuard] },
+  { path: 'sdk', component: SdkList, canActivate: [AuthenticationGuard] },
+  { path: 'subscription', component: SubscriptionList, canActivate: [AuthenticationGuard] },
 
-  { path: 'log', component: LogList },
-  { path: 'statistic', component: StatisticList },
-  { path: 'error', component: ErrorList },
-  { path: 'token', component: TokenList },
+  { path: 'log', component: LogList, canActivate: [AuthenticationGuard] },
+  { path: 'statistic', component: StatisticList, canActivate: [AuthenticationGuard] },
+  { path: 'error', component: ErrorList, canActivate: [AuthenticationGuard] },
+  { path: 'token', component: TokenList, canActivate: [AuthenticationGuard] },
 
-  { path: 'plan', component: PlanList },
-  { path: 'transaction', component: TransactionList },
+  { path: 'plan', component: PlanList, canActivate: [AuthenticationGuard] },
+  { path: 'transaction', component: TransactionList, canActivate: [AuthenticationGuard] },
 
-  { path: 'category', component: CategoryList },
-  { path: 'role', component: RoleList },
-  { path: 'marketplace', component: MarketplaceList },
-  { path: 'config', component: ConfigList },
-  { path: 'audit', component: AuditList },
-  { path: 'trash', component: TrashList },
+  { path: 'category', component: CategoryList, canActivate: [AuthenticationGuard] },
+  { path: 'role', component: RoleList, canActivate: [AuthenticationGuard] },
+  { path: 'marketplace', component: MarketplaceList, canActivate: [AuthenticationGuard] },
+  { path: 'config', component: ConfigList, canActivate: [AuthenticationGuard] },
+  { path: 'audit', component: AuditList, canActivate: [AuthenticationGuard] },
+  { path: 'trash', component: TrashList, canActivate: [AuthenticationGuard] },
 ];
 
 @NgModule({

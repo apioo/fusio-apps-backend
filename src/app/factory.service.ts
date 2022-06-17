@@ -53,6 +53,25 @@ export class FactoryService {
     return this.baseUrl;
   }
 
+  public hasValidToken(): boolean {
+    const token = this.store.get();
+    if (!token) {
+      return false;
+    }
+
+    const unixTimestamp = Math.floor(Date.now() / 1000);
+    return token.expires_in > unixTimestamp;
+  }
+
+  public hasScope(scope: string): boolean {
+    const token = this.store.get();
+    if (!token || !token.scope) {
+      return false;
+    }
+
+    return token.scope.split(',').includes(scope);
+  }
+
   private static guessFusioEndpointUrl(urlRewrite: boolean) {
     let url = window.location.href
     const pos = url.lastIndexOf('/fusio')
