@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {Message} from "fusio-sdk/src/generated/backend/Message";
 
 @Component({
   selector: 'app-message',
@@ -8,16 +9,11 @@ import {Component, Input, OnInit} from '@angular/core';
 export class MessageComponent implements OnInit {
 
   @Input()
-  response?: Response;
+  response?: Message;
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-}
-
-export interface Response {
-  success?: boolean
-  message?: string
 }

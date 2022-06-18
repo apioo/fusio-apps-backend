@@ -17,9 +17,7 @@ import {LogComponent as RouteLog} from './route/log/log.component';
 import {ProviderComponent as RouteProvider} from './route/provider/provider.component';
 import {ChangelogComponent as RouteProviderChangelog} from './route/provider/changelog/changelog.component';
 import {ListComponent as ActionList} from "./action/list/list.component";
-import {CreateComponent as ActionCreate} from "./action/create/create.component";
-import {UpdateComponent as ActionUpdate} from "./action/update/update.component";
-import {DeleteComponent as ActionDelete} from "./action/delete/delete.component";
+import {DetailComponent as ActionDetail} from "./action/detail/detail.component";
 import {DesignerComponent as ActionDesigner} from './action/designer/designer.component';
 import {ListComponent as SchemaList} from "./schema/list/list.component";
 import {CreateComponent as SchemaCreate} from "./schema/create/create.component";
@@ -40,9 +38,7 @@ import {UpdateComponent as CronjobUpdate} from "./cronjob/update/update.componen
 import {DeleteComponent as CronjobDelete} from "./cronjob/delete/delete.component";
 import {ErrorComponent as CronjobError} from './cronjob/error/error.component';
 import {ListComponent as AppList} from "./app/list/list.component";
-import {CreateComponent as AppCreate} from "./app/create/create.component";
-import {UpdateComponent as AppUpdate} from "./app/update/update.component";
-import {DeleteComponent as AppDelete} from "./app/delete/delete.component";
+import {DetailComponent as AppDetail} from "./app/detail/detail.component";
 import {ListComponent as ScopeList} from "./scope/list/list.component";
 import {CreateComponent as ScopeCreate} from "./scope/create/create.component";
 import {UpdateComponent as ScopeUpdate} from "./scope/update/update.component";
@@ -90,6 +86,7 @@ import {FilterComponent as AuditFilter} from './audit/filter/filter.component';
 import {ListComponent as TrashList} from "./trash/list/list.component";
 import { MessageComponent } from './message/message.component';
 import { CsvPipe } from './route/csv.pipe';
+import { DetailComponent } from './app/detail/detail.component';
 
 @NgModule({
   declarations: [
@@ -105,9 +102,7 @@ import { CsvPipe } from './route/csv.pipe';
     RouteProvider,
     RouteProviderChangelog,
     ActionList,
-    ActionCreate,
-    ActionUpdate,
-    ActionDelete,
+    ActionDetail,
     ActionDesigner,
     SchemaList,
     SchemaCreate,
@@ -128,9 +123,7 @@ import { CsvPipe } from './route/csv.pipe';
     CronjobDelete,
     CronjobError,
     AppList,
-    AppCreate,
-    AppUpdate,
-    AppDelete,
+    AppDetail,
     ScopeList,
     ScopeCreate,
     ScopeUpdate,
@@ -178,6 +171,7 @@ import { CsvPipe } from './route/csv.pipe';
     TrashList,
     MessageComponent,
     CsvPipe,
+    DetailComponent,
   ],
   imports: [
     BrowserModule,

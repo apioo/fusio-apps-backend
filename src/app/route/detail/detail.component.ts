@@ -1,33 +1,22 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
-import {Response} from "../../message/message.component";
-import {Route as ModelRoute} from "fusio-sdk/dist/src/generated/backend/Route";
-import {Route_Version} from "fusio-sdk/dist/src/generated/backend/Route_Version";
-import {Route_Method} from "fusio-sdk/dist/src/generated/backend/Route_Method";
-import {Route_Methods} from "fusio-sdk/dist/src/generated/backend/Route_Methods";
-import {Route_Method_Responses} from "fusio-sdk/dist/src/generated/backend/Route_Method_Responses";
-import {Schema} from "fusio-sdk/dist/src/generated/backend/Schema";
-import {Action} from "fusio-sdk/dist/src/generated/backend/Action";
+import {Component} from '@angular/core';
+import {Route as ModelRoute} from "fusio-sdk/src/generated/backend/Route";
+import {Route_Version} from "fusio-sdk/src/generated/backend/Route_Version";
+import {Route_Method} from "fusio-sdk/src/generated/backend/Route_Method";
+import {Route_Methods} from "fusio-sdk/src/generated/backend/Route_Methods";
+import {Route_Method_Responses} from "fusio-sdk/src/generated/backend/Route_Method_Responses";
+import {Schema} from "fusio-sdk/src/generated/backend/Schema";
+import {Action} from "fusio-sdk/src/generated/backend/Action";
 import {Config, HttpResponse} from "../config";
-import {FactoryService} from "../../factory.service";
-import axios from "axios";
+import {AxiosResponse} from "axios";
+import {Detail} from "../../detail";
+import {Message} from "fusio-sdk/src/generated/backend/Message";
 
 @Component({
   selector: 'app-route-detail',
   templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.css']
 })
-export class DetailComponent implements OnInit {
-
-  response?: Response;
-
-  @Input() mode: Mode = Mode.Create;
-
-  @Input() route: ModelRoute = {
-    path: '',
-    scopes: [],
-    config: []
-  };
+export class DetailComponent extends Detail<ModelRoute> {
 
   methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
   schemas: Array<Schema> = []
@@ -88,12 +77,11 @@ export class DetailComponent implements OnInit {
     '508': 'Loop Detected'
   }
 
-  constructor(private factory: FactoryService, public modal: NgbActiveModal) { }
-
-  async ngOnInit(): Promise<void> {
+  override async ngOnInit(): Promise<void> {
+    super.ngOnInit();
     await this.loadSchemas();
     await this.loadActions();
-    if (this.route.config?.length === 0) {
+    if (this.entity && this.entity.config?.length === 0) {
       this.addVersion();
     }
   }
@@ -114,42 +102,16 @@ export class DetailComponent implements OnInit {
     }
   }
 
-  async submit() {
-    const data = this.route;
-
-    const route = await this.factory.getClient().backendRoute();
-
-    try {
-      let response;
-      if (this.mode === Mode.Create) {
-        response = await route.getBackendRoutes().backendActionRouteCreate(data);
-      } else if (this.mode === Mode.Update) {
-        response = await route.getBackendRoutesByRouteId('' + data.id).backendActionRouteUpdate(data);
-      } else if (this.mode === Mode.Delete) {
-        response = await route.getBackendRoutesByRouteId('' + data.id).backendActionRouteDelete();
-      }
-      if (response) {
-        this.modal.close(response.data);
-      }
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response)  {
-        this.response = error.response.data as Response;
-      } else {
-        throw error;
-      }
-    }
-  }
-
   addVersion() {
-    if (!this.route.config) {
+    if (!this.entity || !this.entity.config) {
       return;
     }
 
-    this.route.config.push(this.newVersion());
+    this.entity.config.push(this.newVersion());
   }
 
   newVersion(): Route_Version {
-    const newVersion = Config.getLatestVersion(this.route) + 1;
+    const newVersion = Config.getLatestVersion(this.entity) + 1;
     this.activeVersion = newVersion;
 
     return {
@@ -192,7 +154,7 @@ export class DetailComponent implements OnInit {
   }
 
   addResponse(statusCode: string) {
-    const method = Config.getActiveMethod(this.route, this.activeVersion, this.activeMethod);
+    const method = Config.getActiveMethod(this.entity, this.activeVersion, this.activeMethod);
     if (!method) {
       return;
     }
@@ -207,7 +169,7 @@ export class DetailComponent implements OnInit {
   }
 
   removeResponse(statusCode: string) {
-    const method = Config.getActiveMethod(this.route, this.activeVersion, this.activeMethod);
+    const method = Config.getActiveMethod(this.entity, this.activeVersion, this.activeMethod);
     if (!method) {
       return;
     }
@@ -215,9 +177,6 @@ export class DetailComponent implements OnInit {
     if (method.responses && method.responses[statusCode]) {
       delete method.responses[statusCode];
     }
-  }
-
-  showHelp(path: string) {
   }
 
   parseCsv(scopes: string): Array<string> {
@@ -230,10 +189,27 @@ export class DetailComponent implements OnInit {
     }).filter(Boolean);
   }
 
-}
+  protected async create(entity: ModelRoute): Promise<AxiosResponse<Message>> {
+    const route = await this.factory.getClient().backendRoute();
+    return await route.getBackendRoutes().backendActionRouteCreate(entity);
+  }
 
-export enum Mode {
-  Create = 1,
-  Update,
-  Delete,
+  protected async update(entity: ModelRoute): Promise<AxiosResponse<Message>> {
+    const route = await this.factory.getClient().backendRoute();
+    return await route.getBackendRoutesByRouteId('' + entity.id).backendActionRouteUpdate(entity);
+  }
+
+  protected async delete(entity: ModelRoute): Promise<AxiosResponse<Message>> {
+    const route = await this.factory.getClient().backendRoute();
+    return await route.getBackendRoutesByRouteId('' + entity.id).backendActionRouteDelete();
+  }
+
+  protected newEntity(): ModelRoute {
+    return {
+      path: '',
+      scopes: [],
+      config: []
+    };
+  }
+
 }

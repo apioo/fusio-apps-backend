@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import {TokenStoreInterface} from "sdkgen-client/dist/src/TokenStoreInterface";
-import {SessionTokenStore} from "sdkgen-client/dist/src/TokenStore/SessionTokenStore";
-import Client from "fusio-sdk/dist/src/generated/backend/Client";
-import {ClientCredentials} from "sdkgen-client/dist/src/Credentials/ClientCredentials";
+import {TokenStoreInterface} from "sdkgen-client/src/TokenStoreInterface";
+import {SessionTokenStore} from "sdkgen-client/src/TokenStore/SessionTokenStore";
+import Client from "fusio-sdk/src/generated/backend/Client";
+import {ClientCredentials} from "sdkgen-client/src/Credentials/ClientCredentials";
 
 @Injectable({
   providedIn: 'root'
