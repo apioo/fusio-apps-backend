@@ -138,11 +138,11 @@ pre
   background-color:#fff;
 }
 
-.fusio-content > app-list > h1
+.fusio-content > * > h1
 {
   color:#eee;
   padding:12px 15px;
-  margin:0 -15px;
+  margin:0 -12px;
   margin-bottom:10px;
   border-bottom:1px solid #021c35;
   font-size:1em;

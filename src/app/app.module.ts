@@ -12,9 +12,7 @@ import {LogoutComponent} from './logout/logout.component';
 import {NavigationComponent} from './navigation/navigation.component';
 import {ListComponent as DashboardList} from "./dashboard/list/list.component";
 import {ListComponent as RouteList} from "./route/list/list.component";
-import {CreateComponent as RouteCreate} from "./route/create/create.component";
-import {UpdateComponent as RouteUpdate} from "./route/update/update.component";
-import {DeleteComponent as RouteDelete} from "./route/delete/delete.component";
+import {DetailComponent as RouteDetail} from "./route/detail/detail.component";
 import {LogComponent as RouteLog} from './route/log/log.component';
 import {ProviderComponent as RouteProvider} from './route/provider/provider.component';
 import {ChangelogComponent as RouteProviderChangelog} from './route/provider/changelog/changelog.component';
@@ -102,9 +100,7 @@ import { CsvPipe } from './route/csv.pipe';
     LogoutComponent,
     DashboardList,
     RouteList,
-    RouteCreate,
-    RouteUpdate,
-    RouteDelete,
+    RouteDetail,
     RouteLog,
     RouteProvider,
     RouteProviderChangelog,

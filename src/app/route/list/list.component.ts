@@ -8,17 +8,15 @@ import {HelpService} from "../../help.service";
 import {Route_Methods} from "fusio-sdk/dist/src/generated/backend/Route_Methods";
 import {Route_Method} from "fusio-sdk/dist/src/generated/backend/Route_Method";
 import {Route_Method_Responses} from "fusio-sdk/dist/src/generated/backend/Route_Method_Responses";
-import {Route_Version} from "fusio-sdk/dist/src/generated/backend/Route_Version";
-import {CreateComponent} from "../create/create.component";
-import {UpdateComponent} from "../update/update.component";
-import {DeleteComponent} from "../delete/delete.component";
+import {DetailComponent, Mode} from "../detail/detail.component";
 import {ProviderComponent} from "../provider/provider.component";
 import {LogComponent} from "../log/log.component";
 import {Response} from "../../message/message.component";
 import {Config, HttpResponse} from "../config";
+import axios from "axios";
 
 @Component({
-  selector: 'app-list',
+  selector: 'app-route-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
@@ -77,10 +75,18 @@ export class ListComponent implements OnInit {
   }
 
   async get(id: string) {
-    const route = await this.factory.getClient().backendRoute();
-    const response = await route.getBackendRoutesByRouteId(id).backendActionRouteGet();
+    try {
+      const route = await this.factory.getClient().backendRoute();
+      const response = await route.getBackendRoutesByRouteId(id).backendActionRouteGet();
 
-    this.selected = response.data;
+      this.selected = response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response)  {
+        this.response = error.response.data as Response;
+      } else {
+        throw error;
+      }
+    }
 
     let version = Config.getActiveVersion(this.selected, this.activeVersion);
     if (version === null) {
@@ -108,9 +114,10 @@ export class ListComponent implements OnInit {
   }
 
   openCreateDialog() {
-    const modalRef = this.modalService.open(CreateComponent, {
+    const modalRef = this.modalService.open(DetailComponent, {
       size: 'lg'
     });
+    modalRef.componentInstance.mode = Mode.Create;
     modalRef.closed.subscribe((response) => {
       this.response = response;
     })
@@ -121,9 +128,10 @@ export class ListComponent implements OnInit {
       return;
     }
 
-    const modalRef = this.modalService.open(UpdateComponent, {
-      size: 'xl'
+    const modalRef = this.modalService.open(DetailComponent, {
+      size: 'lg'
     });
+    modalRef.componentInstance.mode = Mode.Update;
     modalRef.componentInstance.route = this.selected;
     modalRef.closed.subscribe((response) => {
       this.response = response;
@@ -136,9 +144,10 @@ export class ListComponent implements OnInit {
       return;
     }
 
-    const modalRef = this.modalService.open(DeleteComponent, {
-      size: 'xl'
+    const modalRef = this.modalService.open(DetailComponent, {
+      size: 'lg'
     });
+    modalRef.componentInstance.mode = Mode.Delete;
     modalRef.componentInstance.route = this.selected;
     modalRef.closed.subscribe((response) => {
       this.response = response;

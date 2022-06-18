@@ -1,6 +1,10 @@
 
 <div class="modal-header">
-  <h4 class="modal-title">Create</h4>
+  <h4 class="modal-title">
+    <ng-container *ngIf="mode === 1">Create</ng-container>
+    <ng-container *ngIf="mode === 2">Update</ng-container>
+    <ng-container *ngIf="mode === 3">Delete</ng-container>
+  </h4>
   <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
 </div>
 <div class="modal-body">
@@ -34,7 +38,7 @@
             <label for="status" class="col-sm-2 col-form-label fw-bold">Status</label>
             <div class="col-sm-10">
               <div class="input-group">
-                <select id="status" name="status" [(ngModel)]="config.status" aria-describedby="statusHelp" class="form-select">
+                <select id="status" name="status" [(ngModel)]="config.status" class="form-select">
                   <option *ngFor="let status of statuuus" [ngValue]="status.key">{{status.value}}</option>
                 </select>
                 <button class="btn btn-outline-secondary" type="button" [ngbPopover]="statusHelp"><i class="bi bi-question"></i></button>
@@ -115,7 +119,7 @@
                       <div class="col-md-12">
                         <div class="input-group">
                           <span class="input-group-text">{{response.key}}</span>
-                          <select name="response" class="form-select" *ngIf="method.responses && method.responses[response.key]" [(ngModel)]="method.responses[response.key]" aria-describedby="responsesHelp">
+                          <select name="response" class="form-select" *ngIf="method.responses && method.responses[response.key]" [(ngModel)]="method.responses[response.key]">
                             <option>No schema</option>
                             <option *ngFor="let schema of schemas" [ngValue]="schema.name">{{schema.name}}</option>
                           </select>
@@ -139,7 +143,7 @@
                   <label for="action" class="col-sm-2 col-form-label fw-bold">Action</label>
                   <div class="col-sm-10">
                     <div class="input-group">
-                      <select id="action" name="action" [(ngModel)]="method.action" aria-describedby="actionHelp" class="form-select">
+                      <select id="action" name="action" [(ngModel)]="method.action" class="form-select">
                         <option value="">No action</option>
                         <option *ngFor="let action of actions" [ngValue]="action.name">{{action.name}}</option>
                       </select>
@@ -166,11 +170,12 @@
       </li>
     </ul>
     <div [ngbNavOutlet]="versionNav"></div>
-    <pre>{{route|json}}</pre>
   </form>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-primary" (click)="submit()">Create</button>
+
+  <ng-container *ngIf="mode === 1"><button type="button" class="btn btn-primary" (click)="submit()">Create</button></ng-container>
+  <ng-container *ngIf="mode === 2"><button type="button" class="btn btn-primary" (click)="submit()">Update</button></ng-container>
+  <ng-container *ngIf="mode === 3"><button type="button" class="btn btn-danger" (click)="submit()">Delete</button></ng-container>
   <button type="button" class="btn btn-light" (click)="modal.close()">Close</button>
 </div>
-

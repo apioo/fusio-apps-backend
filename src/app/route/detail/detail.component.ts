@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {Response} from "../../message/message.component";
 import {Route as ModelRoute} from "fusio-sdk/dist/src/generated/backend/Route";
@@ -10,17 +10,20 @@ import {Schema} from "fusio-sdk/dist/src/generated/backend/Schema";
 import {Action} from "fusio-sdk/dist/src/generated/backend/Action";
 import {Config, HttpResponse} from "../config";
 import {FactoryService} from "../../factory.service";
-import axios, {AxiosError} from "axios";
+import axios from "axios";
 
 @Component({
-  selector: 'app-create',
-  templateUrl: './create.component.html',
-  styleUrls: ['./create.component.css']
+  selector: 'app-route-detail',
+  templateUrl: './detail.component.html',
+  styleUrls: ['./detail.component.css']
 })
-export class CreateComponent implements OnInit {
+export class DetailComponent implements OnInit {
 
   response?: Response;
-  route: ModelRoute = {
+
+  @Input() mode: Mode = Mode.Create;
+
+  @Input() route: ModelRoute = {
     path: '',
     scopes: [],
     config: []
@@ -88,9 +91,11 @@ export class CreateComponent implements OnInit {
   constructor(private factory: FactoryService, public modal: NgbActiveModal) { }
 
   async ngOnInit(): Promise<void> {
-    this.addVersion();
     await this.loadSchemas();
     await this.loadActions();
+    if (this.route.config?.length === 0) {
+      this.addVersion();
+    }
   }
 
   private async loadSchemas() {
@@ -115,8 +120,17 @@ export class CreateComponent implements OnInit {
     const route = await this.factory.getClient().backendRoute();
 
     try {
-      const response = await route.getBackendRoutes().backendActionRouteCreate(data);
-      this.modal.close(response.data);
+      let response;
+      if (this.mode === Mode.Create) {
+        response = await route.getBackendRoutes().backendActionRouteCreate(data);
+      } else if (this.mode === Mode.Update) {
+        response = await route.getBackendRoutesByRouteId('' + data.id).backendActionRouteUpdate(data);
+      } else if (this.mode === Mode.Delete) {
+        response = await route.getBackendRoutesByRouteId('' + data.id).backendActionRouteDelete();
+      }
+      if (response) {
+        this.modal.close(response.data);
+      }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response)  {
         this.response = error.response.data as Response;
@@ -216,4 +230,10 @@ export class CreateComponent implements OnInit {
     }).filter(Boolean);
   }
 
+}
+
+export enum Mode {
+  Create = 1,
+  Update,
+  Delete,
 }

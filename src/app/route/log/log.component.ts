@@ -7,7 +7,7 @@ import {Log_Collection} from "fusio-sdk/dist/src/generated/backend/Log_Collectio
 import {Log} from "fusio-sdk/dist/src/generated/backend/Log";
 
 @Component({
-  selector: 'app-log',
+  selector: 'app-route-log',
   templateUrl: './log.component.html',
   styleUrls: ['./log.component.css']
 })
