@@ -18,6 +18,6 @@ export class MessageComponent implements OnInit {
 }
 
 export interface Response {
-  success: boolean
-  message: string
+  success?: boolean
+  message?: string
 }

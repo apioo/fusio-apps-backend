@@ -15,6 +15,7 @@ import {DeleteComponent} from "../delete/delete.component";
 import {ProviderComponent} from "../provider/provider.component";
 import {LogComponent} from "../log/log.component";
 import {Response} from "../../message/message.component";
+import {Config, HttpResponse} from "../config";
 
 @Component({
   selector: 'app-list',
@@ -81,47 +82,16 @@ export class ListComponent implements OnInit {
 
     this.selected = response.data;
 
-    let version = this.getActiveVersion();
+    let version = Config.getActiveVersion(this.selected, this.activeVersion);
     if (version === null) {
       this.activeVersion = 1;
-      version = this.getActiveVersion();
+      version = Config.getActiveVersion(this.selected, this.activeVersion);
     }
 
-    const method = this.getActiveMethod()
+    const method = Config.getActiveMethod(this.selected, this.activeVersion, this.activeMethod)
     if (method === null && version && version.methods) {
       this.activeMethod = Object.keys(version.methods)[0];
     }
-  }
-
-  public getActiveVersion(): Route_Version|null {
-    if (!this.selected || !this.selected.config) {
-      return null;
-    }
-    if (!this.activeVersion) {
-      return null;
-    }
-    for (let i = 0; i < this.selected.config.length; i++) {
-      if (this.selected.config[i].version === this.activeVersion) {
-        return this.selected.config[i];
-      }
-    }
-    return null;
-  }
-
-  public getActiveMethod(): Route_Method|null {
-    const version = this.getActiveVersion();
-    if (!version || !version.methods) {
-      return null;
-    }
-    if (!this.activeMethod) {
-      return null;
-    }
-    for (const [methodName, value] of Object.entries(version.methods)) {
-      if (methodName === this.activeMethod) {
-        return value;
-      }
-    }
-    return null;
   }
 
   doSearch() {
@@ -139,7 +109,7 @@ export class ListComponent implements OnInit {
 
   openCreateDialog() {
     const modalRef = this.modalService.open(CreateComponent, {
-      size: 'xl'
+      size: 'lg'
     });
     modalRef.closed.subscribe((response) => {
       this.response = response;
@@ -205,37 +175,11 @@ export class ListComponent implements OnInit {
   }
 
   transformMethods(methods?: Route_Methods): Array<Route_Method> {
-    if (!methods) {
-      return [];
-    }
-
-    let result = [];
-    for (const [methodName, value] of Object.entries(methods)) {
-      if (value.active !== true) {
-        continue;
-      }
-      let method = value;
-      method.method = methodName;
-      result.push(method);
-    }
-
-    return result;
+    return Config.transformMethods(methods, true);
   }
 
-  transformResponses(responses?: Route_Method_Responses): Array<{ code: number, schema: string }> {
-    if (!responses) {
-      return [];
-    }
-
-    let result = [];
-    for (const [key, value] of Object.entries(responses)) {
-      result.push({
-        code: parseInt(key),
-        schema: value,
-      });
-    }
-
-    return result;
+  transformResponses(responses?: Route_Method_Responses): Array<HttpResponse> {
+    return Config.transformResponses(responses);
   }
 
   getQueryParams(): QueryParams {

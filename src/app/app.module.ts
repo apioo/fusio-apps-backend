@@ -91,6 +91,7 @@ import {DetailComponent as AuditDetail} from './audit/detail/detail.component';
 import {FilterComponent as AuditFilter} from './audit/filter/filter.component';
 import {ListComponent as TrashList} from "./trash/list/list.component";
 import { MessageComponent } from './message/message.component';
+import { CsvPipe } from './route/csv.pipe';
 
 @NgModule({
   declarations: [
@@ -180,6 +181,7 @@ import { MessageComponent } from './message/message.component';
     AuditFilter,
     TrashList,
     MessageComponent,
+    CsvPipe,
   ],
   imports: [
     BrowserModule,
