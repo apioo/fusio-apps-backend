@@ -149,7 +149,7 @@ export class DetailComponent implements OnInit {
   }
 
   newVersion(): Route_Version {
-    const newVersion = Config.getLatestVersion() + 1;
+    const newVersion = Config.getLatestVersion(this.route) + 1;
     this.activeVersion = newVersion;
 
     return {
