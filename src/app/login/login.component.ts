@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import packageJson from "../../../package.json";
 import {FactoryService} from "../factory.service";
 import {Router} from "@angular/router";
-import {Response} from "../message/message.component";
+import {Message} from "fusio-sdk/src/generated/backend/Message";
 
 @Component({
   selector: 'app-login',
@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
     password: ''
   }
 
-  response?: Response;
+  response?: Message;
   loading = false
 
   constructor(private factory: FactoryService, private router: Router) {

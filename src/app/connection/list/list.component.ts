@@ -1,15 +1,40 @@
-import { Component, OnInit } from '@angular/core';
+import {Component} from '@angular/core';
+import {List} from "../../list";
+import {Connection} from "fusio-sdk/src/generated/backend/Connection";
+import {Collection_Category_Query} from "fusio-sdk/src/generated/backend/Collection_Category_Query";
+import {AxiosResponse} from "axios";
+import {Collection} from "fusio-sdk/src/generated/backend/Collection";
+import {DetailComponent} from "../../config/detail/detail.component";
 
 @Component({
-  selector: 'app-list',
+  selector: 'app-connection-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent implements OnInit {
+export class ListComponent extends List<Connection> {
 
-  constructor() { }
+  protected async getAll(query: Collection_Category_Query): Promise<AxiosResponse<Collection<Connection>>> {
+    const group = await this.factory.getClient().backendConnection();
+    return await group.getBackendConnection().backendActionConnectionGetAll(query);
+  }
 
-  ngOnInit(): void {
+  protected async get(id: string): Promise<AxiosResponse<Connection>> {
+    const group = await this.factory.getClient().backendConnection();
+    return await group.getBackendConnectionByConnectionId(id).backendActionConnectionGet();
+  }
+
+  protected getDetailComponent(): any {
+    return DetailComponent;
+  }
+
+  protected getRoute(): any {
+    return '/category';
+  }
+
+  protected onList() {
+  }
+
+  protected onGet(): void {
   }
 
 }

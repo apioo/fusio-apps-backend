@@ -12,18 +12,18 @@ import {Message} from "fusio-sdk/src/generated/backend/Message";
 export class DetailComponent extends Detail<Action> {
 
   protected async create(entity: Action): Promise<AxiosResponse<Message>> {
-    const action = await this.factory.getClient().backendAction();
-    return await action.getBackendAction().backendActionActionCreate(entity);
+    const group = await this.factory.getClient().backendAction();
+    return await group.getBackendAction().backendActionActionCreate(entity);
   }
 
   protected async update(entity: Action): Promise<AxiosResponse<Message>> {
-    const action = await this.factory.getClient().backendAction();
-    return await action.getBackendActionByActionId('' + entity.id).backendActionActionUpdate(entity);
+    const group = await this.factory.getClient().backendAction();
+    return await group.getBackendActionByActionId('' + entity.id).backendActionActionUpdate(entity);
   }
 
   protected async delete(entity: Action): Promise<AxiosResponse<Message>> {
-    const action = await this.factory.getClient().backendAction();
-    return await action.getBackendActionByActionId('' + entity.id).backendActionActionDelete();
+    const group = await this.factory.getClient().backendAction();
+    return await group.getBackendActionByActionId('' + entity.id).backendActionActionDelete();
   }
 
   protected newEntity(): Action {

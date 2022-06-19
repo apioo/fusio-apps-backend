@@ -20,41 +20,27 @@ import {ListComponent as ActionList} from "./action/list/list.component";
 import {DetailComponent as ActionDetail} from "./action/detail/detail.component";
 import {DesignerComponent as ActionDesigner} from './action/designer/designer.component';
 import {ListComponent as SchemaList} from "./schema/list/list.component";
-import {CreateComponent as SchemaCreate} from "./schema/create/create.component";
-import {UpdateComponent as SchemaUpdate} from "./schema/update/update.component";
-import {DeleteComponent as SchemaDelete} from "./schema/delete/delete.component";
+import {DetailComponent as SchemaDetail} from "./schema/detail/detail.component";
 import {PreviewComponent as SchemaPreview} from './schema/preview/preview.component';
 import {ListComponent as ConnectionList} from "./connection/list/list.component";
-import {CreateComponent as ConnectionCreate} from "./connection/create/create.component";
-import {UpdateComponent as ConnectionUpdate} from "./connection/update/update.component";
-import {DeleteComponent as ConnectionDelete} from "./connection/delete/delete.component";
+import {DetailComponent as ConnectionDetail} from "./connection/detail/detail.component";
 import {ListComponent as EventList} from "./event/list/list.component";
-import {CreateComponent as EventCreate} from "./event/create/create.component";
-import {UpdateComponent as EventUpdate} from "./event/update/update.component";
-import {DeleteComponent as EventDelete} from "./event/delete/delete.component";
+import {DetailComponent as EventDetail} from "./event/detail/detail.component";
 import {ListComponent as CronjobList} from "./cronjob/list/list.component";
-import {CreateComponent as CronjobCreate} from "./cronjob/create/create.component";
-import {UpdateComponent as CronjobUpdate} from "./cronjob/update/update.component";
-import {DeleteComponent as CronjobDelete} from "./cronjob/delete/delete.component";
+import {DetailComponent as CronjobDetail} from "./cronjob/detail/detail.component";
 import {ErrorComponent as CronjobError} from './cronjob/error/error.component';
 import {ListComponent as AppList} from "./app/list/list.component";
 import {DetailComponent as AppDetail} from "./app/detail/detail.component";
 import {ListComponent as ScopeList} from "./scope/list/list.component";
-import {CreateComponent as ScopeCreate} from "./scope/create/create.component";
-import {UpdateComponent as ScopeUpdate} from "./scope/update/update.component";
-import {DeleteComponent as ScopeDelete} from "./scope/delete/delete.component";
+import {DetailComponent as ScopeDetail} from "./scope/detail/detail.component";
 import {ListComponent as UserList} from "./user/list/list.component";
 import {CreateComponent as UserCreate} from "./user/create/create.component";
 import {UpdateComponent as UserUpdate} from "./user/update/update.component";
 import {DeleteComponent as UserDelete} from "./user/delete/delete.component";
 import {ListComponent as RateList} from "./rate/list/list.component";
-import {CreateComponent as RateCreate} from "./rate/create/create.component";
-import {UpdateComponent as RateUpdate} from "./rate/update/update.component";
-import {DeleteComponent as RateDelete} from "./rate/delete/delete.component";
+import {DetailComponent as RateDetail} from "./rate/detail/detail.component";
 import {ListComponent as PageList} from "./page/list/list.component";
-import {CreateComponent as PageCreate} from "./page/create/create.component";
-import {UpdateComponent as PageUpdate} from "./page/update/update.component";
-import {DeleteComponent as PageDelete} from "./page/delete/delete.component";
+import {DetailComponent as PageDetail} from "./page/detail/detail.component";
 import {ListComponent as SdkList} from "./sdk/list/list.component";
 import {ListComponent as SubscriptionList} from "./subscription/list/list.component";
 import {CreateComponent as SubscriptionCreate} from "./subscription/create/create.component";
@@ -65,21 +51,15 @@ import {ListComponent as StatisticList} from "./statistic/list/list.component";
 import {ListComponent as ErrorList} from "./error/list/list.component";
 import {ListComponent as TokenList} from "./token/list/list.component";
 import {ListComponent as PlanList} from "./plan/list/list.component";
-import {CreateComponent as PlanCreate} from "./plan/create/create.component";
-import {UpdateComponent as PlanUpdate} from "./plan/update/update.component";
-import {DeleteComponent as PlanDelete} from "./plan/delete/delete.component";
+import {DetailComponent as PlanDetail} from "./plan/detail/detail.component";
 import {ListComponent as TransactionList} from "./transaction/list/list.component";
 import {ListComponent as CategoryList} from "./category/list/list.component";
-import {CreateComponent as CategoryCreate} from "./category/create/create.component";
-import {UpdateComponent as CategoryUpdate} from "./category/update/update.component";
-import {DeleteComponent as CategoryDelete} from "./category/delete/delete.component";
+import {DetailComponent as CategoryDetail} from "./category/detail/detail.component";
 import {ListComponent as RoleList} from "./role/list/list.component";
-import {CreateComponent as RoleCreate} from "./role/create/create.component";
-import {UpdateComponent as RoleUpdate} from "./role/update/update.component";
-import {DeleteComponent as RoleDelete} from "./role/delete/delete.component";
+import {DetailComponent as RoleDetail} from "./role/detail/detail.component";
 import {ListComponent as MarketplaceList} from "./marketplace/list/list.component";
 import {ListComponent as ConfigList} from "./config/list/list.component";
-import {UpdateComponent as ConfigUpdate} from "./config/update/update.component";
+import {DetailComponent as ConfigDetail} from "./config/detail/detail.component";
 import {ListComponent as AuditList} from "./audit/list/list.component";
 import {DetailComponent as AuditDetail} from './audit/detail/detail.component';
 import {FilterComponent as AuditFilter} from './audit/filter/filter.component';
@@ -105,41 +85,27 @@ import { DetailComponent } from './app/detail/detail.component';
     ActionDetail,
     ActionDesigner,
     SchemaList,
-    SchemaCreate,
-    SchemaUpdate,
-    SchemaDelete,
+    SchemaDetail,
     SchemaPreview,
     ConnectionList,
-    ConnectionCreate,
-    ConnectionUpdate,
-    ConnectionDelete,
+    ConnectionDetail,
     EventList,
-    EventCreate,
-    EventUpdate,
-    EventDelete,
+    EventDetail,
     CronjobList,
-    CronjobCreate,
-    CronjobUpdate,
-    CronjobDelete,
+    CronjobDetail,
     CronjobError,
     AppList,
     AppDetail,
     ScopeList,
-    ScopeCreate,
-    ScopeUpdate,
-    ScopeDelete,
+    ScopeDetail,
     UserList,
     UserCreate,
     UserUpdate,
     UserDelete,
     RateList,
-    RateCreate,
-    RateUpdate,
-    RateDelete,
+    RateDetail,
     PageList,
-    PageCreate,
-    PageUpdate,
-    PageDelete,
+    PageDetail,
     SdkList,
     SubscriptionList,
     SubscriptionCreate,
@@ -150,21 +116,15 @@ import { DetailComponent } from './app/detail/detail.component';
     ErrorList,
     TokenList,
     PlanList,
-    PlanCreate,
-    PlanUpdate,
-    PlanDelete,
+    PlanDetail,
     TransactionList,
     CategoryList,
-    CategoryCreate,
-    CategoryUpdate,
-    CategoryDelete,
+    CategoryDetail,
     RoleList,
-    RoleCreate,
-    RoleUpdate,
-    RoleDelete,
+    RoleDetail,
     MarketplaceList,
     ConfigList,
-    ConfigUpdate,
+    ConfigDetail,
     AuditList,
     AuditDetail,
     AuditFilter,

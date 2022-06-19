@@ -290,33 +290,32 @@ pre
 {
 }
 
-.fusio-route-method
+.fusio-detail
 {
   margin:8px 0;
 }
 
-.fusio-route-method > .row
+.fusio-detail > .row
 {
 }
 
-.fusio-route-method > .row:nth-child(even)
+.fusio-detail > .row:nth-child(even)
 {
   background-color:rgba(0,0,0,.03);
 }
 
-.fusio-route-method > .row > div
+.fusio-detail > .row > div
 {
-  margin-top:12px;
-  height:48px;
+  margin:12px 0;
 }
 
-.fusio-route-method > .row > div:first-child
+.fusio-detail > .row > div:first-child
 {
   font-weight:bold;
   font-size:14px;
 }
 
-.fusio-route-method .badge
+.fusio-detail .badge
 {
   margin-right:4px;
 }

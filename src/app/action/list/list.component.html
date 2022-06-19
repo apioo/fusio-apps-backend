@@ -7,8 +7,8 @@
   <form name="actionSearchForm" (submit)="doSearch()">
     <div class="input-group">
       <input type="text" class="form-control" name="search" [(ngModel)]="search" placeholder="Search i.e. action-name" />
-      <a class="btn btn-primary fusio-btn-create" (click)="openCreateDialog()"><i class="bi bi-plus"></i></a>
-      <a class="btn btn-secondary" (click)="showHelp('api/action')"><i class="bi bi-question"></i></a>
+      <button type="button" (click)="openCreateDialog()" class="btn btn-primary fusio-btn-create"><i class="bi bi-plus"></i></button>
+      <button type="button" (click)="showHelp('api/action')" class="btn btn-secondary fusio-btn-help"><i class="bi bi-question"></i></button>
     </div>
   </form>
 </div>
@@ -20,10 +20,10 @@
       <div class="card-body">
         <div class="fusio-route-navigation">
           <ul>
-            <li *ngFor="let row of actions">
-              <a routerLink="/action/{{row.id}}" [queryParams]="this.getQueryParams()" title="{{row.path}}">
-                <b *ngIf="selected?.id === row.id">{{row.path}}</b>
-                <span *ngIf="selected?.id !== row.id">{{row.path}}</span>
+            <li *ngFor="let row of entries">
+              <a routerLink="/action/{{row.id}}" [queryParams]="this.getQueryParams()" title="{{row.name}}">
+                <b *ngIf="selected?.id === row.id">{{row.name}}</b>
+                <span *ngIf="selected?.id !== row.id">{{row.name}}</span>
               </a>
             </li>
           </ul>
@@ -38,87 +38,30 @@
   </div>
   <div class="col-md-10">
     <div class="card">
-      <div class="card-header"><a href="{{baseUrl}}{{selected?.path}}" class="fusio-route-path">{{selected?.path}}</a></div>
+      <div class="card-header">{{selected?.name}}</div>
       <div class="card-body">
         <div class="btn-group" role="group">
           <button type="button" (click)="openUpdateDialog()" class="btn btn-primary fusio-btn-update">Update</button>
-          <button type="button" (click)="showLogs()" class="btn btn-secondary fusio-btn-logs">Logs</button>
           <button type="button" (click)="openDeleteDialog()" class="btn btn-danger fusio-btn-delete">Delete</button>
         </div>
-        <div class="float-end fusio-route-scope">
-          <span *ngFor="let scope of selected?.scopes">&nbsp;<span class="badge bg-primary">{{scope}}</span></span>
+        <div class="fusio-detail">
+          <div class="row">
+            <div class="col-2 fw-bold">Name</div>
+            <div class="col-10">{{selected?.name}}</div>
+          </div>
+          <div class="row">
+            <div class="col-2 fw-bold">Class</div>
+            <div class="col-10"><code>{{selected?.class}}</code></div>
+          </div>
+          <div class="row">
+            <div class="col-2 fw-bold">Engine</div>
+            <div class="col-10"><code>{{selected?.engine}}</code></div>
+          </div>
+          <div class="row">
+            <div class="col-2 fw-bold">Config</div>
+            <div class="col-10"><pre>{{selected?.config|json}}</pre></div>
+          </div>
         </div>
-        <br><br>
-        <ul ngbNav #versionNav="ngbNav" [(activeId)]="activeVersion" class="nav-tabs">
-          <li [ngbNavItem]="config?.version" [destroyOnHide]="true" *ngFor="let config of selected?.config">
-            <a ngbNavLink>v{{config?.version}}</a>
-            <ng-template ngbNavContent>
-              <div class="float-end">
-                <span *ngIf="config?.status === 4" class="badge bg-warning fusio-route-status">Development</span>
-                <span *ngIf="config?.status === 1" class="badge bg-success fusio-route-status">Production</span>
-                <span *ngIf="config?.status === 2" class="badge bg-info fusio-route-status">Deprecated</span>
-                <span *ngIf="config?.status === 3" class="badge bg-secondary fusio-route-status">Closed</span>
-              </div>
-              <br>
-              <ul ngbNav #methodNav="ngbNav" [(activeId)]="activeMethod" class="nav-tabs">
-                <li [ngbNavItem]="method?.method" [destroyOnHide]="true" *ngFor="let method of transformMethods(config?.methods)">
-                  <a ngbNavLink>{{method?.method}}</a>
-                  <ng-template ngbNavContent>
-                    <div class="fusio-route-method">
-                      <div class="row">
-                        <div class="col-2">Status:</div>
-                        <div class="col-10">
-                          <span *ngIf="method?.active === true" class="badge bg-success fusio-route-active">Active</span>
-                          <span *ngIf="method?.active !== true" class="badge bg-secondary fusio-route-active">Inactive</span>
-                          <span *ngIf="method?.public === true" class="badge bg-primary fusio-route-public">Public</span>
-                          <span *ngIf="method?.public !== true" class="badge bg-info fusio-route-public">Private</span>
-                        </div>
-                      </div>
-                      <div class="row" *ngIf="method?.description">
-                        <div class="col-2">Description:</div>
-                        <div class="col-10"><span class="fusio-route-description">{{method?.description}}</span></div>
-                      </div>
-                      <div class="row" *ngIf="method?.operationId">
-                        <div class="col-2">Operation-Id:</div>
-                        <div class="col-10"><code class="fusio-route-operation-id">{{method?.operationId}}</code></div>
-                      </div>
-                      <div class="row" *ngIf="method?.parameters">
-                        <div class="col-2">Parameters:</div>
-                        <div class="col-8"><span class="fusio-route-parameters">{{method?.parameters}}</span></div>
-                        <div class="col-2"><a *ngIf="method?.parameters && config?.status === 4" (click)="showPreview(method?.parameters)" class="btn btn-secondary float-end"><i class="bi bi-search"></i></a></div>
-                      </div>
-                      <div class="row" *ngIf="method?.request">
-                        <div class="col-2">Request:</div>
-                        <div class="col-8"><span class="fusio-route-request">{{method?.request}}</span></div>
-                        <div class="col-2"><a *ngIf="method?.request && config?.status === 4" (click)="showPreview(method?.request)" class="btn btn-secondary float-end"><i class="bi bi-search"></i></a></div>
-                      </div>
-                      <div class="row" *ngIf="method?.responses">
-                        <div class="col-2">Responses:</div>
-                        <div class="col-10">
-                          <div class="row" *ngFor="let response of transformResponses(method?.responses)">
-                            <div class="col-2"><code>{{response.code}}</code></div>
-                            <div class="col-8"><span class="fusio-route-response">{{response.schema}}</span></div>
-                            <div class="col-2"><a *ngIf="response.schema && config?.status === 4" (click)="showPreview(response.schema)" class="btn btn-secondary float-end"><i class="bi bi-search"></i></a></div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row" *ngIf="method?.action">
-                        <div class="col-2">Action:</div>
-                        <div class="col-10"><span class="fusio-route-action">{{method?.action}}</span></div>
-                      </div>
-                      <div class="row" *ngIf="method?.costs">
-                        <div class="col-2">Costs:</div>
-                        <div class="col-10"><span class="fusio-route-costs align-middle">{{method?.costs}}</span></div>
-                      </div>
-                    </div>
-                  </ng-template>
-                </li>
-              </ul>
-              <div [ngbNavOutlet]="methodNav"></div>
-            </ng-template>
-          </li>
-        </ul>
-        <div [ngbNavOutlet]="versionNav"></div>
       </div>
     </div>
   </div>

@@ -190,18 +190,18 @@ export class DetailComponent extends Detail<ModelRoute> {
   }
 
   protected async create(entity: ModelRoute): Promise<AxiosResponse<Message>> {
-    const route = await this.factory.getClient().backendRoute();
-    return await route.getBackendRoutes().backendActionRouteCreate(entity);
+    const group = await this.factory.getClient().backendRoute();
+    return await group.getBackendRoutes().backendActionRouteCreate(entity);
   }
 
   protected async update(entity: ModelRoute): Promise<AxiosResponse<Message>> {
-    const route = await this.factory.getClient().backendRoute();
-    return await route.getBackendRoutesByRouteId('' + entity.id).backendActionRouteUpdate(entity);
+    const group = await this.factory.getClient().backendRoute();
+    return await group.getBackendRoutesByRouteId('' + entity.id).backendActionRouteUpdate(entity);
   }
 
   protected async delete(entity: ModelRoute): Promise<AxiosResponse<Message>> {
-    const route = await this.factory.getClient().backendRoute();
-    return await route.getBackendRoutesByRouteId('' + entity.id).backendActionRouteDelete();
+    const group = await this.factory.getClient().backendRoute();
+    return await group.getBackendRoutesByRouteId('' + entity.id).backendActionRouteDelete();
   }
 
   protected newEntity(): ModelRoute {

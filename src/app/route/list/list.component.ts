@@ -30,13 +30,13 @@ export class ListComponent extends List<ModelRoute> {
   }
 
   protected async getAll(query: Collection_Category_Query): Promise<AxiosResponse<Collection<ModelRoute>>> {
-    const route = await this.factory.getClient().backendRoute();
-    return await route.getBackendRoutes().backendActionRouteGetAll(query);
+    const group = await this.factory.getClient().backendRoute();
+    return await group.getBackendRoutes().backendActionRouteGetAll(query);
   }
 
   protected async get(id: string): Promise<AxiosResponse<ModelRoute>> {
-    const route = await this.factory.getClient().backendRoute();
-    return await route.getBackendRoutesByRouteId(id).backendActionRouteGet();
+    const group = await this.factory.getClient().backendRoute();
+    return await group.getBackendRoutesByRouteId(id).backendActionRouteGet();
   }
 
   protected getDetailComponent(): any {

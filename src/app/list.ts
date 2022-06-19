@@ -1,4 +1,4 @@
-import {OnInit} from '@angular/core';
+import {Directive, OnInit} from '@angular/core';
 import {Collection_Category_Query} from "fusio-sdk/src/generated/backend/Collection_Category_Query";
 import {ActivatedRoute, Router} from "@angular/router";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
@@ -8,10 +8,7 @@ import {Collection} from "fusio-sdk/src/generated/backend/Collection";
 import {Message} from "fusio-sdk/src/generated/backend/Message";
 import {FactoryService} from "./factory.service";
 
-/**
- * Base list component which provides the basic behaviour for all list components. If you want create a new list you
- * should extend this list and provide a fitting model type
- */
+@Directive()
 export abstract class List<T extends ModelId> implements OnInit {
 
   public search: string = '';

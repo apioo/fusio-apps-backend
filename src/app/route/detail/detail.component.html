@@ -14,7 +14,7 @@
       <label for="path" class="col-sm-2 col-form-label fw-bold">Path</label>
       <div class="col-sm-10">
         <div class="input-group">
-          <input type="text" id="path" name="path" [(ngModel)]="route.path" class="form-control">
+          <input type="text" id="path" name="path" [(ngModel)]="entity.path" class="form-control">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="pathHelp"><i class="bi bi-question"></i></button>
           <ng-template #pathHelp>Path of the API endpoint i.e. <code>/acme/news</code>. It is possible to use variable path fragments i.e. <code>/acme/:news</code>. Click here for more information</ng-template>
         </div>
@@ -24,14 +24,14 @@
       <label for="scope" class="col-sm-2 col-form-label fw-bold">Scopes</label>
       <div class="col-sm-10">
         <div class="input-group">
-          <input type="text" id="scope" name="scope" [ngModel]="route.scopes | csv" (ngModelChange)="route.scopes = parseCsv($event)" class="form-control">
+          <input type="text" id="scope" name="scope" [ngModel]="entity.scopes | csv" (ngModelChange)="entity.scopes = parseCsv($event)" class="form-control">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="scopeHelp"><i class="bi bi-question"></i></button>
           <ng-template #scopeHelp>Assign specific scopes to this route</ng-template>
         </div>
       </div>
     </div>
     <ul ngbNav #versionNav="ngbNav" [(activeId)]="activeVersion" class="nav-tabs">
-      <li [ngbNavItem]="config.version" [destroyOnHide]="true" *ngFor="let config of route.config">
+      <li [ngbNavItem]="config.version" [destroyOnHide]="true" *ngFor="let config of entity.config">
         <a ngbNavLink>v{{config.version}}</a>
         <ng-template ngbNavContent>
           <div class="mb-3 row" style="margin-top:1rem;">

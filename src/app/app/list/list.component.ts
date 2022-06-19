@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component} from '@angular/core';
 import {List} from "../../list";
 import {App} from "fusio-sdk/src/generated/backend/App";
 import {Collection_Category_Query} from "fusio-sdk/src/generated/backend/Collection_Category_Query";
@@ -14,13 +14,13 @@ import {DetailComponent} from "../detail/detail.component";
 export class ListComponent extends List<App> {
 
   protected async getAll(query: Collection_Category_Query): Promise<AxiosResponse<Collection<App>>> {
-    const app = await this.factory.getClient().backendApp();
-    return await app.getBackendApp().backendActionAppGetAll(query);
+    const group = await this.factory.getClient().backendApp();
+    return await group.getBackendApp().backendActionAppGetAll(query);
   }
 
   protected async get(id: string): Promise<AxiosResponse<App>> {
-    const app = await this.factory.getClient().backendApp();
-    return await app.getBackendAppByAppId(id).backendActionAppGet();
+    const group = await this.factory.getClient().backendApp();
+    return await group.getBackendAppByAppId(id).backendActionAppGet();
   }
 
   protected getDetailComponent(): any {
