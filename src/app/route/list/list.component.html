@@ -19,7 +19,7 @@
     <div class="card">
       <div class="card-header">Path</div>
       <div class="card-body">
-        <div class="fusio-route-navigation">
+        <div class="fusio-sub-navigation">
           <ul>
             <li *ngFor="let row of entries">
               <a routerLink="/route/{{row.id}}" [queryParams]="this.getQueryParams()" title="{{row.path}}">

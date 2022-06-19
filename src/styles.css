@@ -372,25 +372,25 @@ pre
   overflow:auto;
 }
 
-.fusio-route-navigation
+.fusio-sub-navigation
 {
   min-height:600px;
 }
 
-.fusio-route-navigation ul
+.fusio-sub-navigation ul
 {
   list-style-type:none;
   margin:0;
   padding:0;
 }
 
-.fusio-route-navigation li
+.fusio-sub-navigation li
 {
   margin:0;
   padding:0;
 }
 
-.fusio-route-navigation a
+.fusio-sub-navigation a
 {
   font-family:monospace;
   font-size: 14px;
@@ -402,7 +402,7 @@ pre
   text-decoration:none;
 }
 
-.fusio-route-navigation a:hover
+.fusio-sub-navigation a:hover
 {
   background-color:#eee;
 }
@@ -456,6 +456,7 @@ pre
   border:0;
   margin:0;
   padding:8px;
+  background-color:rgba(0,0,0,.03);
 }
 
 .psx-object-json-key {

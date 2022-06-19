@@ -13,6 +13,11 @@ import {DetailComponent} from "../detail/detail.component";
 })
 export class ListComponent extends List<Schema> {
 
+  preview?: string;
+
+  openUIDialog() {
+  }
+
   protected async getAll(query: Collection_Category_Query): Promise<AxiosResponse<Collection<Schema>>> {
     const group = await this.factory.getClient().backendSchema();
     return await group.getBackendSchema().backendActionSchemaGetAll(query);
@@ -34,7 +39,15 @@ export class ListComponent extends List<Schema> {
   protected onList() {
   }
 
-  protected onGet(): void {
+  protected async onGet(): Promise<void> {
+    if (!this.selected) {
+      return;
+    }
+
+    const group = await this.factory.getClient().backendSchema();
+    const response = await group.getBackendSchemaPreviewBySchemaId('' + this.selected.id).backendActionSchemaGetPreview();
+
+    this.preview = response.data.preview;
   }
 
 }
