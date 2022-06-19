@@ -11,6 +11,14 @@ import {Message} from "fusio-sdk/src/generated/backend/Message";
 })
 export class DetailComponent extends Detail<Schema> {
 
+  schema: string = '';
+
+  override ngOnInit(): void {
+    if (this.entity && this.entity.source) {
+      this.schema = JSON.stringify(this.entity.source, null, 2);
+    }
+  }
+
   protected async create(entity: Schema): Promise<AxiosResponse<Message>> {
     const group = await this.factory.getClient().backendSchema();
     return await group.getBackendSchema().backendActionSchemaCreate(entity);

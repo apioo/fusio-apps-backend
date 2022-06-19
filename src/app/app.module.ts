@@ -6,6 +6,7 @@ import {AppComponent} from './app.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {NgChartsModule} from 'ng2-charts';
 import {FormsModule} from "@angular/forms";
+import {MonacoEditorModule, NgxMonacoEditorConfig} from '@dmlukichev/ngx-monaco-editor';
 import {ChangePasswordComponent} from './account/change-password/change-password.component';
 import {LoginComponent} from './login/login.component';
 import {LogoutComponent} from './logout/logout.component';
@@ -129,7 +130,8 @@ import {CsvPipe} from './route/csv.pipe';
     AppRoutingModule,
     NgbModule,
     FormsModule,
-    NgChartsModule
+    NgChartsModule,
+    MonacoEditorModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

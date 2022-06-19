@@ -1,1 +1,48 @@
-<p>detail works!</p>
+
+<div class="modal-header">
+  <h4 class="modal-title">
+    <ng-container *ngIf="mode === 1">Create</ng-container>
+    <ng-container *ngIf="mode === 2">Update</ng-container>
+    <ng-container *ngIf="mode === 3">Delete</ng-container>
+  </h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+</div>
+<div class="modal-body">
+  <app-message [response]="response"></app-message>
+  <form>
+    <div class="mb-3 row">
+      <label for="name" class="col-sm-2 col-form-label fw-bold">Name</label>
+      <div class="col-sm-10">
+        <div class="input-group">
+          <input type="text" id="name" name="name" [(ngModel)]="entity.name" class="form-control">
+          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
+          <ng-template #nameHelp>Name of the action must match the following regexp <code>[A-z0-9\-\_]3,64</code></ng-template>
+        </div>
+      </div>
+    </div>
+    <div class="mb-3 row">
+      <label for="class" class="col-sm-2 col-form-label fw-bold">Class</label>
+      <div class="col-sm-10">
+        <div class="input-group">
+          <input type="text" id="class" name="class" [(ngModel)]="entity.class" class="form-control">
+          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="classHelp"><i class="bi bi-question"></i></button>
+          <ng-template #classHelp>Action class which gets executed</ng-template>
+        </div>
+      </div>
+    </div>
+    <div class="mb-3 row">
+      <label for="async" class="col-sm-2 col-form-label fw-bold">Async</label>
+      <div class="col-sm-10">
+        <div class="form-check form-switch">
+          <input type="checkbox" id="async" name="async" [(ngModel)]="entity.async" class="form-check-input">
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <ng-container *ngIf="mode === 1"><button type="button" class="btn btn-primary" (click)="submit()">Create</button></ng-container>
+  <ng-container *ngIf="mode === 2"><button type="button" class="btn btn-primary" (click)="submit()">Update</button></ng-container>
+  <ng-container *ngIf="mode === 3"><button type="button" class="btn btn-danger" (click)="submit()">Delete</button></ng-container>
+  <button type="button" class="btn btn-light" (click)="modal.close()">Close</button>
+</div>
