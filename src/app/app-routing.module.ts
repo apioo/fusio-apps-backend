@@ -61,6 +61,7 @@ const routes: Routes = [
   { path: 'page/:id', component: PageList, canActivate: [AuthenticationGuard] },
   { path: 'sdk', component: SdkList, canActivate: [AuthenticationGuard] },
   { path: 'subscription', component: SubscriptionList, canActivate: [AuthenticationGuard] },
+  { path: 'subscription/:id', component: SubscriptionList, canActivate: [AuthenticationGuard] },
 
   { path: 'log', component: LogList, canActivate: [AuthenticationGuard] },
   { path: 'log/:id', component: LogList, canActivate: [AuthenticationGuard] },

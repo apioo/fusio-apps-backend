@@ -34,18 +34,14 @@ import {DetailComponent as AppDetail} from "./app/detail/detail.component";
 import {ListComponent as ScopeList} from "./scope/list/list.component";
 import {DetailComponent as ScopeDetail} from "./scope/detail/detail.component";
 import {ListComponent as UserList} from "./user/list/list.component";
-import {CreateComponent as UserCreate} from "./user/create/create.component";
-import {UpdateComponent as UserUpdate} from "./user/update/update.component";
-import {DeleteComponent as UserDelete} from "./user/delete/delete.component";
+import {DetailComponent as UserDetail} from "./user/detail/detail.component";
 import {ListComponent as RateList} from "./rate/list/list.component";
 import {DetailComponent as RateDetail} from "./rate/detail/detail.component";
 import {ListComponent as PageList} from "./page/list/list.component";
 import {DetailComponent as PageDetail} from "./page/detail/detail.component";
 import {ListComponent as SdkList} from "./sdk/list/list.component";
 import {ListComponent as SubscriptionList} from "./subscription/list/list.component";
-import {CreateComponent as SubscriptionCreate} from "./subscription/create/create.component";
-import {UpdateComponent as SubscriptionUpdate} from "./subscription/update/update.component";
-import {DeleteComponent as SubscriptionDelete} from "./subscription/delete/delete.component";
+import {DetailComponent as SubscriptionDetail} from "./subscription/detail/detail.component";
 import {ListComponent as LogList} from "./log/list/list.component";
 import {ListComponent as StatisticList} from "./statistic/list/list.component";
 import {ListComponent as ErrorList} from "./error/list/list.component";
@@ -64,9 +60,8 @@ import {ListComponent as AuditList} from "./audit/list/list.component";
 import {DetailComponent as AuditDetail} from './audit/detail/detail.component';
 import {FilterComponent as AuditFilter} from './audit/filter/filter.component';
 import {ListComponent as TrashList} from "./trash/list/list.component";
-import { MessageComponent } from './message/message.component';
-import { CsvPipe } from './route/csv.pipe';
-import { DetailComponent } from './app/detail/detail.component';
+import {MessageComponent} from './message/message.component';
+import {CsvPipe} from './route/csv.pipe';
 
 @NgModule({
   declarations: [
@@ -99,18 +94,14 @@ import { DetailComponent } from './app/detail/detail.component';
     ScopeList,
     ScopeDetail,
     UserList,
-    UserCreate,
-    UserUpdate,
-    UserDelete,
+    UserDetail,
     RateList,
     RateDetail,
     PageList,
     PageDetail,
     SdkList,
     SubscriptionList,
-    SubscriptionCreate,
-    SubscriptionUpdate,
-    SubscriptionDelete,
+    SubscriptionDetail,
     StatisticList,
     LogList,
     ErrorList,
@@ -131,7 +122,6 @@ import { DetailComponent } from './app/detail/detail.component';
     TrashList,
     MessageComponent,
     CsvPipe,
-    DetailComponent,
   ],
   imports: [
     BrowserModule,
