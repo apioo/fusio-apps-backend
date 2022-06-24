@@ -16,7 +16,7 @@
       </div>
       <div class="input-group" *ngSwitchCase="'http://fusio-project.org/ns/2015/form/textarea'">
         <div style="width:100%;height:500px;border:1px solid #ced4da">
-          <ngx-monaco-editor [ngModel]="record[element.name]" (ngModelChange)="change(element.name, $event)" [options]="{theme: 'vs-light', language: element.type}" [name]="element.name" style="height:100%"></ngx-monaco-editor>
+          <ngx-monaco-editor [ngModel]="record[element.name]" (ngModelChange)="change(element.name, $event)" [options]="{theme: 'vs-light', language: element.mode}" [name]="element.name" style="height:100%"></ngx-monaco-editor>
         </div>
       </div>
     </ng-container>
