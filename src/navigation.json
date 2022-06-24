@@ -54,19 +54,19 @@
       "children": [
         {
           "title": "App",
-          "icon": "bi-book",
+          "icon": "bi-app",
           "path": "/app",
           "scope": "backend.app"
         },
         {
           "title": "Scope",
-          "icon": "bi-eye-open",
+          "icon": "bi-bag",
           "path": "/scope",
           "scope": "backend.scope"
         },
         {
           "title": "User",
-          "icon": "bi-user",
+          "icon": "bi-person",
           "path": "/user",
           "scope": "backend.user"
         },
@@ -78,7 +78,7 @@
         },
         {
           "title": "Page",
-          "icon": "bi-text-background",
+          "icon": "bi-file-earmark-code",
           "path": "/page",
           "scope": "backend.page"
         },
@@ -90,7 +90,7 @@
         },
         {
           "title": "Subscription",
-          "icon": "bi-fire",
+          "icon": "bi-calendar-plus",
           "path": "/subscription",
           "scope": "backend.event"
         }
@@ -108,7 +108,7 @@
         },
         {
           "title": "Statistic",
-          "icon": "bi-stats",
+          "icon": "bi-bar-chart",
           "path": "/statistic",
           "scope": "backend.statistic"
         },
@@ -120,7 +120,7 @@
         },
         {
           "title": "Token",
-          "icon": "bi-map-marker",
+          "icon": "bi-file-earmark-binary",
           "path": "/token",
           "scope": "backend.app"
         }
@@ -138,7 +138,7 @@
         },
         {
           "title": "Transaction",
-          "icon": "bi-equalizer",
+          "icon": "bi bi-wallet",
           "path": "/transaction",
           "scope": "backend.transaction"
         }
@@ -156,25 +156,25 @@
         },
         {
           "title": "Role",
-          "icon": "bi-certificate",
+          "icon": "bi-people",
           "path": "/role",
           "scope": "backend.role"
         },
         {
           "title": "Marketplace",
-          "icon": "bi-shopping-cart",
+          "icon": "bi-shop-window",
           "path": "/marketplace",
           "scope": "backend.marketplace"
         },
         {
           "title": "Settings",
-          "icon": "bi-cog",
+          "icon": "bi-gear",
           "path": "/config",
           "scope": "backend.config"
         },
         {
           "title": "Audit",
-          "icon": "bi-facetime-video",
+          "icon": "bi-camera-video",
           "path": "/audit",
           "scope": "backend.audit"
         },
