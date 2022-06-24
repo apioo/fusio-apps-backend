@@ -20,11 +20,19 @@ export class DetailComponent extends Detail<Schema> {
   }
 
   protected async create(entity: Schema): Promise<AxiosResponse<Message>> {
+    if (this.schema) {
+      entity.source = JSON.parse(this.schema);
+    }
+
     const group = await this.factory.getClient().backendSchema();
     return await group.getBackendSchema().backendActionSchemaCreate(entity);
   }
 
   protected async update(entity: Schema): Promise<AxiosResponse<Message>> {
+    if (this.schema) {
+      entity.source = JSON.parse(this.schema);
+    }
+
     const group = await this.factory.getClient().backendSchema();
     return await group.getBackendSchemaBySchemaId('' + entity.id).backendActionSchemaUpdate(entity);
   }
