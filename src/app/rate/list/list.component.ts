@@ -14,13 +14,13 @@ import {DetailComponent} from "../detail/detail.component";
 export class ListComponent extends List<Rate> {
 
   protected async getAll(query: Collection_Category_Query): Promise<AxiosResponse<Collection<Rate>>> {
-    const group = await this.factory.getClient().backendPlan();
-    return await group.getBackendPlan().backendActionPlanGetAll(query);
+    const group = await this.factory.getClient().backendRate();
+    return await group.getBackendRate().backendActionRateGetAll(query);
   }
 
   protected async get(id: string): Promise<AxiosResponse<Rate>> {
-    const group = await this.factory.getClient().backendPlan();
-    return await group.getBackendPlanByPlanId(id).backendActionPlanGet();
+    const group = await this.factory.getClient().backendRate();
+    return await group.getBackendRateByRateId(id).backendActionRateGet();
   }
 
   protected getDetailComponent(): any {
