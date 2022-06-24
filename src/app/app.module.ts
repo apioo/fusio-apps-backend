@@ -5,7 +5,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {NgChartsModule} from 'ng2-charts';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MonacoEditorModule, NgxMonacoEditorConfig} from '@dmlukichev/ngx-monaco-editor';
 import {ChangePasswordComponent} from './account/change-password/change-password.component';
 import {LoginComponent} from './login/login.component';
@@ -63,6 +63,7 @@ import {FilterComponent as AuditFilter} from './audit/filter/filter.component';
 import {ListComponent as TrashList} from "./trash/list/list.component";
 import {MessageComponent} from './message/message.component';
 import {CsvPipe} from './route/csv.pipe';
+import {ConfigFormComponent} from './config-form/config-form.component';
 
 @NgModule({
   declarations: [
@@ -123,6 +124,7 @@ import {CsvPipe} from './route/csv.pipe';
     TrashList,
     MessageComponent,
     CsvPipe,
+    ConfigFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -130,6 +132,7 @@ import {CsvPipe} from './route/csv.pipe';
     AppRoutingModule,
     NgbModule,
     FormsModule,
+    ReactiveFormsModule,
     NgChartsModule,
     MonacoEditorModule.forRoot()
   ],
