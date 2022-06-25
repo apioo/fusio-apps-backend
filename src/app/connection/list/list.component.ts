@@ -28,7 +28,7 @@ export class ListComponent extends List<Connection> {
   }
 
   protected getRoute(): any {
-    return '/category';
+    return '/connection';
   }
 
   protected onList() {
