@@ -13,30 +13,80 @@
   </form>
 </div>
 
-<table class="table">
-  <thead>
-  <tr>
-    <th>Name</th>
-    <th>Date</th>
-    <th></th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let entry of entries">
-    <td>{{entry.name}}</td>
-    <td>{{entry.date | date:'short'}}</td>
-    <td>
-      <div class="btn-group float-end">
-        <button type="button" (click)="openUpdateDialog()" class="btn btn-primary fusio-btn-update"><i class="bi bi-pen"></i></button>
-        <button type="button" (click)="openDeleteDialog()" class="btn btn-danger fusio-btn-delete"><i class="bi bi-x"></i></button>
+<div class="row">
+  <div class="col-md-2">
+    <div class="card">
+      <div class="card-header">Scope</div>
+      <div class="card-body">
+        <div class="fusio-sub-navigation">
+          <ul>
+            <li *ngFor="let row of entries">
+              <a routerLink="/user/{{row.id}}" [queryParams]="this.getQueryParams()" title="{{row.name}}">
+                <b *ngIf="selected?.id === row.id">{{row.name}}</b>
+                <span *ngIf="selected?.id !== row.id">{{row.name}}</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <ngb-pagination
+          [(page)]="page"
+          [pageSize]="pageSize"
+          [collectionSize]="totalResults"
+          (pageChange)="doSearch()"></ngb-pagination>
       </div>
-    </td>
-  </tr>
-  </tbody>
-</table>
-
-<ngb-pagination
-  [(page)]="page"
-  [pageSize]="pageSize"
-  [collectionSize]="totalResults"
-  (pageChange)="doSearch()"></ngb-pagination>
+    </div>
+  </div>
+  <div class="col-md-10">
+    <div class="card">
+      <div class="card-header">{{selected?.name}}</div>
+      <div class="card-body">
+        <div class="btn-group" role="group">
+          <button type="button" (click)="openUpdateDialog()" class="btn btn-primary fusio-btn-update">Update</button>
+          <button type="button" (click)="openDeleteDialog()" class="btn btn-danger fusio-btn-delete">Delete</button>
+        </div>
+        <div class="fusio-detail">
+          <div class="row">
+            <div class="col-2 fw-bold">Status</div>
+            <div class="col-10">
+              <span *ngIf="selected?.status === 1" class="badge bg-success">Active</span>
+              <span *ngIf="selected?.status === 2" class="badge bg-success">Disabled</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-2 fw-bold">Name</div>
+            <div class="col-10">{{selected?.name}}</div>
+          </div>
+          <div class="row">
+            <div class="col-2 fw-bold">Email</div>
+            <div class="col-10">{{selected?.email}}</div>
+          </div>
+          <div class="row">
+            <div class="col-2 fw-bold">Points</div>
+            <div class="col-10">{{selected?.points}}</div>
+          </div>
+          <div class="row">
+            <div class="col-2 fw-bold">Scopes</div>
+            <div class="col-10">{{selected?.scopes}}</div>
+          </div>
+          <div class="row">
+            <div class="col-2 fw-bold">Date</div>
+            <div class="col-10">{{selected?.date | date:'short'}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card" *ngIf="selected?.apps" style="margin-top:1rem;">
+      <div class="card-header">Apps</div>
+      <div class="card-body">
+        <table class="table">
+          <tbody>
+          <tr *ngFor="let app of selected?.apps">
+            <td>{{app.name}}</td>
+            <td><a [routerLink]="'/app/' + app.id" class="float-end"><i class="bi bi-search"></i></a></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
