@@ -23,6 +23,18 @@
       </div>
     </div>
     <div class="mb-3 row">
+      <label for="user" class="col-sm-2 col-form-label fw-bold">User</label>
+      <div class="col-sm-10">
+        <div class="input-group">
+          <select id="user" name="user" [(ngModel)]="entity.userId" class="form-select">
+            <option *ngFor="let user of users" [ngValue]="user.id">{{user.name}}</option>
+          </select>
+          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="userHelp"><i class="bi bi-question"></i></button>
+          <ng-template #userHelp></ng-template>
+        </div>
+      </div>
+    </div>
+    <div class="mb-3 row">
       <label for="name" class="col-sm-2 col-form-label fw-bold">Name</label>
       <div class="col-sm-10">
         <div class="input-group">
@@ -39,28 +51,6 @@
           <input type="url" id="url" name="url" [(ngModel)]="entity.url" class="form-control">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="urlHelp"><i class="bi bi-question"></i></button>
           <ng-template #urlHelp></ng-template>
-        </div>
-      </div>
-    </div>
-    <div class="mb-3 row">
-      <label for="user" class="col-sm-2 col-form-label fw-bold">User</label>
-      <div class="col-sm-10">
-        <div class="input-group">
-          <select id="user" name="user" [(ngModel)]="entity.userId" class="form-select">
-            <option *ngFor="let user of users" [ngValue]="user.id">{{user.name}}</option>
-          </select>
-          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="userHelp"><i class="bi bi-question"></i></button>
-          <ng-template #userHelp></ng-template>
-        </div>
-      </div>
-    </div>
-    <div class="mb-3 row">
-      <label for="parameters" class="col-sm-2 col-form-label fw-bold">Parameters</label>
-      <div class="col-sm-10">
-        <div class="input-group">
-          <input type="text" id="parameters" name="parameters" [(ngModel)]="entity.parameters" class="form-control">
-          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="parametersHelp"><i class="bi bi-question"></i></button>
-          <ng-template #parametersHelp></ng-template>
         </div>
       </div>
     </div>
