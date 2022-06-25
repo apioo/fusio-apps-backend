@@ -12,6 +12,14 @@ import {Message} from "fusio-sdk/src/generated/backend/Message";
 })
 export class DetailComponent extends Detail<Cronjob> {
 
+  actions?: Array<Action>;
+
+  override async ngOnInit(): Promise<void> {
+    const action = await this.factory.getClient().backendAction();
+    const response = await action.getBackendAction().backendActionActionGetAll({count: 1024});
+    this.actions = response.data.entry;
+  }
+
   protected async create(entity: Cronjob): Promise<AxiosResponse<Message>> {
     const group = await this.factory.getClient().backendCronjob();
     return await group.getBackendCronjob().backendActionCronjobCreate(entity);
