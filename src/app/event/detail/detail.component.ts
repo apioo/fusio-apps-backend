@@ -4,6 +4,8 @@ import {Event} from "fusio-sdk/dist/src/generated/backend/Event";
 import {Action} from "fusio-sdk/src/generated/backend/Action";
 import {AxiosResponse} from "axios";
 import {Message} from "fusio-sdk/src/generated/backend/Message";
+import {Schema} from "fusio-sdk/src/generated/backend/Schema";
+import {Collection_Category_Query} from "fusio-sdk/src/generated/backend/Collection_Category_Query";
 
 @Component({
   selector: 'app-event-detail',
@@ -11,6 +13,14 @@ import {Message} from "fusio-sdk/src/generated/backend/Message";
   styleUrls: ['./detail.component.css']
 })
 export class DetailComponent extends Detail<Event> {
+
+  schemas?: Array<Schema>;
+
+  override async ngOnInit(): Promise<void> {
+    const schema = await this.factory.getClient().backendSchema();
+    const response = await schema.getBackendSchema().backendActionSchemaGetAll({count: 1024});
+    this.schemas = response.data.entry;
+  }
 
   protected async create(entity: Event): Promise<AxiosResponse<Message>> {
     const group = await this.factory.getClient().backendEvent();
