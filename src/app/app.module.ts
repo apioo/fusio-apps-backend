@@ -64,6 +64,8 @@ import {ListComponent as TrashList} from "./trash/list/list.component";
 import {MessageComponent} from './message/message.component';
 import {CsvPipe} from './route/csv.pipe';
 import {ConfigFormComponent} from './config-form/config-form.component';
+import { ScopeCategoriesComponent } from './scope-categories/scope-categories.component';
+import { TagEditorComponent } from './tag-editor/tag-editor.component';
 
 @NgModule({
   declarations: [
@@ -125,6 +127,8 @@ import {ConfigFormComponent} from './config-form/config-form.component';
     MessageComponent,
     CsvPipe,
     ConfigFormComponent,
+    ScopeCategoriesComponent,
+    TagEditorComponent,
   ],
   imports: [
     BrowserModule,
