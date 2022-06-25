@@ -27,12 +27,14 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  async login(credentials: Credentials) {
-    const client = this.factory.getClientWithCredentials(credentials.username, credentials.password);
+  async login() {
+    const client = this.factory.getClientWithCredentials(this.credentials.username, this.credentials.password);
     const account = await client.backendAccount();
 
     account.getBackendAccount().backendActionAccountGet().then((resp) => {
-      this.router.navigate(['/route']);
+      this.router.navigate(['/']).then(() => {
+        location.reload();
+      });
     }).catch((error) => {
       this.response = error.response.data;
     });

@@ -63,6 +63,10 @@ export class FactoryService {
     return token.expires_in > unixTimestamp;
   }
 
+  public logout(): void {
+    this.store.remove();
+  }
+
   public hasScope(scope: string): boolean {
     const token = this.store.get();
     if (!token || !token.scope) {
