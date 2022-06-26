@@ -22,7 +22,6 @@ import {DetailComponent as ActionDetail} from "./action/detail/detail.component"
 import {DesignerComponent as ActionDesigner} from './action/designer/designer.component';
 import {ListComponent as SchemaList} from "./schema/list/list.component";
 import {DetailComponent as SchemaDetail} from "./schema/detail/detail.component";
-import {PreviewComponent as SchemaPreview} from './schema/preview/preview.component';
 import {ListComponent as ConnectionList} from "./connection/list/list.component";
 import {DetailComponent as ConnectionDetail} from "./connection/detail/detail.component";
 import {ListComponent as EventList} from "./event/list/list.component";
@@ -64,8 +63,10 @@ import {ListComponent as TrashList} from "./trash/list/list.component";
 import {MessageComponent} from './message/message.component';
 import {CsvPipe} from './route/csv.pipe';
 import {ConfigFormComponent} from './config-form/config-form.component';
-import { ScopeCategoriesComponent } from './scope-categories/scope-categories.component';
-import { TagEditorComponent } from './tag-editor/tag-editor.component';
+import {ScopeCategoriesComponent} from './scope-categories/scope-categories.component';
+import {TagEditorComponent} from './tag-editor/tag-editor.component';
+import {DesignerComponent} from './schema/designer/designer.component';
+import {TypeschemaEditorModule} from "ngx-typeschema-editor";
 
 @NgModule({
   declarations: [
@@ -85,7 +86,6 @@ import { TagEditorComponent } from './tag-editor/tag-editor.component';
     ActionDesigner,
     SchemaList,
     SchemaDetail,
-    SchemaPreview,
     ConnectionList,
     ConnectionDetail,
     EventList,
@@ -129,6 +129,7 @@ import { TagEditorComponent } from './tag-editor/tag-editor.component';
     ConfigFormComponent,
     ScopeCategoriesComponent,
     TagEditorComponent,
+    DesignerComponent,
   ],
   imports: [
     BrowserModule,
@@ -138,7 +139,8 @@ import { TagEditorComponent } from './tag-editor/tag-editor.component';
     FormsModule,
     ReactiveFormsModule,
     NgChartsModule,
-    MonacoEditorModule.forRoot()
+    MonacoEditorModule.forRoot(),
+    TypeschemaEditorModule
   ],
   providers: [],
   bootstrap: [AppComponent]
@@ -147,5 +149,5 @@ export class AppModule {
 }
 
 declare global {
-  var FUSIO_URL: string|undefined;
+  var FUSIO_URL: string | undefined;
 }

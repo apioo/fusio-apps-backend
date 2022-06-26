@@ -3,7 +3,9 @@ import {RouterModule, Routes} from '@angular/router';
 import {ListComponent as DashboardList} from "./dashboard/list/list.component";
 import {ListComponent as RouteList} from "./route/list/list.component";
 import {ListComponent as ActionList} from "./action/list/list.component";
+import {DesignerComponent as ActionDesigner} from "./action/designer/designer.component";
 import {ListComponent as SchemaList} from "./schema/list/list.component";
+import {DesignerComponent as SchemaDesigner} from "./schema/designer/designer.component";
 import {ListComponent as ConnectionList} from "./connection/list/list.component";
 import {ListComponent as EventList} from "./event/list/list.component";
 import {ListComponent as CronjobList} from "./cronjob/list/list.component";
@@ -39,8 +41,10 @@ const routes: Routes = [
   { path: 'route', component: RouteList, canActivate: [AuthenticationGuard] },
   { path: 'route/:id', component: RouteList, canActivate: [AuthenticationGuard] },
   { path: 'action', component: ActionList, canActivate: [AuthenticationGuard] },
+  { path: 'action/designer', component: ActionDesigner, canActivate: [AuthenticationGuard] },
   { path: 'action/:id', component: ActionList, canActivate: [AuthenticationGuard] },
   { path: 'schema', component: SchemaList, canActivate: [AuthenticationGuard] },
+  { path: 'schema/designer', component: SchemaDesigner, canActivate: [AuthenticationGuard] },
   { path: 'schema/:id', component: SchemaList, canActivate: [AuthenticationGuard] },
   { path: 'connection', component: ConnectionList, canActivate: [AuthenticationGuard] },
   { path: 'connection/:id', component: ConnectionList, canActivate: [AuthenticationGuard] },
