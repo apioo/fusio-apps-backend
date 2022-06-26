@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
-import {Action} from "fusio-sdk/src/generated/backend/Action";
+import {Action} from "fusio-sdk/dist/src/generated/backend/Action";
 import {AxiosResponse} from "axios";
-import {Message} from "fusio-sdk/src/generated/backend/Message";
+import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {Detail} from "../../detail";
-import {Connection} from "fusio-sdk/src/generated/backend/Connection";
+import {Connection} from "fusio-sdk/dist/src/generated/backend/Connection";
 
 @Component({
   selector: 'app-connection-detail',

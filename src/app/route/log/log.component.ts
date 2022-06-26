@@ -1,10 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
-import {Route as ModelRoute} from "fusio-sdk/src/generated/backend/Route";
+import {Route as ModelRoute} from "fusio-sdk/dist/src/generated/backend/Route";
 import {FactoryService} from "../../factory.service";
-import {Log_Collection_Query} from "fusio-sdk/src/generated/backend/Log_Collection_Query";
-import {Log_Collection} from "fusio-sdk/src/generated/backend/Log_Collection";
-import {Log} from "fusio-sdk/src/generated/backend/Log";
+import {Log_Collection_Query} from "fusio-sdk/dist/src/generated/backend/Log_Collection_Query";
+import {Log_Collection} from "fusio-sdk/dist/src/generated/backend/Log_Collection";
+import {Log} from "fusio-sdk/dist/src/generated/backend/Log";
 
 @Component({
   selector: 'app-route-log',

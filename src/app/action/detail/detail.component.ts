@@ -1,10 +1,10 @@
 import {Component} from '@angular/core';
 import {Detail} from "../../detail";
-import {Action} from "fusio-sdk/src/generated/backend/Action";
+import {Action} from "fusio-sdk/dist/src/generated/backend/Action";
 import {AxiosResponse} from "axios";
-import {Message} from "fusio-sdk/src/generated/backend/Message";
-import {Action_Index_Entry} from "fusio-sdk/src/generated/backend/Action_Index_Entry";
-import {Form_Container} from "fusio-sdk/src/generated/backend/Form_Container";
+import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
+import {Action_Index_Entry} from "fusio-sdk/dist/src/generated/backend/Action_Index_Entry";
+import {Form_Container} from "fusio-sdk/dist/src/generated/backend/Form_Container";
 import {Form_Query} from "fusio-sdk/dist/src/generated/backend/Form_Query";
 
 @Component({

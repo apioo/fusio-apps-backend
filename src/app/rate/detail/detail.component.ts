@@ -2,11 +2,11 @@ import {Component} from '@angular/core';
 import {Detail} from "../../detail";
 import {Rate} from "fusio-sdk/dist/src/generated/backend/Rate";
 import {AxiosResponse} from "axios";
-import {Message} from "fusio-sdk/src/generated/backend/Message";
+import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {User} from "fusio-sdk/dist/src/generated/backend/User";
-import {Route as ModelRoute} from "fusio-sdk/src/generated/backend/Route";
+import {Route as ModelRoute} from "fusio-sdk/dist/src/generated/backend/Route";
 import {Plan} from "fusio-sdk/dist/src/generated/backend/Plan";
-import {App} from "fusio-sdk/src/generated/backend/App";
+import {App} from "fusio-sdk/dist/src/generated/backend/App";
 import {Rate_Allocation} from "fusio-sdk/dist/src/generated/backend/Rate_Allocation";
 
 @Component({

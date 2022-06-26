@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FactoryService} from "../../factory.service";
 import {Sdk_Types} from "fusio-sdk/dist/src/generated/backend/Sdk_Types";
 import axios from "axios";
-import {Message} from "fusio-sdk/src/generated/backend/Message";
+import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 
 @Component({
   selector: 'app-list',

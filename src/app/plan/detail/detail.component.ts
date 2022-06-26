@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
 import {Detail} from "../../detail";
 import {Plan} from "fusio-sdk/dist/src/generated/backend/Plan";
-import {Action} from "fusio-sdk/src/generated/backend/Action";
+import {Action} from "fusio-sdk/dist/src/generated/backend/Action";
 import {AxiosResponse} from "axios";
-import {Message} from "fusio-sdk/src/generated/backend/Message";
+import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 
 @Component({
   selector: 'app-plan-detail',

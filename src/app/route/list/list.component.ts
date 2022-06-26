@@ -1,15 +1,15 @@
 import {Component} from '@angular/core';
-import {Collection_Category_Query} from "fusio-sdk/src/generated/backend/Collection_Category_Query";
-import {Route as ModelRoute} from "fusio-sdk/src/generated/backend/Route";
-import {Route_Methods} from "fusio-sdk/src/generated/backend/Route_Methods";
-import {Route_Method} from "fusio-sdk/src/generated/backend/Route_Method";
-import {Route_Method_Responses} from "fusio-sdk/src/generated/backend/Route_Method_Responses";
+import {Collection_Category_Query} from "fusio-sdk/dist/src/generated/backend/Collection_Category_Query";
+import {Route as ModelRoute} from "fusio-sdk/dist/src/generated/backend/Route";
+import {Route_Methods} from "fusio-sdk/dist/src/generated/backend/Route_Methods";
+import {Route_Method} from "fusio-sdk/dist/src/generated/backend/Route_Method";
+import {Route_Method_Responses} from "fusio-sdk/dist/src/generated/backend/Route_Method_Responses";
 import {DetailComponent} from "../detail/detail.component";
 import {LogComponent} from "../log/log.component";
 import {Config, HttpResponse} from "../config";
 import {AxiosResponse} from "axios";
 import {List} from "../../list";
-import {Collection} from "fusio-sdk/src/generated/backend/Collection";
+import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
 import {ProviderComponent} from "../provider/provider.component";
 
 @Component({

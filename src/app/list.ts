@@ -1,11 +1,11 @@
 import {Directive, OnInit} from '@angular/core';
-import {Collection_Category_Query} from "fusio-sdk/src/generated/backend/Collection_Category_Query";
+import {Collection_Category_Query} from "fusio-sdk/dist/src/generated/backend/Collection_Category_Query";
 import {ActivatedRoute, Router} from "@angular/router";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import axios, {AxiosResponse} from "axios";
 import {HelpService} from "./help.service";
-import {Collection} from "fusio-sdk/src/generated/backend/Collection";
-import {Message} from "fusio-sdk/src/generated/backend/Message";
+import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
+import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {FactoryService} from "./factory.service";
 
 @Directive()

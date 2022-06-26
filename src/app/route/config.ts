@@ -1,8 +1,8 @@
-import {Route_Version} from "fusio-sdk/src/generated/backend/Route_Version";
-import {Route_Method} from "fusio-sdk/src/generated/backend/Route_Method";
-import {Route_Methods} from "fusio-sdk/src/generated/backend/Route_Methods";
-import {Route_Method_Responses} from "fusio-sdk/src/generated/backend/Route_Method_Responses";
-import {Route as ModelRoute} from "fusio-sdk/src/generated/backend/Route";
+import {Route_Version} from "fusio-sdk/dist/src/generated/backend/Route_Version";
+import {Route_Method} from "fusio-sdk/dist/src/generated/backend/Route_Method";
+import {Route_Methods} from "fusio-sdk/dist/src/generated/backend/Route_Methods";
+import {Route_Method_Responses} from "fusio-sdk/dist/src/generated/backend/Route_Method_Responses";
+import {Route as ModelRoute} from "fusio-sdk/dist/src/generated/backend/Route";
 
 export class Config {
 

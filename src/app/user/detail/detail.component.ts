@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {Detail} from "../../detail";
 import {User} from "fusio-sdk/dist/src/generated/backend/User";
 import {AxiosResponse} from "axios";
-import {Message} from "fusio-sdk/src/generated/backend/Message";
+import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {User_Create} from "fusio-sdk/dist/src/generated/backend/User_Create";
 import {User_Update} from "fusio-sdk/dist/src/generated/backend/User_Update";
 

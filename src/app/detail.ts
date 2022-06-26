@@ -2,7 +2,7 @@ import {Directive, Input, OnInit} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import axios, {AxiosResponse} from "axios";
 import {Mode, ModelId} from "./list";
-import {Message} from "fusio-sdk/src/generated/backend/Message";
+import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {FactoryService} from "./factory.service";
 
 @Directive()

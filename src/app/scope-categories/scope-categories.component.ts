@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FactoryService} from "../factory.service";
-import {Scope_Category} from "fusio-sdk/src/generated/backend/Scope_Category";
-import {Scope_Category_Scope} from "fusio-sdk/src/generated/backend/Scope_Category_Scope";
+import {Scope_Category} from "fusio-sdk/dist/src/generated/backend/Scope_Category";
+import {Scope_Category_Scope} from "fusio-sdk/dist/src/generated/backend/Scope_Category_Scope";
 
 @Component({
   selector: 'app-scope-categories',

@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {Form_Container} from "fusio-sdk/src/generated/backend/Form_Container";
+import {Form_Container} from "fusio-sdk/dist/src/generated/backend/Form_Container";
 
 @Component({
   selector: 'app-config-form',

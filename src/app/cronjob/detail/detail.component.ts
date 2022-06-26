@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
 import {Detail} from "../../detail";
-import {Cronjob} from "fusio-sdk/src/generated/backend/Cronjob";
-import {Action} from "fusio-sdk/src/generated/backend/Action";
+import {Cronjob} from "fusio-sdk/dist/src/generated/backend/Cronjob";
+import {Action} from "fusio-sdk/dist/src/generated/backend/Action";
 import {AxiosResponse} from "axios";
-import {Message} from "fusio-sdk/src/generated/backend/Message";
+import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 
 @Component({
   selector: 'app-cronjob-detail',

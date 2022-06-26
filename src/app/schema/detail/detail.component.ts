@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 import {Detail} from "../../detail";
-import {Schema} from "fusio-sdk/src/generated/backend/Schema";
+import {Schema} from "fusio-sdk/dist/src/generated/backend/Schema";
 import {AxiosResponse} from "axios";
-import {Message} from "fusio-sdk/src/generated/backend/Message";
+import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 
 @Component({
   selector: 'app-schema-detail',

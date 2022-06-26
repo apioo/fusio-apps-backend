@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
-import {Action} from "fusio-sdk/src/generated/backend/Action";
+import {Action} from "fusio-sdk/dist/src/generated/backend/Action";
 import {AxiosResponse} from "axios";
-import {Message} from "fusio-sdk/src/generated/backend/Message";
+import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {Detail} from "../../detail";
-import {Category} from "fusio-sdk/src/generated/backend/Category";
+import {Category} from "fusio-sdk/dist/src/generated/backend/Category";
 
 @Component({
   selector: 'app-category-detail',

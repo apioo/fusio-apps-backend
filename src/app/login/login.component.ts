@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import packageJson from "../../../package.json";
 import {FactoryService} from "../factory.service";
 import {Router} from "@angular/router";
-import {Message} from "fusio-sdk/src/generated/backend/Message";
+import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 
 @Component({
   selector: 'app-login',

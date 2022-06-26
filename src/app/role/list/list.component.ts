@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
 import {List} from "../../list";
 import {Role} from "fusio-sdk/dist/src/generated/backend/Role";
-import {Collection_Category_Query} from "fusio-sdk/src/generated/backend/Collection_Category_Query";
+import {Collection_Category_Query} from "fusio-sdk/dist/src/generated/backend/Collection_Category_Query";
 import {AxiosResponse} from "axios";
-import {Collection} from "fusio-sdk/src/generated/backend/Collection";
+import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
 import {DetailComponent} from "../detail/detail.component";
 
 @Component({

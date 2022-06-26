@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {AxiosResponse} from "axios";
-import {Message} from "fusio-sdk/src/generated/backend/Message";
+import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {Event_Subscription} from "fusio-sdk/dist/src/generated/backend/Event_Subscription";
 import {Detail} from "../../detail";
 

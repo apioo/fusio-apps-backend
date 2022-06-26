@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 import {Detail} from "../../detail";
-import {Config} from "fusio-sdk/src/generated/backend/Config";
+import {Config} from "fusio-sdk/dist/src/generated/backend/Config";
 import {AxiosResponse} from "axios";
-import {Message} from "fusio-sdk/src/generated/backend/Message";
+import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 
 @Component({
   selector: 'app-config-detail',

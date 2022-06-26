@@ -1,15 +1,15 @@
 import {Component} from '@angular/core';
-import {Route as ModelRoute} from "fusio-sdk/src/generated/backend/Route";
-import {Route_Version} from "fusio-sdk/src/generated/backend/Route_Version";
-import {Route_Method} from "fusio-sdk/src/generated/backend/Route_Method";
-import {Route_Methods} from "fusio-sdk/src/generated/backend/Route_Methods";
-import {Route_Method_Responses} from "fusio-sdk/src/generated/backend/Route_Method_Responses";
-import {Schema} from "fusio-sdk/src/generated/backend/Schema";
-import {Action} from "fusio-sdk/src/generated/backend/Action";
+import {Route as ModelRoute} from "fusio-sdk/dist/src/generated/backend/Route";
+import {Route_Version} from "fusio-sdk/dist/src/generated/backend/Route_Version";
+import {Route_Method} from "fusio-sdk/dist/src/generated/backend/Route_Method";
+import {Route_Methods} from "fusio-sdk/dist/src/generated/backend/Route_Methods";
+import {Route_Method_Responses} from "fusio-sdk/dist/src/generated/backend/Route_Method_Responses";
+import {Schema} from "fusio-sdk/dist/src/generated/backend/Schema";
+import {Action} from "fusio-sdk/dist/src/generated/backend/Action";
 import {Config, HttpResponse} from "../config";
 import {AxiosResponse} from "axios";
 import {Detail} from "../../detail";
-import {Message} from "fusio-sdk/src/generated/backend/Message";
+import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 
 @Component({
   selector: 'app-route-detail',
