@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {ListComponent as DashboardList} from "./dashboard/list/list.component";
 import {ListComponent as RouteList} from "./route/list/list.component";
+import {ProviderComponent as RouteProvider} from "./route/provider/provider.component";
 import {ListComponent as ActionList} from "./action/list/list.component";
 import {DesignerComponent as ActionDesigner} from "./action/designer/designer.component";
 import {ListComponent as SchemaList} from "./schema/list/list.component";
@@ -39,6 +40,7 @@ const routes: Routes = [
 
   { path: 'dashboard', component: DashboardList, canActivate: [AuthenticationGuard] },
   { path: 'route', component: RouteList, canActivate: [AuthenticationGuard] },
+  { path: 'route/provider', component: RouteProvider, canActivate: [AuthenticationGuard] },
   { path: 'route/:id', component: RouteList, canActivate: [AuthenticationGuard] },
   { path: 'action', component: ActionList, canActivate: [AuthenticationGuard] },
   { path: 'action/designer', component: ActionDesigner, canActivate: [AuthenticationGuard] },

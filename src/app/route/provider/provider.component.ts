@@ -8,7 +8,7 @@ import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 })
 export class ProviderComponent implements OnInit {
 
-  constructor(public modal: NgbActiveModal) { }
+  constructor() { }
 
   ngOnInit(): void {
   }
