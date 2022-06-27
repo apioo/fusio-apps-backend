@@ -1,4 +1,59 @@
 
 <h1>Transaction</h1>
 
-<p>list works!</p>
+<app-message [response]="response"></app-message>
+
+<div class="fusio-search">
+  <form name="actionSearchForm" (submit)="doSearch()">
+    <div class="input-group">
+      <input type="text" class="form-control" name="search" [(ngModel)]="search" placeholder="Search i.e. transaction" />
+      <button type="button" (click)="showHelp('monetization/transaction')" class="btn btn-secondary fusio-btn-help"><i class="bi bi-question"></i></button>
+    </div>
+  </form>
+</div>
+
+<div class="row">
+  <div class="col-md-2">
+    <div class="card">
+      <div class="card-header">Transaction</div>
+      <div class="card-body">
+        <div class="fusio-sub-navigation">
+          <ul>
+            <li *ngFor="let row of entries">
+              <a routerLink="/transaction/{{row.id}}" [queryParams]="this.getQueryParams()" title="{{row.transactionId}}">
+                <b *ngIf="selected?.id === row.id">{{row.transactionId}}</b>
+                <span *ngIf="selected?.id !== row.id">{{row.transactionId}}</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <ngb-pagination
+          [(page)]="page"
+          [pageSize]="pageSize"
+          [collectionSize]="totalResults"
+          (pageChange)="doSearch()"></ngb-pagination>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-10">
+    <div class="card">
+      <div class="card-header">{{selected?.transactionId}}</div>
+      <div class="card-body">
+        <div class="fusio-detail">
+          <div class="row">
+            <div class="col-2 fw-bold">Transaction-Id</div>
+            <div class="col-10">{{selected?.transactionId}}</div>
+          </div>
+          <div class="row">
+            <div class="col-2 fw-bold">Amount</div>
+            <div class="col-10">{{selected?.amount|currency}}</div>
+          </div>
+          <div class="row">
+            <div class="col-2 fw-bold">Insert-Date</div>
+            <div class="col-10">{{selected?.insertDate|date:'short'}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
