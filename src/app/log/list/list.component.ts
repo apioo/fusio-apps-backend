@@ -4,8 +4,6 @@ import {List} from "../../list";
 import {Collection_Category_Query} from "fusio-sdk/dist/src/generated/backend/Collection_Category_Query";
 import {AxiosResponse} from "axios";
 import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
-import {Event} from "fusio-sdk/dist/src/generated/backend/Event";
-import {DetailComponent} from "../detail/detail.component";
 
 @Component({
   selector: 'app-log-list',
@@ -25,7 +23,7 @@ export class ListComponent extends List<Log> {
   }
 
   protected getDetailComponent(): any {
-    return DetailComponent;
+    return null;
   }
 
   protected getRoute(): any {

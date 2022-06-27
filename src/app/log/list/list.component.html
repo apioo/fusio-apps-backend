@@ -1,46 +1,85 @@
 
-<h1>Log</h1>
+<h1>Audit</h1>
 
 <app-message [response]="response"></app-message>
 
 <div class="fusio-search">
   <form name="actionSearchForm" (submit)="doSearch()">
     <div class="input-group">
-      <input type="text" class="form-control" name="search" [(ngModel)]="search" placeholder="Search i.e. path" />
-      <button type="button" (click)="showHelp('api/cronjob')" class="btn btn-secondary fusio-btn-help"><i class="bi bi-question"></i></button>
+      <input type="text" class="form-control" name="search" [(ngModel)]="search" placeholder="Search i.e. log" />
+      <button type="button" (click)="showHelp('analytics/log')" class="btn btn-secondary fusio-btn-help"><i class="bi bi-question"></i></button>
     </div>
   </form>
 </div>
 
-<table class="table">
-  <thead>
-  <tr>
-    <th>Method</th>
-    <th>Path</th>
-    <th>User-Agent</th>
-    <th>IP</th>
-    <th>Date</th>
-    <th></th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let entry of entries">
-    <td>{{entry.method}}</td>
-    <td>{{entry.path}}</td>
-    <td>{{entry.userAgent}}</td>
-    <td>{{entry.ip}}</td>
-    <td>{{entry.date|date:'short'}}</td>
-    <td>
-      <div class="btn-group float-end">
-        <button type="button" (click)="openUpdateDialog()" class="btn btn-primary fusio-btn-update"><i class="bi bi-search"></i></button>
+<div class="row">
+  <div class="col-md-2">
+    <div class="card">
+      <div class="card-header">Log</div>
+      <div class="card-body">
+        <div class="fusio-sub-navigation">
+          <ul>
+            <li *ngFor="let row of entries">
+              <a routerLink="/log/{{row.id}}" [queryParams]="this.getQueryParams()" title="{{row.path}}">
+                <b *ngIf="selected?.id === row.id">{{row.method}} {{row.path}}</b>
+                <span *ngIf="selected?.id !== row.id">{{row.method}} {{row.path}}</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <ngb-pagination
+          [(page)]="page"
+          [pageSize]="pageSize"
+          [collectionSize]="totalResults"
+          (pageChange)="doSearch()"></ngb-pagination>
       </div>
-    </td>
-  </tr>
-  </tbody>
-</table>
-
-<ngb-pagination
-  [(page)]="page"
-  [pageSize]="pageSize"
-  [collectionSize]="totalResults"
-  (pageChange)="doSearch()"></ngb-pagination>
+    </div>
+  </div>
+  <div class="col-md-10">
+    <div class="card">
+      <div class="card-header">{{selected?.path}}</div>
+      <div class="card-body">
+        <div class="fusio-detail">
+          <div class="row">
+            <div class="col-2 fw-bold">IP</div>
+            <div class="col-10">{{selected?.ip}}</div>
+          </div>
+          <div class="row">
+            <div class="col-2 fw-bold">User-Agent</div>
+            <div class="col-10">{{selected?.userAgent}}</div>
+          </div>
+          <div class="row">
+            <div class="col-2 fw-bold">Method</div>
+            <div class="col-10">{{selected?.method}}</div>
+          </div>
+          <div class="row">
+            <div class="col-2 fw-bold">Path</div>
+            <div class="col-10">{{selected?.path}}</div>
+          </div>
+          <div class="row">
+            <div class="col-2 fw-bold">Headers</div>
+            <div class="col-10"><pre>{{selected?.header}}</pre></div>
+          </div>
+          <div class="row">
+            <div class="col-2 fw-bold">Date</div>
+            <div class="col-10">{{selected?.date|date:'short'}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:1rem" *ngIf="selected?.body">
+      <div class="card-header">Body</div>
+      <div class="card-body">
+        <pre>{{selected?.body|json}}</pre>
+      </div>
+    </div>
+    <div class="card" style="margin-top:1rem" *ngIf="selected?.errors">
+      <div class="card-header">Errors</div>
+      <div class="card-body">
+        <ul>
+          <li *ngFor="let error of selected?.errors">{{error.message}}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
