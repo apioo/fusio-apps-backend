@@ -42,6 +42,7 @@
       <div class="card-body">
         <div class="btn-group" role="group">
           <button type="button" (click)="openUpdateDialog()" class="btn btn-primary fusio-btn-update">Update</button>
+          <button type="button" routerLink="/action/designer/{{selected?.id}}" class="btn btn-secondary fusio-btn-designer">Designer</button>
           <button type="button" (click)="openDeleteDialog()" class="btn btn-danger fusio-btn-delete">Delete</button>
         </div>
         <div class="fusio-detail">
