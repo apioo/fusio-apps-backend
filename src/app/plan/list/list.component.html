@@ -1,4 +1,75 @@
 
 <h1>Plan</h1>
 
-<p>list works!</p>
+<app-message [response]="response"></app-message>
+
+<div class="fusio-search">
+  <form name="actionSearchForm" (submit)="doSearch()">
+    <div class="input-group">
+      <input type="text" class="form-control" name="search" [(ngModel)]="search" placeholder="Search i.e. plan-name" />
+      <button type="button" (click)="openCreateDialog()" class="btn btn-primary fusio-btn-create"><i class="bi bi-plus"></i></button>
+      <button type="button" (click)="showHelp('monetization/plan')" class="btn btn-secondary fusio-btn-help"><i class="bi bi-question"></i></button>
+    </div>
+  </form>
+</div>
+
+<div class="row">
+  <div class="col-md-2">
+    <div class="card">
+      <div class="card-header">Plan</div>
+      <div class="card-body">
+        <div class="fusio-sub-navigation">
+          <ul>
+            <li *ngFor="let row of entries">
+              <a routerLink="/plan/{{row.id}}" [queryParams]="this.getQueryParams()" title="{{row.name}}">
+                <b *ngIf="selected?.id === row.id">{{row.name}}</b>
+                <span *ngIf="selected?.id !== row.id">{{row.name}}</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <ngb-pagination
+          [(page)]="page"
+          [pageSize]="pageSize"
+          [collectionSize]="totalResults"
+          (pageChange)="doSearch()"></ngb-pagination>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-10">
+    <div class="card">
+      <div class="card-header">{{selected?.name}}</div>
+      <div class="card-body">
+        <div class="btn-group" role="group">
+          <button type="button" (click)="openUpdateDialog()" class="btn btn-primary fusio-btn-update">Update</button>
+          <button type="button" (click)="openDeleteDialog()" class="btn btn-danger fusio-btn-delete">Delete</button>
+        </div>
+        <div class="fusio-detail">
+          <div class="row">
+            <div class="col-2 fw-bold">Name</div>
+            <div class="col-10">{{selected?.name}}</div>
+          </div>
+          <div class="row">
+            <div class="col-2 fw-bold">Description</div>
+            <div class="col-10">{{selected?.description}}</div>
+          </div>
+          <div class="row">
+            <div class="col-2 fw-bold">Price</div>
+            <div class="col-10">{{selected?.price}}</div>
+          </div>
+          <div class="row">
+            <div class="col-2 fw-bold">Points</div>
+            <div class="col-10">{{selected?.points}}</div>
+          </div>
+          <div class="row">
+            <div class="col-2 fw-bold">Period</div>
+            <div class="col-10">
+              <span *ngIf="selected?.period === 0" class="badge bg-success">One-Time</span>
+              <span *ngIf="selected?.period === 1" class="badge bg-success">Subscription</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

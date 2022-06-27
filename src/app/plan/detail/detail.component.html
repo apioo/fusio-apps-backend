@@ -1,1 +1,73 @@
-<p>detail works!</p>
+
+<div class="modal-header">
+  <h4 class="modal-title">
+    <ng-container *ngIf="mode === 1">Create</ng-container>
+    <ng-container *ngIf="mode === 2">Update</ng-container>
+    <ng-container *ngIf="mode === 3">Delete</ng-container>
+  </h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+</div>
+<div class="modal-body">
+  <app-message [response]="response"></app-message>
+  <form>
+    <div class="mb-3 row">
+      <label for="name" class="col-sm-2 col-form-label fw-bold">Name</label>
+      <div class="col-sm-10">
+        <div class="input-group">
+          <input type="text" id="name" name="name" [(ngModel)]="entity.name" class="form-control">
+          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
+          <ng-template #nameHelp>Name of the plan</ng-template>
+        </div>
+      </div>
+    </div>
+    <div class="mb-3 row">
+      <label for="description" class="col-sm-2 col-form-label fw-bold">Description</label>
+      <div class="col-sm-10">
+        <div class="input-group">
+          <input type="text" id="description" name="description" [(ngModel)]="entity.description" class="form-control">
+          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="descriptionHelp"><i class="bi bi-question"></i></button>
+          <ng-template #descriptionHelp>Detailed description of this plan</ng-template>
+        </div>
+      </div>
+    </div>
+    <div class="mb-3 row">
+      <label for="price" class="col-sm-2 col-form-label fw-bold">Price</label>
+      <div class="col-sm-10">
+        <div class="input-group">
+          <input type="number" id="price" name="price" [(ngModel)]="entity.price" class="form-control">
+          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="priceHelp"><i class="bi bi-question"></i></button>
+          <ng-template #priceHelp>The price how much this plan costs</ng-template>
+        </div>
+      </div>
+    </div>
+    <div class="mb-3 row">
+      <label for="points" class="col-sm-2 col-form-label fw-bold">Points</label>
+      <div class="col-sm-10">
+        <div class="input-group">
+          <input type="number" id="points" name="points" [(ngModel)]="entity.points" class="form-control">
+          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="pointsHelp"><i class="bi bi-question"></i></button>
+          <ng-template #pointsHelp>The amount of points a user receives if he buys this plan</ng-template>
+        </div>
+      </div>
+    </div>
+    <div class="mb-3 row">
+      <label for="period" class="col-sm-2 col-form-label fw-bold">Period</label>
+      <div class="col-sm-10">
+        <div class="input-group">
+          <select id="period" name="period" [(ngModel)]="entity.period" class="form-select">
+            <option *ngFor="let period of periods" [ngValue]="period.id">{{period.name}}</option>
+          </select>
+          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="periodHelp"><i class="bi bi-question"></i></button>
+          <ng-template #periodHelp></ng-template>
+        </div>
+      </div>
+    </div>
+    <app-scope-categories [scopes]="entity.scopes" (dataChange)="entity.scopes = $event"></app-scope-categories>
+  </form>
+</div>
+<div class="modal-footer">
+  <ng-container *ngIf="mode === 1"><button type="button" class="btn btn-primary" (click)="submit()">Create</button></ng-container>
+  <ng-container *ngIf="mode === 2"><button type="button" class="btn btn-primary" (click)="submit()">Update</button></ng-container>
+  <ng-container *ngIf="mode === 3"><button type="button" class="btn btn-danger" (click)="submit()">Delete</button></ng-container>
+  <button type="button" class="btn btn-light" (click)="modal.close()">Close</button>
+</div>

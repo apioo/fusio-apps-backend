@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {Detail} from "../../detail";
 import {Plan} from "fusio-sdk/dist/src/generated/backend/Plan";
-import {Action} from "fusio-sdk/dist/src/generated/backend/Action";
 import {AxiosResponse} from "axios";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 
@@ -11,6 +10,14 @@ import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
   styleUrls: ['./detail.component.css']
 })
 export class DetailComponent extends Detail<Plan> {
+
+  periods = [{
+    id: 0,
+    name: 'One-Time'
+  }, {
+    id: 1,
+    name: 'Subscription'
+  }];
 
   protected async create(entity: Plan): Promise<AxiosResponse<Message>> {
     const group = await this.factory.getClient().backendPlan();
