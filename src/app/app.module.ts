@@ -57,7 +57,6 @@ import {ListComponent as MarketplaceList} from "./marketplace/list/list.componen
 import {ListComponent as ConfigList} from "./config/list/list.component";
 import {DetailComponent as ConfigDetail} from "./config/detail/detail.component";
 import {ListComponent as AuditList} from "./audit/list/list.component";
-import {DetailComponent as AuditDetail} from './audit/detail/detail.component';
 import {FilterComponent as AuditFilter} from './audit/filter/filter.component';
 import {ListComponent as TrashList} from "./trash/list/list.component";
 import {MessageComponent} from './message/message.component';
@@ -121,7 +120,6 @@ import {TypeschemaEditorModule} from "ngx-typeschema-editor";
     ConfigList,
     ConfigDetail,
     AuditList,
-    AuditDetail,
     AuditFilter,
     TrashList,
     MessageComponent,
