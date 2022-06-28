@@ -4,7 +4,7 @@ import {Connection} from "fusio-sdk/dist/src/generated/backend/Connection";
 import {Collection_Category_Query} from "fusio-sdk/dist/src/generated/backend/Collection_Category_Query";
 import {AxiosResponse} from "axios";
 import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
-import {DetailComponent} from "../../config/detail/detail.component";
+import {DetailComponent} from "../detail/detail.component";
 
 @Component({
   selector: 'app-connection-list',
