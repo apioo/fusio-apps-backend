@@ -35,6 +35,7 @@
       <div class="col-sm-10">
         <div class="input-group">
           <select id="schema" name="schema" [(ngModel)]="entity.schema" class="form-select">
+            <option>No schema</option>
             <option *ngFor="let schema of schemas" [ngValue]="schema.name">{{schema.name}}</option>
           </select>
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="classHelp"><i class="bi bi-question"></i></button>
