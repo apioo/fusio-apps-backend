@@ -64,7 +64,9 @@ export class ListComponent extends List<ModelRoute> {
   }
 
   openProviderDialog() {
-    const modalRef = this.modalService.open(ProviderComponent);
+    const modalRef = this.modalService.open(ProviderComponent, {
+      size: 'lg'
+    });
     modalRef.closed.subscribe((response) => {
       this.response = response;
     })
