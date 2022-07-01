@@ -16,7 +16,6 @@ import {ListComponent as RouteList} from "./route/list/list.component";
 import {DetailComponent as RouteDetail} from "./route/detail/detail.component";
 import {LogComponent as RouteLog} from './route/log/log.component';
 import {ProviderComponent as RouteProvider} from './route/provider/provider.component';
-import {ChangelogComponent as RouteProviderChangelog} from './route/provider/changelog/changelog.component';
 import {ListComponent as ActionList} from "./action/list/list.component";
 import {DetailComponent as ActionDetail} from "./action/detail/detail.component";
 import {DesignerComponent as ActionDesigner} from './action/designer/designer.component';
@@ -79,7 +78,6 @@ import {TypeschemaEditorModule} from "ngx-typeschema-editor";
     RouteDetail,
     RouteLog,
     RouteProvider,
-    RouteProviderChangelog,
     ActionList,
     ActionDetail,
     ActionDesigner,
