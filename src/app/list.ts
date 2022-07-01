@@ -102,6 +102,9 @@ export abstract class List<T extends ModelId> implements OnInit {
     modalRef.componentInstance.mode = Mode.Create;
     modalRef.closed.subscribe((response) => {
       this.response = response;
+      if (response.success) {
+        this.doList();
+      }
     })
   }
 
@@ -117,6 +120,9 @@ export abstract class List<T extends ModelId> implements OnInit {
     modalRef.componentInstance.entity = this.selected;
     modalRef.closed.subscribe((response) => {
       this.response = response;
+      if (response.success) {
+        this.doList();
+      }
     })
 
   }
@@ -133,6 +139,9 @@ export abstract class List<T extends ModelId> implements OnInit {
     modalRef.componentInstance.entity = this.selected;
     modalRef.closed.subscribe((response) => {
       this.response = response;
+      if (response.success) {
+        this.doList();
+      }
     })
   }
 
