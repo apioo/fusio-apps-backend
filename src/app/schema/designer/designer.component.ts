@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {InternalToTypeSchemaService, Specification, TypeSchemaToInternalService} from "ngx-typeschema-editor";
 import {Mode} from "../../list";
 import {FactoryService} from "../../factory.service";
@@ -7,6 +7,7 @@ import {DetailComponent} from "../detail/detail.component";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {ActivatedRoute, Router} from "@angular/router";
 import axios from "axios";
+import {Schema} from "fusio-sdk/dist/src/generated/backend/Schema";
 
 @Component({
   selector: 'app-designer',
@@ -20,6 +21,7 @@ export class DesignerComponent implements OnInit {
     types: []
   };
 
+  schema?: Schema;
   response?: Message;
 
   constructor(protected factory: FactoryService, private internalToTypeSchemaService: InternalToTypeSchemaService, private typeSchemaToInternalService: TypeSchemaToInternalService, protected route: ActivatedRoute, protected router: Router, protected modalService: NgbModal) { }
@@ -39,21 +41,36 @@ export class DesignerComponent implements OnInit {
     const modalRef = this.modalService.open(DetailComponent, {
       size: 'lg'
     });
-    modalRef.componentInstance.mode = Mode.Create;
-    modalRef.componentInstance.schema = JSON.stringify(typeSchema, null, 2);
+
+    if (this.schema) {
+      const schema = this.schema;
+      schema.source = typeSchema;
+      modalRef.componentInstance.mode = Mode.Update;
+      modalRef.componentInstance.entity = schema;
+    } else {
+      modalRef.componentInstance.mode = Mode.Create;
+      modalRef.componentInstance.schema = JSON.stringify(typeSchema, null, 2);
+    }
+
     modalRef.closed.subscribe((response) => {
       this.response = response;
       if (response.success) {
-        this.router.navigate(['/schema']);
+        if (this.schema) {
+          this.router.navigate(['/schema/' + this.schema.id]);
+        } else {
+          this.router.navigate(['/schema']);
+        }
       }
-    })
+    });
   }
 
   async loadSchema(id: string) {
     try {
       const group = await this.factory.getClient().backendSchema();
       const response = await group.getBackendSchemaBySchemaId(id).backendActionSchemaGet();
-      this.spec = this.typeSchemaToInternalService.transform(response.data.source);
+
+      this.schema = response.data;
+      this.spec = this.typeSchemaToInternalService.transform(this.schema.source);
     } catch (error) {
       if (axios.isAxiosError(error) && error.response)  {
         this.response = error.response.data as Message;
