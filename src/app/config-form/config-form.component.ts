@@ -9,16 +9,14 @@ import {Form_Container} from "fusio-sdk/dist/src/generated/backend/Form_Containe
 export class ConfigFormComponent implements OnInit, OnChanges {
 
   @Input() container?: Form_Container;
-  @Input() data?: Record<string, any>;
-  @Output() dataChange = new EventEmitter<any>();
+  @Input() data?: Record<string, any> = {};
+  @Output() dataChange = new EventEmitter<Record<string, any>>();
 
-  record: Record<string, any> = {};
   elements: Array<any> = [];
 
   constructor() { }
 
   ngOnInit(): void {
-    this.record = Object.assign({}, this.data);
     this.loadElements(this.container);
   }
 
@@ -29,13 +27,16 @@ export class ConfigFormComponent implements OnInit, OnChanges {
   }
 
   public change(key: string, value: any): void {
-    this.record[key] = value;
-    this.dataChange.emit(this.record);
+    if (!this.data) {
+      this.data = {};
+    }
+
+    this.data[key] = value;
+    this.dataChange.emit(this.data);
   }
 
   private loadElements(container?: Form_Container): void {
     this.elements = [];
-    this.record = {};
 
     container?.element?.forEach((element) => {
       if (!element.name) {
