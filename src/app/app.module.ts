@@ -59,12 +59,12 @@ import {ListComponent as AuditList} from "./audit/list/list.component";
 import {FilterComponent as AuditFilter} from './audit/filter/filter.component';
 import {ListComponent as TrashList} from "./trash/list/list.component";
 import {MessageComponent} from './message/message.component';
-import {CsvPipe} from './route/csv.pipe';
 import {ConfigFormComponent} from './config-form/config-form.component';
 import {ScopeCategoriesComponent} from './scope-categories/scope-categories.component';
 import {TagEditorComponent} from './tag-editor/tag-editor.component';
 import {DesignerComponent} from './schema/designer/designer.component';
 import {TypeschemaEditorModule} from "ngx-typeschema-editor";
+import {CsvPipe} from "./tag-editor/csv.pipe";
 
 @NgModule({
   declarations: [
