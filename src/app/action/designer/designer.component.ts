@@ -26,6 +26,7 @@ export class DesignerComponent implements OnInit {
     parameters: '',
     headers: '',
   };
+  body: string = '';
   response?: Action_Execute_Response;
 
   constructor(protected factory: FactoryService, protected help: HelpService, protected route: ActivatedRoute, protected router: Router) {
@@ -46,8 +47,14 @@ export class DesignerComponent implements OnInit {
     }
 
     try {
+      const request = Object.assign({}, this.request);
+      if (this.body) {
+        request.body = JSON.parse(this.body);
+      }
+
       const group = await this.factory.getClient().backendAction();
-      const response = await group.getBackendActionExecuteByActionId('' + this.action.id).backendActionActionExecute(this.request)
+      await group.getBackendActionByActionId('' + this.action.id).backendActionActionUpdate(this.action)
+      const response = await group.getBackendActionExecuteByActionId('' + this.action.id).backendActionActionExecute(request)
       this.response = response.data;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response)  {
