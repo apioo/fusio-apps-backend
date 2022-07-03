@@ -3,11 +3,10 @@ import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {FactoryService} from "../../factory.service";
 import {Route_Index_Provider} from "fusio-sdk/dist/src/generated/backend/Route_Index_Provider";
 import {Route_Provider} from "fusio-sdk/dist/src/generated/backend/Route_Provider";
-import {Message} from "ngx-typeschema-editor/lib/model/Message";
 import axios from "axios";
-import {Form_Query} from "fusio-sdk/dist/src/generated/backend/Form_Query";
 import {Form_Container} from "fusio-sdk/dist/src/generated/backend/Form_Container";
 import {Route_Provider_Changelog} from "fusio-sdk/dist/src/generated/backend/Route_Provider_Changelog";
+import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 
 @Component({
   selector: 'app-route-provider',

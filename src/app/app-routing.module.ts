@@ -47,6 +47,7 @@ const routes: Routes = [
   { path: 'action/designer/:id', component: ActionDesigner, canActivate: [AuthenticationGuard] },
   { path: 'schema', component: SchemaList, canActivate: [AuthenticationGuard] },
   { path: 'schema/designer', component: SchemaDesigner, canActivate: [AuthenticationGuard] },
+  { path: 'schema/designer/:id', component: SchemaDesigner, canActivate: [AuthenticationGuard] },
   { path: 'schema/:id', component: SchemaList, canActivate: [AuthenticationGuard] },
   { path: 'connection', component: ConnectionList, canActivate: [AuthenticationGuard] },
   { path: 'connection/:id', component: ConnectionList, canActivate: [AuthenticationGuard] },

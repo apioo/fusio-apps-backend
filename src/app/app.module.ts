@@ -125,7 +125,7 @@ import {TypeschemaEditorModule} from "ngx-typeschema-editor";
     ConfigFormComponent,
     ScopeCategoriesComponent,
     TagEditorComponent,
-    DesignerComponent,
+    DesignerComponent
   ],
   imports: [
     BrowserModule,
