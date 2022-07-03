@@ -11,9 +11,7 @@
           <option *ngFor="let opt of element?.options" [value]="opt.key">{{opt.value}}</option>
         </select>
       </div>
-      <div class="input-group" *ngSwitchCase="'http://fusio-project.org/ns/2015/form/tag'">
-        <input [ngModel]="data![element.name]" (ngModelChange)="change(element.name, $event)" [name]="element.name" type="text" class="form-control">
-      </div>
+      <app-tag-editor [name]="element.name" [data]="data![element.name]" (dataChange)="change(element.name, $event)" *ngSwitchCase="'http://fusio-project.org/ns/2015/form/tag'"></app-tag-editor>
       <div class="input-group" *ngSwitchCase="'http://fusio-project.org/ns/2015/form/textarea'">
         <div style="width:100%;height:500px;border:1px solid #ced4da">
           <ngx-monaco-editor [ngModel]="data![element.name]" (ngModelChange)="change(element.name, $event)" [options]="{theme: 'vs-light', language: element.mode}" [name]="element.name" style="height:100%"></ngx-monaco-editor>

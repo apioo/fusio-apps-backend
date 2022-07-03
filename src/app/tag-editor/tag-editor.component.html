@@ -1,0 +1,6 @@
+
+<div class="input-group">
+  <input type="text" [id]="name" [name]="name" [ngModel]="data | csv" (ngModelChange)="onChange($event)" class="form-control">
+  <button class="btn btn-outline-secondary" type="button" [ngbPopover]="scopeHelp"><i class="bi bi-question"></i></button>
+  <ng-template #scopeHelp>Assign specific scopes to this route</ng-template>
+</div>

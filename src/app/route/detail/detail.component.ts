@@ -179,16 +179,6 @@ export class DetailComponent extends Detail<ModelRoute> {
     }
   }
 
-  parseCsv(scopes: string): Array<string> {
-    if (!scopes) {
-      return [];
-    }
-
-    return scopes.split(',').map((el) => {
-      return el.trim();
-    }).filter(Boolean);
-  }
-
   protected async create(entity: ModelRoute): Promise<AxiosResponse<Message>> {
     const group = await this.factory.getClient().backendRoute();
     return await group.getBackendRoutes().backendActionRouteCreate(entity);
