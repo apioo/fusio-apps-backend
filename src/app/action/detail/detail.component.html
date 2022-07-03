@@ -24,8 +24,8 @@
       <label for="class" class="col-sm-2 col-form-label fw-bold">Class</label>
       <div class="col-sm-10">
         <div class="input-group">
-          <input *ngIf="custom" type="text" id="class" name="class" [(ngModel)]="entity.class" (change)="loadConfig(entity.class)" class="form-control">
-          <select *ngIf="!custom" id="class" name="class" [(ngModel)]="entity.class" (change)="loadConfig(entity.class)" class="form-select">
+          <input *ngIf="custom" type="text" id="class" name="class" [(ngModel)]="entity.class" (change)="changeClass(entity.class)" class="form-control">
+          <select *ngIf="!custom" id="class" name="class" [(ngModel)]="entity.class" (change)="changeClass(entity.class)" class="form-select">
             <option *ngFor="let action of actions" [ngValue]="action.class">{{action.name}}</option>
           </select>
           <button class="btn btn-outline-secondary" type="button" (click)="custom = !custom"><i class="bi bi-pen"></i></button>

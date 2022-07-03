@@ -22,6 +22,10 @@ export class DetailComponent extends Detail<Action> {
     const action = await this.factory.getClient().backendAction();
     const response = await action.getBackendActionList().backendActionActionGetIndex();
     this.actions = response.data.actions;
+
+    if (this.entity.class) {
+      this.loadConfig(this.entity.class);
+    }
   }
 
   protected async create(entity: Action): Promise<AxiosResponse<Message>> {
@@ -49,6 +53,11 @@ export class DetailComponent extends Detail<Action> {
     };
   }
 
+  async changeClass(classString?: string) {
+    this.entity.config = {};
+    this.loadConfig(classString);
+  }
+
   async loadConfig(classString?: string) {
     if (!classString) {
       return;
@@ -61,7 +70,6 @@ export class DetailComponent extends Detail<Action> {
     const action = await this.factory.getClient().backendAction();
     const response = await action.getBackendActionForm().backendActionActionGetForm(query);
     this.form = response.data;
-    this.entity.config = {};
   }
 
 }
