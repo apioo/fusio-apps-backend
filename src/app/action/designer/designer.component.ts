@@ -64,7 +64,9 @@ export class DesignerComponent implements OnInit {
       const response = await group.getBackendActionByActionId(id).backendActionActionGet();
       this.action = response.data;
 
-      this.loadConfig(this.action.class);
+      if (this.action.class) {
+        this.loadConfig(this.action.class);
+      }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response)  {
         this.message = error.response.data as Message;

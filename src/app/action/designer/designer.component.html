@@ -78,12 +78,12 @@
   </div>
 </div>
 
-<div class="row" *ngIf="response">
+<div class="row" *ngIf="response" style="margin-top:1rem;">
   <div class="col-md-12">
     <div class="card">
       <div class="card-header">Response - {{response.statusCode}}</div>
       <div class="card-body">
-        <pre>{{ response.body }}</pre>
+        <pre>{{ response.body|json }}</pre>
       </div>
     </div>
   </div>
