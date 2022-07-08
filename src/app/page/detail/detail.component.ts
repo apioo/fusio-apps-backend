@@ -11,6 +11,14 @@ import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 })
 export class DetailComponent extends Detail<Page> {
 
+  status = [{
+    key: 1,
+    value: 'Visible'
+  }, {
+    key: 2,
+    value: 'Hidden'
+  }];
+
   protected async create(entity: Page): Promise<AxiosResponse<Message>> {
     const group = await this.factory.getClient().backendPage();
     return await group.getBackendPage().backendActionPageCreate(entity);
