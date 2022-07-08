@@ -22,6 +22,10 @@ export class DetailComponent extends Detail<Connection> {
     const action = await this.factory.getClient().backendConnection();
     const response = await action.getBackendConnectionList().backendActionConnectionGetIndex();
     this.actions = response.data.connections;
+
+    if (this.entity.class) {
+      this.loadConfig(this.entity.class);
+    }
   }
 
   protected async create(entity: Connection): Promise<AxiosResponse<Message>> {
