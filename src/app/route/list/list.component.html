@@ -67,7 +67,7 @@
                   <ng-template ngbNavContent>
                     <div class="fusio-detail">
                       <div class="row">
-                        <div class="col-2">Status:</div>
+                        <div class="col-2 fw-bold">Status</div>
                         <div class="col-10">
                           <span *ngIf="method?.active === true" class="badge bg-success fusio-route-active">Active</span>
                           <span *ngIf="method?.active !== true" class="badge bg-secondary fusio-route-active">Inactive</span>
@@ -76,39 +76,40 @@
                         </div>
                       </div>
                       <div class="row" *ngIf="method?.description">
-                        <div class="col-2">Description:</div>
+                        <div class="col-2 fw-bold">Description</div>
                         <div class="col-10"><span class="fusio-route-description">{{method?.description}}</span></div>
                       </div>
                       <div class="row" *ngIf="method?.operationId">
-                        <div class="col-2">Operation-Id:</div>
+                        <div class="col-2 fw-bold">Operation-Id</div>
                         <div class="col-10"><code class="fusio-route-operation-id">{{method?.operationId}}</code></div>
                       </div>
                       <div class="row" *ngIf="method?.parameters">
-                        <div class="col-2">Parameters:</div>
+                        <div class="col-2 fw-bold">Parameters</div>
                         <div class="col-8"><span class="fusio-route-parameters">{{method?.parameters}}</span></div>
-                        <div class="col-2"><a *ngIf="method?.parameters && config?.status === 4" (click)="showPreview(method?.parameters)" class="btn btn-secondary float-end"><i class="bi bi-search"></i></a></div>
+                        <div class="col-2"><button *ngIf="method?.parameters && config?.status === 4" routerLink="/schema/~{{method?.parameters}}" type="button" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
                       </div>
                       <div class="row" *ngIf="method?.request">
-                        <div class="col-2">Request:</div>
+                        <div class="col-2 fw-bold">Request</div>
                         <div class="col-8"><span class="fusio-route-request">{{method?.request}}</span></div>
-                        <div class="col-2"><a *ngIf="method?.request && config?.status === 4" (click)="showPreview(method?.request)" class="btn btn-secondary float-end"><i class="bi bi-search"></i></a></div>
+                        <div class="col-2"><button *ngIf="method?.request && config?.status === 4" routerLink="/schema/~{{method?.request}}" type="button" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
                       </div>
                       <div class="row" *ngIf="method?.responses">
-                        <div class="col-2">Responses:</div>
+                        <div class="col-2 fw-bold">Responses</div>
                         <div class="col-10">
                           <div class="row" *ngFor="let response of transformResponses(method?.responses)">
                             <div class="col-2"><code>{{response.code}}</code></div>
                             <div class="col-8"><span class="fusio-route-response">{{response.schema}}</span></div>
-                            <div class="col-2"><a *ngIf="response.schema && config?.status === 4" (click)="showPreview(response.schema)" class="btn btn-secondary float-end"><i class="bi bi-search"></i></a></div>
+                            <div class="col-2"><button *ngIf="response.schema && config?.status === 4" routerLink="/schema/~{{response.schema}}" type="button" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
                           </div>
                         </div>
                       </div>
                       <div class="row" *ngIf="method?.action">
-                        <div class="col-2">Action:</div>
-                        <div class="col-10"><span class="fusio-route-action">{{method?.action}}</span></div>
+                        <div class="col-2 fw-bold">Action</div>
+                        <div class="col-8"><span class="fusio-route-action">{{method?.action}}</span></div>
+                        <div class="col-2"><button *ngIf="method?.action && config?.status === 4" routerLink="/action/~{{method?.action}}" type="button" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
                       </div>
                       <div class="row" *ngIf="method?.costs">
-                        <div class="col-2">Costs:</div>
+                        <div class="col-2 fw-bold">Costs</div>
                         <div class="col-10"><span class="fusio-route-costs align-middle">{{method?.costs}}</span></div>
                       </div>
                     </div>

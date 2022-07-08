@@ -83,13 +83,6 @@ export class ListComponent extends List<ModelRoute> {
     modalRef.componentInstance.route = this.selected;
   }
 
-  showPreview(schema?: string) {
-    if (!schema) {
-      return;
-    }
-
-  }
-
   transformMethods(methods?: Route_Methods): Array<Route_Method> {
     return Config.transformMethods(methods, true);
   }
