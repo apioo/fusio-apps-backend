@@ -7,6 +7,7 @@ import {Dashboard_Users} from "fusio-sdk/dist/src/generated/backend/Dashboard_Us
 import {Dashboard_Requests} from "fusio-sdk/dist/src/generated/backend/Dashboard_Requests";
 import {Dashboard_Apps} from "fusio-sdk/dist/src/generated/backend/Dashboard_Apps";
 import {ChartData, ChartDataset} from "chart.js";
+import {Converter} from "../../../analytics/statistic/converter";
 
 @Component({
   selector: 'app-list',
@@ -33,23 +34,23 @@ export class ListComponent implements OnInit {
     const response = await dashboard.getBackendDashboard().backendActionDashboardGetAll()
 
     if (response.data.errorsPerRoute) {
-      this.errorsPerRoute = this.convertChart(response.data.errorsPerRoute);
+      this.errorsPerRoute = Converter.convertChart(response.data.errorsPerRoute);
     }
 
     if (response.data.incomingRequests) {
-      this.incomingRequests = this.convertChart(response.data.incomingRequests);
+      this.incomingRequests = Converter.convertChart(response.data.incomingRequests);
     }
 
     if (response.data.incomingTransactions) {
-      this.incomingTransactions = this.convertChart(response.data.incomingTransactions);
+      this.incomingTransactions = Converter.convertChart(response.data.incomingTransactions);
     }
 
     if (response.data.mostUsedRoutes) {
-      this.mostUsedRoutes = this.convertChart(response.data.mostUsedRoutes);
+      this.mostUsedRoutes = Converter.convertChart(response.data.mostUsedRoutes);
     }
 
     if (response.data.timePerRoute) {
-      this.timePerRoute = this.convertChart(response.data.timePerRoute);
+      this.timePerRoute = Converter.convertChart(response.data.timePerRoute);
     }
 
     this.latestApps = response.data.latestApps;
@@ -58,27 +59,4 @@ export class ListComponent implements OnInit {
     this.latestTransactions = response.data.latestTransactions;
   }
 
-  private convertChart(data: Statistic_Chart): ChartData<'line', Statistic_Chart_Data> {
-    return {
-      datasets: this.convertChartData(data.data, data.series),
-      labels: data.labels || [],
-    };
-  }
-
-  private convertChartData(data?: Array<Statistic_Chart_Data>, series?: Array<string>): Array<ChartDataset<'line', Statistic_Chart_Data>> {
-    if (!data || !series) {
-      return [];
-    }
-
-    let dataSets: Array<ChartDataset<'line', Statistic_Chart_Data>> = [];
-
-    for (let i = 0; i < series.length; i++) {
-      dataSets.push({
-        label: series[i],
-        data: data[i],
-      })
-    }
-
-    return dataSets;
-  }
 }
