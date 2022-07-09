@@ -1,12 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FactoryService} from "../../../factory.service";
 import {Statistic_Chart_Data} from "fusio-sdk/dist/src/generated/backend/Statistic_Chart_Data";
-import {Statistic_Chart} from "fusio-sdk/dist/src/generated/backend/Statistic_Chart";
 import {Dashboard_Transactions} from "fusio-sdk/dist/src/generated/backend/Dashboard_Transactions";
 import {Dashboard_Users} from "fusio-sdk/dist/src/generated/backend/Dashboard_Users";
 import {Dashboard_Requests} from "fusio-sdk/dist/src/generated/backend/Dashboard_Requests";
 import {Dashboard_Apps} from "fusio-sdk/dist/src/generated/backend/Dashboard_Apps";
-import {ChartData, ChartDataset} from "chart.js";
+import {ChartData} from "chart.js";
 import {Converter} from "../../../analytics/statistic/converter";
 
 @Component({
