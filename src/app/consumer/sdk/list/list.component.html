@@ -3,19 +3,13 @@
 
 <app-message [response]="response"></app-message>
 
-<div *ngFor="let type of types | keyvalue" class="card float-start" style="width:320px;margin-right:1rem;margin-bottom:1rem;">
-  <div class="row g-0">
-    <div class="col-md-4">
-      <img src="assets/sdk/{{type.key}}.png" class="card-img-top" style="padding:16px;" [alt]="type.key">
-    </div>
-    <div class="col-md-8">
-      <div class="card-body">
-        <h5 class="card-title">{{type.key}}</h5>
-        <div class="btn-group" role="group">
-          <a *ngIf="type.value" [href]="type.value" class="btn btn-primary">Download</a>
-          <a (click)="generate(type.key)" class="btn btn-secondary">Generate</a>
-        </div>
-      </div>
+<div *ngFor="let type of types | keyvalue" class="card float-start" style="width:18rem;margin-right:1rem;margin-bottom:1rem">
+  <h5 class="card-header">{{type.key}}</h5>
+  <img src="assets/sdk/{{type.key}}.png" class="card-img-top" style="padding:16px;">
+  <div class="card-body">
+    <div class="btn-group" role="group">
+      <a *ngIf="type.value" [href]="type.value" class="btn btn-primary">Download</a>
+      <a (click)="generate(type.key)" class="btn btn-secondary">Generate</a>
     </div>
   </div>
 </div>
