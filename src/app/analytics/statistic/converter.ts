@@ -1,6 +1,6 @@
-import {Statistic_Chart} from "fusio-sdk/dist/src/generated/backend/Statistic_Chart";
 import {ChartData, ChartDataset} from "chart.js";
 import {Statistic_Chart_Data} from "fusio-sdk/dist/src/generated/backend/Statistic_Chart_Data";
+import {Statistic_Chart} from "fusio-sdk/dist/src/generated/backend/Statistic_Chart";
 
 export class Converter {
 

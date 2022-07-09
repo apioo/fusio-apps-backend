@@ -1,4 +1,34 @@
 
 <h1>Statistic</h1>
 
-<p>list works!</p>
+<div class="fusio-search">
+  <form (submit)="doSearch()">
+    <div class="row">
+      <div class="col-2">
+        <select name="statistic" [(ngModel)]="statistic" (change)="selectStatistic()" class="form-select">
+          <option *ngFor="let statistic of statistics" [ngValue]="statistic.value">{{statistic.name}}</option>
+        </select>
+      </div>
+      <div class="col-10">
+        <div class="input-group">
+          <input type="text" class="form-control" name="search" [(ngModel)]="search" placeholder="Search i.e. log" />
+          <button type="button" (click)="showHelp('analytics/statistic')" class="btn btn-secondary fusio-btn-help"><i class="bi bi-question"></i></button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="card">
+  <div class="card-header">{{statisticName}}</div>
+  <div class="card-body">
+    <canvas baseChart
+            [datasets]="chart?.datasets"
+            [labels]="chart?.labels"
+            [options]="{'responsive':true,'maintainAspectRatio':false}"
+            [type]="'line'"
+            height="500">
+    </canvas>
+  </div>
+</div>
+
