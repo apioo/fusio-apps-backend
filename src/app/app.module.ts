@@ -11,61 +11,61 @@ import {ChangePasswordComponent} from './account/change-password/change-password
 import {LoginComponent} from './login/login.component';
 import {LogoutComponent} from './logout/logout.component';
 import {NavigationComponent} from './navigation/navigation.component';
-import {ListComponent as DashboardList} from "./dashboard/list/list.component";
-import {ListComponent as RouteList} from "./route/list/list.component";
-import {DetailComponent as RouteDetail} from "./route/detail/detail.component";
-import {LogComponent as RouteLog} from './route/log/log.component';
-import {ProviderComponent as RouteProvider} from './route/provider/provider.component';
-import {ListComponent as ActionList} from "./action/list/list.component";
-import {DetailComponent as ActionDetail} from "./action/detail/detail.component";
-import {DesignerComponent as ActionDesigner} from './action/designer/designer.component';
-import {ListComponent as SchemaList} from "./schema/list/list.component";
-import {DetailComponent as SchemaDetail} from "./schema/detail/detail.component";
-import {ListComponent as ConnectionList} from "./connection/list/list.component";
-import {DetailComponent as ConnectionDetail} from "./connection/detail/detail.component";
-import {ListComponent as EventList} from "./event/list/list.component";
-import {DetailComponent as EventDetail} from "./event/detail/detail.component";
-import {ListComponent as CronjobList} from "./cronjob/list/list.component";
-import {DetailComponent as CronjobDetail} from "./cronjob/detail/detail.component";
-import {ErrorComponent as CronjobError} from './cronjob/error/error.component';
-import {ListComponent as AppList} from "./app/list/list.component";
-import {DetailComponent as AppDetail} from "./app/detail/detail.component";
-import {ListComponent as ScopeList} from "./scope/list/list.component";
-import {DetailComponent as ScopeDetail} from "./scope/detail/detail.component";
-import {ListComponent as UserList} from "./user/list/list.component";
-import {DetailComponent as UserDetail} from "./user/detail/detail.component";
-import {ListComponent as RateList} from "./rate/list/list.component";
-import {DetailComponent as RateDetail} from "./rate/detail/detail.component";
-import {ListComponent as PageList} from "./page/list/list.component";
-import {DetailComponent as PageDetail} from "./page/detail/detail.component";
-import {ListComponent as SdkList} from "./sdk/list/list.component";
-import {ListComponent as SubscriptionList} from "./subscription/list/list.component";
-import {DetailComponent as SubscriptionDetail} from "./subscription/detail/detail.component";
-import {ListComponent as LogList} from "./log/list/list.component";
-import {ListComponent as StatisticList} from "./statistic/list/list.component";
-import {ListComponent as ErrorList} from "./error/list/list.component";
-import {ListComponent as TokenList} from "./token/list/list.component";
-import {ListComponent as PlanList} from "./plan/list/list.component";
-import {DetailComponent as PlanDetail} from "./plan/detail/detail.component";
-import {ListComponent as TransactionList} from "./transaction/list/list.component";
-import {ListComponent as CategoryList} from "./category/list/list.component";
-import {DetailComponent as CategoryDetail} from "./category/detail/detail.component";
-import {ListComponent as RoleList} from "./role/list/list.component";
-import {DetailComponent as RoleDetail} from "./role/detail/detail.component";
-import {ListComponent as MarketplaceList} from "./marketplace/list/list.component";
-import {ListComponent as ConfigList} from "./config/list/list.component";
-import {DetailComponent as ConfigDetail} from "./config/detail/detail.component";
-import {ListComponent as AuditList} from "./audit/list/list.component";
-import {FilterComponent as AuditFilter} from './audit/filter/filter.component';
-import {ListComponent as TrashList} from "./trash/list/list.component";
-import {MessageComponent} from './message/message.component';
-import {ConfigFormComponent} from './config-form/config-form.component';
-import {ScopeCategoriesComponent} from './scope-categories/scope-categories.component';
-import {TagEditorComponent} from './tag-editor/tag-editor.component';
-import {DesignerComponent} from './schema/designer/designer.component';
+import {ListComponent as DashboardList} from "./api/dashboard/list/list.component";
+import {ListComponent as RouteList} from "./api/route/list/list.component";
+import {DetailComponent as RouteDetail} from "./api/route/detail/detail.component";
+import {LogComponent as RouteLog} from './api/route/log/log.component';
+import {ProviderComponent as RouteProvider} from './api/route/provider/provider.component';
+import {ListComponent as ActionList} from "./api/action/list/list.component";
+import {DetailComponent as ActionDetail} from "./api/action/detail/detail.component";
+import {DesignerComponent as ActionDesigner} from './api/action/designer/designer.component';
+import {ListComponent as SchemaList} from "./api/schema/list/list.component";
+import {DetailComponent as SchemaDetail} from "./api/schema/detail/detail.component";
+import {DesignerComponent as SchemaDesigner} from './api/schema/designer/designer.component';
+import {ListComponent as ConnectionList} from "./api/connection/list/list.component";
+import {DetailComponent as ConnectionDetail} from "./api/connection/detail/detail.component";
+import {ListComponent as EventList} from "./api/event/list/list.component";
+import {DetailComponent as EventDetail} from "./api/event/detail/detail.component";
+import {ListComponent as CronjobList} from "./api/cronjob/list/list.component";
+import {DetailComponent as CronjobDetail} from "./api/cronjob/detail/detail.component";
+import {ErrorComponent as CronjobError} from './api/cronjob/error/error.component';
+import {ListComponent as AppList} from "./consumer/app/list/list.component";
+import {DetailComponent as AppDetail} from "./consumer/app/detail/detail.component";
+import {ListComponent as ScopeList} from "./consumer/scope/list/list.component";
+import {DetailComponent as ScopeDetail} from "./consumer/scope/detail/detail.component";
+import {ListComponent as UserList} from "./consumer/user/list/list.component";
+import {DetailComponent as UserDetail} from "./consumer/user/detail/detail.component";
+import {ListComponent as RateList} from "./consumer/rate/list/list.component";
+import {DetailComponent as RateDetail} from "./consumer/rate/detail/detail.component";
+import {ListComponent as PageList} from "./consumer/page/list/list.component";
+import {DetailComponent as PageDetail} from "./consumer/page/detail/detail.component";
+import {ListComponent as SdkList} from "./consumer/sdk/list/list.component";
+import {ListComponent as SubscriptionList} from "./consumer/subscription/list/list.component";
+import {DetailComponent as SubscriptionDetail} from "./consumer/subscription/detail/detail.component";
+import {ListComponent as LogList} from "./analytics/log/list/list.component";
+import {ListComponent as StatisticList} from "./analytics/statistic/list/list.component";
+import {ListComponent as ErrorList} from "./analytics/error/list/list.component";
+import {ListComponent as TokenList} from "./analytics/token/list/list.component";
+import {ListComponent as PlanList} from "./monetization/plan/list/list.component";
+import {DetailComponent as PlanDetail} from "./monetization/plan/detail/detail.component";
+import {ListComponent as TransactionList} from "./monetization/transaction/list/list.component";
+import {ListComponent as CategoryList} from "./system/category/list/list.component";
+import {DetailComponent as CategoryDetail} from "./system/category/detail/detail.component";
+import {ListComponent as RoleList} from "./system/role/list/list.component";
+import {DetailComponent as RoleDetail} from "./system/role/detail/detail.component";
+import {ListComponent as MarketplaceList} from "./system/marketplace/list/list.component";
+import {ListComponent as ConfigList} from "./system/config/list/list.component";
+import {DetailComponent as ConfigDetail} from "./system/config/detail/detail.component";
+import {ListComponent as AuditList} from "./system/audit/list/list.component";
+import {FilterComponent as AuditFilter} from './system/audit/filter/filter.component';
+import {ListComponent as TrashList} from "./system/trash/list/list.component";
+import {MessageComponent} from './shared/message/message.component';
+import {ConfigFormComponent} from './shared/config-form/config-form.component';
+import {ScopeCategoriesComponent} from './shared/scope-categories/scope-categories.component';
+import {TagEditorComponent} from './shared/tag-editor/tag-editor.component';
+import {CsvPipe} from "./shared/tag-editor/csv.pipe";
+import {ScopeValuesComponent} from './shared/scope-values/scope-values.component';
 import {TypeschemaEditorModule} from "ngx-typeschema-editor";
-import {CsvPipe} from "./tag-editor/csv.pipe";
-import { ScopeValuesComponent } from './scope-values/scope-values.component';
 
 @NgModule({
   declarations: [
@@ -84,6 +84,7 @@ import { ScopeValuesComponent } from './scope-values/scope-values.component';
     ActionDesigner,
     SchemaList,
     SchemaDetail,
+    SchemaDesigner,
     ConnectionList,
     ConnectionDetail,
     EventList,
@@ -126,7 +127,6 @@ import { ScopeValuesComponent } from './scope-values/scope-values.component';
     ConfigFormComponent,
     ScopeCategoriesComponent,
     TagEditorComponent,
-    DesignerComponent,
     ScopeValuesComponent
   ],
   imports: [
