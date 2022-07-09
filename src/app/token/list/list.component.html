@@ -4,41 +4,68 @@
 <app-message [response]="response"></app-message>
 
 <div class="fusio-search">
-  <form name="actionSearchForm" (submit)="doSearch()">
+  <form (submit)="doSearch()">
     <div class="input-group">
-      <input type="text" class="form-control" name="search" [(ngModel)]="search" placeholder="Search i.e. scope" />
-      <button type="button" (click)="showHelp('api/cronjob')" class="btn btn-secondary fusio-btn-help"><i class="bi bi-question"></i></button>
+      <input type="text" class="form-control" name="search" [(ngModel)]="search" placeholder="Search i.e. token" />
+      <button type="button" (click)="openCreateDialog()" class="btn btn-primary fusio-btn-create"><i class="bi bi-plus"></i></button>
+      <button type="button" (click)="showHelp('analytics/token')" class="btn btn-secondary fusio-btn-help"><i class="bi bi-question"></i></button>
     </div>
   </form>
 </div>
 
-<table class="table">
-  <thead>
-  <tr>
-    <th>Status</th>
-    <th>Scope</th>
-    <th>IP</th>
-    <th>Date</th>
-    <th></th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let entry of entries">
-    <td>{{entry.id}}</td>
-    <td><span *ngFor="let scope of entry.scope?.slice(0, 3)" class="badge bg-primary">{{scope}}</span></td>
-    <td>{{entry.ip}}</td>
-    <td>{{entry.date|date:'short'}}</td>
-    <td>
-      <div class="btn-group float-end">
-        <button type="button" (click)="openUpdateDialog()" class="btn btn-primary fusio-btn-update"><i class="bi bi-search"></i></button>
+<div class="row">
+  <div class="col-md-2">
+    <div class="card">
+      <div class="card-header">Token</div>
+      <div class="card-body">
+        <div class="fusio-sub-navigation">
+          <ul>
+            <li *ngFor="let row of entries">
+              <a routerLink="/token/{{row.id}}" [queryParams]="this.getQueryParams()" title="{{row.ip}}">
+                <b *ngIf="selected?.id === row.id">{{row.ip}}</b>
+                <span *ngIf="selected?.id !== row.id">{{row.ip}}</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <ngb-pagination
+          [(page)]="page"
+          [pageSize]="pageSize"
+          [collectionSize]="totalResults"
+          (pageChange)="doSearch()"></ngb-pagination>
       </div>
-    </td>
-  </tr>
-  </tbody>
-</table>
-
-<ngb-pagination
-  [(page)]="page"
-  [pageSize]="pageSize"
-  [collectionSize]="totalResults"
-  (pageChange)="doSearch()"></ngb-pagination>
+    </div>
+  </div>
+  <div class="col-md-10">
+    <div class="card">
+      <div class="card-header">{{selected?.ip}}</div>
+      <div class="card-body">
+        <div class="fusio-detail">
+          <div class="row">
+            <div class="col-2 fw-bold">Status</div>
+            <div class="col-10">
+              <span *ngIf="selected?.status === 1" class="badge bg-success">Active</span>
+              <span *ngIf="selected?.status === 2" class="badge bg-danger">Deleted</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-2 fw-bold">IP</div>
+            <div class="col-10">{{selected?.ip}}</div>
+          </div>
+          <div class="row">
+            <div class="col-2 fw-bold">Scopes</div>
+            <div class="col-10"><app-scope-values [scopes]="selected?.scope"></app-scope-values></div>
+          </div>
+          <div class="row">
+            <div class="col-2 fw-bold">Expire</div>
+            <div class="col-10">{{selected?.expire|date:'short'}}</div>
+          </div>
+          <div class="row">
+            <div class="col-2 fw-bold">Date</div>
+            <div class="col-10">{{selected?.date|date:'short'}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

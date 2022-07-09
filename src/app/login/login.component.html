@@ -6,7 +6,7 @@
     </header>
     <div class="fusio-login-panel-body">
       <app-message [response]="response"></app-message>
-      <form name="loginForm" method="post" (submit)="login()" novalidate>
+      <form (submit)="login()" novalidate>
         <div class="mb-3">
           <label for="username">Username:</label>
           <input type="text" id="username" name="username" [(ngModel)]="credentials.username" class="form-control">
