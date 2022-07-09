@@ -73,6 +73,7 @@ const routes: Routes = [
   { path: 'log', component: LogList, canActivate: [AuthenticationGuard] },
   { path: 'log/:id', component: LogList, canActivate: [AuthenticationGuard] },
   { path: 'statistic', component: StatisticList, canActivate: [AuthenticationGuard] },
+  { path: 'statistic/:statistic', component: StatisticList, canActivate: [AuthenticationGuard] },
   { path: 'error', component: ErrorList, canActivate: [AuthenticationGuard] },
   { path: 'error/:id', component: ErrorList, canActivate: [AuthenticationGuard] },
   { path: 'token', component: TokenList, canActivate: [AuthenticationGuard] },
