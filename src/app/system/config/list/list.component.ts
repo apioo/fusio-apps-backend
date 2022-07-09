@@ -29,7 +29,7 @@ export class ListComponent extends List<Config> {
   }
 
   protected getRoute(): any {
-    return '/category';
+    return '/config';
   }
 
   protected onList() {
