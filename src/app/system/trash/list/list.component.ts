@@ -23,7 +23,7 @@ export class ListComponent implements OnInit {
   type: string = 'action';
   types?: Array<string>;
 
-  constructor(protected factory: FactoryService, protected help: HelpService, protected route: ActivatedRoute, protected router: Router, protected modalService: NgbModal) {
+  constructor(protected factory: FactoryService, protected help: HelpService, protected route: ActivatedRoute, protected router: Router) {
   }
 
   async ngOnInit(): Promise<void> {

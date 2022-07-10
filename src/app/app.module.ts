@@ -66,6 +66,7 @@ import {TagEditorComponent} from './shared/tag-editor/tag-editor.component';
 import {CsvPipe} from "./shared/tag-editor/csv.pipe";
 import {ScopeValuesComponent} from './shared/scope-values/scope-values.component';
 import {TypeschemaEditorModule} from "ngx-typeschema-editor";
+import { HelpComponent } from './shared/help/help.component';
 
 @NgModule({
   declarations: [
@@ -127,7 +128,8 @@ import {TypeschemaEditorModule} from "ngx-typeschema-editor";
     ConfigFormComponent,
     ScopeCategoriesComponent,
     TagEditorComponent,
-    ScopeValuesComponent
+    ScopeValuesComponent,
+    HelpComponent
   ],
   imports: [
     BrowserModule,
