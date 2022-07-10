@@ -26,7 +26,11 @@
               "src/.htaccess",
               "src/favicon.ico",
               "src/assets",
-              {"glob": "**/*", "input": "node_modules/monaco-editor", "output": "assets/monaco-editor"}
+              {
+                "glob": "**/*",
+                "ignore": ["**/dev/**/*", "**/esm/**/*", "**/min-maps/**/*"],
+                "input": "node_modules/monaco-editor", "output": "assets/monaco-editor"
+              }
             ],
             "styles": [
               "src/styles.css"
@@ -96,7 +100,11 @@
               "src/app.yaml",
               "src/favicon.ico",
               "src/assets",
-              {"glob": "**/*", "input": "node_modules/monaco-editor", "output": "assets/monaco-editor"}
+              {
+                "glob": "**/*",
+                "ignore": ["**/dev/**/*", "**/esm/**/*", "**/min-maps/**/*"],
+                "input": "node_modules/monaco-editor", "output": "assets/monaco-editor"
+              }
             ],
             "styles": [
               "src/styles.css"
