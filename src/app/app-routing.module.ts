@@ -94,7 +94,7 @@ const routes: Routes = [
   { path: 'audit', component: AuditList, canActivate: [AuthenticationGuard] },
   { path: 'audit/:id', component: AuditList, canActivate: [AuthenticationGuard] },
   { path: 'trash', component: TrashList, canActivate: [AuthenticationGuard] },
-  { path: 'trash/:id', component: TrashList, canActivate: [AuthenticationGuard] },
+  { path: 'trash/:type', component: TrashList, canActivate: [AuthenticationGuard] },
 ];
 
 @NgModule({
