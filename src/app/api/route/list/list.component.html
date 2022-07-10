@@ -38,7 +38,8 @@
     </div>
   </div>
   <div class="col-md-10">
-    <div class="card">
+    <app-empty *ngIf="!selected" [loading]="loading" (newClick)="openCreateDialog()"></app-empty>
+    <div class="card" *ngIf="selected">
       <div class="card-header"><a href="{{baseUrl}}{{selected?.path}}" class="fusio-route-path">{{selected?.path}}</a></div>
       <div class="card-body">
         <div class="btn-group" role="group">

@@ -37,7 +37,8 @@
     </div>
   </div>
   <div class="col-md-10">
-    <div class="card">
+    <app-empty *ngIf="!selected" [loading]="loading" (newClick)="openCreateDialog()"></app-empty>
+    <div class="card" *ngIf="selected">
       <div class="card-header">{{selected?.title}}</div>
       <div class="card-body">
         <div class="btn-group" role="group">

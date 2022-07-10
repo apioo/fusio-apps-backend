@@ -15,9 +15,6 @@ export class ListComponent extends List<Schema> {
 
   preview?: string;
 
-  openUIDialog() {
-  }
-
   protected async getAll(query: Collection_Category_Query): Promise<AxiosResponse<Collection<Schema>>> {
     const group = await this.factory.getClient().backendSchema();
     return await group.getBackendSchema().backendActionSchemaGetAll(query);

@@ -37,7 +37,8 @@
     </div>
   </div>
   <div class="col-md-10">
-    <div class="card">
+    <app-empty *ngIf="!selected" [loading]="loading" (newClick)="openCreateDialog()"></app-empty>
+    <div class="card" *ngIf="selected">
       <div class="card-header">{{selected?.endpoint}}</div>
       <div class="card-body">
         <div class="btn-group" role="group">
@@ -52,7 +53,7 @@
         </div>
       </div>
     </div>
-    <div class="card" style="margin-top:1rem;">
+    <div class="card" style="margin-top:1rem;" *ngIf="selected">
       <div class="card-header">Responses</div>
       <div class="card-body">
         <table class="table">

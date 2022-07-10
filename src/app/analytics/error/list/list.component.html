@@ -36,7 +36,8 @@
     </div>
   </div>
   <div class="col-md-10">
-    <div class="card">
+    <app-empty *ngIf="!selected" [loading]="loading"></app-empty>
+    <div class="card" *ngIf="selected">
       <div class="card-header">{{selected?.message}}</div>
       <div class="card-body">
         <div class="fusio-detail">

@@ -18,11 +18,14 @@ export abstract class List<T extends ModelId> implements OnInit {
   public page: number = 1;
   public pageSize: number = 16;
   public response?: Message;
+  public loading: boolean = true;
 
   constructor(protected factory: FactoryService, protected help: HelpService, protected route: ActivatedRoute, protected router: Router, protected modalService: NgbModal) {
   }
 
   ngOnInit(): void {
+    this.loading = true;
+
     this.route.queryParams.subscribe(params => {
       if (params['page']) {
         this.page = parseInt(params['page']);
@@ -57,6 +60,12 @@ export abstract class List<T extends ModelId> implements OnInit {
       this.entries = response.data.entry || [];
 
       this.onList();
+
+      // in case we are not at a specific route redirect to the first
+      const isDetailRoute: boolean|undefined = this.route.routeConfig?.path?.endsWith(':id');
+      if (this.entries.length > 0 && this.entries[0].id && isDetailRoute === false) {
+        await this.doGet('' + this.entries[0].id);
+      }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response)  {
         this.response = error.response.data as Message;
@@ -64,6 +73,8 @@ export abstract class List<T extends ModelId> implements OnInit {
         throw error;
       }
     }
+
+    this.loading = false;
   }
 
   async doGet(id: string) {
