@@ -45,6 +45,12 @@
           "icon": "bi-alarm",
           "path": "/cronjob",
           "scope": "backend.cronjob"
+        },
+        {
+          "title": "Generator",
+          "icon": "bi-cpu",
+          "path": "/generator",
+          "scope": "backend.route"
         }
       ]
     },

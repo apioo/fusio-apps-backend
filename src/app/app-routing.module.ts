@@ -2,7 +2,6 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {ListComponent as DashboardList} from "./api/dashboard/list/list.component";
 import {ListComponent as RouteList} from "./api/route/list/list.component";
-import {ProviderComponent as RouteProvider} from "./api/route/provider/provider.component";
 import {ListComponent as ActionList} from "./api/action/list/list.component";
 import {DesignerComponent as ActionDesigner} from "./api/action/designer/designer.component";
 import {ListComponent as SchemaList} from "./api/schema/list/list.component";
@@ -32,6 +31,7 @@ import {ListComponent as TrashList} from "./system/trash/list/list.component";
 import {LoginComponent} from "./login/login.component";
 import {AuthenticationGuard} from "./authentication.guard";
 import {LogoutComponent} from "./logout/logout.component";
+import {GeneratorComponent} from "./api/generator/generator.component";
 
 const routes: Routes = [
   { path: '', component: DashboardList, canActivate: [AuthenticationGuard] },
@@ -40,7 +40,6 @@ const routes: Routes = [
 
   { path: 'dashboard', component: DashboardList, canActivate: [AuthenticationGuard] },
   { path: 'route', component: RouteList, canActivate: [AuthenticationGuard] },
-  { path: 'route/provider', component: RouteProvider, canActivate: [AuthenticationGuard] },
   { path: 'route/:id', component: RouteList, canActivate: [AuthenticationGuard] },
   { path: 'action', component: ActionList, canActivate: [AuthenticationGuard] },
   { path: 'action/:id', component: ActionList, canActivate: [AuthenticationGuard] },
@@ -55,6 +54,7 @@ const routes: Routes = [
   { path: 'event/:id', component: EventList, canActivate: [AuthenticationGuard] },
   { path: 'cronjob', component: CronjobList, canActivate: [AuthenticationGuard] },
   { path: 'cronjob/:id', component: CronjobList, canActivate: [AuthenticationGuard] },
+  { path: 'generator', component: GeneratorComponent, canActivate: [AuthenticationGuard] },
 
   { path: 'app', component: AppList, canActivate: [AuthenticationGuard] },
   { path: 'app/:id', component: AppList, canActivate: [AuthenticationGuard] },

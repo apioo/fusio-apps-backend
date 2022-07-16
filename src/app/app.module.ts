@@ -15,7 +15,6 @@ import {ListComponent as DashboardList} from "./api/dashboard/list/list.componen
 import {ListComponent as RouteList} from "./api/route/list/list.component";
 import {DetailComponent as RouteDetail} from "./api/route/detail/detail.component";
 import {LogComponent as RouteLog} from './api/route/log/log.component';
-import {ProviderComponent as RouteProvider} from './api/route/provider/provider.component';
 import {ListComponent as ActionList} from "./api/action/list/list.component";
 import {DetailComponent as ActionDetail} from "./api/action/detail/detail.component";
 import {DesignerComponent as ActionDesigner} from './api/action/designer/designer.component';
@@ -68,6 +67,9 @@ import {ScopeValuesComponent} from './shared/scope-values/scope-values.component
 import {TypeschemaEditorModule} from "ngx-typeschema-editor";
 import { HelpComponent } from './shared/help/help.component';
 import { EmptyComponent } from './shared/empty/empty.component';
+import { MapComponent } from './shared/map/map.component';
+import { CollectionComponent } from './shared/collection/collection.component';
+import { GeneratorComponent } from './api/generator/generator.component';
 
 @NgModule({
   declarations: [
@@ -80,7 +82,6 @@ import { EmptyComponent } from './shared/empty/empty.component';
     RouteList,
     RouteDetail,
     RouteLog,
-    RouteProvider,
     ActionList,
     ActionDetail,
     ActionDesigner,
@@ -131,7 +132,10 @@ import { EmptyComponent } from './shared/empty/empty.component';
     TagEditorComponent,
     ScopeValuesComponent,
     HelpComponent,
-    EmptyComponent
+    EmptyComponent,
+    MapComponent,
+    CollectionComponent,
+    GeneratorComponent
   ],
   imports: [
     BrowserModule,

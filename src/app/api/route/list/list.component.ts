@@ -10,7 +10,6 @@ import {Config, HttpResponse} from "../config";
 import {AxiosResponse} from "axios";
 import {List} from "../../../list";
 import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
-import {ProviderComponent} from "../provider/provider.component";
 
 @Component({
   selector: 'app-route-list',
@@ -61,15 +60,6 @@ export class ListComponent extends List<ModelRoute> {
     if (method === null && version && version.methods) {
       this.activeMethod = Object.keys(version.methods)[0];
     }
-  }
-
-  openProviderDialog() {
-    const modalRef = this.modalService.open(ProviderComponent, {
-      size: 'lg'
-    });
-    modalRef.closed.subscribe((response) => {
-      this.response = response;
-    })
   }
 
   showLogs() {
