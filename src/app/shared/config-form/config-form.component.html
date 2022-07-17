@@ -3,26 +3,35 @@
   <label [for]="element.name" class="col-sm-2 col-form-label fw-bold">{{element.title}}</label>
   <div class="col-sm-10" *ngIf="element.name">
     <ng-container [ngSwitch]="element.element">
-      <div class="input-group" *ngSwitchCase="'input'">
+      <ng-container *ngSwitchCase="'input'">
         <input [ngModel]="data![element.name]" (ngModelChange)="doChange(element.name, $event)" [name]="element.name" [type]="element.type" class="form-control">
-      </div>
-      <div class="input-group" *ngSwitchCase="'select'">
+      </ng-container>
+      <ng-container *ngSwitchCase="'checkbox'">
+        <div class="form-check form-switch">
+          <input [ngModel]="data![element.name]" (ngModelChange)="doChange(element.name, $event)" [name]="element.name" type="checkbox" class="form-check-input">
+        </div>
+      </ng-container>
+      <ng-container *ngSwitchCase="'select'">
         <select *ngIf="element?.options" [ngModel]="data![element.name]" (ngModelChange)="doChange(element.name, $event)" [name]="element.name" class="form-select">
           <option *ngFor="let opt of element?.options" [value]="opt.key">{{opt.value}}</option>
         </select>
-      </div>
-      <div class="input-group" *ngSwitchCase="'textarea'">
+      </ng-container>
+      <ng-container *ngSwitchCase="'textarea'">
         <div style="width:100%;height:500px;border:1px solid #ced4da">
           <ngx-monaco-editor [ngModel]="data![element.name]" (ngModelChange)="doChange(element.name, $event)" [options]="{theme: 'vs-light', language: element.mode}" [name]="element.name" style="height:100%"></ngx-monaco-editor>
         </div>
-      </div>
-      <app-collection [name]="element.name" [data]="data![element.name]" (dataChange)="doChange(element.name, $event)" *ngSwitchCase="'collection'"></app-collection>
-      <app-map [name]="element.name" [data]="data![element.name]" (dataChange)="doChange(element.name, $event)" *ngSwitchCase="'map'"></app-map>
-      <div class="input-group" *ngSwitchCase="'typeschema'">
+      </ng-container>
+      <ng-container *ngSwitchCase="'collection'">
+        <app-collection [data]="data![element.name]" (dataChange)="doChange(element.name, $event)" [name]="element.name"></app-collection>
+      </ng-container>
+      <ng-container *ngSwitchCase="'map'">
+        <app-map [data]="data![element.name]" (dataChange)="doChange(element.name, $event)" [name]="element.name"></app-map>
+      </ng-container>
+      <ng-container *ngSwitchCase="'typeschema'">
         <div style="width:100%;min-height:500px;border:1px solid #ced4da">
           <typeschema-editor [specification]="spec" (preview)="doChange(element.name, $event)" [importEnabled]="false"></typeschema-editor>
         </div>
-      </div>
+      </ng-container>
     </ng-container>
   </div>
 </div>
