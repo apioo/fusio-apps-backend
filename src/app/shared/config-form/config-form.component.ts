@@ -32,8 +32,7 @@ export class ConfigFormComponent implements OnInit, OnChanges {
     }
   }
 
-  public change(key: string, value: any): void {
-    console.log('change config', key, value);
+  public doChange(key: string, value: any): void {
     if (!this.data) {
       this.data = {};
     }
