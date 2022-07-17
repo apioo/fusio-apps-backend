@@ -16,8 +16,8 @@
           <ngx-monaco-editor [ngModel]="data![element.name]" (ngModelChange)="change(element.name, $event)" [options]="{theme: 'vs-light', language: element.mode}" [name]="element.name" style="height:100%"></ngx-monaco-editor>
         </div>
       </div>
-      <app-collection [name]="element.name" [data]="data![element.name]" (change)="change(element.name, $event)" *ngSwitchCase="'collection'"></app-collection>
-      <app-map [name]="element.name" [data]="data![element.name]" (change)="change(element.name, $event)" *ngSwitchCase="'map'"></app-map>
+      <app-collection [name]="element.name" [data]="data![element.name]" (dataChange)="change(element.name, $event)" *ngSwitchCase="'collection'"></app-collection>
+      <app-map [name]="element.name" [data]="data![element.name]" (dataChange)="change(element.name, $event)" *ngSwitchCase="'map'"></app-map>
       <div class="input-group" *ngSwitchCase="'typeschema'">
         <div style="width:100%;min-height:500px;border:1px solid #ced4da">
           <typeschema-editor [specification]="spec" (preview)="change(element.name, spec)" [importEnabled]="false"></typeschema-editor>
@@ -26,4 +26,3 @@
     </ng-container>
   </div>
 </div>
-{{data|json}}

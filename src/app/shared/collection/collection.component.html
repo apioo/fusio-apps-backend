@@ -1,17 +1,17 @@
 
-<div class="mb-3 row" *ngFor="let value of data; let i = index">
+<div class="mb-3 row" *ngFor="let property of local; let i = index">
   <div class="col-sm-12">
     <div class="input-group">
-      <input type="{{type}}" id="{{name}}-{{i}}" name="{{name}}-{{i}}" [ngModel]="data[i]" (ngModelChange)="onChange(i, $event)" class="form-control">
-      <button class="btn btn-danger" type="button" (click)="remove(i)"><i class="bi bi-x"></i></button>
+      <input type="{{type}}" id="{{name}}-{{i}}" name="{{name}}-{{i}}" [ngModel]="property.value" (ngModelChange)="doChange(i, $event)" class="form-control">
+      <button class="btn btn-danger" type="button" (click)="doRemove(i)"><i class="bi bi-x"></i></button>
     </div>
   </div>
 </div>
 <div class="mb-3 row">
   <div class="col-sm-12">
     <div class="input-group">
-      <input type="{{type}}" [(ngModel)]="newValue" class="form-control">
-      <button class="btn btn-success" type="button" (click)="add()"><i class="bi bi-plus"></i></button>
+      <input id="{{name}}-newValue" name="{{name}}-newValue" type="{{type}}" [(ngModel)]="newValue" class="form-control">
+      <button class="btn btn-success" type="button" (click)="doAdd()"><i class="bi bi-plus"></i></button>
     </div>
   </div>
 </div>

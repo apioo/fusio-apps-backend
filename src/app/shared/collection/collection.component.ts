@@ -10,7 +10,7 @@ export class CollectionComponent implements OnInit {
   @Input() name: string = 'collection';
   @Input() type: string = 'text';
   @Input() data: Array<any> = [];
-  @Output() change = new EventEmitter<Object>();
+  @Output() dataChange = new EventEmitter<Array<any>>();
 
   local: Array<any> = [];
   newValue: any = '';
@@ -19,16 +19,16 @@ export class CollectionComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.data) {
-      this.local = this.data.slice();
+      this.local = this.toLocal(this.data);
     }
   }
 
-  onChange(index: number, value?: any) {
-    this.local[index] = value;
-    this.change.emit(this.local);
+  doChange(index: number, value?: any) {
+    this.local[index].value = value;
+    this.dataChange.emit(this.fromLocal());
   }
 
-  add() {
+  doAdd() {
     if (!this.newValue) {
       return;
     }
@@ -38,16 +38,38 @@ export class CollectionComponent implements OnInit {
       newValue = parseInt(newValue);
     }
 
-    this.local.push(newValue);
+    this.local.push({
+      value: newValue
+    });
     this.newValue = '';
-    this.change.emit(this.local);
+    this.dataChange.emit(this.fromLocal());
   }
 
-  remove(index: number) {
-    if (this.local[index]) {
-      this.local.splice(index, 1);
-      this.change.emit(this.local);
-    }
+  doRemove(index: number) {
+    this.local.splice(index, 1);
+    this.dataChange.emit(this.fromLocal());
   }
 
+  toLocal(data: Array<any>): Array<Entry> {
+    let local: Array<Entry> = [];
+    data.forEach((value) => {
+      local.push({
+        value: value
+      });
+    })
+    return local;
+  }
+
+  fromLocal(): Array<any> {
+    let data: Array<any> = [];
+    this.local.forEach((entry: Entry) => {
+      data.push(entry.value);
+    });
+    return data;
+  }
+
+}
+
+interface Entry {
+  value: string
 }

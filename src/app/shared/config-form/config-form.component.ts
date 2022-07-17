@@ -33,6 +33,7 @@ export class ConfigFormComponent implements OnInit, OnChanges {
   }
 
   public change(key: string, value: any): void {
+    console.log('change config', key, value);
     if (!this.data) {
       this.data = {};
     }

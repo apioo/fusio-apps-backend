@@ -10,9 +10,9 @@ export class MapComponent implements OnInit {
   @Input() name: string = 'map';
   @Input() type: string = 'text';
   @Input() data: Record<string, any> = {};
-  @Output() change = new EventEmitter<Object>();
+  @Output() dataChange = new EventEmitter<Record<string, any>>();
 
-  local: Record<string, any> = {};
+  local: Array<Entry> = [];
   newKey: string = '';
   newValue: any = '';
 
@@ -20,22 +20,16 @@ export class MapComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.data) {
-      console.log('init', this.data);
-      this.local = Object.assign({}, this.data);
+      this.local = this.toLocal(this.data);
     }
   }
 
-  onChange(key: string, value?: any) {
-
-    console.log('change', key, value);
-
-    this.local[key] = value;
-    //this.change.emit(this.local);
+  doChange(index: number, value?: any) {
+    this.local[index].value = value;
+    this.dataChange.emit(this.fromLocal());
   }
 
-  add() {
-    console.log('add', this.newKey, this.newValue);
-
+  doAdd() {
     if (!this.newKey || !this.newValue) {
       return;
     }
@@ -45,18 +39,43 @@ export class MapComponent implements OnInit {
       newValue = parseInt(newValue);
     }
 
-    this.local[this.newKey] = newValue;
+    this.local.push({
+      key: this.newKey,
+      value: newValue,
+    });
+
     this.newKey = '';
     this.newValue = '';
-    //this.change.emit(this.local);
+    this.dataChange.emit(this.fromLocal());
   }
 
-  remove(key: string) {
-    if (this.local[key]) {
-      console.log('remove', key);
-      delete this.local[key];
-      //this.change.emit(this.local);
+  doRemove(index: number) {
+    this.local.splice(index, 1);
+    this.dataChange.emit(this.fromLocal());
+  }
+
+  toLocal(data: Record<string, any>): Array<Entry> {
+    let local = [];
+    for (const [key, value] of Object.entries(data)) {
+      local.push({
+        key: key,
+        value: value
+      });
     }
+    return local;
   }
 
+  fromLocal(): Record<string, any> {
+    let data: Record<string, any> = {};
+    this.local.forEach((entry: Entry) => {
+      data[entry.key] = entry.value;
+    });
+    return data;
+  }
+
+}
+
+interface Entry {
+  key: string
+  value: string
 }
