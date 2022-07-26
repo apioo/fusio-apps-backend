@@ -15,7 +15,10 @@
           <label for="password">Password:</label>
           <input type="password" id="password" name="password" [(ngModel)]="credentials.password" class="form-control">
         </div>
-        <button type="submit" class="btn btn-primary" [disabled]="loading">Login</button>
+        <button type="submit" class="btn btn-primary" [disabled]="loading">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          Login
+        </button>
       </form>
     </div>
   </div>

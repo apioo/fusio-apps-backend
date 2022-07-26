@@ -3,6 +3,7 @@ import packageJson from "../../../package.json";
 import {FactoryService} from "../factory.service";
 import {Router} from "@angular/router";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
+import axios from "axios";
 
 @Component({
   selector: 'app-login',
@@ -28,16 +29,25 @@ export class LoginComponent implements OnInit {
   }
 
   async login() {
+    this.loading = true;
+
     const client = this.factory.getClientWithCredentials(this.credentials.username, this.credentials.password);
     const account = await client.backendAccount();
 
-    account.getBackendAccount().backendActionAccountGet().then((resp) => {
+    try {
+      await account.getBackendAccount().backendActionAccountGet();
+
       this.router.navigate(['/']).then(() => {
         location.reload();
       });
-    }).catch((error) => {
-      this.response = error.response.data;
-    });
+    } catch (error) {
+      this.loading = false;
+      if (axios.isAxiosError(error) && error.response)  {
+        this.response = error.response.data as Message;
+      } else {
+        throw error;
+      }
+    }
   }
 
 }
