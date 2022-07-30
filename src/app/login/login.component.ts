@@ -31,11 +31,10 @@ export class LoginComponent implements OnInit {
   async login() {
     this.loading = true;
 
-    const client = this.factory.getClientWithCredentials(this.credentials.username, this.credentials.password);
-    const account = await client.backendAccount();
-
     try {
-      await account.getBackendAccount().backendActionAccountGet();
+      const client = this.factory.getClientWithCredentials(this.credentials.username, this.credentials.password);
+      const account = await client.backendAccount();
+      const response = await account.getBackendAccount().backendActionAccountGet();
 
       this.router.navigate(['/']).then(() => {
         location.reload();
@@ -43,9 +42,15 @@ export class LoginComponent implements OnInit {
     } catch (error) {
       this.loading = false;
       if (axios.isAxiosError(error) && error.response)  {
-        this.response = error.response.data as Message;
+        this.response = {
+          success: false,
+          message: error.response.data.error_description || 'An unknown error occurred',
+        };
       } else {
-        throw error;
+        this.response = {
+          success: false,
+          message: error instanceof Error ? error.toString() : 'An unknown error occurred',
+        };
       }
     }
   }
