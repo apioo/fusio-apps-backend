@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
     try {
       const client = this.factory.getClientWithCredentials(this.credentials.username, this.credentials.password);
       const account = await client.backendAccount();
-      const response = await account.getBackendAccount().backendActionAccountGet();
+      await account.getBackendAccount().backendActionAccountGet();
 
       this.router.navigate(['/']).then(() => {
         location.reload();
@@ -47,10 +47,7 @@ export class LoginComponent implements OnInit {
           message: error.response.data.error_description || 'An unknown error occurred',
         };
       } else {
-        this.response = {
-          success: false,
-          message: error instanceof Error ? error.toString() : 'An unknown error occurred',
-        };
+        throw error;
       }
     }
   }
