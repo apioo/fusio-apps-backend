@@ -50,6 +50,16 @@ export class ListComponent implements OnInit {
     value: 'used_points'
   }];
 
+  chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    elements: {
+      line: {
+        borderWidth: 2
+      }
+    }
+  };
+
   constructor(protected factory: FactoryService, protected help: HelpService, protected route: ActivatedRoute, protected router: Router) { }
 
   async ngOnInit(): Promise<void> {
@@ -60,6 +70,8 @@ export class ListComponent implements OnInit {
         this.doFilter();
       }
     });
+
+    this.doFilter();
   }
 
   async doFilter() {

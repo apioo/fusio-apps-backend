@@ -25,6 +25,16 @@ export class ListComponent implements OnInit {
   latestUsers?: Dashboard_Users;
   latestTransactions?: Dashboard_Transactions;
 
+  chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    elements: {
+      line: {
+        borderWidth: 2
+      }
+    }
+  };
+
   constructor(private factory: FactoryService) {
   }
 
@@ -33,23 +43,23 @@ export class ListComponent implements OnInit {
     const response = await dashboard.getBackendDashboard().backendActionDashboardGetAll()
 
     if (response.data.errorsPerRoute) {
-      this.errorsPerRoute = Converter.convertChart(response.data.errorsPerRoute);
+      this.errorsPerRoute = Converter.convertChart(response.data.errorsPerRoute, 10);
     }
 
     if (response.data.incomingRequests) {
-      this.incomingRequests = Converter.convertChart(response.data.incomingRequests);
+      this.incomingRequests = Converter.convertChart(response.data.incomingRequests, 10);
     }
 
     if (response.data.incomingTransactions) {
-      this.incomingTransactions = Converter.convertChart(response.data.incomingTransactions);
+      this.incomingTransactions = Converter.convertChart(response.data.incomingTransactions, 10);
     }
 
     if (response.data.mostUsedRoutes) {
-      this.mostUsedRoutes = Converter.convertChart(response.data.mostUsedRoutes);
+      this.mostUsedRoutes = Converter.convertChart(response.data.mostUsedRoutes, 10);
     }
 
     if (response.data.timePerRoute) {
-      this.timePerRoute = Converter.convertChart(response.data.timePerRoute);
+      this.timePerRoute = Converter.convertChart(response.data.timePerRoute, 10);
     }
 
     this.latestApps = response.data.latestApps;

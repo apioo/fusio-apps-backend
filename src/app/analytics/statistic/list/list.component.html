@@ -25,8 +25,9 @@
     <canvas baseChart
             [datasets]="chart?.datasets"
             [labels]="chart?.labels"
-            [options]="{'responsive':true,'maintainAspectRatio':false}"
+            [options]="chartOptions"
             [type]="'line'"
+            [legend]="false"
             height="500">
     </canvas>
   </div>

@@ -11,18 +11,22 @@ export class Converter {
   private static POINT_HOVER_BACKGROUND_COLOR = ['#fff'];
   private static POINT_HOVER_BORDER_COLOR = ['rgba(148,159,177,0.8)'];
 
-  public static convertChart(data: Statistic_Chart): ChartData<'line', Statistic_Chart_Data> {
-    const labels = data.labels?.map((value) => {
+  public static convertChart(data: Statistic_Chart, maxElements?: number): ChartData<'line', Statistic_Chart_Data> {
+    let labels = data.labels?.map((value) => {
       return value.substring(5);
     });
 
+    if (maxElements) {
+      labels = labels?.slice(maxElements * -1);
+    }
+
     return {
-      datasets: Converter.convertChartData(data.data, data.series),
+      datasets: Converter.convertChartData(data.data, data.series, maxElements),
       labels: labels || [],
     };
   }
 
-  public static convertChartData(data?: Array<Statistic_Chart_Data>, series?: Array<string>): Array<ChartDataset<'line', Statistic_Chart_Data>> {
+  public static convertChartData(data?: Array<Statistic_Chart_Data>, series?: Array<string>, maxElements?: number): Array<ChartDataset<'line', Statistic_Chart_Data>> {
     if (!data || !series) {
       return [];
     }
@@ -30,9 +34,18 @@ export class Converter {
     let dataSets: Array<ChartDataset<'line', Statistic_Chart_Data>> = [];
 
     for (let i = 0; i < series.length; i++) {
+      let values: Array<number> = [];
+      if (Array.isArray(data[i])) {
+        if (maxElements) {
+          values = (data[i] as Array<number>).slice(maxElements * -1);
+        } else {
+          values = data[i] as Array<number>;
+        }
+      }
+
       dataSets.push({
         label: series[i],
-        data: data[i],
+        data: values,
         backgroundColor: Converter.BACKGROUND_COLOR[i],
         borderColor: Converter.BORDER_COLOR[i],
         pointBackgroundColor: Converter.POINT_BACKGROUND_COLOR[i],

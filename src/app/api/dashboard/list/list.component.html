@@ -8,8 +8,9 @@
         <canvas baseChart
                 [datasets]="incomingRequests?.datasets"
                 [labels]="incomingRequests?.labels"
-                [options]="{'responsive':true,'maintainAspectRatio':false}"
+                [options]="chartOptions"
                 [type]="'line'"
+                [legend]="false"
                 height="240">
         </canvas>
       </div>
@@ -22,8 +23,9 @@
         <canvas baseChart
                 [datasets]="mostUsedRoutes?.datasets"
                 [labels]="mostUsedRoutes?.labels"
-                [options]="{'responsive':true,'maintainAspectRatio':false}"
+                [options]="chartOptions"
                 [type]="'line'"
+                [legend]="false"
                 height="240">
         </canvas>
       </div>
@@ -36,8 +38,9 @@
         <canvas baseChart
                 [datasets]="timePerRoute?.datasets"
                 [labels]="timePerRoute?.labels"
-                [options]="{'responsive':true,'maintainAspectRatio':false}"
+                [options]="chartOptions"
                 [type]="'line'"
+                [legend]="false"
                 height="240">
         </canvas>
       </div>
@@ -67,8 +70,9 @@
         <canvas baseChart
                 [datasets]="errorsPerRoute?.datasets"
                 [labels]="errorsPerRoute?.labels"
-                [options]="{'responsive':true,'maintainAspectRatio':false}"
+                [options]="chartOptions"
                 [type]="'line'"
+                [legend]="false"
                 height="240">
         </canvas>
       </div>
@@ -81,8 +85,9 @@
         <canvas baseChart
                 [datasets]="incomingTransactions?.datasets"
                 [labels]="incomingTransactions?.labels"
-                [options]="{'responsive':true,'maintainAspectRatio':false}"
+                [options]="chartOptions"
                 [type]="'line'"
+                [legend]="false"
                 height="240">
         </canvas>
       </div>
