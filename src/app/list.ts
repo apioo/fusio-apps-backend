@@ -25,6 +25,7 @@ export abstract class List<T extends ModelId> implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
+    this.startLoading();
     this.route.queryParams.subscribe(async params => {
       let page, search;
       if (params['page']) {
@@ -36,7 +37,7 @@ export abstract class List<T extends ModelId> implements OnInit {
       if (!this.hasQueryParamsChange(page, search)) {
         return;
       }
-      this.loading = true;
+      this.startLoading();
       this.page = page || 1;
       this.search = search || '';
       await this.doList();
@@ -45,7 +46,7 @@ export abstract class List<T extends ModelId> implements OnInit {
     this.route.paramMap.subscribe(async params => {
       const id = params.get('id');
       if (id) {
-        this.loading = true;
+        this.startLoading();
         await this.doGet(id);
       }
     });
@@ -80,7 +81,7 @@ export abstract class List<T extends ModelId> implements OnInit {
       await this.doGet('' + this.entries[0].id);
     }
 
-    this.loading = false;
+    this.finishLoading();
   }
 
   async doGet(id: string) {
@@ -98,7 +99,7 @@ export abstract class List<T extends ModelId> implements OnInit {
       }
     }
 
-    this.loading = false;
+    this.finishLoading();
   }
 
   async doSearch(page?: number, search?: string) {
@@ -182,6 +183,16 @@ export abstract class List<T extends ModelId> implements OnInit {
 
   hasQueryParamsChange(page?: number, search?: string): boolean {
     return this.page !== page || this.search !== search;
+  }
+
+  private startLoading(): void {
+    this.loading = true;
+  }
+
+  private finishLoading(): void {
+    setTimeout(() => {
+      this.loading = false;
+    }, 100);
   }
 
   protected abstract getAll(query: Collection_Category_Query): Promise<AxiosResponse<Collection<T>>>;
