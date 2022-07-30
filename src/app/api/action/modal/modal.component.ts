@@ -16,6 +16,7 @@ export class ModalComponent extends Modal<Action> {
 
   actions?: Array<Action_Index_Entry>;
   form?: Form_Container;
+  entityClass?: string;
   custom: boolean = false;
 
   override async ngOnInit(): Promise<void> {
@@ -70,6 +71,13 @@ export class ModalComponent extends Modal<Action> {
     const action = await this.factory.getClient().backendAction();
     const response = await action.getBackendActionForm().backendActionActionGetForm(query);
     this.form = response.data;
+
+    const hasChanged = this.entityClass && this.entityClass !== this.entity.class;
+    this.entityClass = this.entity.class;
+
+    if (hasChanged) {
+      this.entity.config = {};
+    }
   }
 
 }
