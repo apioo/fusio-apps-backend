@@ -7,7 +7,6 @@
   <form (submit)="doSearch(1, searchTerm)">
     <div class="input-group">
       <input type="text" class="form-control" name="search" [(ngModel)]="searchTerm" placeholder="Search i.e. token" />
-      <button type="button" (click)="openCreateDialog()" class="btn btn-primary fusio-btn-create"><i class="bi bi-plus"></i></button>
       <button type="button" (click)="showHelp('analytics/token')" class="btn btn-secondary fusio-btn-help"><i class="bi bi-question"></i></button>
     </div>
   </form>

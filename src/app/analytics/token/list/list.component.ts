@@ -24,7 +24,7 @@ export class ListComponent extends List<App_Token> {
   }
 
   protected getDetailComponent(): any {
-    return DetailComponent;
+    return null;
   }
 
   protected getRoute(): any {
