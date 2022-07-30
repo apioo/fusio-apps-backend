@@ -1,7 +1,7 @@
 <h1>Dashboard</h1>
 
 <div class="row">
-  <div class="col">
+  <div class="col-4">
     <div class="card fusio-panel">
       <div class="card-header">Incoming request chart</div>
       <div class="card-body">
@@ -10,12 +10,12 @@
                 [labels]="incomingRequests?.labels"
                 [options]="{'responsive':true,'maintainAspectRatio':false}"
                 [type]="'line'"
-                height="220">
+                height="240">
         </canvas>
       </div>
     </div>
   </div>
-  <div class="col">
+  <div class="col-4">
     <div class="card fusio-panel">
       <div class="card-header">Most used routes</div>
       <div class="card-body">
@@ -24,12 +24,12 @@
                 [labels]="mostUsedRoutes?.labels"
                 [options]="{'responsive':true,'maintainAspectRatio':false}"
                 [type]="'line'"
-                height="220">
+                height="240">
         </canvas>
       </div>
     </div>
   </div>
-  <div class="col">
+  <div class="col-4">
     <div class="card fusio-panel">
       <div class="card-header">Execution time per route (ms)</div>
       <div class="card-body">
@@ -38,7 +38,7 @@
                 [labels]="timePerRoute?.labels"
                 [options]="{'responsive':true,'maintainAspectRatio':false}"
                 [type]="'line'"
-                height="220">
+                height="240">
         </canvas>
       </div>
     </div>
@@ -46,7 +46,7 @@
 </div>
 
 <div class="row">
-  <div class="col">
+  <div class="col-4">
     <div class="card fusio-panel">
       <div class="card-header">Latest users</div>
       <div class="card-body">
@@ -60,7 +60,7 @@
       </div>
     </div>
   </div>
-  <div class="col">
+  <div class="col-4">
     <div class="card fusio-panel">
       <div class="card-header">Errors per route</div>
       <div class="card-body">
@@ -69,12 +69,12 @@
                 [labels]="errorsPerRoute?.labels"
                 [options]="{'responsive':true,'maintainAspectRatio':false}"
                 [type]="'line'"
-                height="220">
+                height="240">
         </canvas>
       </div>
     </div>
   </div>
-  <div class="col">
+  <div class="col-4">
     <div class="card fusio-panel">
       <div class="card-header">Incoming transactions</div>
       <div class="card-body">
@@ -83,7 +83,7 @@
                 [labels]="incomingTransactions?.labels"
                 [options]="{'responsive':true,'maintainAspectRatio':false}"
                 [type]="'line'"
-                height="220">
+                height="240">
         </canvas>
       </div>
     </div>
@@ -91,7 +91,7 @@
 </div>
 
 <div class="row">
-  <div class="col">
+  <div class="col-4">
     <div class="card fusio-panel">
       <div class="card-header">Latest requests</div>
       <div class="card-body">
@@ -105,7 +105,7 @@
       </div>
     </div>
   </div>
-  <div class="col">
+  <div class="col-4">
     <div class="card fusio-panel">
       <div class="card-header">Latest apps</div>
       <div class="card-body">
@@ -119,7 +119,7 @@
       </div>
     </div>
   </div>
-  <div class="col">
+  <div class="col-4">
     <div class="card fusio-panel">
       <div class="card-header">Latest transactions</div>
       <div class="card-body">

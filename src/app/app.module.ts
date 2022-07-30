@@ -188,7 +188,7 @@ import {SidebarComponent} from './shared/sidebar/sidebar.component';
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
-    NgChartsModule,
+    NgChartsModule.forRoot(),
     MonacoEditorModule.forRoot(),
     TypeschemaEditorModule
   ],
