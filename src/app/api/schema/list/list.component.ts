@@ -5,6 +5,7 @@ import {Collection_Category_Query} from "fusio-sdk/dist/src/generated/backend/Co
 import {AxiosResponse} from "axios";
 import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
 import {DetailComponent} from "../detail/detail.component";
+import {ModalComponent} from "../modal/modal.component";
 
 @Component({
   selector: 'app-schema-list',
@@ -12,8 +13,6 @@ import {DetailComponent} from "../detail/detail.component";
   styleUrls: ['./list.component.css']
 })
 export class ListComponent extends List<Schema> {
-
-  preview?: string;
 
   protected async getAll(query: Collection_Category_Query): Promise<AxiosResponse<Collection<Schema>>> {
     const group = await this.factory.getClient().backendSchema();
@@ -26,7 +25,7 @@ export class ListComponent extends List<Schema> {
   }
 
   protected getDetailComponent(): any {
-    return DetailComponent;
+    return ModalComponent;
   }
 
   protected getRoute(): any {
@@ -36,15 +35,7 @@ export class ListComponent extends List<Schema> {
   protected onList() {
   }
 
-  protected async onGet(): Promise<void> {
-    if (!this.selected) {
-      return;
-    }
-
-    const group = await this.factory.getClient().backendSchema();
-    const response = await group.getBackendSchemaPreviewBySchemaId('' + this.selected.id).backendActionSchemaGetPreview();
-
-    this.preview = response.data.preview;
+  protected onGet() {
   }
 
 }

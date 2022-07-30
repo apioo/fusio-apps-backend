@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component} from '@angular/core';
 import {List} from "../../../list";
 import {Category} from "fusio-sdk/dist/src/generated/backend/Category";
 import {Collection_Category_Query} from "fusio-sdk/dist/src/generated/backend/Collection_Category_Query";
 import {AxiosResponse} from "axios";
 import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
-import {DetailComponent} from "../detail/detail.component";
 import {Config} from "fusio-sdk/dist/src/generated/backend/Config";
+import {ModalComponent} from "../modal/modal.component";
 
 @Component({
   selector: 'app-config-list',
@@ -25,7 +25,7 @@ export class ListComponent extends List<Config> {
   }
 
   protected getDetailComponent(): any {
-    return DetailComponent;
+    return ModalComponent;
   }
 
   protected getRoute(): any {

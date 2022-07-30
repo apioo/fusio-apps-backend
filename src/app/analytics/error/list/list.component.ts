@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component} from '@angular/core';
 import {List} from "../../../list";
 import {Log_Error} from "fusio-sdk/dist/src/generated/backend/Log_Error";
 import {Collection_Category_Query} from "fusio-sdk/dist/src/generated/backend/Collection_Category_Query";
@@ -6,7 +6,7 @@ import {AxiosResponse} from "axios";
 import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
 
 @Component({
-  selector: 'app-list',
+  selector: 'app-error-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })

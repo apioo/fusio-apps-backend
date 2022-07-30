@@ -1,0 +1,23 @@
+
+<div class="card">
+  <div class="card-header">{{name | titlecase}}</div>
+  <div class="card-body">
+    <div class="fusio-sub-navigation">
+      <ul>
+        <li *ngFor="let entry of entries">
+          <a (click)="doEntrySelect(entry)" class="link-primary" title="{{entry[nameKey]}}">
+            <b *ngIf="selected?.id === entry.id">{{entry[nameKey]}}</b>
+            <span *ngIf="selected?.id !== entry.id">{{entry[nameKey]}}</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <ngb-pagination
+      [(page)]="page"
+      [pageSize]="pageSize"
+      [collectionSize]="totalResults"
+      [maxSize]="4"
+      [ellipses]="false"
+      (pageChange)="doPageChange($event)"></ngb-pagination>
+  </div>
+</div>

@@ -5,6 +5,7 @@ import {AxiosResponse} from "axios";
 import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
 import {Event} from "fusio-sdk/dist/src/generated/backend/Event";
 import {DetailComponent} from "../detail/detail.component";
+import {ModalComponent} from "../modal/modal.component";
 
 @Component({
   selector: 'app-event-list',
@@ -24,7 +25,7 @@ export class ListComponent extends List<Event> {
   }
 
   protected getDetailComponent(): any {
-    return DetailComponent;
+    return ModalComponent;
   }
 
   protected getRoute(): any {

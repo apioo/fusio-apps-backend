@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component} from '@angular/core';
 import {Collection_Category_Query} from "fusio-sdk/dist/src/generated/backend/Collection_Category_Query";
 import {AxiosResponse} from "axios";
 import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
@@ -7,7 +7,7 @@ import {List} from "../../../list";
 import {Transaction} from "fusio-sdk/dist/src/generated/backend/Transaction";
 
 @Component({
-  selector: 'app-list',
+  selector: 'app-transaction-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })

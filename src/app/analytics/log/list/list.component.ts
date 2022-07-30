@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component} from '@angular/core';
 import {Log} from "fusio-sdk/dist/src/generated/backend/Log";
 import {List} from "../../../list";
 import {Collection_Category_Query} from "fusio-sdk/dist/src/generated/backend/Collection_Category_Query";

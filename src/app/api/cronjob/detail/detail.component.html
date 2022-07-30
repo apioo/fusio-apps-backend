@@ -1,52 +1,32 @@
-
-<div class="modal-header">
-  <h4 class="modal-title">
-    <ng-container *ngIf="mode === 1">Create</ng-container>
-    <ng-container *ngIf="mode === 2">Update</ng-container>
-    <ng-container *ngIf="mode === 3">Delete</ng-container>
-  </h4>
-  <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
-</div>
-<div class="modal-body">
-  <app-message [response]="response"></app-message>
-  <form>
-    <div class="mb-3 row">
-      <label for="name" class="col-sm-2 col-form-label fw-bold">Name</label>
-      <div class="col-sm-10">
-        <div class="input-group">
-          <input type="text" id="name" name="name" [(ngModel)]="entity.name" class="form-control">
-          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
-          <ng-template #nameHelp>Name of the action must match the following regexp <code>[A-z0-9\-\_]3,64</code></ng-template>
-        </div>
+<div class="card" *ngIf="selected">
+  <div class="card-header">{{selected?.name}}</div>
+  <div class="card-body">
+    <div class="btn-group" role="group">
+      <button type="button" (click)="doUpdateClick()" class="btn btn-primary fusio-btn-update">Update</button>
+      <button type="button" (click)="doDeleteClick()" class="btn btn-danger fusio-btn-delete">Delete</button>
+    </div>
+    <div class="fusio-detail">
+      <div class="row">
+        <div class="col-2 fw-bold">Name</div>
+        <div class="col-10">{{selected?.name}}</div>
+      </div>
+      <div class="row">
+        <div class="col-2 fw-bold">Cron</div>
+        <div class="col-10"><code>{{selected?.cron}}</code></div>
+      </div>
+      <div class="row">
+        <div class="col-2 fw-bold">Exit-Code</div>
+        <div class="col-10"><code>{{selected?.exitCode}}</code></div>
+      </div>
+      <div class="row">
+        <div class="col-2 fw-bold">Last execution</div>
+        <div class="col-10"><code>{{selected?.executeDate|date:'short'}}</code></div>
+      </div>
+      <div class="row">
+        <div class="col-2 fw-bold">Action</div>
+        <div class="col-8">{{selected?.action}}</div>
+        <div class="col-2"><button *ngIf="selected?.action" routerLink="/action/~{{selected?.action}}" type="button" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
       </div>
     </div>
-    <div class="mb-3 row">
-      <label for="name" class="col-sm-2 col-form-label fw-bold">Cron</label>
-      <div class="col-sm-10">
-        <div class="input-group">
-          <input type="text" id="description" name="description" [(ngModel)]="entity.cron" class="form-control">
-          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="cronHelp"><i class="bi bi-question"></i></button>
-          <ng-template #cronHelp></ng-template>
-        </div>
-      </div>
-    </div>
-    <div class="mb-3 row">
-      <label for="schema" class="col-sm-2 col-form-label fw-bold">Action</label>
-      <div class="col-sm-10">
-        <div class="input-group">
-          <select id="schema" name="schema" [(ngModel)]="entity.action" class="form-select">
-            <option *ngFor="let action of actions" [ngValue]="action.name">{{action.name}}</option>
-          </select>
-          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="actionHelp"><i class="bi bi-question"></i></button>
-          <ng-template #actionHelp></ng-template>
-        </div>
-      </div>
-    </div>
-  </form>
-</div>
-<div class="modal-footer">
-  <ng-container *ngIf="mode === 1"><button type="button" class="btn btn-primary" (click)="submit()">Create</button></ng-container>
-  <ng-container *ngIf="mode === 2"><button type="button" class="btn btn-primary" (click)="submit()">Update</button></ng-container>
-  <ng-container *ngIf="mode === 3"><button type="button" class="btn btn-danger" (click)="submit()">Delete</button></ng-container>
-  <button type="button" class="btn btn-light" (click)="modal.close()">Close</button>
+  </div>
 </div>

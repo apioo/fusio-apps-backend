@@ -1,161 +1,76 @@
-
-<div class="modal-header">
-  <h4 class="modal-title">
-    <ng-container *ngIf="mode === 1">Create</ng-container>
-    <ng-container *ngIf="mode === 2">Update</ng-container>
-    <ng-container *ngIf="mode === 3">Delete</ng-container>
-  </h4>
-  <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
-</div>
-<div class="modal-body">
-  <app-message [response]="response"></app-message>
-  <form>
-    <div class="mb-3 row">
-      <label for="path" class="col-sm-2 col-form-label fw-bold">Path</label>
-      <div class="col-sm-10">
-        <div class="input-group">
-          <input type="text" id="path" name="path" [(ngModel)]="entity.path" class="form-control">
-          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="pathHelp"><i class="bi bi-question"></i></button>
-          <ng-template #pathHelp>Path of the API endpoint i.e. <code>/acme/news</code>. It is possible to use variable path fragments i.e. <code>/acme/:news</code>. Click here for more information</ng-template>
-        </div>
-      </div>
+<div class="card" *ngIf="selected">
+  <div class="card-header"><a href="{{baseUrl}}{{selected?.path}}" class="fusio-route-path">{{selected?.path}}</a></div>
+  <div class="card-body">
+    <div class="btn-group" role="group">
+      <button type="button" (click)="doUpdateClick()" class="btn btn-primary fusio-btn-update">Update</button>
+      <button type="button" (click)="showLogs()" class="btn btn-secondary fusio-btn-logs">Logs</button>
+      <button type="button" (click)="doDeleteClick()" class="btn btn-danger fusio-btn-delete">Delete</button>
     </div>
-    <div class="mb-3 row">
-      <label for="scope" class="col-sm-2 col-form-label fw-bold">Scopes</label>
-      <div class="col-sm-10">
-        <app-tag-editor name="scope" [data]="entity.scopes" (dataChange)="entity.scopes = $event"></app-tag-editor>
-      </div>
+    <div class="float-end fusio-route-scope">
+      <app-scope-values [scopes]="selected?.scopes"></app-scope-values>
     </div>
+    <br><br>
     <ul ngbNav #versionNav="ngbNav" [(activeId)]="activeVersion" class="nav-tabs">
-      <li [ngbNavItem]="config.version" [destroyOnHide]="true" *ngFor="let config of entity.config">
-        <a ngbNavLink>v{{config.version}}</a>
+      <li [ngbNavItem]="config?.version" [destroyOnHide]="true" *ngFor="let config of selected?.config">
+        <a ngbNavLink>v{{config?.version}}</a>
         <ng-template ngbNavContent>
-          <div class="mb-3 row" style="margin-top:1rem;">
-            <label for="status" class="col-sm-2 col-form-label fw-bold">Status</label>
-            <div class="col-sm-10">
-              <div class="input-group">
-                <select id="status" name="status" [(ngModel)]="config.status" class="form-select">
-                  <option *ngFor="let status of statuuus" [ngValue]="status.key">{{status.value}}</option>
-                </select>
-                <button class="btn btn-outline-secondary" type="button" [ngbPopover]="statusHelp"><i class="bi bi-question"></i></button>
-                <ng-template #statusHelp>The status of the API endpoint for this version. For more information about the impact click here</ng-template>
-              </div>
-            </div>
+          <div class="float-end">
+            <span *ngIf="config?.status === 4" class="badge bg-warning fusio-route-status">Development</span>
+            <span *ngIf="config?.status === 1" class="badge bg-success fusio-route-status">Production</span>
+            <span *ngIf="config?.status === 2" class="badge bg-info fusio-route-status">Deprecated</span>
+            <span *ngIf="config?.status === 3" class="badge bg-secondary fusio-route-status">Closed</span>
           </div>
+          <br>
           <ul ngbNav #methodNav="ngbNav" [(activeId)]="activeMethod" class="nav-tabs">
-            <li [ngbNavItem]="method.method" [destroyOnHide]="true" *ngFor="let method of transformMethods(config.methods)">
-              <a ngbNavLink>{{method.method}}</a>
+            <li [ngbNavItem]="method?.method" [destroyOnHide]="true" *ngFor="let method of transformMethods(config?.methods)">
+              <a ngbNavLink>{{method?.method}}</a>
               <ng-template ngbNavContent>
-                <div class="mb-3 row" style="margin-top:1rem;">
-                  <label for="active" class="col-sm-2 col-form-label fw-bold">Active</label>
-                  <div class="col-sm-10">
-                    <div class="form-check form-switch">
-                      <input type="checkbox" id="active" name="active" [(ngModel)]="method.active" [disabled]="mode === 3 || config.status !== 4" class="form-check-input">
+                <div class="fusio-detail">
+                  <div class="row">
+                    <div class="col-2 fw-bold">Status</div>
+                    <div class="col-10">
+                      <span *ngIf="method?.active === true" class="badge bg-success fusio-route-active">Active</span>
+                      <span *ngIf="method?.active !== true" class="badge bg-secondary fusio-route-active">Inactive</span>
+                      <span *ngIf="method?.public === true" class="badge bg-primary fusio-route-public">Public</span>
+                      <span *ngIf="method?.public !== true" class="badge bg-info fusio-route-public">Private</span>
                     </div>
                   </div>
-                </div>
-                <div class="mb-3 row">
-                  <label for="public" class="col-sm-2 col-form-label fw-bold">Public</label>
-                  <div class="col-sm-10">
-                    <div class="form-check form-switch">
-                      <input type="checkbox" id="public" name="public" [(ngModel)]="method.public" [disabled]="mode === 3 || config.status !== 4" class="form-check-input">
-                    </div>
+                  <div class="row" *ngIf="method?.description">
+                    <div class="col-2 fw-bold">Description</div>
+                    <div class="col-10"><span class="fusio-route-description">{{method?.description}}</span></div>
                   </div>
-                </div>
-                <div class="mb-3 row">
-                  <label for="description" class="col-sm-2 col-form-label fw-bold">Description</label>
-                  <div class="col-sm-10">
-                    <div class="input-group">
-                      <input type="text" id="description" name="description" [(ngModel)]="method.description" [disabled]="mode === 3 || config.status !== 4" class="form-control">
-                      <button class="btn btn-outline-secondary" type="button" [ngbPopover]="descriptionHelp"><i class="bi bi-question"></i></button>
-                      <ng-template #descriptionHelp>A short description of the method</ng-template>
-                    </div>
+                  <div class="row" *ngIf="method?.operationId">
+                    <div class="col-2 fw-bold">Operation-Id</div>
+                    <div class="col-10"><code class="fusio-route-operation-id">{{method?.operationId}}</code></div>
                   </div>
-                </div>
-                <div class="mb-3 row">
-                  <label for="operationId" class="col-sm-2 col-form-label fw-bold">Operation-Id</label>
-                  <div class="col-sm-10">
-                    <div class="input-group">
-                      <input type="text" id="operationId" name="operationId" [(ngModel)]="method.operationId" [disabled]="mode === 3 || config.status !== 4" class="form-control">
-                      <button class="btn btn-outline-secondary" type="button" [ngbPopover]="operationIdHelp"><i class="bi bi-question"></i></button>
-                      <ng-template #operationIdHelp>Unique string used to identify the operation</ng-template>
-                    </div>
+                  <div class="row" *ngIf="method?.parameters">
+                    <div class="col-2 fw-bold">Parameters</div>
+                    <div class="col-8"><span class="fusio-route-parameters">{{method?.parameters}}</span></div>
+                    <div class="col-2"><button *ngIf="method?.parameters && config?.status === 4" routerLink="/schema/~{{method?.parameters}}" type="button" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
                   </div>
-                </div>
-                <div class="mb-3 row">
-                  <label for="parameters" class="col-sm-2 col-form-label fw-bold">Parameters</label>
-                  <div class="col-sm-10">
-                    <div class="input-group">
-                      <select id="parameters" name="parameters" [(ngModel)]="method.parameters" [disabled]="mode === 3 || config.status !== 4" class="form-select">
-                        <option>No schema</option>
-                        <option *ngFor="let schema of schemas" [ngValue]="schema.name">{{schema.name}}</option>
-                      </select>
-                      <button class="btn btn-outline-secondary" type="button" [ngbPopover]="parametersHelp"><i class="bi bi-question"></i></button>
-                      <ng-template #parametersHelp>Optional a schema which validates URI query parameters</ng-template>
-                    </div>
+                  <div class="row" *ngIf="method?.request">
+                    <div class="col-2 fw-bold">Request</div>
+                    <div class="col-8"><span class="fusio-route-request">{{method?.request}}</span></div>
+                    <div class="col-2"><button *ngIf="method?.request && config?.status === 4" routerLink="/schema/~{{method?.request}}" type="button" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
                   </div>
-                </div>
-                <div class="mb-3 row">
-                  <label for="request" class="col-sm-2 col-form-label fw-bold">Request</label>
-                  <div class="col-sm-10">
-                    <div class="input-group">
-                      <select id="request" name="request" [(ngModel)]="method.request" [disabled]="mode === 3 || config.status !== 4" class="form-select">
-                        <option>No schema</option>
-                        <option *ngFor="let schema of schemas" [ngValue]="schema.name">{{schema.name}}</option>
-                      </select>
-                      <button class="btn btn-outline-secondary" type="button" [ngbPopover]="requestHelp"><i class="bi bi-question"></i></button>
-                      <ng-template #requestHelp>The allowed format for incoming requests. The <code>Passthru</code> schema forwards all incoming data unfiltered to the action</ng-template>
-                    </div>
-                  </div>
-                </div>
-                <div class="mb-3 row">
-                  <label class="col-sm-2 col-form-label fw-bold">Responses</label>
-                  <div class="col-sm-10">
-                    <div *ngFor="let response of method.responses | keyvalue" class="row" style="margin-bottom:1rem;">
-                      <div class="col-md-12">
-                        <div class="input-group">
-                          <span class="input-group-text">{{response.key}}</span>
-                          <select name="response" class="form-select" *ngIf="method.responses && method.responses[response.key]" [(ngModel)]="method.responses[response.key]" [disabled]="mode === 3 || config.status !== 4">
-                            <option>No schema</option>
-                            <option *ngFor="let schema of schemas" [ngValue]="schema.name">{{schema.name}}</option>
-                          </select>
-                          <a (click)="removeResponse(response.key)" class="btn btn-danger"><i class="bi bi-x"></i></a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-12">
-                        <div class="input-group">
-                          <select name="code" [(ngModel)]="responseCode" [disabled]="mode === 3 || config.status !== 4" class="form-select">
-                            <option *ngFor="let statusCode of statusCodes | keyvalue" [ngValue]="statusCode.key">{{statusCode.value}}</option>
-                          </select>
-                          <a (click)="addResponse(responseCode)" [class.disabled]="method.responses && method.responses[responseCode]" class="btn btn-primary"><i class="bi bi-plus"></i></a>
-                        </div>
+                  <div class="row" *ngIf="method?.responses">
+                    <div class="col-2 fw-bold">Responses</div>
+                    <div class="col-10">
+                      <div class="row" *ngFor="let response of transformResponses(method?.responses)">
+                        <div class="col-2"><code>{{response.code}}</code></div>
+                        <div class="col-8"><span class="fusio-route-response">{{response.schema}}</span></div>
+                        <div class="col-2"><button *ngIf="response.schema && config?.status === 4" routerLink="/schema/~{{response.schema}}" type="button" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div class="mb-3 row">
-                  <label for="action" class="col-sm-2 col-form-label fw-bold">Action</label>
-                  <div class="col-sm-10">
-                    <div class="input-group">
-                      <select id="action" name="action" [(ngModel)]="method.action" [disabled]="mode === 3 || config.status !== 4" class="form-select">
-                        <option value="">No action</option>
-                        <option *ngFor="let action of actions" [ngValue]="action.name">{{action.name}}</option>
-                      </select>
-                      <button class="btn btn-outline-secondary" type="button" [ngbPopover]="actionHelp"><i class="bi bi-question"></i></button>
-                      <ng-template #actionHelp>The action which receives the request and produces a response</ng-template>
-                    </div>
+                  <div class="row" *ngIf="method?.action">
+                    <div class="col-2 fw-bold">Action</div>
+                    <div class="col-8"><span class="fusio-route-action">{{method?.action}}</span></div>
+                    <div class="col-2"><button *ngIf="method?.action && config?.status === 4" routerLink="/action/~{{method?.action}}" type="button" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
                   </div>
-                </div>
-                <div class="mb-3 row">
-                  <label for="costs" class="col-sm-2 col-form-label fw-bold">Costs</label>
-                  <div class="col-sm-10">
-                    <div class="input-group">
-                      <input type="number" id="costs" name="costs" [(ngModel)]="method.costs" [disabled]="mode === 3 || config.status !== 4" class="form-control">
-                      <button class="btn btn-outline-secondary" type="button" [ngbPopover]="costsHelp"><i class="bi bi-question"></i></button>
-                      <ng-template #costsHelp>The amount of points a user needs to pay to invoke this request method</ng-template>
-                    </div>
+                  <div class="row" *ngIf="method?.costs">
+                    <div class="col-2 fw-bold">Costs</div>
+                    <div class="col-10"><span class="fusio-route-costs align-middle">{{method?.costs}}</span></div>
                   </div>
                 </div>
               </ng-template>
@@ -166,11 +81,5 @@
       </li>
     </ul>
     <div [ngbNavOutlet]="versionNav"></div>
-  </form>
-</div>
-<div class="modal-footer">
-  <ng-container *ngIf="mode === 1"><button type="button" class="btn btn-primary" (click)="submit()">Create</button></ng-container>
-  <ng-container *ngIf="mode === 2"><button type="button" class="btn btn-secondary" (click)="addVersion()">Add Version</button><button type="button" class="btn btn-primary" (click)="submit()">Update</button></ng-container>
-  <ng-container *ngIf="mode === 3"><button type="button" class="btn btn-danger" (click)="submit()">Delete</button></ng-container>
-  <button type="button" class="btn btn-light" (click)="modal.close()">Close</button>
+  </div>
 </div>

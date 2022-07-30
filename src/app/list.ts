@@ -12,6 +12,7 @@ import {FactoryService} from "./factory.service";
 export abstract class List<T extends ModelId> implements OnInit {
 
   public search: string = '';
+  public searchTerm: string = '';
   public totalResults: number = 0;
   public entries: Array<T> = [];
   public selected?: T;
@@ -23,24 +24,29 @@ export abstract class List<T extends ModelId> implements OnInit {
   constructor(protected factory: FactoryService, protected help: HelpService, protected route: ActivatedRoute, protected router: Router, protected modalService: NgbModal) {
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.loading = true;
 
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe(async params => {
+      let page, search;
       if (params['page']) {
-        this.page = parseInt(params['page']);
+        page = parseInt(params['page']);
       }
       if (params['search']) {
-        this.search = params['search'];
+        search = params['search'];
       }
-
-      this.doList();
+      if (!this.hasQueryParamsChange(page, search)) {
+        return;
+      }
+      this.page = page || 1;
+      this.search = search || '';
+      await this.doList();
     });
 
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.subscribe(async params => {
       const id = params.get('id');
       if (id) {
-        this.doGet(id);
+        await this.doGet(id);
       }
     });
   }
@@ -60,18 +66,18 @@ export abstract class List<T extends ModelId> implements OnInit {
       this.entries = response.data.entry || [];
 
       this.onList();
-
-      // in case we are not at a specific route redirect to the first
-      const isDetailRoute: boolean|undefined = this.route.routeConfig?.path?.endsWith(':id');
-      if (this.entries.length > 0 && this.entries[0].id && isDetailRoute === false) {
-        await this.doGet('' + this.entries[0].id);
-      }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response)  {
         this.response = error.response.data as Message;
       } else {
         throw error;
       }
+    }
+
+    // in case we are not at a specific route redirect to the first
+    const isDetailRoute: boolean|undefined = this.route.routeConfig?.path?.endsWith(':id');
+    if (this.entries.length > 0 && this.entries[0].id && isDetailRoute === false && !this.selected) {
+      await this.doGet('' + this.entries[0].id);
     }
 
     this.loading = false;
@@ -93,17 +99,26 @@ export abstract class List<T extends ModelId> implements OnInit {
     }
   }
 
-  doSearch() {
+  async doSearch(page?: number, search?: string) {
+    if (!this.hasQueryParamsChange(page, search) || this.loading) {
+      return;
+    }
     if (this.selected) {
-      this.router.navigate([this.getRoute(), this.selected.id], {
-        queryParams: this.getQueryParams()
+      await this.router.navigate([this.getRoute(), this.selected.id], {
+        queryParams: this.getQueryParams(page, search)
       });
     } else {
-      this.router.navigate([this.getRoute()], {
-        queryParams: this.getQueryParams()
+      await this.router.navigate([this.getRoute()], {
+        queryParams: this.getQueryParams(page, search)
       });
     }
     return false;
+  }
+
+  async doSelect(entry: T) {
+    await this.router.navigate([this.getRoute(), entry.id], {
+      queryParams: this.getQueryParams(this.page, this.search)
+    });
   }
 
   openCreateDialog() {
@@ -111,47 +126,39 @@ export abstract class List<T extends ModelId> implements OnInit {
       size: 'lg'
     });
     modalRef.componentInstance.mode = Mode.Create;
-    modalRef.closed.subscribe((response) => {
+    modalRef.closed.subscribe(async (response) => {
       this.response = response;
       if (response.success) {
-        this.doList();
+        await this.doList();
       }
     })
   }
 
-  openUpdateDialog() {
-    if (!this.selected) {
-      return;
-    }
-
+  openUpdateDialog(entity: T) {
     const modalRef = this.modalService.open(this.getDetailComponent(), {
       size: 'lg'
     });
     modalRef.componentInstance.mode = Mode.Update;
-    modalRef.componentInstance.entity = this.selected;
-    modalRef.closed.subscribe((response) => {
+    modalRef.componentInstance.entity = entity;
+    modalRef.closed.subscribe(async (response) => {
       this.response = response;
       if (response.success) {
-        this.doList();
+        await this.doList();
       }
     })
 
   }
 
-  openDeleteDialog() {
-    if (!this.selected) {
-      return;
-    }
-
+  openDeleteDialog(entity: T) {
     const modalRef = this.modalService.open(this.getDetailComponent(), {
       size: 'lg'
     });
     modalRef.componentInstance.mode = Mode.Delete;
-    modalRef.componentInstance.entity = this.selected;
-    modalRef.closed.subscribe((response) => {
+    modalRef.componentInstance.entity = entity;
+    modalRef.closed.subscribe(async (response) => {
       this.response = response;
       if (response.success) {
-        this.doList();
+        await this.doList();
       }
     })
   }
@@ -160,18 +167,19 @@ export abstract class List<T extends ModelId> implements OnInit {
     this.help.showDialog(path);
   }
 
-  getQueryParams(): QueryParams {
+  getQueryParams(page?: number, search?: string): QueryParams {
     const queryParams: QueryParams = {};
-
-    if (this.page) {
-      queryParams.page = this.page;
+    if (page) {
+      queryParams.page = page;
     }
-
-    if (this.search) {
-      queryParams.search = this.search;
+    if (search) {
+      queryParams.search = search;
     }
-
     return queryParams;
+  }
+
+  hasQueryParamsChange(page?: number, search?: string): boolean {
+    return this.page !== page || this.search !== search;
   }
 
   protected abstract getAll(query: Collection_Category_Query): Promise<AxiosResponse<Collection<T>>>;
@@ -183,7 +191,7 @@ export abstract class List<T extends ModelId> implements OnInit {
 
 }
 
-interface QueryParams {
+export interface QueryParams {
   page?: number
   search?: string
 }

@@ -15,58 +15,22 @@
 
 <div class="row">
   <div class="col-md-2">
-    <div class="card">
-      <div class="card-header">Token</div>
-      <div class="card-body">
-        <div class="fusio-sub-navigation">
-          <ul>
-            <li *ngFor="let row of entries">
-              <a routerLink="/token/{{row.id}}" [queryParams]="this.getQueryParams()" title="{{row.ip}}">
-                <b *ngIf="selected?.id === row.id">{{row.ip}}</b>
-                <span *ngIf="selected?.id !== row.id">{{row.ip}}</span>
-              </a>
-            </li>
-          </ul>
-        </div>
-        <ngb-pagination
-          [(page)]="page"
-          [pageSize]="pageSize"
-          [collectionSize]="totalResults"
-          (pageChange)="doSearch()"></ngb-pagination>
-      </div>
-    </div>
+    <app-sidebar
+      name="token"
+      nameKey="ip"
+      [entries]="entries"
+      [totalResults]="totalResults"
+      [selected]="selected"
+      [page]="page"
+      [pageSize]="pageSize"
+      (pageChange)="doSearch($event)"
+      (entrySelect)="doSelect($event)">
+    </app-sidebar>
   </div>
   <div class="col-md-10">
     <app-empty *ngIf="!selected" [loading]="loading"></app-empty>
-    <div class="card" *ngIf="selected">
-      <div class="card-header">{{selected?.ip}}</div>
-      <div class="card-body">
-        <div class="fusio-detail">
-          <div class="row">
-            <div class="col-2 fw-bold">Status</div>
-            <div class="col-10">
-              <span *ngIf="selected?.status === 1" class="badge bg-success">Active</span>
-              <span *ngIf="selected?.status === 2" class="badge bg-danger">Deleted</span>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-2 fw-bold">IP</div>
-            <div class="col-10">{{selected?.ip}}</div>
-          </div>
-          <div class="row">
-            <div class="col-2 fw-bold">Scopes</div>
-            <div class="col-10"><app-scope-values [scopes]="selected?.scope"></app-scope-values></div>
-          </div>
-          <div class="row">
-            <div class="col-2 fw-bold">Expire</div>
-            <div class="col-10">{{selected?.expire|date:'short'}}</div>
-          </div>
-          <div class="row">
-            <div class="col-2 fw-bold">Date</div>
-            <div class="col-10">{{selected?.date|date:'short'}}</div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <app-token-detail *ngIf="selected"
+      [selected]="selected">
+    </app-token-detail>
   </div>
 </div>

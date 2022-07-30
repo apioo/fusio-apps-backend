@@ -1,0 +1,123 @@
+
+<div class="modal-header">
+  <h4 class="modal-title">
+    <ng-container *ngIf="mode === 1">Create</ng-container>
+    <ng-container *ngIf="mode === 2">Update</ng-container>
+    <ng-container *ngIf="mode === 3">Delete</ng-container>
+  </h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+</div>
+<div class="modal-body">
+  <app-message [response]="response"></app-message>
+  <form>
+    <div class="mb-3 row">
+      <label for="name" class="col-sm-2 col-form-label fw-bold">Name</label>
+      <div class="col-sm-10">
+        <div class="input-group">
+          <input type="text" id="name" name="name" [(ngModel)]="entity.name" class="form-control">
+          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
+          <ng-template #nameHelp>Name of the action must match the following regexp <code>[A-z0-9\-\_]3,64</code></ng-template>
+        </div>
+      </div>
+    </div>
+    <div class="mb-3 row">
+      <label for="priority" class="col-sm-2 col-form-label fw-bold">Priority</label>
+      <div class="col-sm-10">
+        <div class="input-group">
+          <input type="number" id="priority" name="priority" [(ngModel)]="entity.priority" class="form-control">
+          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="priorityHelp"><i class="bi bi-question"></i></button>
+          <ng-template #priorityHelp></ng-template>
+        </div>
+      </div>
+    </div>
+    <div class="mb-3 row">
+      <label for="rateLimit" class="col-sm-2 col-form-label fw-bold">Throughput</label>
+      <div class="col-sm-3">
+        <div class="input-group">
+          <input type="number" min="1" id="rateLimit" name="rateLimit" [(ngModel)]="entity.rateLimit" class="form-control">
+        </div>
+      </div>
+      <label for="timespanValue" class="col-form-label col-sm-2 fw-bold">request/s per</label>
+      <div class="col-sm-3">
+        <div class="input-group">
+          <input type="number" id="timespanValue" name="timespanValue" [(ngModel)]="timespan.value" class="form-control">
+        </div>
+      </div>
+      <div class="col-sm-2">
+        <div class="input-group">
+          <select name="timespanUnit" [(ngModel)]="timespan.unit" class="form-select">
+            <option *ngFor="let interval of intervals" [ngValue]="interval.key">{{interval.value}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="mb-3 row">
+      <label class="col-sm-2 col-form-label fw-bold">Allocations</label>
+      <div class="col-sm-10">
+        <table class="table">
+          <colgroup>
+            <col style="width:20%;">
+            <col style="width:20%;">
+            <col style="width:20%;">
+            <col style="width:20%;">
+            <col style="width:10%;">
+            <col style="width:10%;">
+          </colgroup>
+          <thead>
+          <tr>
+            <th>Route</th>
+            <th>User</th>
+            <th>Plan</th>
+            <th>App</th>
+            <th>Auth</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let allocation of entity.allocation; let key = index">
+            <td>
+              <select [name]="'route_' + key" [(ngModel)]="allocation.routeId" class="form-select">
+                <option [value]="undefined">Any route</option>
+                <option *ngFor="let route of routes" [ngValue]="route.id">{{route.path}}</option>
+              </select>
+            </td>
+            <td>
+              <select [name]="'user_' + key" [(ngModel)]="allocation.userId" class="form-select">
+                <option [value]="undefined">Any user</option>
+                <option *ngFor="let user of users" [ngValue]="user.id">{{user.name}}</option>
+              </select>
+            </td>
+            <td>
+              <select [name]="'plan_' + key" [(ngModel)]="allocation.planId" class="form-select">
+                <option [value]="undefined">Any plan</option>
+                <option *ngFor="let plan of plans" [ngValue]="plan.id">{{plan.name}}</option>
+              </select>
+            </td>
+            <td>
+              <select [name]="'app_' + key" [(ngModel)]="allocation.appId" class="form-select">
+                <option [value]="undefined">Any app</option>
+                <option *ngFor="let app of apps" [ngValue]="app.id">{{app.name}}</option>
+              </select>
+            </td>
+            <td>
+              <div class="form-check form-switch">
+                <input name="authenticated" type="checkbox" [(ngModel)]="allocation.authenticated" class="form-check-input">
+              </div>
+            </td>
+            <td>
+              <a (click)="removeAllocation(key)" class="btn btn-secondary"><i class="bi bi-x"></i></a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <a (click)="addAllocation()" class="btn btn-secondary"><i class="bi bi-plus"></i></a>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <ng-container *ngIf="mode === 1"><button type="button" class="btn btn-primary" (click)="submit()">Create</button></ng-container>
+  <ng-container *ngIf="mode === 2"><button type="button" class="btn btn-primary" (click)="submit()">Update</button></ng-container>
+  <ng-container *ngIf="mode === 3"><button type="button" class="btn btn-danger" (click)="submit()">Delete</button></ng-container>
+  <button type="button" class="btn btn-light" (click)="modal.close()">Close</button>
+</div>

@@ -4,7 +4,7 @@ import {Cronjob} from "fusio-sdk/dist/src/generated/backend/Cronjob";
 import {Collection_Category_Query} from "fusio-sdk/dist/src/generated/backend/Collection_Category_Query";
 import {AxiosResponse} from "axios";
 import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
-import {DetailComponent} from "../detail/detail.component";
+import {ModalComponent} from "../modal/modal.component";
 
 @Component({
   selector: 'app-cronjob-list',
@@ -24,7 +24,7 @@ export class ListComponent extends List<Cronjob> {
   }
 
   protected getDetailComponent(): any {
-    return DetailComponent;
+    return ModalComponent;
   }
 
   protected getRoute(): any {

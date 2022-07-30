@@ -14,51 +14,22 @@
 
 <div class="row">
   <div class="col-md-2">
-    <div class="card">
-      <div class="card-header">Error</div>
-      <div class="card-body">
-        <div class="fusio-sub-navigation">
-          <ul>
-            <li *ngFor="let row of entries">
-              <a routerLink="/error/{{row.id}}" [queryParams]="this.getQueryParams()" title="{{row.message}}">
-                <b *ngIf="selected?.id === row.id">{{row.message}}</b>
-                <span *ngIf="selected?.id !== row.id">{{row.message}}</span>
-              </a>
-            </li>
-          </ul>
-        </div>
-        <ngb-pagination
-          [(page)]="page"
-          [pageSize]="pageSize"
-          [collectionSize]="totalResults"
-          (pageChange)="doSearch()"></ngb-pagination>
-      </div>
-    </div>
+    <app-sidebar
+      name="error"
+      nameKey="message"
+      [entries]="entries"
+      [totalResults]="totalResults"
+      [selected]="selected"
+      [page]="page"
+      [pageSize]="pageSize"
+      (pageChange)="doSearch($event)"
+      (entrySelect)="doSelect($event)">
+    </app-sidebar>
   </div>
   <div class="col-md-10">
     <app-empty *ngIf="!selected" [loading]="loading"></app-empty>
-    <div class="card" *ngIf="selected">
-      <div class="card-header">{{selected?.message}}</div>
-      <div class="card-body">
-        <div class="fusio-detail">
-          <div class="row">
-            <div class="col-2 fw-bold">Message</div>
-            <div class="col-10">{{selected?.message}}</div>
-          </div>
-          <div class="row">
-            <div class="col-2 fw-bold">File</div>
-            <div class="col-10">{{selected?.file}}</div>
-          </div>
-          <div class="row">
-            <div class="col-2 fw-bold">Line</div>
-            <div class="col-10">{{selected?.line}}</div>
-          </div>
-          <div class="row">
-            <div class="col-2 fw-bold">Trace</div>
-            <div class="col-10"><pre>{{selected?.trace}}</pre></div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <app-error-detail *ngIf="selected"
+      [selected]="selected">
+    </app-error-detail>
   </div>
 </div>
