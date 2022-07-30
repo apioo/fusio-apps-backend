@@ -12,7 +12,7 @@ import {Role} from "fusio-sdk/dist/src/generated/backend/Role";
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.css']
 })
-export class ModalComponent extends Modal<User> {
+export class ModalComponent extends Modal<User_Create> {
 
   status = [{
     key: 1,
@@ -45,12 +45,13 @@ export class ModalComponent extends Modal<User> {
     return await group.getBackendUserByUserId('' + entity.id).backendActionUserDelete();
   }
 
-  protected newEntity(): User {
+  protected newEntity(): User_Create {
     return {
       status: 1,
       roleId: 0,
       name: '',
-      email: ''
+      email: '',
+      password: '',
     };
   }
 
