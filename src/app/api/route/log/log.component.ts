@@ -5,6 +5,7 @@ import {FactoryService} from "../../../factory.service";
 import {Log_Collection_Query} from "fusio-sdk/dist/src/generated/backend/Log_Collection_Query";
 import {Log_Collection} from "fusio-sdk/dist/src/generated/backend/Log_Collection";
 import {Log} from "fusio-sdk/dist/src/generated/backend/Log";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-route-log',
@@ -17,7 +18,7 @@ export class LogComponent implements OnInit {
 
   logs?: Log_Collection;
 
-  constructor(public modal: NgbActiveModal, private factory: FactoryService) { }
+  constructor(public modal: NgbActiveModal, private factory: FactoryService, private router: Router) { }
 
   async ngOnInit(): Promise<void> {
     if (!this.route) {
@@ -35,7 +36,8 @@ export class LogComponent implements OnInit {
   }
 
   detail(log: Log) {
-
+    this.modal.close();
+    this.router.navigate(['/log', log.id]);
   }
 
 }
