@@ -31,10 +31,4 @@ export class ListComponent extends List<Plan> {
     return '/plan';
   }
 
-  protected onList() {
-  }
-
-  protected onGet(): void {
-  }
-
 }

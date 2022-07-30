@@ -31,10 +31,4 @@ export class ListComponent extends List<Event_Subscription> {
     return '/subscription';
   }
 
-  protected onList() {
-  }
-
-  protected onGet(): void {
-  }
-
 }

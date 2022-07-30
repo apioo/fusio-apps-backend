@@ -31,10 +31,4 @@ export class ListComponent extends List<Cronjob> {
     return '/cronjob';
   }
 
-  protected onList() {
-  }
-
-  protected onGet(): void {
-  }
-
 }

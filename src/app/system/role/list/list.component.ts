@@ -31,10 +31,4 @@ export class ListComponent extends List<Role> {
     return '/role';
   }
 
-  protected onList() {
-  }
-
-  protected onGet(): void {
-  }
-
 }

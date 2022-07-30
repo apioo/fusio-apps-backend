@@ -32,10 +32,4 @@ export class ListComponent extends List<Event> {
     return '/event';
   }
 
-  protected onList() {
-  }
-
-  protected onGet(): void {
-  }
-
 }

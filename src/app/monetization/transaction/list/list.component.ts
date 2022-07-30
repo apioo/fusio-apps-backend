@@ -31,10 +31,4 @@ export class ListComponent extends List<Transaction> {
     return '/transaction';
   }
 
-  protected onList() {
-  }
-
-  protected onGet(): void {
-  }
-
 }

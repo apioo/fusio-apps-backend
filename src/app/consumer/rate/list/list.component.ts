@@ -31,10 +31,4 @@ export class ListComponent extends List<Rate> {
     return '/rate';
   }
 
-  protected onList() {
-  }
-
-  protected onGet(): void {
-  }
-
 }

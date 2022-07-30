@@ -31,10 +31,4 @@ export class ListComponent extends List<Category> {
     return '/category';
   }
 
-  protected onList() {
-  }
-
-  protected onGet(): void {
-  }
-
 }

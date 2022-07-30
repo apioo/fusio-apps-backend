@@ -32,10 +32,4 @@ export class ListComponent extends List<Schema> {
     return '/schema';
   }
 
-  protected onList() {
-  }
-
-  protected onGet() {
-  }
-
 }

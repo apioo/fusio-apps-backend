@@ -32,10 +32,4 @@ export class ListComponent extends List<ModelRoute> {
     return '/route';
   }
 
-  protected onList() {
-  }
-
-  protected onGet() {
-  }
-
 }

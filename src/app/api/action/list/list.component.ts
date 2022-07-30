@@ -37,8 +37,4 @@ export class ListComponent extends List<Action> {
   protected onGet(): void {
   }
 
-  openDesignerDialog() {
-    this.router.navigate(['/action/designer', this.selected?.id]);
-  }
-
 }

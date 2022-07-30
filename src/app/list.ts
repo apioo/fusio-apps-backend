@@ -25,8 +25,6 @@ export abstract class List<T extends ModelId> implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    this.loading = true;
-
     this.route.queryParams.subscribe(async params => {
       let page, search;
       if (params['page']) {
@@ -38,6 +36,7 @@ export abstract class List<T extends ModelId> implements OnInit {
       if (!this.hasQueryParamsChange(page, search)) {
         return;
       }
+      this.loading = true;
       this.page = page || 1;
       this.search = search || '';
       await this.doList();
@@ -46,6 +45,7 @@ export abstract class List<T extends ModelId> implements OnInit {
     this.route.paramMap.subscribe(async params => {
       const id = params.get('id');
       if (id) {
+        this.loading = true;
         await this.doGet(id);
       }
     });
@@ -97,6 +97,8 @@ export abstract class List<T extends ModelId> implements OnInit {
         throw error;
       }
     }
+
+    this.loading = false;
   }
 
   async doSearch(page?: number, search?: string) {
@@ -186,8 +188,12 @@ export abstract class List<T extends ModelId> implements OnInit {
   protected abstract get(id: string): Promise<AxiosResponse<T>>;
   protected abstract getDetailComponent(): any;
   protected abstract getRoute(): string;
-  protected abstract onList(): void;
-  protected abstract onGet(): void;
+  protected onList(): void
+  {
+  }
+  protected onGet(): void
+  {
+  }
 
 }
 

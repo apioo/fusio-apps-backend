@@ -31,10 +31,4 @@ export class ListComponent extends List<Connection> {
     return '/connection';
   }
 
-  protected onList() {
-  }
-
-  protected onGet(): void {
-  }
-
 }

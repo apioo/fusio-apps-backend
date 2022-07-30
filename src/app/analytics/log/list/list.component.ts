@@ -30,10 +30,4 @@ export class ListComponent extends List<Log> {
     return '/log';
   }
 
-  protected onList() {
-  }
-
-  protected onGet(): void {
-  }
-
 }

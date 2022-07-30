@@ -32,10 +32,4 @@ export class ListComponent extends List<Page> {
     return '/page';
   }
 
-  protected onList() {
-  }
-
-  protected onGet(): void {
-  }
-
 }

@@ -31,10 +31,4 @@ export class ListComponent extends List<Scope> {
     return '/scope';
   }
 
-  protected onList() {
-  }
-
-  protected onGet(): void {
-  }
-
 }

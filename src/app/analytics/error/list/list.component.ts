@@ -30,10 +30,4 @@ export class ListComponent extends List<Log_Error> {
     return '/error';
   }
 
-  protected onList() {
-  }
-
-  protected onGet(): void {
-  }
-
 }

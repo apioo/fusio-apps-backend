@@ -32,10 +32,4 @@ export class ListComponent extends List<App> {
     return '/app';
   }
 
-  protected onList() {
-  }
-
-  protected onGet(): void {
-  }
-
 }

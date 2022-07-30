@@ -32,10 +32,4 @@ export class ListComponent extends List<Config> {
     return '/config';
   }
 
-  protected onList() {
-  }
-
-  protected onGet(): void {
-  }
-
 }

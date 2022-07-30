@@ -31,10 +31,4 @@ export class ListComponent extends List<App_Token> {
     return '/token';
   }
 
-  protected onList() {
-  }
-
-  protected onGet(): void {
-  }
-
 }

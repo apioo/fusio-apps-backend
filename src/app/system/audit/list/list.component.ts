@@ -30,10 +30,4 @@ export class ListComponent extends List<Audit> {
     return '/audit';
   }
 
-  protected onList() {
-  }
-
-  protected onGet(): void {
-  }
-
 }
