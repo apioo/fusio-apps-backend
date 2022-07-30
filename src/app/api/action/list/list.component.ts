@@ -31,10 +31,4 @@ export class ListComponent extends List<Action> {
     return '/action';
   }
 
-  protected onList() {
-  }
-
-  protected onGet(): void {
-  }
-
 }
