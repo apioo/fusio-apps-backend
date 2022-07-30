@@ -4,9 +4,9 @@
 <app-message [response]="response"></app-message>
 
 <div class="fusio-search">
-  <form (submit)="doSearch()">
+  <form (submit)="doSearch(1, searchTerm)">
     <div class="input-group">
-      <input type="text" class="form-control" name="search" [(ngModel)]="search" placeholder="Search i.e. error" />
+      <input type="text" class="form-control" name="search" [(ngModel)]="searchTerm" placeholder="Search i.e. error" />
       <button type="button" (click)="showHelp('analytics/error')" class="btn btn-secondary fusio-btn-help"><i class="bi bi-question"></i></button>
     </div>
   </form>
@@ -22,7 +22,7 @@
       [selected]="selected"
       [page]="page"
       [pageSize]="pageSize"
-      (pageChange)="doSearch($event)"
+      (pageChange)="doSearch($event, search)"
       (entrySelect)="doSelect($event)">
     </app-sidebar>
   </div>
