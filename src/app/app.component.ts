@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import {UserService} from "./user.service";
+import {User} from "fusio-sdk/dist/src/generated/backend/User";
 
 @Component({
   selector: 'app-root',
@@ -8,17 +10,19 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'fusio';
 
-  userAuthenticated = true;
-  user = {name: 'foobar'}
+  user?: User;
   menu = [{
     title: 'Change password',
-    path: '/account/change_password'
+    path: '/account/change-password'
   }, {
     title: 'Logout',
     path: '/logout'
   }];
 
+  constructor(private userMeta: UserService) { }
+
   ngOnInit(): void {
+    this.user = this.userMeta.get();
   }
 
 }

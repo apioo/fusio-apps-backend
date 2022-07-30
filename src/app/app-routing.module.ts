@@ -1,5 +1,9 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
+import {AuthenticationGuard} from "./authentication.guard";
+import {LoginComponent} from "./login/login.component";
+import {LogoutComponent} from "./logout/logout.component";
+import {ChangePasswordComponent} from "./account/change-password/change-password.component";
 import {ListComponent as DashboardList} from "./api/dashboard/list/list.component";
 import {ListComponent as RouteList} from "./api/route/list/list.component";
 import {ListComponent as ActionList} from "./api/action/list/list.component";
@@ -9,6 +13,7 @@ import {DesignerComponent as SchemaDesigner} from "./api/schema/designer/designe
 import {ListComponent as ConnectionList} from "./api/connection/list/list.component";
 import {ListComponent as EventList} from "./api/event/list/list.component";
 import {ListComponent as CronjobList} from "./api/cronjob/list/list.component";
+import {GeneratorComponent} from "./api/generator/generator.component";
 import {ListComponent as AppList} from "./consumer/app/list/list.component";
 import {ListComponent as ScopeList} from "./consumer/scope/list/list.component";
 import {ListComponent as UserList} from "./consumer/user/list/list.component";
@@ -28,15 +33,12 @@ import {ListComponent as MarketplaceList} from "./system/marketplace/list/list.c
 import {ListComponent as ConfigList} from "./system/config/list/list.component";
 import {ListComponent as AuditList} from "./system/audit/list/list.component";
 import {ListComponent as TrashList} from "./system/trash/list/list.component";
-import {LoginComponent} from "./login/login.component";
-import {AuthenticationGuard} from "./authentication.guard";
-import {LogoutComponent} from "./logout/logout.component";
-import {GeneratorComponent} from "./api/generator/generator.component";
 
 const routes: Routes = [
   { path: '', component: DashboardList, canActivate: [AuthenticationGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'logout', component: LogoutComponent },
+  { path: 'account/change-password', component: ChangePasswordComponent },
 
   { path: 'dashboard', component: DashboardList, canActivate: [AuthenticationGuard] },
   { path: 'route', component: RouteList, canActivate: [AuthenticationGuard] },

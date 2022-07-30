@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import {FactoryService} from "../factory.service";
+import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
+import {UserService} from "../user.service";
 
 @Component({
   selector: 'app-logout',
@@ -9,11 +9,11 @@ import {Router} from "@angular/router";
 })
 export class LogoutComponent implements OnInit {
 
-  constructor(private factory: FactoryService, private router: Router) {
+  constructor(private user: UserService, private router: Router) {
   }
 
   ngOnInit(): void {
-    this.factory.logout();
+    this.user.logout();
     this.router.navigate(['/']).then(() => {
       location.reload();
     });

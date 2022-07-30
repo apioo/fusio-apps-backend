@@ -4,6 +4,7 @@ import {FactoryService} from "../factory.service";
 import {Router} from "@angular/router";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import axios from "axios";
+import {UserService} from "../user.service";
 
 @Component({
   selector: 'app-login',
@@ -22,7 +23,7 @@ export class LoginComponent implements OnInit {
   response?: Message;
   loading = false
 
-  constructor(private factory: FactoryService, private router: Router) {
+  constructor(private factory: FactoryService, private router: Router, private user: UserService) {
   }
 
   ngOnInit(): void {
@@ -34,7 +35,9 @@ export class LoginComponent implements OnInit {
     try {
       const client = this.factory.getClientWithCredentials(this.credentials.username, this.credentials.password);
       const account = await client.backendAccount();
-      await account.getBackendAccount().backendActionAccountGet();
+      const response = await account.getBackendAccount().backendActionAccountGet();
+
+      this.user.login(response.data);
 
       this.router.navigate(['/']).then(() => {
         location.reload();
