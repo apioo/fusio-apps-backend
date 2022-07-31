@@ -5,6 +5,7 @@ import {
   Connection_Introspection_Entities
 } from "fusio-sdk/dist/src/generated/backend/Connection_Introspection_Entities";
 import {Connection_Introspection_Entity} from "fusio-sdk/dist/src/generated/backend/Connection_Introspection_Entity";
+import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 
 @Component({
   selector: 'app-connection-introspection',
@@ -16,20 +17,22 @@ export class IntrospectionComponent implements OnInit {
   connectionId: string|null = null;
   entites: Array<string> = [];
   entity?: Connection_Introspection_Entity;
+  response?: Message;
 
   constructor(protected factory: FactoryService, protected route: ActivatedRoute) {
   }
 
   async ngOnInit(): Promise<void> {
     this.route.paramMap.subscribe(async params => {
-      this.connectionId = params.get('id');
-      await this.loadEntities();
-
-      const entityName = params.get('entity');
-      if (entityName) {
-        await this.loadEntity(entityName);
+      if (this.connectionId != params.get('id')) {
+        this.connectionId = params.get('id');
+        await this.loadEntities();
       }
 
+      const entityName = params.get('entity');
+      if (entityName && this.entity?.name != entityName) {
+        await this.loadEntity(entityName);
+      }
     });
   }
 

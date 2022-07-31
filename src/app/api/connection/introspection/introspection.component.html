@@ -1,6 +1,8 @@
 
 <h1>Connection / Introspection</h1>
 
+<app-message [response]="response"></app-message>
+
 <div class="row">
   <div class="col-2">
     <div class="card">
@@ -35,6 +37,12 @@
           </tr>
           </tbody>
         </table>
+      </div>
+    </div>
+    <div class="card" *ngIf="!entity">
+      <div class="card-header">Entity</div>
+      <div class="card-body">
+        <h4 class="text-center font-monospace text-muted fw-bold mt-5 mb-5">Please select an entity on the left sidebar</h4>
       </div>
     </div>
   </div>
