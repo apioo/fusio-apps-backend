@@ -14,6 +14,15 @@
     </div>
   </div>
   <div class="mb-3 row">
+    <label for="route" class="col-sm-2 col-form-label fw-bold">Route</label>
+    <div class="col-sm-10">
+      <select id="route" name="route" [(ngModel)]="filter.routeId" class="form-select">
+        <option [ngValue]="undefined">Every route</option>
+        <option *ngFor="let route of routes" [ngValue]="route.id">{{route.path}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="mb-3 row">
     <label for="app" class="col-sm-2 col-form-label fw-bold">App</label>
     <div class="col-sm-10">
       <select id="app" name="app" [(ngModel)]="filter.appId" class="form-select">
@@ -32,21 +41,39 @@
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="event" class="col-sm-2 col-form-label fw-bold">Event</label>
-    <div class="col-sm-10">
-      <input type="text" id="event" name="event" [(ngModel)]="filter.event" class="form-control">
-    </div>
-  </div>
-  <div class="mb-3 row">
     <label for="ip" class="col-sm-2 col-form-label fw-bold">IP</label>
     <div class="col-sm-10">
       <input type="text" id="ip" name="ip" [(ngModel)]="filter.ip" class="form-control">
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="message" class="col-sm-2 col-form-label fw-bold">Message</label>
+    <label for="userAgent" class="col-sm-2 col-form-label fw-bold">User-Agent</label>
     <div class="col-sm-10">
-      <input type="text" id="message" name="message" [(ngModel)]="filter.message" class="form-control">
+      <input type="text" id="userAgent" name="userAgent" [(ngModel)]="filter.userAgent" class="form-control">
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="method" class="col-sm-2 col-form-label fw-bold">Method</label>
+    <div class="col-sm-10">
+      <input type="text" id="method" name="method" [(ngModel)]="filter.method" class="form-control">
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="path" class="col-sm-2 col-form-label fw-bold">Path</label>
+    <div class="col-sm-10">
+      <input type="text" id="path" name="path" [(ngModel)]="filter.path" class="form-control">
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="header" class="col-sm-2 col-form-label fw-bold">Header</label>
+    <div class="col-sm-10">
+      <input type="text" id="header" name="header" [(ngModel)]="filter.header" class="form-control">
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="body" class="col-sm-2 col-form-label fw-bold">Body</label>
+    <div class="col-sm-10">
+      <input type="text" id="body" name="body" [(ngModel)]="filter.body" class="form-control">
     </div>
   </div>
 </div>

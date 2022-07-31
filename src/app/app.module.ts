@@ -56,11 +56,13 @@ import {DetailComponent as SubscriptionDetail} from "./consumer/subscription/det
 import {ModalComponent as SubscriptionModal} from "./consumer/subscription/modal/modal.component";
 import {ListComponent as LogList} from "./analytics/log/list/list.component";
 import {DetailComponent as LogDetail} from "./analytics/log/detail/detail.component";
+import {FilterComponent as LogFilter} from './analytics/log/filter/filter.component';
 import {ListComponent as StatisticList} from "./analytics/statistic/list/list.component";
 import {ListComponent as ErrorList} from "./analytics/error/list/list.component";
 import {DetailComponent as ErrorDetail} from "./analytics/error/detail/detail.component";
 import {ListComponent as TokenList} from "./analytics/token/list/list.component";
 import {DetailComponent as TokenDetail} from "./analytics/token/detail/detail.component";
+import {FilterComponent as TokenFilter} from "./analytics/token/filter/filter.component";
 import {ListComponent as PlanList} from "./monetization/plan/list/list.component";
 import {DetailComponent as PlanDetail} from "./monetization/plan/detail/detail.component";
 import {ModalComponent as PlanModal} from "./monetization/plan/modal/modal.component";
@@ -149,10 +151,12 @@ import {SearchComponent} from './shared/search/search.component';
     StatisticList,
     LogList,
     LogDetail,
+    LogFilter,
     ErrorList,
     ErrorDetail,
     TokenList,
     TokenDetail,
+    TokenFilter,
     PlanList,
     PlanDetail,
     PlanModal,

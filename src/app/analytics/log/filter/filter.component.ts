@@ -1,32 +1,41 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
-import {App_Token_Collection_Query} from "fusio-sdk/dist/src/generated/backend/App_Token_Collection_Query";
-import {User} from "fusio-sdk/dist/src/generated/backend/User";
+import {Component, Input, OnInit} from '@angular/core';
 import {FactoryService} from "../../../factory.service";
+import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
+import {User} from "fusio-sdk/dist/src/generated/backend/User";
 import {App} from "fusio-sdk/dist/src/generated/backend/App";
+import {Route} from "fusio-sdk/dist/src/generated/backend/Route";
+import {Log_Collection_Query} from "fusio-sdk/dist/src/generated/backend/Log_Collection_Query";
 
 @Component({
-  selector: 'app-token-filter',
+  selector: 'app-log-filter',
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.css']
 })
 export class FilterComponent implements OnInit {
 
   @Input()
-  filter!: App_Token_Collection_Query;
+  filter!: Log_Collection_Query;
 
   constructor(protected factory: FactoryService, public modal: NgbActiveModal) { }
 
+  routes?: Array<Route>;
   apps?: Array<App>;
   users?: Array<User>;
 
   async ngOnInit(): Promise<void> {
+    this.loadRoutes();
     this.loadApps();
     this.loadUsers();
   }
 
   async doSubmit() {
     this.modal.close(this.filter);
+  }
+
+  private async loadRoutes(): Promise<void> {
+    const user = await this.factory.getClient().backendRoute();
+    const response = await user.getBackendRoutes().backendActionRouteGetAll({count: 1024});
+    this.routes = response.data.entry;
   }
 
   private async loadApps(): Promise<void> {

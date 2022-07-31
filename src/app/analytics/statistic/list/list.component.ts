@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FactoryService} from "../../../factory.service";
 import {HelpService} from "../../../help.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Statistic_Chart} from "fusio-sdk/dist/src/generated/backend/Statistic_Chart";
 import {Converter} from "../converter";
 import {ChartData} from "chart.js";
 import {Statistic_Chart_Data} from "fusio-sdk/dist/src/generated/backend/Statistic_Chart_Data";
 import {Log_Collection_Query} from "fusio-sdk/dist/src/generated/backend/Log_Collection_Query";
+import {FilterComponent} from "../../log/filter/filter.component";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-list',
@@ -15,8 +16,7 @@ import {Log_Collection_Query} from "fusio-sdk/dist/src/generated/backend/Log_Col
 })
 export class ListComponent implements OnInit {
 
-  filter?: Filter;
-  query?: Log_Collection_Query;
+  filter: Log_Collection_Query = {};
   chart?: ChartData<'line', Statistic_Chart_Data>;
   statistic = 'incoming_requests';
   search: string = '';
@@ -60,7 +60,7 @@ export class ListComponent implements OnInit {
     }
   };
 
-  constructor(protected factory: FactoryService, protected help: HelpService, protected route: ActivatedRoute, protected router: Router) { }
+  constructor(protected factory: FactoryService, protected help: HelpService, protected route: ActivatedRoute, protected router: Router, protected modalService: NgbModal) { }
 
   async ngOnInit(): Promise<void> {
     this.route.paramMap.subscribe(params => {
@@ -77,42 +77,55 @@ export class ListComponent implements OnInit {
   async doFilter() {
     const statistic = await this.factory.getClient().backendStatistic();
     if (this.statistic === 'errors_per_route') {
-      const response = await statistic.getBackendStatisticErrorsPerRoute().backendActionStatisticGetErrorsPerRoute(this.query);
+      const response = await statistic.getBackendStatisticErrorsPerRoute().backendActionStatisticGetErrorsPerRoute(this.filter);
       this.chart = Converter.convertChart(response.data);
     } else if (this.statistic === 'incoming_requests') {
-      const response = await statistic.getBackendStatisticIncomingRequests().backendActionStatisticGetIncomingRequests(this.query);
+      const response = await statistic.getBackendStatisticIncomingRequests().backendActionStatisticGetIncomingRequests(this.filter);
       this.chart = Converter.convertChart(response.data);
     } else if (this.statistic === 'incoming_transactions') {
-      const response = await statistic.getBackendStatisticIncomingTransactions().backendActionStatisticGetIncomingTransactions(this.query);
+      const response = await statistic.getBackendStatisticIncomingTransactions().backendActionStatisticGetIncomingTransactions(this.filter);
       this.chart = Converter.convertChart(response.data);
     } else if (this.statistic === 'issued_tokens') {
-      const response = await statistic.getBackendStatisticIssuedTokens().backendActionStatisticGetIssuedTokens(this.query);
+      const response = await statistic.getBackendStatisticIssuedTokens().backendActionStatisticGetIssuedTokens(this.filter);
       this.chart = Converter.convertChart(response.data);
     } else if (this.statistic === 'most_used_apps') {
-      const response = await statistic.getBackendStatisticMostUsedApps().backendActionStatisticGetMostUsedApps(this.query);
+      const response = await statistic.getBackendStatisticMostUsedApps().backendActionStatisticGetMostUsedApps(this.filter);
       this.chart = Converter.convertChart(response.data);
     } else if (this.statistic === 'most_used_routes') {
-      const response = await statistic.getBackendStatisticMostUsedRoutes().backendActionStatisticGetMostUsedRoutes(this.query);
+      const response = await statistic.getBackendStatisticMostUsedRoutes().backendActionStatisticGetMostUsedRoutes(this.filter);
       this.chart = Converter.convertChart(response.data);
     } else if (this.statistic === 'time_average') {
-      const response = await statistic.getBackendStatisticTimeAverage().backendActionStatisticGetTimeAverage(this.query);
+      const response = await statistic.getBackendStatisticTimeAverage().backendActionStatisticGetTimeAverage(this.filter);
       this.chart = Converter.convertChart(response.data);
     } else if (this.statistic === 'time_per_route') {
-      const response = await statistic.getBackendStatisticTimePerRoute().backendActionStatisticGetTimePerRoute(this.query);
+      const response = await statistic.getBackendStatisticTimePerRoute().backendActionStatisticGetTimePerRoute(this.filter);
       this.chart = Converter.convertChart(response.data);
     } else if (this.statistic === 'used_points') {
-      const response = await statistic.getBackendStatisticUsedPoints().backendActionStatisticGetUsedPoints(this.query);
+      const response = await statistic.getBackendStatisticUsedPoints().backendActionStatisticGetUsedPoints(this.filter);
       this.chart = Converter.convertChart(response.data);
     }
   }
 
   doSearch() {
-    if (!this.query) {
-      this.query = {search: this.search};
+    if (!this.filter) {
+      this.filter = {
+        search: this.search
+      };
     } else {
-      this.query.search = this.search;
+      this.filter.search = this.search;
     }
     this.doFilter();
+  }
+
+  doFilterClick() {
+    const modalRef = this.modalService.open(FilterComponent, {
+      size: 'lg'
+    });
+    modalRef.componentInstance.filter = this.filter;
+    modalRef.closed.subscribe(async (filter) => {
+      this.filter = filter;
+      await this.doFilter();
+    });
   }
 
   selectStatistic() {
@@ -132,11 +145,6 @@ export class ListComponent implements OnInit {
     return null
   }
 
-}
-
-interface Filter {
-  from?: Date,
-  to?: Date,
 }
 
 interface Statistic {

@@ -4,6 +4,8 @@ import {List} from "../../../list";
 import {Collection_Category_Query} from "fusio-sdk/dist/src/generated/backend/Collection_Category_Query";
 import {AxiosResponse} from "axios";
 import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
+import {Log_Collection_Query} from "fusio-sdk/dist/src/generated/backend/Log_Collection_Query";
+import {FilterComponent} from "../filter/filter.component";
 
 @Component({
   selector: 'app-log-list',
@@ -11,6 +13,8 @@ import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
   styleUrls: ['./list.component.css']
 })
 export class ListComponent extends List<Log> {
+
+  filter: Log_Collection_Query = {};
 
   protected async getAll(query: Collection_Category_Query): Promise<AxiosResponse<Collection<Log>>> {
     const group = await this.factory.getClient().backendLog();
@@ -28,6 +32,28 @@ export class ListComponent extends List<Log> {
 
   protected getRoute(): any {
     return '/log';
+  }
+
+  override openCreateDialog() {
+    const modalRef = this.modalService.open(FilterComponent, {
+      size: 'lg'
+    });
+    modalRef.componentInstance.filter = this.filter;
+    modalRef.closed.subscribe(async (filter) => {
+      this.filter = filter;
+      await this.doList();
+    });
+  }
+
+  protected override getCollectionQuery(): Log_Collection_Query {
+    let query: Log_Collection_Query = {};
+    query = Object.assign(query, super.getCollectionQuery());
+
+    if (this.filter) {
+      query = Object.assign(query, this.filter);
+    }
+
+    return query;
   }
 
 }
