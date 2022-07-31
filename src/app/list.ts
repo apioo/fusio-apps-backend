@@ -12,7 +12,6 @@ import {FactoryService} from "./factory.service";
 export abstract class List<T extends ModelId> implements OnInit {
 
   public search: string = '';
-  public searchTerm: string = '';
   public totalResults: number = 0;
   public entries: Array<T> = [];
   public selected?: T;
@@ -21,7 +20,7 @@ export abstract class List<T extends ModelId> implements OnInit {
   public response?: Message;
   public loading: boolean = true;
 
-  constructor(protected factory: FactoryService, protected help: HelpService, protected route: ActivatedRoute, protected router: Router, protected modalService: NgbModal) {
+  constructor(protected factory: FactoryService, protected route: ActivatedRoute, protected router: Router, protected modalService: NgbModal) {
   }
 
   async ngOnInit(): Promise<void> {
@@ -164,10 +163,6 @@ export abstract class List<T extends ModelId> implements OnInit {
         await this.doList();
       }
     })
-  }
-
-  showHelp(path: string) {
-    this.help.showDialog(path);
   }
 
   getQueryParams(page?: number, search?: string): QueryParams {

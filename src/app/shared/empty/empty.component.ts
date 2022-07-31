@@ -7,8 +7,11 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 })
 export class EmptyComponent implements OnInit {
 
-  @Input() loading: boolean = true;
-  @Output() newClick = new EventEmitter<any>();
+  @Input()
+  loading: boolean = true;
+
+  @Output()
+  newClick: EventEmitter<void> = new EventEmitter<void>();
 
   constructor() { }
 

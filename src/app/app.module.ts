@@ -92,6 +92,7 @@ import {MapComponent} from './shared/map/map.component';
 import {CollectionComponent} from './shared/collection/collection.component';
 import {GeneratorComponent} from './api/generator/generator.component';
 import {SidebarComponent} from './shared/sidebar/sidebar.component';
+import { SearchComponent } from './shared/search/search.component';
 
 @NgModule({
   declarations: [
@@ -180,6 +181,7 @@ import {SidebarComponent} from './shared/sidebar/sidebar.component';
     CollectionComponent,
     GeneratorComponent,
     SidebarComponent,
+    SearchComponent,
   ],
   imports: [
     BrowserModule,

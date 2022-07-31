@@ -3,15 +3,13 @@
 
 <app-message [response]="response"></app-message>
 
-<div class="fusio-search">
-  <form (submit)="doSearch(1, searchTerm)">
-    <div class="input-group">
-      <input type="text" class="form-control" name="search" [(ngModel)]="searchTerm" placeholder="Search i.e. role-name" />
-      <button type="button" (click)="openCreateDialog()" class="btn btn-primary fusio-btn-create"><i class="bi bi-plus"></i></button>
-      <button type="button" (click)="showHelp('system/role')" class="btn btn-secondary fusio-btn-help"><i class="bi bi-question"></i></button>
-    </div>
-  </form>
-</div>
+<app-search
+  [searchTerm]="search"
+  (search)="doSearch(1, $event)"
+  (newClick)="openCreateDialog()"
+  placeholder="role"
+  helpPath="system/role">
+</app-search>
 
 <div class="row">
   <div class="col-md-2">
