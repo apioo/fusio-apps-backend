@@ -16,7 +16,7 @@
         <div class="input-group">
           <input type="text" id="name" name="name" [(ngModel)]="entity.name" class="form-control">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
-          <ng-template #nameHelp>Name of the action must match the following regexp <code>[A-z0-9\-\_]3,64</code></ng-template>
+          <ng-template #nameHelp>Unique name of the event</ng-template>
         </div>
       </div>
     </div>
@@ -26,7 +26,7 @@
         <div class="input-group">
           <input type="text" id="description" name="description" [(ngModel)]="entity.description" class="form-control">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="descriptionHelp"><i class="bi bi-question"></i></button>
-          <ng-template #descriptionHelp></ng-template>
+          <ng-template #descriptionHelp>A short description of the event</ng-template>
         </div>
       </div>
     </div>
@@ -38,8 +38,8 @@
             <option>No schema</option>
             <option *ngFor="let schema of schemas" [ngValue]="schema.name">{{schema.name}}</option>
           </select>
-          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="classHelp"><i class="bi bi-question"></i></button>
-          <ng-template #classHelp>Action class which gets executed. Each action can provide additional configuration parameters which are loaded if a class was selected</ng-template>
+          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="schemaHelp"><i class="bi bi-question"></i></button>
+          <ng-template #schemaHelp>Optional a schema which describes the payload of the event</ng-template>
         </div>
       </div>
     </div>

@@ -16,7 +16,7 @@
         <div class="input-group">
           <input type="text" id="name" name="name" [(ngModel)]="entity.name" class="form-control">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
-          <ng-template #nameHelp>Name of the plan</ng-template>
+          <ng-template #nameHelp>Unique name of the plan</ng-template>
         </div>
       </div>
     </div>
@@ -26,7 +26,7 @@
         <div class="input-group">
           <input type="text" id="description" name="description" [(ngModel)]="entity.description" class="form-control">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="descriptionHelp"><i class="bi bi-question"></i></button>
-          <ng-template #descriptionHelp>Detailed description of this plan</ng-template>
+          <ng-template #descriptionHelp>A short description of this plan</ng-template>
         </div>
       </div>
     </div>
@@ -58,7 +58,7 @@
             <option *ngFor="let period of periods" [ngValue]="period.id">{{period.name}}</option>
           </select>
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="periodHelp"><i class="bi bi-question"></i></button>
-          <ng-template #periodHelp></ng-template>
+          <ng-template #periodHelp>Indicates whether this plan is one-time or a subscription</ng-template>
         </div>
       </div>
     </div>

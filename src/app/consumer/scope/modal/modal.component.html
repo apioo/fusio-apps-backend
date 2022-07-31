@@ -16,7 +16,7 @@
         <div class="input-group">
           <input type="text" id="name" name="name" [(ngModel)]="entity.name" class="form-control">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
-          <ng-template #nameHelp>Name of the action must match the following regexp <code>[A-z0-9\-\_]3,64</code></ng-template>
+          <ng-template #nameHelp>Unique name of the scope</ng-template>
         </div>
       </div>
     </div>
@@ -26,7 +26,7 @@
         <div class="input-group">
           <input type="text" id="description" name="description" [(ngModel)]="entity.description" class="form-control">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="descriptionHelp"><i class="bi bi-question"></i></button>
-          <ng-template #descriptionHelp></ng-template>
+          <ng-template #descriptionHelp>Short description of the scope</ng-template>
         </div>
       </div>
     </div>

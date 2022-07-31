@@ -18,7 +18,7 @@
             <option *ngFor="let status of status" [ngValue]="status.key">{{status.value}}</option>
           </select>
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="statusHelp"><i class="bi bi-question"></i></button>
-          <ng-template #statusHelp></ng-template>
+          <ng-template #statusHelp>Status of the app</ng-template>
         </div>
       </div>
     </div>
@@ -30,7 +30,7 @@
             <option *ngFor="let user of users" [ngValue]="user.id">{{user.name}}</option>
           </select>
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="userHelp"><i class="bi bi-question"></i></button>
-          <ng-template #userHelp></ng-template>
+          <ng-template #userHelp>User assigned to the app</ng-template>
         </div>
       </div>
     </div>
@@ -40,7 +40,7 @@
         <div class="input-group">
           <input type="text" id="name" name="name" [(ngModel)]="entity.name" class="form-control">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
-          <ng-template #nameHelp>Name of the action must match the following regexp <code>[A-z0-9\-\_]3,64</code></ng-template>
+          <ng-template #nameHelp>Name of the app</ng-template>
         </div>
       </div>
     </div>
@@ -50,7 +50,7 @@
         <div class="input-group">
           <input type="url" id="url" name="url" [(ngModel)]="entity.url" class="form-control">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="urlHelp"><i class="bi bi-question"></i></button>
-          <ng-template #urlHelp></ng-template>
+          <ng-template #urlHelp>Url of the app</ng-template>
         </div>
       </div>
     </div>

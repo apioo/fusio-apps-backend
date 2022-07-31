@@ -18,7 +18,7 @@
             <option *ngFor="let event of events" [ngValue]="event.id">{{event.name}}</option>
           </select>
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="eventHelp"><i class="bi bi-question"></i></button>
-          <ng-template #eventHelp></ng-template>
+          <ng-template #eventHelp>Target event for this subscription</ng-template>
         </div>
       </div>
     </div>
@@ -30,7 +30,7 @@
             <option *ngFor="let user of users" [ngValue]="user.id">{{user.name}}</option>
           </select>
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="userHelp"><i class="bi bi-question"></i></button>
-          <ng-template #userHelp></ng-template>
+          <ng-template #userHelp>The user assigned to this subscription</ng-template>
         </div>
       </div>
     </div>
@@ -40,7 +40,7 @@
         <div class="input-group">
           <input type="url" id="endpoint" name="endpoint" [(ngModel)]="entity.endpoint" class="form-control">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="endpointHelp"><i class="bi bi-question"></i></button>
-          <ng-template #endpointHelp></ng-template>
+          <ng-template #endpointHelp>The endpoint which receives the webhook</ng-template>
         </div>
       </div>
     </div>

@@ -16,7 +16,7 @@
         <div class="input-group">
           <input type="text" id="name" name="name" [(ngModel)]="entity.name" class="form-control">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
-          <ng-template #nameHelp>Name of the action must match the following regexp <code>[A-z0-9\-\_]3,64</code></ng-template>
+          <ng-template #nameHelp>Unique name of the role</ng-template>
         </div>
       </div>
     </div>
@@ -26,7 +26,7 @@
         <div class="input-group">
           <input type="number" id="priority" name="priority" [(ngModel)]="entity.priority" class="form-control">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="priorityHelp"><i class="bi bi-question"></i></button>
-          <ng-template #priorityHelp></ng-template>
+          <ng-template #priorityHelp>The priority of this rate, the highest priority is executed first</ng-template>
         </div>
       </div>
     </div>

@@ -16,7 +16,7 @@
         <div class="input-group">
           <input type="text" id="path" name="path" [(ngModel)]="entity.path" class="form-control">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="pathHelp"><i class="bi bi-question"></i></button>
-          <ng-template #pathHelp>Path of the API endpoint i.e. <code>/acme/news</code>. It is possible to use variable path fragments i.e. <code>/acme/:news</code>. Click here for more information</ng-template>
+          <ng-template #pathHelp>Path of the API endpoint i.e. <code>/acme/news</code>. It is possible to use variable path fragments i.e. <code>/acme/:news</code>. Click <a href="https://docs.fusio-project.org/docs/backend/api/routes/#path">here</a> for more information</ng-template>
         </div>
       </div>
     </div>
@@ -38,7 +38,7 @@
                   <option *ngFor="let status of statuuus" [ngValue]="status.key">{{status.value}}</option>
                 </select>
                 <button class="btn btn-outline-secondary" type="button" [ngbPopover]="statusHelp"><i class="bi bi-question"></i></button>
-                <ng-template #statusHelp>The status of the API endpoint for this version. For more information about the impact click here</ng-template>
+                <ng-template #statusHelp>The status of the API endpoint for this version. Click <a href="https://docs.fusio-project.org/docs/backend/api/routes/#status">here</a> for more information</ng-template>
               </div>
             </div>
           </div>

@@ -40,7 +40,7 @@
         <div class="input-group">
           <input type="text" id="name" name="name" [(ngModel)]="entity.name" class="form-control">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
-          <ng-template #nameHelp>Name of the user must match the following regexp <code>[A-z0-9\-\_\.]3,32</code></ng-template>
+          <ng-template #nameHelp>Unique name of the user</ng-template>
         </div>
       </div>
     </div>
@@ -50,7 +50,7 @@
         <div class="input-group">
           <input type="email" id="email" name="email" [(ngModel)]="entity.email" class="form-control">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="emailHelp"><i class="bi bi-question"></i></button>
-          <ng-template #emailHelp></ng-template>
+          <ng-template #emailHelp>Unique email assigned to the user</ng-template>
         </div>
       </div>
     </div>
@@ -60,7 +60,7 @@
         <div class="input-group">
           <input type="password" id="password" name="password" [(ngModel)]="entity.password" class="form-control">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="passwordHelp"><i class="bi bi-question"></i></button>
-          <ng-template #passwordHelp></ng-template>
+          <ng-template #passwordHelp>Password for this user</ng-template>
         </div>
       </div>
     </div>
