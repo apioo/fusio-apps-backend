@@ -11,7 +11,7 @@ jobs:
       - name: Run install
         run: npm ci
       - name: Run build
-        run: ng build
+        run: npm run build
       - name: Archive production artifacts
         uses: actions/upload-artifact@v3
         with:
