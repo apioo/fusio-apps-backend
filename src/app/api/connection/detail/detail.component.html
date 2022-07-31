@@ -3,6 +3,7 @@
   <div class="card-body">
     <div class="btn-group" role="group">
       <button type="button" (click)="doUpdateClick()" class="btn btn-primary fusio-btn-update">Update</button>
+      <button type="button" routerLink="/connection/introspection/{{selected?.id}}" class="btn btn-secondary fusio-btn-introspection">Introspection</button>
       <button type="button" (click)="doDeleteClick()" class="btn btn-danger fusio-btn-delete">Delete</button>
     </div>
     <div class="fusio-detail">
