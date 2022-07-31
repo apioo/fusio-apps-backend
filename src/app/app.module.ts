@@ -27,6 +27,7 @@ import {DesignerComponent as SchemaDesigner} from './api/schema/designer/designe
 import {ListComponent as ConnectionList} from "./api/connection/list/list.component";
 import {DetailComponent as ConnectionDetail} from "./api/connection/detail/detail.component";
 import {ModalComponent as ConnectionModal} from "./api/connection/modal/modal.component";
+import {IntrospectionComponent} from './api/connection/introspection/introspection.component';
 import {ListComponent as EventList} from "./api/event/list/list.component";
 import {DetailComponent as EventDetail} from "./api/event/detail/detail.component";
 import {ModalComponent as EventModal} from "./api/event/modal/modal.component";
@@ -92,7 +93,7 @@ import {MapComponent} from './shared/map/map.component';
 import {CollectionComponent} from './shared/collection/collection.component';
 import {GeneratorComponent} from './api/generator/generator.component';
 import {SidebarComponent} from './shared/sidebar/sidebar.component';
-import { SearchComponent } from './shared/search/search.component';
+import {SearchComponent} from './shared/search/search.component';
 
 @NgModule({
   declarations: [
@@ -117,6 +118,7 @@ import { SearchComponent } from './shared/search/search.component';
     ConnectionList,
     ConnectionDetail,
     ConnectionModal,
+    IntrospectionComponent,
     EventList,
     EventDetail,
     EventModal,
@@ -124,6 +126,7 @@ import { SearchComponent } from './shared/search/search.component';
     CronjobDetail,
     CronjobModal,
     CronjobError,
+    GeneratorComponent,
     AppList,
     AppDetail,
     AppModal,
@@ -179,7 +182,6 @@ import { SearchComponent } from './shared/search/search.component';
     EmptyComponent,
     MapComponent,
     CollectionComponent,
-    GeneratorComponent,
     SidebarComponent,
     SearchComponent,
   ],

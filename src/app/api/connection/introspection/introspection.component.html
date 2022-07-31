@@ -1,0 +1,41 @@
+
+<h1>Connection / Introspection</h1>
+
+<div class="row">
+  <div class="col-2">
+    <div class="card">
+      <div class="card-header">Entities</div>
+      <div class="card-body">
+        <div class="fusio-sub-navigation">
+          <ul>
+            <li *ngFor="let entityName of entites">
+              <a routerLink="/connection/introspection/{{connectionId}}/{{entityName}}" class="link-primary" title="{{entityName}}">
+                <b *ngIf="entity?.name === entityName">{{entityName}}</b>
+                <span *ngIf="entity?.name !== entityName">{{entityName}}</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-10">
+    <div class="card" *ngIf="entity">
+      <div class="card-header">{{entity.name}}</div>
+      <div class="card-body">
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th *ngFor="let header of entity.headers">{{header}}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let row of entity.rows">
+            <td *ngFor="let value of row.values">{{value}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

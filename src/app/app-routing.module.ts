@@ -11,6 +11,7 @@ import {DesignerComponent as ActionDesigner} from "./api/action/designer/designe
 import {ListComponent as SchemaList} from "./api/schema/list/list.component";
 import {DesignerComponent as SchemaDesigner} from "./api/schema/designer/designer.component";
 import {ListComponent as ConnectionList} from "./api/connection/list/list.component";
+import {IntrospectionComponent} from "./api/connection/introspection/introspection.component";
 import {ListComponent as EventList} from "./api/event/list/list.component";
 import {ListComponent as CronjobList} from "./api/cronjob/list/list.component";
 import {GeneratorComponent} from "./api/generator/generator.component";
@@ -52,6 +53,8 @@ const routes: Routes = [
   { path: 'schema/:id', component: SchemaList, canActivate: [AuthenticationGuard] },
   { path: 'connection', component: ConnectionList, canActivate: [AuthenticationGuard] },
   { path: 'connection/:id', component: ConnectionList, canActivate: [AuthenticationGuard] },
+  { path: 'connection/introspection/:id', component: IntrospectionComponent, canActivate: [AuthenticationGuard] },
+  { path: 'connection/introspection/:id/:entity', component: IntrospectionComponent, canActivate: [AuthenticationGuard] },
   { path: 'event', component: EventList, canActivate: [AuthenticationGuard] },
   { path: 'event/:id', component: EventList, canActivate: [AuthenticationGuard] },
   { path: 'cronjob', component: CronjobList, canActivate: [AuthenticationGuard] },
