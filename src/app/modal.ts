@@ -47,9 +47,6 @@ export abstract class Modal<T extends ModelId> implements OnInit {
     }
   }
 
-  showHelp(path: string) {
-  }
-
   protected abstract create(entity: T): Promise<AxiosResponse<Message>|void>;
   protected abstract update(entity: T): Promise<AxiosResponse<Message>|void>;
   protected abstract delete(entity: T): Promise<AxiosResponse<Message>|void>;
