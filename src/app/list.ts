@@ -7,6 +7,7 @@ import {HelpService} from "./help.service";
 import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {FactoryService} from "./factory.service";
+import {Collection_Query} from "fusio-sdk/dist/src/generated/backend/Collection_Query";
 
 @Directive()
 export abstract class List<T extends ModelId> implements OnInit {
@@ -52,15 +53,8 @@ export abstract class List<T extends ModelId> implements OnInit {
   }
 
   async doList() {
-    let query: Collection_Category_Query = {};
-    query.startIndex = (this.page - 1) * this.pageSize;
-    query.count = this.pageSize;
-    if (this.search) {
-      query.search = this.search;
-    }
-
     try {
-      const response = await this.getAll(query);
+      const response = await this.getAll(this.getCollectionQuery());
 
       this.totalResults = response.data.totalResults || 0;
       this.entries = response.data.entry || [];
@@ -81,6 +75,16 @@ export abstract class List<T extends ModelId> implements OnInit {
     }
 
     this.finishLoading();
+  }
+
+  protected getCollectionQuery(): Collection_Query {
+    let query: Collection_Query = {};
+    query.startIndex = (this.page - 1) * this.pageSize;
+    query.count = this.pageSize;
+    if (this.search) {
+      query.search = this.search;
+    }
+    return query;
   }
 
   async doGet(id: string) {
