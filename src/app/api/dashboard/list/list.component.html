@@ -56,7 +56,7 @@
         <table class="table">
           <tbody>
           <tr *ngFor="let user of latestUsers?.entry">
-            <td>{{ user.name }}</td>
+            <td><a routerLink="/user/{{user.id}}">{{ user.name }}</a></td>
           </tr>
           </tbody>
         </table>
@@ -103,7 +103,7 @@
         <table class="table">
           <tbody>
           <tr *ngFor="let request of latestRequests?.entry">
-            <td>{{ request.path }}</td>
+            <td><a routerLink="/log/{{request.id}}">{{ request.path }}</a></td>
           </tr>
           </tbody>
         </table>
@@ -117,7 +117,7 @@
         <table class="table">
           <tbody>
           <tr *ngFor="let app of latestApps?.entry">
-            <td>{{ app.name }}</td>
+            <td><a routerLink="/app/{{app.id}}">{{ app.name }}</a></td>
           </tr>
           </tbody>
         </table>
@@ -131,7 +131,7 @@
         <table class="table">
           <tbody>
           <tr *ngFor="let transaction of latestTransactions?.entry">
-            <td>{{ transaction.transactionId }}</td>
+            <td><a routerLink="/transaction/{{transaction.id}}">{{ transaction.transactionId }}</a></td>
             <td>{{ transaction.amount|currency }}</td>
           </tr>
           </tbody>
