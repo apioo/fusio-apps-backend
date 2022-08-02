@@ -1,0 +1,31 @@
+
+<div class="modal-header">
+  <h4 class="modal-title">Logs</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+</div>
+<div class="modal-body">
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Method</th>
+      <th>User-Agent</th>
+      <th>IP</th>
+      <th>Date</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let log of logs?.entry">
+      <th>{{log.method}}</th>
+      <td><div style="width:600px;" class="text-truncate">{{log.userAgent}}</div></td>
+      <td>{{log.ip}}</td>
+      <td>{{log.date | date: 'short'}}</td>
+      <td><a (click)="detail(log)" class="btn btn-light"><i class="bi bi-search"></i></a></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-light" (click)="modal.close()">Close</button>
+</div>
+

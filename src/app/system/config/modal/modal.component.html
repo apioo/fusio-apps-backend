@@ -1,0 +1,48 @@
+
+<div class="modal-header">
+  <h4 class="modal-title">
+    <ng-container *ngIf="mode === 1">Create</ng-container>
+    <ng-container *ngIf="mode === 2">Update</ng-container>
+    <ng-container *ngIf="mode === 3">Delete</ng-container>
+  </h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+</div>
+<div class="modal-body">
+  <app-message [response]="response"></app-message>
+  <form>
+    <div class="mb-3 row">
+      <label for="name" class="col-sm-2 col-form-label fw-bold">Value</label>
+      <div class="col-sm-12">
+        <ng-container [ngSwitch]="entity.type">
+          <div class="input-group" *ngSwitchCase="1">
+            <input type="text" name="value" [(ngModel)]="entity.value" class="form-control">
+          </div>
+          <div class="form-check form-switch" *ngSwitchCase="2">
+            <input type="checkbox" name="value" [(ngModel)]="entity.value" class="form-check-input">
+          </div>
+          <div class="input-group" *ngSwitchCase="3">
+            <input type="number" name="value" [(ngModel)]="entity.value" class="form-control">
+          </div>
+          <div class="input-group" *ngSwitchCase="4">
+            <input type="datetime" name="value" [(ngModel)]="entity.value" class="form-control">
+          </div>
+          <div class="input-group" *ngSwitchCase="5">
+            <input type="email" name="value" [(ngModel)]="entity.value" class="form-control">
+          </div>
+          <div class="input-group" *ngSwitchCase="6">
+            <textarea name="value" [(ngModel)]="entity.value" rows="16" class="form-control"></textarea>
+          </div>
+          <div class="input-group" *ngSwitchCase="7">
+            <input type="password" name="value" [(ngModel)]="entity.value" class="form-control">
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <ng-container *ngIf="mode === 1"><button type="button" class="btn btn-primary" (click)="submit()">Create</button></ng-container>
+  <ng-container *ngIf="mode === 2"><button type="button" class="btn btn-primary" (click)="submit()">Update</button></ng-container>
+  <ng-container *ngIf="mode === 3"><button type="button" class="btn btn-danger" (click)="submit()">Delete</button></ng-container>
+  <button type="button" class="btn btn-light" (click)="modal.close()">Close</button>
+</div>

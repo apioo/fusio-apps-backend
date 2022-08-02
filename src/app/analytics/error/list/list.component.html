@@ -1,0 +1,33 @@
+
+<h1>Error</h1>
+
+<app-message [response]="response"></app-message>
+
+<app-search
+  [searchTerm]="search"
+  (search)="doSearch(1, $event)"
+  placeholder="error"
+  helpPath="analytics/error">
+</app-search>
+
+<div class="row">
+  <div class="col-md-2">
+    <app-sidebar
+      name="error"
+      nameKey="message"
+      [entries]="entries"
+      [totalResults]="totalResults"
+      [selected]="selected"
+      [page]="page"
+      [pageSize]="pageSize"
+      (pageChange)="doSearch($event, search)"
+      (entrySelect)="doSelect($event)">
+    </app-sidebar>
+  </div>
+  <div class="col-md-10">
+    <app-empty *ngIf="!selected" [loading]="loading"></app-empty>
+    <app-error-detail *ngIf="selected"
+      [selected]="selected">
+    </app-error-detail>
+  </div>
+</div>

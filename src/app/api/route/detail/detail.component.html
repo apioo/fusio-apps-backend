@@ -1,0 +1,85 @@
+<div class="card" *ngIf="selected">
+  <div class="card-header"><a href="{{baseUrl}}{{selected?.path}}" class="fusio-route-path">{{selected?.path}}</a></div>
+  <div class="card-body">
+    <div class="btn-group" role="group">
+      <button type="button" (click)="doUpdateClick()" class="btn btn-primary fusio-btn-update">Update</button>
+      <button type="button" (click)="showLogs()" class="btn btn-secondary fusio-btn-logs">Logs</button>
+      <button type="button" (click)="doDeleteClick()" class="btn btn-danger fusio-btn-delete">Delete</button>
+    </div>
+    <div class="float-end fusio-route-scope">
+      <app-scope-values [scopes]="selected?.scopes"></app-scope-values>
+    </div>
+    <br><br>
+    <ul ngbNav #versionNav="ngbNav" [(activeId)]="activeVersion" class="nav-tabs">
+      <li [ngbNavItem]="config?.version" [destroyOnHide]="true" *ngFor="let config of selected?.config">
+        <a ngbNavLink>v{{config?.version}}</a>
+        <ng-template ngbNavContent>
+          <div class="float-end">
+            <span *ngIf="config?.status === 4" class="badge bg-warning fusio-route-status">Development</span>
+            <span *ngIf="config?.status === 1" class="badge bg-success fusio-route-status">Production</span>
+            <span *ngIf="config?.status === 2" class="badge bg-info fusio-route-status">Deprecated</span>
+            <span *ngIf="config?.status === 3" class="badge bg-secondary fusio-route-status">Closed</span>
+          </div>
+          <br>
+          <ul ngbNav #methodNav="ngbNav" [(activeId)]="activeMethod" class="nav-tabs">
+            <li [ngbNavItem]="method?.method" [destroyOnHide]="true" *ngFor="let method of transformMethods(config?.methods)">
+              <a ngbNavLink>{{method?.method}}</a>
+              <ng-template ngbNavContent>
+                <div class="fusio-detail">
+                  <div class="row">
+                    <div class="col-2 fw-bold">Status</div>
+                    <div class="col-10">
+                      <span *ngIf="method?.active === true" class="badge bg-success fusio-route-active">Active</span>
+                      <span *ngIf="method?.active !== true" class="badge bg-secondary fusio-route-active">Inactive</span>
+                      <span *ngIf="method?.public === true" class="badge bg-primary fusio-route-public">Public</span>
+                      <span *ngIf="method?.public !== true" class="badge bg-info fusio-route-public">Private</span>
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="method?.description">
+                    <div class="col-2 fw-bold">Description</div>
+                    <div class="col-10"><span class="fusio-route-description">{{method?.description}}</span></div>
+                  </div>
+                  <div class="row" *ngIf="method?.operationId">
+                    <div class="col-2 fw-bold">Operation-Id</div>
+                    <div class="col-10"><code class="fusio-route-operation-id">{{method?.operationId}}</code></div>
+                  </div>
+                  <div class="row" *ngIf="method?.parameters">
+                    <div class="col-2 fw-bold">Parameters</div>
+                    <div class="col-8"><span class="fusio-route-parameters">{{method?.parameters}}</span></div>
+                    <div class="col-2"><button *ngIf="method?.parameters && config?.status === 4" routerLink="/schema/~{{method?.parameters}}" type="button" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
+                  </div>
+                  <div class="row" *ngIf="method?.request">
+                    <div class="col-2 fw-bold">Request</div>
+                    <div class="col-8"><span class="fusio-route-request">{{method?.request}}</span></div>
+                    <div class="col-2"><button *ngIf="method?.request && config?.status === 4" routerLink="/schema/~{{method?.request}}" type="button" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
+                  </div>
+                  <div class="row" *ngIf="method?.responses">
+                    <div class="col-2 fw-bold">Responses</div>
+                    <div class="col-10">
+                      <div class="row" *ngFor="let response of transformResponses(method?.responses)">
+                        <div class="col-2"><code>{{response.code}}</code></div>
+                        <div class="col-8"><span class="fusio-route-response">{{response.schema}}</span></div>
+                        <div class="col-2"><button *ngIf="response.schema && config?.status === 4" routerLink="/schema/~{{response.schema}}" type="button" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="method?.action">
+                    <div class="col-2 fw-bold">Action</div>
+                    <div class="col-8"><span class="fusio-route-action">{{method?.action}}</span></div>
+                    <div class="col-2"><button *ngIf="method?.action && config?.status === 4" routerLink="/action/~{{method?.action}}" type="button" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
+                  </div>
+                  <div class="row" *ngIf="method?.costs">
+                    <div class="col-2 fw-bold">Costs</div>
+                    <div class="col-10"><span class="fusio-route-costs align-middle">{{method?.costs}}</span></div>
+                  </div>
+                </div>
+              </ng-template>
+            </li>
+          </ul>
+          <div [ngbNavOutlet]="methodNav"></div>
+        </ng-template>
+      </li>
+    </ul>
+    <div [ngbNavOutlet]="versionNav"></div>
+  </div>
+</div>

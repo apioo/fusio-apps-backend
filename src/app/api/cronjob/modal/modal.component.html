@@ -1,0 +1,52 @@
+
+<div class="modal-header">
+  <h4 class="modal-title">
+    <ng-container *ngIf="mode === 1">Create</ng-container>
+    <ng-container *ngIf="mode === 2">Update</ng-container>
+    <ng-container *ngIf="mode === 3">Delete</ng-container>
+  </h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+</div>
+<div class="modal-body">
+  <app-message [response]="response"></app-message>
+  <form>
+    <div class="mb-3 row">
+      <label for="name" class="col-sm-2 col-form-label fw-bold">Name</label>
+      <div class="col-sm-10">
+        <div class="input-group">
+          <input type="text" id="name" name="name" [(ngModel)]="entity.name" class="form-control">
+          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
+          <ng-template #nameHelp>Unique name of the cronjob</ng-template>
+        </div>
+      </div>
+    </div>
+    <div class="mb-3 row">
+      <label for="cron" class="col-sm-2 col-form-label fw-bold">Cron</label>
+      <div class="col-sm-10">
+        <div class="input-group">
+          <input type="text" id="cron" name="cron" [(ngModel)]="entity.cron" class="form-control">
+          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="cronHelp"><i class="bi bi-question"></i></button>
+          <ng-template #cronHelp>Cron expression at which the action gets executed. Click <a href="https://wikipedia.org/wiki/Cron">here</a> for more information about the syntax</ng-template>
+        </div>
+      </div>
+    </div>
+    <div class="mb-3 row">
+      <label for="action" class="col-sm-2 col-form-label fw-bold">Action</label>
+      <div class="col-sm-10">
+        <div class="input-group">
+          <select id="action" name="action" [(ngModel)]="entity.action" class="form-select">
+            <option *ngFor="let action of actions" [ngValue]="action.name">{{action.name}}</option>
+          </select>
+          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="actionHelp"><i class="bi bi-question"></i></button>
+          <ng-template #actionHelp>The action to execute</ng-template>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <ng-container *ngIf="mode === 1"><button type="button" class="btn btn-primary" (click)="submit()">Create</button></ng-container>
+  <ng-container *ngIf="mode === 2"><button type="button" class="btn btn-primary" (click)="submit()">Update</button></ng-container>
+  <ng-container *ngIf="mode === 3"><button type="button" class="btn btn-danger" (click)="submit()">Delete</button></ng-container>
+  <button type="button" class="btn btn-light" (click)="modal.close()">Close</button>
+</div>

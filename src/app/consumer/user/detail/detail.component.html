@@ -1,0 +1,51 @@
+<div class="card" *ngIf="selected">
+  <div class="card-header">{{selected?.name}}</div>
+  <div class="card-body">
+    <div class="btn-group" role="group">
+      <button type="button" (click)="doUpdateClick()" class="btn btn-primary fusio-btn-update">Update</button>
+      <button type="button" (click)="doDeleteClick()" class="btn btn-danger fusio-btn-delete">Delete</button>
+    </div>
+    <div class="fusio-detail">
+      <div class="row">
+        <div class="col-2 fw-bold">Status</div>
+        <div class="col-10">
+          <span *ngIf="selected?.status === 1" class="badge bg-success">Active</span>
+          <span *ngIf="selected?.status === 2" class="badge bg-success">Disabled</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-2 fw-bold">Name</div>
+        <div class="col-10">{{selected?.name}}</div>
+      </div>
+      <div class="row">
+        <div class="col-2 fw-bold">Email</div>
+        <div class="col-10">{{selected?.email}}</div>
+      </div>
+      <div class="row">
+        <div class="col-2 fw-bold">Points</div>
+        <div class="col-10">{{selected?.points}}</div>
+      </div>
+      <div class="row">
+        <div class="col-2 fw-bold">Scopes</div>
+        <div class="col-10"><app-scope-values [scopes]="selected?.scopes"></app-scope-values></div>
+      </div>
+      <div class="row">
+        <div class="col-2 fw-bold">Date</div>
+        <div class="col-10">{{selected?.date | date:'short'}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card" *ngIf="selected?.apps" style="margin-top:1rem;">
+  <div class="card-header">Apps</div>
+  <div class="card-body">
+    <table class="table">
+      <tbody>
+      <tr *ngFor="let app of selected?.apps">
+        <td>{{app.name}}</td>
+        <td><a [routerLink]="'/app/' + app.id" class="float-end"><i class="bi bi-search"></i></a></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

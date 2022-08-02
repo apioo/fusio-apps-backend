@@ -1,0 +1,21 @@
+
+<div class="mb-3 row" *ngFor="let property of local; let i = index">
+  <label for="{{name}}-{{property.key}}" class="col-sm-2 col-form-label fw-bold">{{property.key}}</label>
+  <div class="col-sm-10">
+    <div class="input-group">
+      <input type="{{type}}" id="{{name}}-{{property.key}}" name="{{name}}-{{property.key}}" [ngModel]="property.value" (ngModelChange)="doChange(i, $event)" class="form-control">
+      <button class="btn btn-danger" type="button" (click)="doRemove(i)"><i class="bi bi-x"></i></button>
+    </div>
+  </div>
+</div>
+<div class="mb-3 row">
+  <div class="col-sm-2">
+    <input type="text" id="{{name}}-newKey" name="{{name}}-newKey" [(ngModel)]="newKey" class="form-control">
+  </div>
+  <div class="col-sm-10">
+    <div class="input-group">
+      <input type="{{type}}" id="{{name}}-newValue" name="{{name}}-newValue" [(ngModel)]="newValue" class="form-control">
+      <button class="btn btn-success" type="button" (click)="doAdd()"><i class="bi bi-plus"></i></button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,103 @@
+
+<h1>Generator</h1>
+
+<app-message [response]="response"></app-message>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">Form</div>
+      <div class="card-body">
+        <form>
+          <div class="mb-3 row">
+            <label for="path" class="col-sm-2 col-form-label fw-bold">Base-Path</label>
+            <div class="col-sm-10">
+              <div class="input-group">
+                <input type="text" id="path" name="path" [(ngModel)]="provider.path" class="form-control">
+                <button class="btn btn-outline-secondary" type="button" [ngbPopover]="basePathHelp"><i class="bi bi-question"></i></button>
+                <ng-template #basePathHelp>Base-Path of the API endpoint i.e. <code>/acme/news</code>. The provider creates all routes under this path</ng-template>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="scopes" class="col-sm-2 col-form-label fw-bold">Scopes</label>
+            <div class="col-sm-10">
+              <div class="input-group">
+                <input type="text" id="scopes" name="scopes" [(ngModel)]="provider.scopes" class="form-control">
+                <button class="btn btn-outline-secondary" type="button" [ngbPopover]="scopesHelp"><i class="bi bi-question"></i></button>
+                <ng-template #scopesHelp>Assign specific scopes to the routes</ng-template>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="public" class="col-sm-2 col-form-label fw-bold">Public</label>
+            <div class="col-sm-10">
+              <div class="form-check form-switch">
+                <input type="checkbox" id="public" name="public" [(ngModel)]="provider.public" class="form-check-input">
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="class" class="col-sm-2 col-form-label fw-bold">Class</label>
+            <div class="col-sm-10">
+              <div class="input-group">
+                <select id="class" name="class" [(ngModel)]="selected" (change)="loadConfig()" class="form-select">
+                  <option *ngFor="let provider of providers" [ngValue]="provider.class">{{provider.name}}</option>
+                </select>
+                <button class="btn btn-outline-secondary" type="button" [ngbPopover]="classHelp"><i class="bi bi-question"></i></button>
+                <ng-template #classHelp>Action class which gets executed. Each action can provide additional configuration parameters which are loaded if a class was selected</ng-template>
+              </div>
+            </div>
+          </div>
+          <app-config-form *ngIf="form" [container]="form" [data]="provider.config" (dataChange)="provider.config = $event"></app-config-form>
+          <div class="btn-group">
+          <button type="button" class="btn btn-primary" (click)="submit()" [disabled]="response?.success === true">Execute</button>
+          <button type="button" class="btn btn-secondary" (click)="loadChangelog()" [disabled]="response?.success === true">Changelog</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">Changelog</div>
+      <div class="card-body" *ngIf="changelog">
+        <ngb-accordion [activeIds]="['ngb-panel-0', 'ngb-panel-1', 'ngb-panel-2']">
+          <ngb-panel title="Routes" *ngIf="changelog.routes && changelog.routes.length > 0">
+            <ng-template ngbPanelContent>
+              <table class="table">
+                <tbody>
+                <tr *ngFor="let route of changelog.routes">
+                  <th>{{route.path}}</th>
+                </tr>
+                </tbody>
+              </table>
+            </ng-template>
+          </ngb-panel>
+          <ngb-panel title="Actions" *ngIf="changelog.actions && changelog.actions.length > 0">
+            <ng-template ngbPanelContent>
+              <table class="table">
+                <tbody>
+                <tr *ngFor="let action of changelog.actions">
+                  <th>{{action.name}}</th>
+                </tr>
+                </tbody>
+              </table>
+            </ng-template>
+          </ngb-panel>
+          <ngb-panel title="Schemas" *ngIf="changelog.schemas && changelog.schemas.length > 0">
+            <ng-template ngbPanelContent>
+              <table class="table">
+                <tbody>
+                <tr *ngFor="let schema of changelog.schemas">
+                  <th>{{schema.name}}</th>
+                </tr>
+                </tbody>
+              </table>
+            </ng-template>
+          </ngb-panel>
+        </ngb-accordion>
+      </div>
+    </div>
+  </div>
+</div>

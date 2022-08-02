@@ -1,0 +1,34 @@
+
+<h1>Token</h1>
+
+<app-message [response]="response"></app-message>
+
+<app-search
+  [searchTerm]="search"
+  (search)="doSearch(1, $event)"
+  (newClick)="openCreateDialog()"
+  placeholder="token"
+  helpPath="analytics/token">
+</app-search>
+
+<div class="row">
+  <div class="col-md-2">
+    <app-sidebar
+      name="token"
+      nameKey="ip"
+      [entries]="entries"
+      [totalResults]="totalResults"
+      [selected]="selected"
+      [page]="page"
+      [pageSize]="pageSize"
+      (pageChange)="doSearch($event, search)"
+      (entrySelect)="doSelect($event)">
+    </app-sidebar>
+  </div>
+  <div class="col-md-10">
+    <app-empty *ngIf="!selected" [loading]="loading"></app-empty>
+    <app-token-detail *ngIf="selected"
+      [selected]="selected">
+    </app-token-detail>
+  </div>
+</div>

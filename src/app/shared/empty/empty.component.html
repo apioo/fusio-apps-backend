@@ -1,0 +1,16 @@
+
+<div class="card" *ngIf="loading">
+  <div class="card-header">&nbsp;</div>
+  <div class="card-body" style="height:400px;">
+    <div class="spinner-grow text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+</div>
+
+<div class="card" *ngIf="!loading">
+  <div class="card-header">Not found</div>
+  <div class="card-body">
+    <h4 class="text-center font-monospace text-muted fw-bold mt-5 mb-5">No entries available<ng-container *ngIf="hasNew">, please click the <button (click)="doClick()" type="button" class="btn btn-primary"><i class="bi bi-plus"></i></button> button to create a new entry</ng-container></h4>
+  </div>
+</div>

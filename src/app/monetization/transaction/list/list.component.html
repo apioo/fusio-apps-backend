@@ -1,0 +1,36 @@
+
+<h1>Transaction</h1>
+
+<app-message [response]="response"></app-message>
+
+<app-search
+  [searchTerm]="search"
+  (search)="doSearch(1, $event)"
+  (newClick)="openCreateDialog()"
+  placeholder="transaction"
+  helpPath="monetization/transaction">
+</app-search>
+
+<div class="row">
+  <div class="col-md-2">
+    <app-sidebar
+      name="transaction"
+      nameKey="transactionId"
+      [entries]="entries"
+      [totalResults]="totalResults"
+      [selected]="selected"
+      [page]="page"
+      [pageSize]="pageSize"
+      (pageChange)="doSearch($event, search)"
+      (entrySelect)="doSelect($event)">
+    </app-sidebar>
+  </div>
+  <div class="col-md-10">
+    <app-empty *ngIf="!selected" [loading]="loading"></app-empty>
+    <app-transaction-detail *ngIf="selected"
+      [selected]="selected"
+      (updateClick)="openUpdateDialog(selected)"
+      (deleteClick)="openDeleteDialog(selected)">
+    </app-transaction-detail>
+  </div>
+</div>

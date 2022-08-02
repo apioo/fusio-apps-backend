@@ -1,0 +1,19 @@
+
+<h1>Marketplace</h1>
+
+<app-message [response]="response"></app-message>
+
+<div *ngFor="let app of apps | keyvalue" class="card float-start" style="width:18rem;margin-right:1rem;margin-bottom:1rem">
+  <h5 class="card-header">{{app.key}}</h5>
+  <img src="{{app.value.screenshot}}" class="card-img-top" style="padding:16px;">
+  <div class="card-body">
+    <p class="card-text">{{app.value.description}}</p>
+    <div class="btn-group" role="group">
+      <a *ngIf="app.value.local" href="{{app.value.local}}" class="btn btn-primary"><i class="bi bi-house"></i></a>
+      <a href="{{app.value.website}}" class="btn btn-secondary"><i class="bi bi-github"></i></a>
+      <button (click)="install(app.key)" [disabled]="working || app.value.local" class="btn btn-secondary"><i class="bi bi-plus"></i></button>
+      <button (click)="update(app.key)" [disabled]="working || !app.value.local" class="btn btn-secondary"><i class="bi bi-arrow-clockwise"></i></button>
+      <button (click)="remove(app.key)" [disabled]="working || !app.value.local" class="btn btn-danger"><i class="bi bi-x"></i></button>
+    </div>
+  </div>
+</div>

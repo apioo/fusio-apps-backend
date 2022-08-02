@@ -1,0 +1,45 @@
+<div class="card" *ngIf="selected">
+  <div class="card-header">{{selected?.path}}</div>
+  <div class="card-body">
+    <div class="fusio-detail">
+      <div class="row">
+        <div class="col-2 fw-bold">IP</div>
+        <div class="col-10">{{selected?.ip}}</div>
+      </div>
+      <div class="row">
+        <div class="col-2 fw-bold">User-Agent</div>
+        <div class="col-10">{{selected?.userAgent}}</div>
+      </div>
+      <div class="row">
+        <div class="col-2 fw-bold">Method</div>
+        <div class="col-10">{{selected?.method}}</div>
+      </div>
+      <div class="row">
+        <div class="col-2 fw-bold">Path</div>
+        <div class="col-10">{{selected?.path}}</div>
+      </div>
+      <div class="row">
+        <div class="col-2 fw-bold">Headers</div>
+        <div class="col-10"><pre>{{selected?.header}}</pre></div>
+      </div>
+      <div class="row">
+        <div class="col-2 fw-bold">Date</div>
+        <div class="col-10">{{selected?.date|date:'short'}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card" style="margin-top:1rem" *ngIf="selected?.body">
+  <div class="card-header">Body</div>
+  <div class="card-body">
+    <pre>{{selected?.body|json}}</pre>
+  </div>
+</div>
+<div class="card" style="margin-top:1rem" *ngIf="selected?.errors">
+  <div class="card-header">Errors</div>
+  <div class="card-body">
+    <ul>
+      <li *ngFor="let error of selected?.errors">{{error.message}}</li>
+    </ul>
+  </div>
+</div>

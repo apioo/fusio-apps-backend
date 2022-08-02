@@ -1,0 +1,20 @@
+<div class="card" *ngIf="selected">
+  <div class="card-header">{{selected?.name}}</div>
+  <div class="card-body">
+    <div class="btn-group" role="group">
+      <button type="button" (click)="doUpdateClick()" class="btn btn-primary fusio-btn-update">Update</button>
+      <button type="button" routerLink="/connection/introspection/{{selected?.id}}" class="btn btn-secondary fusio-btn-introspection">Introspection</button>
+      <button type="button" (click)="doDeleteClick()" class="btn btn-danger fusio-btn-delete">Delete</button>
+    </div>
+    <div class="fusio-detail">
+      <div class="row">
+        <div class="col-2 fw-bold">Name</div>
+        <div class="col-10">{{selected?.name}}</div>
+      </div>
+      <div class="row">
+        <div class="col-2 fw-bold">Class</div>
+        <div class="col-10"><code>{{selected?.class}}</code></div>
+      </div>
+    </div>
+  </div>
+</div>

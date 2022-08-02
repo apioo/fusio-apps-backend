@@ -1,0 +1,39 @@
+<div class="card" *ngIf="selected">
+  <div class="card-header">{{selected?.event}}</div>
+  <div class="card-body">
+    <div class="fusio-detail">
+      <div class="row">
+        <div class="col-2 fw-bold">App</div>
+        <div class="col-9">{{selected?.app?.name}}</div>
+        <div class="col-1"><button type="button" routerLink="/app/{{selected?.user?.id}}" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
+      </div>
+      <div class="row">
+        <div class="col-2 fw-bold">User</div>
+        <div class="col-9">{{selected?.user?.name}}</div>
+        <div class="col-1"><button type="button" routerLink="/user/{{selected?.user?.id}}" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
+      </div>
+      <div class="row">
+        <div class="col-2 fw-bold">Event</div>
+        <div class="col-10">{{selected?.event}}</div>
+      </div>
+      <div class="row">
+        <div class="col-2 fw-bold">IP</div>
+        <div class="col-10">{{selected?.ip}}</div>
+      </div>
+      <div class="row">
+        <div class="col-2 fw-bold">Message</div>
+        <div class="col-10">{{selected?.message}}</div>
+      </div>
+      <div class="row">
+        <div class="col-2 fw-bold">Date</div>
+        <div class="col-10">{{selected?.date|date:'short'}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card" style="margin-top:1rem">
+  <div class="card-header">Content</div>
+  <div class="card-body">
+    <pre>{{selected?.content|json}}</pre>
+  </div>
+</div>

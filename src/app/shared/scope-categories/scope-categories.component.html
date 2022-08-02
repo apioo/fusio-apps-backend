@@ -1,0 +1,16 @@
+
+<ul ngbNav #scopeCategories="ngbNav" [(activeId)]="selectedCategory" class="nav-tabs">
+  <li [ngbNavItem]="category.id" *ngFor="let category of categories">
+    <a ngbNavLink>{{category.name}}</a>
+    <ng-template ngbNavContent>
+      <div style="margin-top:1rem;">
+        <a (click)="toggleScopes(category.scopes)" class="btn btn-outline-secondary float-end"><i class="bi bi-arrow-clockwise"></i></a>
+        <div class="form-check" *ngFor="let scope of category.scopes">
+          <input class="form-check-input" type="checkbox" [value]="scope.id" (change)="scopeSelect($event, scope.name)" [checked]="scope.name && selected.includes(scope.name)" [id]="scope.name">
+          <label class="form-check-label" [for]="scope.name">{{scope.name}}</label>
+        </div>
+      </div>
+    </ng-template>
+  </li>
+</ul>
+<div [ngbNavOutlet]="scopeCategories"></div>

@@ -1,0 +1,196 @@
+{
+  "entries": [
+    {
+      "title": "API",
+      "visible": true,
+      "children": [
+        {
+          "title": "Dashboard",
+          "icon": "bi-tablet",
+          "path": "/dashboard",
+          "scope": "backend.dashboard"
+        },
+        {
+          "title": "Route",
+          "icon": "bi-router",
+          "path": "/route",
+          "scope": "backend.route"
+        },
+        {
+          "title": "Action",
+          "icon": "bi-code",
+          "path": "/action",
+          "scope": "backend.action"
+        },
+        {
+          "title": "Schema",
+          "icon": "bi-star",
+          "path": "/schema",
+          "scope": "backend.schema"
+        },
+        {
+          "title": "Connection",
+          "icon": "bi-cloud",
+          "path": "/connection",
+          "scope": "backend.connection"
+        },
+        {
+          "title": "Event",
+          "icon": "bi-calendar-event",
+          "path": "/event",
+          "scope": "backend.event"
+        },
+        {
+          "title": "Cronjob",
+          "icon": "bi-alarm",
+          "path": "/cronjob",
+          "scope": "backend.cronjob"
+        },
+        {
+          "title": "Generator",
+          "icon": "bi-cpu",
+          "path": "/generator",
+          "scope": "backend.route"
+        }
+      ]
+    },
+    {
+      "title": "Consumer",
+      "visible": false,
+      "children": [
+        {
+          "title": "App",
+          "icon": "bi-app",
+          "path": "/app",
+          "scope": "backend.app"
+        },
+        {
+          "title": "Scope",
+          "icon": "bi-bag",
+          "path": "/scope",
+          "scope": "backend.scope"
+        },
+        {
+          "title": "User",
+          "icon": "bi-person",
+          "path": "/user",
+          "scope": "backend.user"
+        },
+        {
+          "title": "Rate",
+          "icon": "bi-filter",
+          "path": "/rate",
+          "scope": "backend.rate"
+        },
+        {
+          "title": "Page",
+          "icon": "bi-file-earmark-code",
+          "path": "/page",
+          "scope": "backend.page"
+        },
+        {
+          "title": "SDK",
+          "icon": "bi-download",
+          "path": "/sdk",
+          "scope": "backend.sdk"
+        },
+        {
+          "title": "Subscription",
+          "icon": "bi-calendar-plus",
+          "path": "/subscription",
+          "scope": "backend.event"
+        }
+      ]
+    },
+    {
+      "title": "Analytics",
+      "visible": false,
+      "children": [
+        {
+          "title": "Log",
+          "icon": "bi-briefcase",
+          "path": "/log",
+          "scope": "backend.log"
+        },
+        {
+          "title": "Statistic",
+          "icon": "bi-bar-chart",
+          "path": "/statistic",
+          "scope": "backend.statistic"
+        },
+        {
+          "title": "Error",
+          "icon": "bi-bell",
+          "path": "/error",
+          "scope": "backend.log"
+        },
+        {
+          "title": "Token",
+          "icon": "bi-file-earmark-binary",
+          "path": "/token",
+          "scope": "backend.app"
+        }
+      ]
+    },
+    {
+      "title": "Monetization",
+      "visible": false,
+      "children": [
+        {
+          "title": "Plan",
+          "icon": "bi-hdd",
+          "path": "/plan",
+          "scope": "backend.plan"
+        },
+        {
+          "title": "Transaction",
+          "icon": "bi bi-wallet",
+          "path": "/transaction",
+          "scope": "backend.transaction"
+        }
+      ]
+    },
+    {
+      "title": "System",
+      "visible": false,
+      "children": [
+        {
+          "title": "Category",
+          "icon": "bi-record",
+          "path": "/category",
+          "scope": "backend.category"
+        },
+        {
+          "title": "Role",
+          "icon": "bi-people",
+          "path": "/role",
+          "scope": "backend.role"
+        },
+        {
+          "title": "Marketplace",
+          "icon": "bi-shop-window",
+          "path": "/marketplace",
+          "scope": "backend.marketplace"
+        },
+        {
+          "title": "Settings",
+          "icon": "bi-gear",
+          "path": "/config",
+          "scope": "backend.config"
+        },
+        {
+          "title": "Audit",
+          "icon": "bi-camera-video",
+          "path": "/audit",
+          "scope": "backend.audit"
+        },
+        {
+          "title": "Trash",
+          "icon": "bi-trash",
+          "path": "/trash",
+          "scope": "backend.trash"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+
+<div class="modal-header">
+  <h4 class="modal-title">
+    <ng-container *ngIf="mode === 1">Create</ng-container>
+    <ng-container *ngIf="mode === 2">Update</ng-container>
+    <ng-container *ngIf="mode === 3">Delete</ng-container>
+  </h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+</div>
+<div class="modal-body">
+  <app-message [response]="response"></app-message>
+  <form>
+    <div class="mb-3 row">
+      <label for="name" class="col-sm-2 col-form-label fw-bold">Name</label>
+      <div class="col-sm-10">
+        <div class="input-group">
+          <input type="text" id="name" name="name" [(ngModel)]="entity.name" class="form-control">
+          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
+          <ng-template #nameHelp>Unique name of the action</ng-template>
+        </div>
+      </div>
+    </div>
+    <div class="mb-3 row">
+      <label for="class" class="col-sm-2 col-form-label fw-bold">Class</label>
+      <div class="col-sm-10">
+        <div class="input-group">
+          <input *ngIf="custom" type="text" id="class" name="class" [(ngModel)]="entity.class" (change)="changeClass(entity.class)" class="form-control">
+          <select *ngIf="!custom" id="class" name="class" [(ngModel)]="entity.class" (change)="changeClass(entity.class)" class="form-select">
+            <option *ngFor="let action of actions" [ngValue]="action.class">{{action.name}}</option>
+          </select>
+          <button class="btn btn-outline-secondary" type="button" (click)="custom = !custom"><i class="bi bi-pen"></i></button>
+          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="classHelp"><i class="bi bi-question"></i></button>
+          <ng-template #classHelp>Action class which gets executed. Each action can provide additional configuration parameters which are loaded if a class was selected</ng-template>
+        </div>
+      </div>
+    </div>
+    <div class="mb-3 row">
+      <label for="async" class="col-sm-2 col-form-label fw-bold">Async</label>
+      <div class="col-sm-10">
+        <div class="form-check form-switch">
+          <input type="checkbox" id="async" name="async" [(ngModel)]="entity.async" class="form-check-input">
+        </div>
+      </div>
+    </div>
+    <app-config-form *ngIf="form" [container]="form" [data]="entity.config" (dataChange)="entity.config = $event"></app-config-form>
+  </form>
+</div>
+<div class="modal-footer">
+  <ng-container *ngIf="mode === 1"><button type="button" class="btn btn-primary" (click)="submit()">Create</button></ng-container>
+  <ng-container *ngIf="mode === 2"><button type="button" class="btn btn-primary" (click)="submit()">Update</button></ng-container>
+  <ng-container *ngIf="mode === 3"><button type="button" class="btn btn-danger" (click)="submit()">Delete</button></ng-container>
+  <button type="button" class="btn btn-light" (click)="modal.close()">Close</button>
+</div>
