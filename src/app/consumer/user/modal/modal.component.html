@@ -64,6 +64,7 @@
         </div>
       </div>
     </div>
+    <app-scope-categories *ngIf="mode === 2" [scopes]="entity.scopes" (dataChange)="entity.scopes = $event"></app-scope-categories>
   </form>
 </div>
 <div class="modal-footer">
