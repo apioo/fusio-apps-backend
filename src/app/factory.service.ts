@@ -13,12 +13,14 @@ export class FactoryService {
   private readonly store: TokenStoreInterface;
 
   constructor() {
+    let baseUrl;
     if (typeof FUSIO_URL === 'string') {
-      this.baseUrl = FUSIO_URL;
+      baseUrl = FUSIO_URL;
     } else {
-      this.baseUrl = FactoryService.guessFusioEndpointUrl(false);
+      baseUrl = FactoryService.guessFusioEndpointUrl(false);
     }
 
+    this.baseUrl = FactoryService.normalizeBaseUrl(baseUrl);
     this.store = new SessionTokenStore();
   }
 
@@ -74,6 +76,14 @@ export class FactoryService {
     }
 
     return token.scope.split(',').includes(scope);
+  }
+
+  private static normalizeBaseUrl(baseUrl: string): string {
+    if (baseUrl.endsWith('/')) {
+      return baseUrl.slice(0, -1)
+    } else {
+      return baseUrl;
+    }
   }
 
   private static guessFusioEndpointUrl(urlRewrite: boolean) {
