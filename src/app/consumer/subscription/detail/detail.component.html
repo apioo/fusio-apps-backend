@@ -25,7 +25,13 @@
         <th>Execute-Date</th>
       </tr>
       </thead>
-      <tbody>
+      <tbody *ngFor="let response of selected?.responses">
+      <tr>
+        <td>{{response.status}}</td>
+        <td>{{response.code}}</td>
+        <td>{{response.attempts}}</td>
+        <td>{{response.executeDate|date:'short'}}</td>
+      </tr>
       </tbody>
     </table>
   </div>
