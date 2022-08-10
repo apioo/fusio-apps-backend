@@ -6,6 +6,10 @@ import {AxiosResponse} from "axios";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {Form_Query} from "fusio-sdk/dist/src/generated/backend/Form_Query";
 import {Modal} from "../../../modal";
+import {FactoryService} from "../../../factory.service";
+import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {HelpComponent} from "../../../shared/help/help.component";
+import {Mode} from "../../../list";
 
 @Component({
   selector: 'app-action-modal',
@@ -80,4 +84,19 @@ export class ModalComponent extends Modal<Action> {
     }
   }
 
+  showHelp() {
+    let className = this.entity.class;
+    if (className) {
+      let action = this.actions?.find((action) => {
+        return action.class === className;
+      })
+
+      if (action && action.name) {
+        const modalRef = this.modalService.open(HelpComponent, {
+          size: 'lg'
+        });
+        modalRef.componentInstance.path = 'api/action/' + action.name.toLowerCase();
+      }
+    }
+  }
 }

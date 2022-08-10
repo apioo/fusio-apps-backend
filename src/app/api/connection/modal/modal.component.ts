@@ -6,6 +6,7 @@ import {AxiosResponse} from "axios";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {Form_Query} from "fusio-sdk/dist/src/generated/backend/Form_Query";
 import {Modal} from "../../../modal";
+import {HelpComponent} from "../../../shared/help/help.component";
 
 @Component({
   selector: 'app-connection-modal',
@@ -14,7 +15,7 @@ import {Modal} from "../../../modal";
 })
 export class ModalComponent extends Modal<Connection> {
 
-  actions?: Array<Connection_Index_Entry>;
+  connections?: Array<Connection_Index_Entry>;
   form?: Form_Container;
   entityClass?: string;
   custom: boolean = false;
@@ -22,7 +23,7 @@ export class ModalComponent extends Modal<Connection> {
   override async ngOnInit(): Promise<void> {
     const action = await this.factory.getClient().backendConnection();
     const response = await action.getBackendConnectionList().backendActionConnectionGetIndex();
-    this.actions = response.data.connections;
+    this.connections = response.data.connections;
 
     if (this.entity.class) {
       this.loadConfig(this.entity.class);
@@ -73,4 +74,19 @@ export class ModalComponent extends Modal<Connection> {
     }
   }
 
+  showHelp() {
+    let className = this.entity.class;
+    if (className) {
+      let connection = this.connections?.find((connection) => {
+        return connection.class === className;
+      })
+
+      if (connection && connection.name) {
+        const modalRef = this.modalService.open(HelpComponent, {
+          size: 'lg'
+        });
+        modalRef.componentInstance.path = 'api/connection/' + connection.name.toLowerCase();
+      }
+    }
+  }
 }

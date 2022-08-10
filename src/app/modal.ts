@@ -2,7 +2,7 @@ import {Directive, Input, OnInit} from "@angular/core";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {Mode, ModelId} from "./list";
 import {FactoryService} from "./factory.service";
-import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import axios, {AxiosResponse} from "axios";
 
 @Directive()
@@ -13,7 +13,7 @@ export abstract class Modal<T extends ModelId> implements OnInit {
   @Input() mode: Mode = Mode.Create;
   @Input() entity: T = this.newEntity();
 
-  constructor(protected factory: FactoryService, public modal: NgbActiveModal) { }
+  constructor(protected factory: FactoryService, protected modalService: NgbModal, public modal: NgbActiveModal) { }
 
   ngOnInit(): void {
   }

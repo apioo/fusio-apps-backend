@@ -26,7 +26,7 @@
         <div class="input-group">
           <input *ngIf="custom" type="text" id="class" name="class" [(ngModel)]="entity.class" (change)="loadConfig(entity.class)" class="form-control">
           <select *ngIf="!custom" id="class" name="class" [(ngModel)]="entity.class" (change)="loadConfig(entity.class)" class="form-select">
-            <option *ngFor="let action of actions" [ngValue]="action.class">{{action.name}}</option>
+            <option *ngFor="let connection of connections" [ngValue]="connection.class">{{connection.name}}</option>
           </select>
           <button class="btn btn-outline-secondary" type="button" (click)="custom = !custom"><i class="bi bi-pen"></i></button>
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="classHelp"><i class="bi bi-question"></i></button>
@@ -41,5 +41,6 @@
   <ng-container *ngIf="mode === 1"><button type="button" class="btn btn-primary" (click)="submit()">Create</button></ng-container>
   <ng-container *ngIf="mode === 2"><button type="button" class="btn btn-primary" (click)="submit()">Update</button></ng-container>
   <ng-container *ngIf="mode === 3"><button type="button" class="btn btn-danger" (click)="submit()">Delete</button></ng-container>
+  <button type="button" class="btn btn-light" (click)="showHelp()">Help</button>
   <button type="button" class="btn btn-light" (click)="modal.close()">Close</button>
 </div>
