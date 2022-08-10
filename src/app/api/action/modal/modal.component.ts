@@ -6,10 +6,7 @@ import {AxiosResponse} from "axios";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {Form_Query} from "fusio-sdk/dist/src/generated/backend/Form_Query";
 import {Modal} from "../../../modal";
-import {FactoryService} from "../../../factory.service";
-import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {HelpComponent} from "../../../shared/help/help.component";
-import {Mode} from "../../../list";
 
 @Component({
   selector: 'app-action-modal',
