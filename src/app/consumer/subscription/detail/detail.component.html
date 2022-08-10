@@ -27,7 +27,11 @@
       </thead>
       <tbody *ngFor="let response of selected?.responses">
       <tr>
-        <td>{{response.status}}</td>
+        <td>
+          <span *ngIf="response?.status === 1" class="badge bg-info">Pending</span>
+          <span *ngIf="response?.status === 2" class="badge bg-success">Done</span>
+          <span *ngIf="response?.status === 3" class="badge bg-secondary">Exceeded</span>
+        </td>
         <td>{{response.code}}</td>
         <td>{{response.attempts}}</td>
         <td>{{response.executeDate|date:'short'}}</td>
