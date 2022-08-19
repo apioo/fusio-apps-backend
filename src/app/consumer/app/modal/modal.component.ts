@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component} from '@angular/core';
 import {User} from "fusio-sdk/dist/src/generated/backend/User";
-import {Action} from "fusio-sdk/dist/src/generated/backend/Action";
 import {AxiosResponse} from "axios";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {App} from "fusio-sdk/dist/src/generated/backend/App";
@@ -32,17 +31,17 @@ export class ModalComponent extends Modal<App> {
     this.users = response.data.entry;
   }
 
-  protected async create(entity: Action): Promise<AxiosResponse<Message>> {
+  protected async create(entity: App): Promise<AxiosResponse<Message>> {
     const group = await this.factory.getClient().backendApp();
     return await group.getBackendApp().backendActionAppCreate(entity);
   }
 
-  protected async update(entity: Action): Promise<AxiosResponse<Message>> {
+  protected async update(entity: App): Promise<AxiosResponse<Message>> {
     const group = await this.factory.getClient().backendApp();
     return await group.getBackendAppByAppId('' + entity.id).backendActionAppUpdate(entity);
   }
 
-  protected async delete(entity: Action): Promise<AxiosResponse<Message>> {
+  protected async delete(entity: App): Promise<AxiosResponse<Message>> {
     const group = await this.factory.getClient().backendApp();
     return await group.getBackendAppByAppId('' + entity.id).backendActionAppDelete();
   }
