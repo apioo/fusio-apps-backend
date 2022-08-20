@@ -1,8 +1,8 @@
 
 <div class="fusio-login">
   <div class="fusio-login-panel">
-    <header>
-      <h1>Fusio <span>({{ version }})</span></h1>
+    <header class="text-center bg-light border-bottom">
+      <img src="assets/fusio_64px.png" class="m-3">
     </header>
     <div class="fusio-login-panel-body">
       <app-message [response]="response"></app-message>
@@ -20,6 +20,9 @@
           Login
         </button>
       </form>
+    </div>
+    <div class="text-end p-2 fw-light bg-light border-top">
+      <span class="text-muted" style="font-size:14px;"><a href="https://www.fusio-project.org/">Fusio</a> v{{ version }}</span>
     </div>
   </div>
 </div>
