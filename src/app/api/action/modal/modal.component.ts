@@ -5,15 +5,15 @@ import {Action} from "fusio-sdk/dist/src/generated/backend/Action";
 import {AxiosResponse} from "axios";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {Form_Query} from "fusio-sdk/dist/src/generated/backend/Form_Query";
-import {Modal} from "../../../modal";
-import {HelpComponent} from "../../../shared/help/help.component";
+import {HelpComponent, Modal} from "ngx-fusio-sdk";
+import Client from "fusio-sdk/dist/src/generated/backend/Client";
 
 @Component({
   selector: 'app-action-modal',
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.css']
 })
-export class ModalComponent extends Modal<Action> {
+export class ModalComponent extends Modal<Client, Action> {
 
   actions?: Array<Action_Index_Entry>;
   form?: Form_Container;
@@ -21,7 +21,7 @@ export class ModalComponent extends Modal<Action> {
   custom: boolean = false;
 
   override async ngOnInit(): Promise<void> {
-    const action = await this.factory.getClient().backendAction();
+    const action = await this.fusio.getClient().backendAction();
     const response = await action.getBackendActionList().backendActionActionGetIndex();
     this.actions = response.data.actions;
 
@@ -31,17 +31,17 @@ export class ModalComponent extends Modal<Action> {
   }
 
   protected async create(entity: Action): Promise<AxiosResponse<Message>> {
-    const group = await this.factory.getClient().backendAction();
+    const group = await this.fusio.getClient().backendAction();
     return await group.getBackendAction().backendActionActionCreate(entity);
   }
 
   protected async update(entity: Action): Promise<AxiosResponse<Message>> {
-    const group = await this.factory.getClient().backendAction();
+    const group = await this.fusio.getClient().backendAction();
     return await group.getBackendActionByActionId('' + entity.id).backendActionActionUpdate(entity);
   }
 
   protected async delete(entity: Action): Promise<AxiosResponse<Message>> {
-    const group = await this.factory.getClient().backendAction();
+    const group = await this.fusio.getClient().backendAction();
     return await group.getBackendActionByActionId('' + entity.id).backendActionActionDelete();
   }
 
@@ -69,7 +69,7 @@ export class ModalComponent extends Modal<Action> {
       class: classString
     };
 
-    const action = await this.factory.getClient().backendAction();
+    const action = await this.fusio.getClient().backendAction();
     const response = await action.getBackendActionForm().backendActionActionGetForm(query);
     this.form = response.data;
 

@@ -1,28 +1,29 @@
 import {Component} from '@angular/core';
 import {Log} from "fusio-sdk/dist/src/generated/backend/Log";
-import {List} from "../../../list";
 import {Collection_Category_Query} from "fusio-sdk/dist/src/generated/backend/Collection_Category_Query";
 import {AxiosResponse} from "axios";
 import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
 import {Log_Collection_Query} from "fusio-sdk/dist/src/generated/backend/Log_Collection_Query";
 import {FilterComponent} from "../filter/filter.component";
+import {List} from "ngx-fusio-sdk";
+import Client from "fusio-sdk/dist/src/generated/backend/Client";
 
 @Component({
   selector: 'app-log-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent extends List<Log> {
+export class ListComponent extends List<Client, Log> {
 
   filter: Log_Collection_Query = {};
 
   protected async getAll(query: Collection_Category_Query): Promise<AxiosResponse<Collection<Log>>> {
-    const group = await this.factory.getClient().backendLog();
+    const group = await this.fusio.getClient().backendLog();
     return await group.getBackendLog().backendActionLogGetAll(query);
   }
 
   protected async get(id: string): Promise<AxiosResponse<Log>> {
-    const group = await this.factory.getClient().backendLog();
+    const group = await this.fusio.getClient().backendLog();
     return await group.getBackendLogByLogId(id).backendActionLogGet();
   }
 

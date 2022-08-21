@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {FactoryService} from "../../../factory.service";
-import {HelpService} from "../../../help.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Action} from "fusio-sdk/dist/src/generated/backend/Action";
 import {Form_Query} from "fusio-sdk/dist/src/generated/backend/Form_Query";
@@ -9,6 +7,8 @@ import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {Action_Execute_Request} from "fusio-sdk/dist/src/generated/backend/Action_Execute_Request";
 import {Action_Execute_Response} from "fusio-sdk/dist/src/generated/backend/Action_Execute_Response";
 import axios from "axios";
+import {HelpService} from "ngx-fusio-sdk";
+import {FusioService} from "../../../fusio.service";
 
 @Component({
   selector: 'app-designer',
@@ -29,7 +29,7 @@ export class DesignerComponent implements OnInit {
   body: string = '';
   response?: Action_Execute_Response;
 
-  constructor(protected factory: FactoryService, protected help: HelpService, protected route: ActivatedRoute, protected router: Router) {
+  constructor(protected fusio: FusioService, protected help: HelpService, protected route: ActivatedRoute, protected router: Router) {
   }
 
   async ngOnInit(): Promise<void> {
@@ -52,7 +52,7 @@ export class DesignerComponent implements OnInit {
         request.body = JSON.parse(this.body);
       }
 
-      const group = await this.factory.getClient().backendAction();
+      const group = await this.fusio.getClient().backendAction();
       await group.getBackendActionByActionId('' + this.action.id).backendActionActionUpdate(this.action)
       const response = await group.getBackendActionExecuteByActionId('' + this.action.id).backendActionActionExecute(request)
       this.response = response.data;
@@ -67,7 +67,7 @@ export class DesignerComponent implements OnInit {
 
   async loadAction(id: string) {
     try {
-      const group = await this.factory.getClient().backendAction();
+      const group = await this.fusio.getClient().backendAction();
       const response = await group.getBackendActionByActionId(id).backendActionActionGet();
       this.action = response.data;
 
@@ -92,7 +92,7 @@ export class DesignerComponent implements OnInit {
       class: classString
     };
 
-    const action = await this.factory.getClient().backendAction();
+    const action = await this.fusio.getClient().backendAction();
     const response = await action.getBackendActionForm().backendActionActionGetForm(query);
     this.form = response.data;
   }

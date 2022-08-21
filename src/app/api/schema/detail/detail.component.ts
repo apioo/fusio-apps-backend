@@ -1,7 +1,7 @@
 import {Component, OnChanges, SimpleChanges} from '@angular/core';
-import {Detail} from "../../../detail";
+import {Detail} from "ngx-fusio-sdk";
 import {Schema} from "fusio-sdk/dist/src/generated/backend/Schema";
-import {FactoryService} from "../../../factory.service";
+import {FusioService} from "../../../fusio.service";
 
 @Component({
   selector: 'app-schema-detail',
@@ -14,7 +14,7 @@ export class DetailComponent extends Detail<Schema> implements OnChanges {
   preview?: string;
   loading: boolean = false;
 
-  constructor(protected factory: FactoryService) {
+  constructor(protected fusio: FusioService) {
     super();
   }
 
@@ -29,7 +29,7 @@ export class DetailComponent extends Detail<Schema> implements OnChanges {
   }
 
   private async renderPreview(id: string) {
-    const group = await this.factory.getClient().backendSchema();
+    const group = await this.fusio.getClient().backendSchema();
     const response = await group.getBackendSchemaPreviewBySchemaId(id).backendActionSchemaGetPreview();
 
     this.preview = response.data.preview;

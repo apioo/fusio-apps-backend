@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {Modal} from "../../../modal";
+import {Modal} from "ngx-fusio-sdk";
+import Client from "fusio-sdk/dist/src/generated/backend/Client";
 import {Page} from "fusio-sdk/dist/src/generated/backend/Page";
 import {AxiosResponse} from "axios";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
@@ -9,7 +10,7 @@ import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.css']
 })
-export class ModalComponent extends Modal<Page> {
+export class ModalComponent extends Modal<Client, Page> {
 
   status = [{
     key: 1,
@@ -20,17 +21,17 @@ export class ModalComponent extends Modal<Page> {
   }];
 
   protected async create(entity: Page): Promise<AxiosResponse<Message>> {
-    const group = await this.factory.getClient().backendPage();
+    const group = await this.fusio.getClient().backendPage();
     return await group.getBackendPage().backendActionPageCreate(entity);
   }
 
   protected async update(entity: Page): Promise<AxiosResponse<Message>> {
-    const group = await this.factory.getClient().backendPage();
+    const group = await this.fusio.getClient().backendPage();
     return await group.getBackendPageByPageId('' + entity.id).backendActionPageUpdate(entity);
   }
 
   protected async delete(entity: Page): Promise<AxiosResponse<Message>> {
-    const group = await this.factory.getClient().backendPage();
+    const group = await this.fusio.getClient().backendPage();
     return await group.getBackendPageByPageId('' + entity.id).backendActionPageDelete();
   }
 

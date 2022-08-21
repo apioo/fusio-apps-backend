@@ -1,11 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {Route as ModelRoute} from "fusio-sdk/dist/src/generated/backend/Route";
-import {FactoryService} from "../../../factory.service";
 import {Log_Collection_Query} from "fusio-sdk/dist/src/generated/backend/Log_Collection_Query";
 import {Log_Collection} from "fusio-sdk/dist/src/generated/backend/Log_Collection";
 import {Log} from "fusio-sdk/dist/src/generated/backend/Log";
 import {Router} from "@angular/router";
+import {FusioService} from "../../../fusio.service";
 
 @Component({
   selector: 'app-route-log',
@@ -18,7 +18,7 @@ export class LogComponent implements OnInit {
 
   logs?: Log_Collection;
 
-  constructor(public modal: NgbActiveModal, private factory: FactoryService, private router: Router) { }
+  constructor(public modal: NgbActiveModal, private fusio: FusioService, private router: Router) { }
 
   async ngOnInit(): Promise<void> {
     if (!this.route) {
@@ -29,7 +29,7 @@ export class LogComponent implements OnInit {
       routeId: this.route.id
     };
 
-    const log = await this.factory.getClient().backendLog();
+    const log = await this.fusio.getClient().backendLog();
     const response = await log.getBackendLog().backendActionLogGetAll(query);
 
     this.logs = response.data;

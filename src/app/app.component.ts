@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import {UserService} from "./user.service";
 import {User} from "fusio-sdk/dist/src/generated/backend/User";
+import {UserService} from "ngx-fusio-sdk";
 
 @Component({
   selector: 'app-root',
@@ -19,7 +19,7 @@ export class AppComponent {
     path: '/logout'
   }];
 
-  constructor(private userMeta: UserService) { }
+  constructor(private userMeta: UserService<User>) { }
 
   ngOnInit(): void {
     this.user = this.userMeta.get();

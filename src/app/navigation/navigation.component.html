@@ -1,6 +1,6 @@
 
-<div class="fusio-sidebar">
-  <nav class="fusio-navigation">
+<div class="fusio-navigation">
+  <nav>
     <h1>Fusio <span>({{ version }})</span></h1>
     <div *ngFor="let item of navigation">
       <a class="fusio-navigation-heading" (click)="changeNavHeading(item)" [ngClass]="{'fusio-navigation-heading-active': item.visible}">{{ item.title }}</a>

@@ -1,10 +1,10 @@
 import {Component} from '@angular/core';
-import {List} from "../../../list";
+import {List} from "ngx-fusio-sdk";
+import Client from "fusio-sdk/dist/src/generated/backend/Client";
 import {Audit} from "fusio-sdk/dist/src/generated/backend/Audit";
 import {Collection_Category_Query} from "fusio-sdk/dist/src/generated/backend/Collection_Category_Query";
 import {AxiosResponse} from "axios";
 import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
-import {App_Token_Collection_Query} from "fusio-sdk/dist/src/generated/backend/App_Token_Collection_Query";
 import {Audit_Collection_Query} from "fusio-sdk/dist/src/generated/backend/Audit_Collection_Query";
 import {FilterComponent} from "../filter/filter.component";
 
@@ -13,17 +13,17 @@ import {FilterComponent} from "../filter/filter.component";
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent extends List<Audit> {
+export class ListComponent extends List<Client, Audit> {
 
   filter: Audit_Collection_Query = {};
 
   protected async getAll(query: Collection_Category_Query): Promise<AxiosResponse<Collection<Audit>>> {
-    const group = await this.factory.getClient().backendAudit();
+    const group = await this.fusio.getClient().backendAudit();
     return await group.getBackendAudit().backendActionAuditGetAll(query);
   }
 
   protected async get(id: string): Promise<AxiosResponse<Audit>> {
-    const group = await this.factory.getClient().backendAudit();
+    const group = await this.fusio.getClient().backendAudit();
     return await group.getBackendAuditByAuditId(id).backendActionAuditGet();
   }
 

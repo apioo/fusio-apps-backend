@@ -3,7 +3,8 @@ import {Collection_Category_Query} from "fusio-sdk/dist/src/generated/backend/Co
 import {AxiosResponse} from "axios";
 import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
 import {Category} from "fusio-sdk/dist/src/generated/backend/Category";
-import {List} from "../../../list";
+import {List} from "ngx-fusio-sdk";
+import Client from "fusio-sdk/dist/src/generated/backend/Client";
 import {Transaction} from "fusio-sdk/dist/src/generated/backend/Transaction";
 
 @Component({
@@ -11,15 +12,15 @@ import {Transaction} from "fusio-sdk/dist/src/generated/backend/Transaction";
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent extends List<Transaction> {
+export class ListComponent extends List<Client, Transaction> {
 
   protected async getAll(query: Collection_Category_Query): Promise<AxiosResponse<Collection<Transaction>>> {
-    const group = await this.factory.getClient().backendTransaction();
+    const group = await this.fusio.getClient().backendTransaction();
     return await group.getBackendTransaction().backendActionTransactionGetAll(query);
   }
 
   protected async get(id: string): Promise<AxiosResponse<Category>> {
-    const group = await this.factory.getClient().backendTransaction();
+    const group = await this.fusio.getClient().backendTransaction();
     return await group.getBackendTransactionByTransactionId(id).backendActionTransactionGet();
   }
 

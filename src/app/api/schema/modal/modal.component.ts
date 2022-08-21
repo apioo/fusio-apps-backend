@@ -2,14 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import {Schema} from "fusio-sdk/dist/src/generated/backend/Schema";
 import {AxiosResponse} from "axios";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
-import {Modal} from "../../../modal";
+import {Modal} from "ngx-fusio-sdk";
+import Client from "fusio-sdk/dist/src/generated/backend/Client";
 
 @Component({
   selector: 'app-schema-modal',
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.css']
 })
-export class ModalComponent extends Modal<Schema> {
+export class ModalComponent extends Modal<Client, Schema> {
 
   schema: string = '';
 
@@ -24,7 +25,7 @@ export class ModalComponent extends Modal<Schema> {
       entity.source = JSON.parse(this.schema);
     }
 
-    const group = await this.factory.getClient().backendSchema();
+    const group = await this.fusio.getClient().backendSchema();
     return await group.getBackendSchema().backendActionSchemaCreate(entity);
   }
 
@@ -33,12 +34,12 @@ export class ModalComponent extends Modal<Schema> {
       entity.source = JSON.parse(this.schema);
     }
 
-    const group = await this.factory.getClient().backendSchema();
+    const group = await this.fusio.getClient().backendSchema();
     return await group.getBackendSchemaBySchemaId('' + entity.id).backendActionSchemaUpdate(entity);
   }
 
   protected async delete(entity: Schema): Promise<AxiosResponse<Message>> {
-    const group = await this.factory.getClient().backendSchema();
+    const group = await this.fusio.getClient().backendSchema();
     return await group.getBackendSchemaBySchemaId('' + entity.id).backendActionSchemaDelete();
   }
 

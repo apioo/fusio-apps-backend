@@ -1,10 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import {Detail} from "../../../detail";
+import {Component} from '@angular/core';
+import {Detail} from "ngx-fusio-sdk";
 import {App} from "fusio-sdk/dist/src/generated/backend/App";
-import {Action} from "fusio-sdk/dist/src/generated/backend/Action";
-import {AxiosResponse} from "axios";
-import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
-import {User} from "fusio-sdk/dist/src/generated/backend/User";
 
 @Component({
   selector: 'app-app-detail',

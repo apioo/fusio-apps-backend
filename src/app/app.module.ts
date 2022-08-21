@@ -82,20 +82,16 @@ import {ListComponent as AuditList} from "./system/audit/list/list.component";
 import {DetailComponent as AuditDetail} from "./system/audit/detail/detail.component";
 import {FilterComponent as AuditFilter} from './system/audit/filter/filter.component';
 import {ListComponent as TrashList} from "./system/trash/list/list.component";
-import {MessageComponent} from './shared/message/message.component';
 import {ConfigFormComponent} from './shared/config-form/config-form.component';
 import {ScopeCategoriesComponent} from './shared/scope-categories/scope-categories.component';
 import {TagEditorComponent} from './shared/tag-editor/tag-editor.component';
 import {CsvPipe} from "./shared/tag-editor/csv.pipe";
-import {ScopeValuesComponent} from './shared/scope-values/scope-values.component';
 import {TypeschemaEditorModule} from "ngx-typeschema-editor";
-import {HelpComponent} from './shared/help/help.component';
-import {EmptyComponent} from './shared/empty/empty.component';
 import {MapComponent} from './shared/map/map.component';
 import {CollectionComponent} from './shared/collection/collection.component';
 import {GeneratorComponent} from './api/generator/generator.component';
-import {SidebarComponent} from './shared/sidebar/sidebar.component';
-import {SearchComponent} from './shared/search/search.component';
+import {FusioService} from "./fusio.service";
+import {FusioSdkModule, FusioService as Sdk} from "ngx-fusio-sdk";
 
 @NgModule({
   declarations: [
@@ -176,18 +172,12 @@ import {SearchComponent} from './shared/search/search.component';
     AuditDetail,
     AuditFilter,
     TrashList,
-    MessageComponent,
     CsvPipe,
     ConfigFormComponent,
     ScopeCategoriesComponent,
     TagEditorComponent,
-    ScopeValuesComponent,
-    HelpComponent,
-    EmptyComponent,
     MapComponent,
     CollectionComponent,
-    SidebarComponent,
-    SearchComponent,
   ],
   imports: [
     BrowserModule,
@@ -198,9 +188,12 @@ import {SearchComponent} from './shared/search/search.component';
     ReactiveFormsModule,
     NgChartsModule.forRoot(),
     MonacoEditorModule.forRoot(),
-    TypeschemaEditorModule
+    TypeschemaEditorModule,
+    FusioSdkModule
   ],
-  providers: [],
+  providers: [
+    {provide: Sdk, useExisting: FusioService}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

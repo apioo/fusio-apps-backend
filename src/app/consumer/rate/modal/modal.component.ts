@@ -6,14 +6,15 @@ import {App} from "fusio-sdk/dist/src/generated/backend/App";
 import {Rate} from "fusio-sdk/dist/src/generated/backend/Rate";
 import {AxiosResponse} from "axios";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
-import {Modal} from "../../../modal";
+import {Modal} from "ngx-fusio-sdk";
+import Client from "fusio-sdk/dist/src/generated/backend/Client";
 
 @Component({
   selector: 'app-rate-modal',
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.css']
 })
-export class ModalComponent extends Modal<Rate> {
+export class ModalComponent extends Modal<Client, Rate> {
 
   timespan = {
     value: 1,
@@ -63,19 +64,19 @@ export class ModalComponent extends Modal<Rate> {
   protected async create(entity: Rate): Promise<AxiosResponse<Message>> {
     entity.timespan = this.getTimespan();
 
-    const group = await this.factory.getClient().backendRate();
+    const group = await this.fusio.getClient().backendRate();
     return await group.getBackendRate().backendActionRateCreate(entity);
   }
 
   protected async update(entity: Rate): Promise<AxiosResponse<Message>> {
     entity.timespan = this.getTimespan();
 
-    const group = await this.factory.getClient().backendRate();
+    const group = await this.fusio.getClient().backendRate();
     return await group.getBackendRateByRateId('' + entity.id).backendActionRateUpdate(entity);
   }
 
   protected async delete(entity: Rate): Promise<AxiosResponse<Message>> {
-    const group = await this.factory.getClient().backendRate();
+    const group = await this.fusio.getClient().backendRate();
     return await group.getBackendRateByRateId('' + entity.id).backendActionRateDelete();
   }
 
@@ -90,25 +91,25 @@ export class ModalComponent extends Modal<Rate> {
   }
 
   private async loadRoutes() {
-    const user = await this.factory.getClient().backendRoute();
+    const user = await this.fusio.getClient().backendRoute();
     const response = await user.getBackendRoutes().backendActionRouteGetAll({count: 1024});
     this.routes = response.data.entry;
   }
 
   private async loadUsers() {
-    const user = await this.factory.getClient().backendUser();
+    const user = await this.fusio.getClient().backendUser();
     const response = await user.getBackendUser().backendActionUserGetAll({count: 1024});
     this.users = response.data.entry;
   }
 
   private async loadPlans() {
-    const user = await this.factory.getClient().backendPlan();
+    const user = await this.fusio.getClient().backendPlan();
     const response = await user.getBackendPlan().backendActionPlanGetAll({count: 1024});
     this.plans = response.data.entry;
   }
 
   private async loadApps() {
-    const user = await this.factory.getClient().backendApp();
+    const user = await this.fusio.getClient().backendApp();
     const response = await user.getBackendApp().backendActionAppGetAll({count: 1024});
     this.apps = response.data.entry;
   }

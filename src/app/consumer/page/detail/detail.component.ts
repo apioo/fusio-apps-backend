@@ -1,8 +1,6 @@
 import {Component} from '@angular/core';
-import {Detail} from "../../../detail";
+import {Detail} from "ngx-fusio-sdk";
 import {Page} from "fusio-sdk/dist/src/generated/backend/Page";
-import {AxiosResponse} from "axios";
-import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 
 @Component({
   selector: 'app-page-detail',

@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
-import {List} from "../../../list";
+import {List} from "ngx-fusio-sdk";
+import Client from "fusio-sdk/dist/src/generated/backend/Client";
 import {App_Token} from "fusio-sdk/dist/src/generated/backend/App_Token";
 import {Collection_Category_Query} from "fusio-sdk/dist/src/generated/backend/Collection_Category_Query";
 import {AxiosResponse} from "axios";
@@ -12,17 +13,17 @@ import {FilterComponent} from "../filter/filter.component";
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent extends List<App_Token> {
+export class ListComponent extends List<Client, App_Token> {
 
   filter: App_Token_Collection_Query = {};
 
   protected async getAll(query: Collection_Category_Query): Promise<AxiosResponse<Collection<App_Token>>> {
-    const group = await this.factory.getClient().backendApp();
+    const group = await this.fusio.getClient().backendApp();
     return await group.getBackendAppToken().backendActionAppTokenGetAll(query);
   }
 
   protected async get(id: string): Promise<AxiosResponse<App_Token>> {
-    const group = await this.factory.getClient().backendApp();
+    const group = await this.fusio.getClient().backendApp();
     return await group.getBackendAppTokenByTokenId(id).backendActionAppTokenGet();
   }
 

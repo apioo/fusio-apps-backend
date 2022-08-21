@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
-import {List} from "../../../list";
+import {List} from "ngx-fusio-sdk";
+import Client from "fusio-sdk/dist/src/generated/backend/Client";
 import {Cronjob} from "fusio-sdk/dist/src/generated/backend/Cronjob";
 import {Collection_Category_Query} from "fusio-sdk/dist/src/generated/backend/Collection_Category_Query";
 import {AxiosResponse} from "axios";
@@ -11,15 +12,15 @@ import {ModalComponent} from "../modal/modal.component";
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent extends List<Cronjob> {
+export class ListComponent extends List<Client, Cronjob> {
 
   protected async getAll(query: Collection_Category_Query): Promise<AxiosResponse<Collection<Cronjob>>> {
-    const group = await this.factory.getClient().backendCronjob();
+    const group = await this.fusio.getClient().backendCronjob();
     return await group.getBackendCronjob().backendActionCronjobGetAll(query);
   }
 
   protected async get(id: string): Promise<AxiosResponse<Cronjob>> {
-    const group = await this.factory.getClient().backendCronjob();
+    const group = await this.fusio.getClient().backendCronjob();
     return await group.getBackendCronjobByCronjobId(id).backendActionCronjobGet();
   }
 

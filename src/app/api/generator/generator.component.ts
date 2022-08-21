@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {Form_Container} from "fusio-sdk/dist/src/generated/backend/Form_Container";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
-import {FactoryService} from "../../factory.service";
 import axios from "axios";
 import {Generator_Provider_Changelog} from "fusio-sdk/dist/src/generated/backend/Generator_Provider_Changelog";
 import {Generator_Index_Provider} from "fusio-sdk/dist/src/generated/backend/Generator_Index_Provider";
 import {Generator_Provider} from "fusio-sdk/dist/src/generated/backend/Generator_Provider";
+import {FusioService} from "../../fusio.service";
 
 @Component({
   selector: 'app-generator',
@@ -25,10 +25,10 @@ export class GeneratorComponent implements OnInit {
   response?: Message;
   changelog?: Generator_Provider_Changelog;
 
-  constructor(protected factory: FactoryService) { }
+  constructor(protected fusio: FusioService) { }
 
   async ngOnInit(): Promise<void> {
-    const route = await this.factory.getClient().backendGenerator();
+    const route = await this.fusio.getClient().backendGenerator();
     const response = await route.getBackendGenerator().backendActionGeneratorIndex();
     if (response.data.providers) {
       this.providers = response.data.providers;
@@ -40,7 +40,7 @@ export class GeneratorComponent implements OnInit {
       return;
     }
 
-    const action = await this.factory.getClient().backendGenerator();
+    const action = await this.fusio.getClient().backendGenerator();
     const response = await action.getBackendGeneratorByProvider(this.selected).backendActionGeneratorForm();
     this.form = response.data;
     this.provider.config = {};
@@ -52,7 +52,7 @@ export class GeneratorComponent implements OnInit {
     }
 
     try {
-      const action = await this.factory.getClient().backendGenerator();
+      const action = await this.fusio.getClient().backendGenerator();
       const response = await action.getBackendGeneratorByProvider(this.selected).backendActionGeneratorChangelog(this.provider.config);
       this.changelog = response.data;
       this.response = undefined;
@@ -71,7 +71,7 @@ export class GeneratorComponent implements OnInit {
     }
 
     try {
-      const route = await this.factory.getClient().backendGenerator();
+      const route = await this.fusio.getClient().backendGenerator();
       const response = await route.getBackendGeneratorByProvider(this.selected).backendActionGeneratorCreate(this.provider)
       this.response = response.data;
     } catch (error) {

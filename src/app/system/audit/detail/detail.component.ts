@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {Detail} from "../../../detail";
+import {Detail} from "ngx-fusio-sdk";
 import {Audit} from "fusio-sdk/dist/src/generated/backend/Audit";
 
 @Component({

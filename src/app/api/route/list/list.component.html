@@ -1,19 +1,19 @@
 
 <h1>Route</h1>
 
-<app-message [response]="response"></app-message>
+<fusio-message [response]="response"></fusio-message>
 
-<app-search
+<fusio-search
   [searchTerm]="search"
   (search)="doSearch(1, $event)"
   (newClick)="openCreateDialog()"
   placeholder="/acme/endpoint"
   helpPath="api/routes">
-</app-search>
+</fusio-search>
 
 <div class="row">
   <div class="col-md-2">
-    <app-sidebar
+    <fusio-sidebar
       name="route"
       nameKey="path"
       [entries]="entries"
@@ -23,10 +23,10 @@
       [pageSize]="pageSize"
       (pageChange)="doSearch($event, search)"
       (entrySelect)="doSelect($event)">
-    </app-sidebar>
+    </fusio-sidebar>
   </div>
   <div class="col-md-10">
-    <app-empty *ngIf="!selected" [loading]="loading" (newClick)="openCreateDialog()"></app-empty>
+    <fusio-empty *ngIf="!selected" [loading]="loading" (newClick)="openCreateDialog()"></fusio-empty>
     <app-route-detail *ngIf="selected"
       [selected]="selected"
       (updateClick)="openUpdateDialog(selected)"

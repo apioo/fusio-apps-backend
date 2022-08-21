@@ -1,13 +1,13 @@
 import {Component} from '@angular/core';
 import {Route as ModelRoute} from "fusio-sdk/dist/src/generated/backend/Route";
-import {Detail} from "../../../detail";
 import {Config, HttpResponse} from "../config";
 import {LogComponent} from "../log/log.component";
 import {Route_Methods} from "fusio-sdk/dist/src/generated/backend/Route_Methods";
 import {Route_Method} from "fusio-sdk/dist/src/generated/backend/Route_Method";
 import {Route_Method_Responses} from "fusio-sdk/dist/src/generated/backend/Route_Method_Responses";
-import {FactoryService} from "../../../factory.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {Detail} from "ngx-fusio-sdk";
+import {FusioService} from "../../../fusio.service";
 
 @Component({
   selector: 'app-route-detail',
@@ -20,12 +20,12 @@ export class DetailComponent extends Detail<ModelRoute> {
   public activeVersion: number = 1;
   public activeMethod: string = 'GET';
 
-  constructor(protected factory: FactoryService, protected modalService: NgbModal) {
+  constructor(protected fusio: FusioService, protected modalService: NgbModal) {
     super();
   }
 
   override async ngOnInit(): Promise<void> {
-    this.baseUrl = this.factory.getBaseUrl();
+    this.baseUrl = this.fusio.getBaseUrl();
 
     let version = Config.getActiveVersion(this.selected, this.activeVersion);
     if (version === null) {

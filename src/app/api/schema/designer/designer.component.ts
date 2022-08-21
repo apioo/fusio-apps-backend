@@ -1,13 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {InternalToTypeSchemaService, Specification, TypeSchemaToInternalService} from "ngx-typeschema-editor";
-import {Mode} from "../../../list";
-import {FactoryService} from "../../../factory.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {DetailComponent} from "../detail/detail.component";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {ActivatedRoute, Router} from "@angular/router";
 import axios from "axios";
 import {Schema} from "fusio-sdk/dist/src/generated/backend/Schema";
+import {Mode} from "ngx-fusio-sdk";
+import {FusioService} from "../../../fusio.service";
 
 @Component({
   selector: 'app-designer',
@@ -24,7 +24,7 @@ export class DesignerComponent implements OnInit {
   schema?: Schema;
   response?: Message;
 
-  constructor(protected factory: FactoryService, private internalToTypeSchemaService: InternalToTypeSchemaService, private typeSchemaToInternalService: TypeSchemaToInternalService, protected route: ActivatedRoute, protected router: Router, protected modalService: NgbModal) { }
+  constructor(protected fusio: FusioService, private internalToTypeSchemaService: InternalToTypeSchemaService, private typeSchemaToInternalService: TypeSchemaToInternalService, protected route: ActivatedRoute, protected router: Router, protected modalService: NgbModal) { }
 
   async ngOnInit(): Promise<void> {
     this.route.paramMap.subscribe(params => {
@@ -66,7 +66,7 @@ export class DesignerComponent implements OnInit {
 
   async loadSchema(id: string) {
     try {
-      const group = await this.factory.getClient().backendSchema();
+      const group = await this.fusio.getClient().backendSchema();
       const response = await group.getBackendSchemaBySchemaId(id).backendActionSchemaGet();
 
       this.schema = response.data;

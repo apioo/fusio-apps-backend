@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
-import {List} from "../../../list";
+import {List} from "ngx-fusio-sdk";
+import Client from "fusio-sdk/dist/src/generated/backend/Client";
 import {Rate} from "fusio-sdk/dist/src/generated/backend/Rate";
 import {Collection_Category_Query} from "fusio-sdk/dist/src/generated/backend/Collection_Category_Query";
 import {AxiosResponse} from "axios";
@@ -11,15 +12,15 @@ import {ModalComponent} from "../modal/modal.component";
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent extends List<Rate> {
+export class ListComponent extends List<Client, Rate> {
 
   protected async getAll(query: Collection_Category_Query): Promise<AxiosResponse<Collection<Rate>>> {
-    const group = await this.factory.getClient().backendRate();
+    const group = await this.fusio.getClient().backendRate();
     return await group.getBackendRate().backendActionRateGetAll(query);
   }
 
   protected async get(id: string): Promise<AxiosResponse<Rate>> {
-    const group = await this.factory.getClient().backendRate();
+    const group = await this.fusio.getClient().backendRate();
     return await group.getBackendRateByRateId(id).backendActionRateGet();
   }
 

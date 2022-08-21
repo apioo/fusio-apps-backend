@@ -4,19 +4,20 @@ import {Scope} from "fusio-sdk/dist/src/generated/backend/Scope";
 import {AxiosResponse} from "axios";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {Scope_Route} from "fusio-sdk/dist/src/generated/backend/Scope_Route";
-import {Modal} from "../../../modal";
+import {Modal} from "ngx-fusio-sdk";
+import Client from "fusio-sdk/dist/src/generated/backend/Client";
 
 @Component({
   selector: 'app-scope-modal',
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.css']
 })
-export class ModalComponent extends Modal<Scope> {
+export class ModalComponent extends Modal<Client, Scope> {
 
   routes: Array<ModelRoute & ExtendRoute> = [];
 
   override async ngOnInit(): Promise<void> {
-    const user = await this.factory.getClient().backendRoute();
+    const user = await this.fusio.getClient().backendRoute();
     const response = await user.getBackendRoutes().backendActionRouteGetAll({count: 1024});
 
     this.routes = [];
@@ -52,19 +53,19 @@ export class ModalComponent extends Modal<Scope> {
   protected async create(entity: Scope): Promise<AxiosResponse<Message>> {
     entity.routes = this.getConfiguredScopes();
 
-    const group = await this.factory.getClient().backendScope();
+    const group = await this.fusio.getClient().backendScope();
     return await group.getBackendScope().backendActionScopeCreate(entity);
   }
 
   protected async update(entity: Scope): Promise<AxiosResponse<Message>> {
     entity.routes = this.getConfiguredScopes();
 
-    const group = await this.factory.getClient().backendScope();
+    const group = await this.fusio.getClient().backendScope();
     return await group.getBackendScopeByScopeId('' + entity.id).backendActionScopeUpdate(entity);
   }
 
   protected async delete(entity: Scope): Promise<AxiosResponse<Message>> {
-    const group = await this.factory.getClient().backendScope();
+    const group = await this.fusio.getClient().backendScope();
     return await group.getBackendScopeByScopeId('' + entity.id).backendActionScopeDelete();
   }
 

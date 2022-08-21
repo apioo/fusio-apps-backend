@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Event_Subscription} from "fusio-sdk/dist/src/generated/backend/Event_Subscription";
-import {Detail} from "../../../detail";
+import {Detail} from "ngx-fusio-sdk";
 
 @Component({
   selector: 'app-subscription-detail',

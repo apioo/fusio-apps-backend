@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {FactoryService} from "../../../factory.service";
 import {Statistic_Chart_Data} from "fusio-sdk/dist/src/generated/backend/Statistic_Chart_Data";
 import {Dashboard_Transactions} from "fusio-sdk/dist/src/generated/backend/Dashboard_Transactions";
 import {Dashboard_Users} from "fusio-sdk/dist/src/generated/backend/Dashboard_Users";
@@ -7,6 +6,7 @@ import {Dashboard_Requests} from "fusio-sdk/dist/src/generated/backend/Dashboard
 import {Dashboard_Apps} from "fusio-sdk/dist/src/generated/backend/Dashboard_Apps";
 import {ChartData} from "chart.js";
 import {Converter} from "../../../analytics/statistic/converter";
+import {FusioService} from "../../../fusio.service";
 
 @Component({
   selector: 'app-list',
@@ -35,11 +35,11 @@ export class ListComponent implements OnInit {
     }
   };
 
-  constructor(private factory: FactoryService) {
+  constructor(private fusio: FusioService) {
   }
 
   async ngOnInit(): Promise<void> {
-    const dashboard = await this.factory.getClient().backendDashboard();
+    const dashboard = await this.fusio.getClient().backendDashboard();
     const response = await dashboard.getBackendDashboard().backendActionDashboardGetAll()
 
     if (response.data.errorsPerRoute) {

@@ -7,7 +7,7 @@
       <button type="button" (click)="doDeleteClick()" class="btn btn-danger fusio-btn-delete">Delete</button>
     </div>
     <div class="float-end fusio-route-scope">
-      <app-scope-values [scopes]="selected?.scopes"></app-scope-values>
+      <fusio-scopes [scopes]="selected?.scopes"></fusio-scopes>
     </div>
     <br><br>
     <ul ngbNav #versionNav="ngbNav" [(activeId)]="activeVersion" class="nav-tabs">

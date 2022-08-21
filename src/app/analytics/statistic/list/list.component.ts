@@ -1,6 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {FactoryService} from "../../../factory.service";
-import {HelpService} from "../../../help.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Converter} from "../converter";
 import {ChartData} from "chart.js";
@@ -8,6 +6,8 @@ import {Statistic_Chart_Data} from "fusio-sdk/dist/src/generated/backend/Statist
 import {Log_Collection_Query} from "fusio-sdk/dist/src/generated/backend/Log_Collection_Query";
 import {FilterComponent} from "../../log/filter/filter.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {FusioService} from "../../../fusio.service";
+import {HelpService} from "ngx-fusio-sdk";
 
 @Component({
   selector: 'app-list',
@@ -60,7 +60,7 @@ export class ListComponent implements OnInit {
     }
   };
 
-  constructor(protected factory: FactoryService, protected help: HelpService, protected route: ActivatedRoute, protected router: Router, protected modalService: NgbModal) { }
+  constructor(protected fusio: FusioService, protected help: HelpService, protected route: ActivatedRoute, protected router: Router, protected modalService: NgbModal) { }
 
   async ngOnInit(): Promise<void> {
     this.route.paramMap.subscribe(params => {
@@ -75,7 +75,7 @@ export class ListComponent implements OnInit {
   }
 
   async doFilter() {
-    const statistic = await this.factory.getClient().backendStatistic();
+    const statistic = await this.fusio.getClient().backendStatistic();
     if (this.statistic === 'errors_per_route') {
       const response = await statistic.getBackendStatisticErrorsPerRoute().backendActionStatisticGetErrorsPerRoute(this.filter);
       this.chart = Converter.convertChart(response.data);

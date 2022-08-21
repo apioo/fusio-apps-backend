@@ -1,11 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {FactoryService} from "../../../factory.service";
 import {ActivatedRoute} from "@angular/router";
-import {
-  Connection_Introspection_Entities
-} from "fusio-sdk/dist/src/generated/backend/Connection_Introspection_Entities";
 import {Connection_Introspection_Entity} from "fusio-sdk/dist/src/generated/backend/Connection_Introspection_Entity";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
+import {FusioService} from "../../../fusio.service";
 
 @Component({
   selector: 'app-connection-introspection',
@@ -19,7 +16,7 @@ export class IntrospectionComponent implements OnInit {
   entity?: Connection_Introspection_Entity;
   response?: Message;
 
-  constructor(protected factory: FactoryService, protected route: ActivatedRoute) {
+  constructor(protected fusio: FusioService, protected route: ActivatedRoute) {
   }
 
   async ngOnInit(): Promise<void> {
@@ -40,7 +37,7 @@ export class IntrospectionComponent implements OnInit {
     if (!this.connectionId) {
       return;
     }
-    const group = await this.factory.getClient().backendConnection();
+    const group = await this.fusio.getClient().backendConnection();
     const response = await group.getBackendConnectionByConnectionIdIntrospection(this.connectionId).backendActionConnectionIntrospectionGetEntities();
     this.entites = response.data.entities || [];
   }
@@ -49,7 +46,7 @@ export class IntrospectionComponent implements OnInit {
     if (!this.connectionId) {
       return;
     }
-    const group = await this.factory.getClient().backendConnection();
+    const group = await this.fusio.getClient().backendConnection();
     const response = await group.getBackendConnectionByConnectionIdIntrospectionAndEntity(this.connectionId, entityName).backendActionConnectionIntrospectionGetEntity();
     this.entity = response.data;
   }

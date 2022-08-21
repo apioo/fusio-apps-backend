@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FactoryService} from "../../factory.service";
 import {Scope_Category} from "fusio-sdk/dist/src/generated/backend/Scope_Category";
 import {Scope_Category_Scope} from "fusio-sdk/dist/src/generated/backend/Scope_Category_Scope";
+import {FusioService} from "../../fusio.service";
 
 @Component({
   selector: 'app-scope-categories',
@@ -18,11 +18,11 @@ export class ScopeCategoriesComponent implements OnInit {
   selectedCategory: number = 1;
   toggleScope: boolean = true;
 
-  constructor(protected factory: FactoryService) {
+  constructor(protected fusio: FusioService) {
   }
 
   async ngOnInit(): Promise<void> {
-    const scope = await this.factory.getClient().backendScope();
+    const scope = await this.fusio.getClient().backendScope();
     const response = await scope.getBackendScopeCategories().backendActionScopeGetCategories();
     this.categories = response.data.categories;
     if (this.scopes) {

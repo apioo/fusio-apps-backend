@@ -1,6 +1,5 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {AuthenticationGuard} from "./authentication.guard";
 import {LoginComponent} from "./login/login.component";
 import {LogoutComponent} from "./logout/logout.component";
 import {ChangePasswordComponent} from "./account/change-password/change-password.component";
@@ -34,6 +33,7 @@ import {ListComponent as MarketplaceList} from "./system/marketplace/list/list.c
 import {ListComponent as ConfigList} from "./system/config/list/list.component";
 import {ListComponent as AuditList} from "./system/audit/list/list.component";
 import {ListComponent as TrashList} from "./system/trash/list/list.component";
+import {AuthenticationGuard} from "ngx-fusio-sdk";
 
 const routes: Routes = [
   { path: '', component: DashboardList, canActivate: [AuthenticationGuard] },
