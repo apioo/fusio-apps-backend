@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
-import {FusioService} from "../../fusio.service";
 import {AccountChangePassword} from "fusio-sdk/dist/src/generated/backend/AccountChangePassword";
-import {ErrorService} from "ngx-fusio-sdk";
+import {BackendService, ErrorService} from "ngx-fusio-sdk";
 
 @Component({
   selector: 'app-change-password',
@@ -18,14 +17,14 @@ export class ChangePasswordComponent implements OnInit {
   };
   response?: Message;
 
-  constructor(protected fusio: FusioService, private error: ErrorService) { }
+  constructor(private backend: BackendService, private error: ErrorService) { }
 
   ngOnInit(): void {
   }
 
   async submit() {
     try {
-      const resource = await this.fusio.getClient().getBackendAccountChangePassword();
+      const resource = await this.backend.getClient().getBackendAccountChangePassword();
       const response = await resource.backendActionAccountChangePassword(this.credentials);
 
       this.response = response.data;

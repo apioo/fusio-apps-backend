@@ -2,8 +2,8 @@ import {Component, Input, OnInit} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {App} from "fusio-sdk/dist/src/generated/backend/App";
 import {User} from "fusio-sdk/dist/src/generated/backend/User";
-import {FusioService} from "../../../fusio.service";
 import {AuditCollectionQuery} from "fusio-sdk/dist/src/generated/backend/AuditCollectionQuery";
+import {BackendService} from "ngx-fusio-sdk";
 
 @Component({
   selector: 'app-filter',
@@ -15,7 +15,7 @@ export class FilterComponent implements OnInit {
   @Input()
   filter!: AuditCollectionQuery;
 
-  constructor(protected fusio: FusioService, public modal: NgbActiveModal) { }
+  constructor(private backend: BackendService, public modal: NgbActiveModal) { }
 
   apps?: Array<App>;
   users?: Array<User>;
@@ -30,13 +30,13 @@ export class FilterComponent implements OnInit {
   }
 
   private async loadApps(): Promise<void> {
-    const resource = await this.fusio.getClient().getBackendApp();
+    const resource = await this.backend.getClient().getBackendApp();
     const response = await resource.backendActionAppGetAll({count: 1024});
     this.apps = response.data.entry;
   }
 
   private async loadUsers(): Promise<void> {
-    const resource = await this.fusio.getClient().getBackendUser();
+    const resource = await this.backend.getClient().getBackendUser();
     const response = await resource.backendActionUserGetAll({count: 1024});
     this.users = response.data.entry;
   }

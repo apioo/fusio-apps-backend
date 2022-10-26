@@ -21,18 +21,18 @@ export class ModalComponent extends Modal<Client, Page> {
   }];
 
   protected async create(entity: Page): Promise<AxiosResponse<Message>> {
-    const group = await this.fusio.getClient().getBackendPage();
-    return await group.backendActionPageCreate(entity);
+    const resource = await this.fusio.getClient().getBackendPage();
+    return await resource.backendActionPageCreate(entity);
   }
 
   protected async update(entity: Page): Promise<AxiosResponse<Message>> {
-    const group = await this.fusio.getClient().getBackendPageByPageId('' + entity.id);
-    return await group.backendActionPageUpdate(entity);
+    const resource = await this.fusio.getClient().getBackendPageByPageId('' + entity.id);
+    return await resource.backendActionPageUpdate(entity);
   }
 
   protected async delete(entity: Page): Promise<AxiosResponse<Message>> {
-    const group = await this.fusio.getClient().getBackendPageByPageId('' + entity.id);
-    return await group.backendActionPageDelete();
+    const resource = await this.fusio.getClient().getBackendPageByPageId('' + entity.id);
+    return await resource.backendActionPageDelete();
   }
 
   protected newEntity(): Page {

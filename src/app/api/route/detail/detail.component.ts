@@ -3,8 +3,7 @@ import {Route as ModelRoute} from "fusio-sdk/dist/src/generated/backend/Route";
 import {Config, HttpResponse} from "../config";
 import {LogComponent} from "../log/log.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {Detail} from "ngx-fusio-sdk";
-import {FusioService} from "../../../fusio.service";
+import {BackendService, Detail} from "ngx-fusio-sdk";
 import {RouteMethods} from "fusio-sdk/dist/src/generated/backend/RouteMethods";
 import {RouteMethod} from "fusio-sdk/dist/src/generated/backend/RouteMethod";
 import {RouteMethodResponses} from "fusio-sdk/dist/src/generated/backend/RouteMethodResponses";
@@ -20,12 +19,12 @@ export class DetailComponent extends Detail<ModelRoute> {
   public activeVersion: number = 1;
   public activeMethod: string = 'GET';
 
-  constructor(protected fusio: FusioService, protected modalService: NgbModal) {
+  constructor(private backend: BackendService, protected modalService: NgbModal) {
     super();
   }
 
   override async ngOnInit(): Promise<void> {
-    this.baseUrl = this.fusio.getBaseUrl();
+    this.baseUrl = this.backend.getBaseUrl();
 
     let version = Config.getActiveVersion(this.selected, this.activeVersion);
     if (version === null) {

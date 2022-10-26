@@ -3,8 +3,8 @@ import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {User} from "fusio-sdk/dist/src/generated/backend/User";
 import {App} from "fusio-sdk/dist/src/generated/backend/App";
 import {Route} from "fusio-sdk/dist/src/generated/backend/Route";
-import {FusioService} from "../../../fusio.service";
 import {LogCollectionQuery} from "fusio-sdk/dist/src/generated/backend/LogCollectionQuery";
+import {BackendService} from "ngx-fusio-sdk";
 
 @Component({
   selector: 'app-log-filter',
@@ -16,7 +16,7 @@ export class FilterComponent implements OnInit {
   @Input()
   filter!: LogCollectionQuery;
 
-  constructor(protected fusio: FusioService, public modal: NgbActiveModal) { }
+  constructor(private backend: BackendService, public modal: NgbActiveModal) { }
 
   routes?: Array<Route>;
   apps?: Array<App>;
@@ -33,19 +33,19 @@ export class FilterComponent implements OnInit {
   }
 
   private async loadRoutes(): Promise<void> {
-    const resource = await this.fusio.getClient().getBackendRoutes();
+    const resource = await this.backend.getClient().getBackendRoutes();
     const response = await resource.backendActionRouteGetAll({count: 1024});
     this.routes = response.data.entry;
   }
 
   private async loadApps(): Promise<void> {
-    const resource = await this.fusio.getClient().getBackendApp();
+    const resource = await this.backend.getClient().getBackendApp();
     const response = await resource.backendActionAppGetAll({count: 1024});
     this.apps = response.data.entry;
   }
 
   private async loadUsers(): Promise<void> {
-    const resource = await this.fusio.getClient().getBackendUser();
+    const resource = await this.backend.getClient().getBackendUser();
     const response = await resource.backendActionUserGetAll({count: 1024});
     this.users = response.data.entry;
   }

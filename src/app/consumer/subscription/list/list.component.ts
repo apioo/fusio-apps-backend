@@ -15,13 +15,13 @@ import {CollectionCategoryQuery} from "fusio-sdk/dist/src/generated/backend/Coll
 export class ListComponent extends List<Client, EventSubscription> {
 
   protected async getAll(query: CollectionCategoryQuery): Promise<AxiosResponse<Collection<EventSubscription>>> {
-    const group = await this.fusio.getClient().getBackendEventSubscription();
-    return await group.backendActionEventSubscriptionGetAll(query);
+    const resource = await this.fusio.getClient().getBackendEventSubscription();
+    return await resource.backendActionEventSubscriptionGetAll(query);
   }
 
   protected async get(id: string): Promise<AxiosResponse<EventSubscription>> {
-    const group = await this.fusio.getClient().getBackendEventSubscriptionBySubscriptionId(id);
-    return await group.backendActionEventSubscriptionGet();
+    const resource = await this.fusio.getClient().getBackendEventSubscriptionBySubscriptionId(id);
+    return await resource.backendActionEventSubscriptionGet();
   }
 
   protected getDetailComponent(): any {

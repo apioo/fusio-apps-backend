@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import axios from "axios";
+import {Component, OnInit} from '@angular/core';
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
-import {FusioService} from "../../../fusio.service";
 import {SdkTypes} from "fusio-sdk/dist/src/generated/backend/SdkTypes";
+import {BackendService, ErrorService} from "ngx-fusio-sdk";
 
 @Component({
   selector: 'app-list',
@@ -11,40 +10,32 @@ import {SdkTypes} from "fusio-sdk/dist/src/generated/backend/SdkTypes";
 })
 export class ListComponent implements OnInit {
 
-  constructor(protected fusio: FusioService) { }
+  constructor(private backend: BackendService, private error: ErrorService) { }
 
   public types?: SdkTypes;
   public response?: Message;
 
   async ngOnInit(): Promise<void> {
     try {
-      const group = await this.fusio.getClient().getBackendSdk();
-      const response = await group.backendActionSdkGetAll();
+      const resource = await this.backend.getClient().getBackendSdk();
+      const response = await resource.backendActionSdkGetAll();
 
       this.types = response.data.types;
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response)  {
-        this.response = error.response.data as Message;
-      } else {
-        throw error;
-      }
+      this.response = this.error.convert(error);
     }
   }
 
   async generate(type: string) {
     try {
-      const group = await this.fusio.getClient().getBackendSdk();
-      const response = await group.backendActionSdkGenerate({
+      const resource = await this.backend.getClient().getBackendSdk();
+      const response = await resource.backendActionSdkGenerate({
         format: type
       });
 
       this.response = response.data;
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response)  {
-        this.response = error.response.data as Message;
-      } else {
-        throw error;
-      }
+      this.response = this.error.convert(error);
     }
   }
 

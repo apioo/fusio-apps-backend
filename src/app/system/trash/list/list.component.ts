@@ -1,12 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
-import {HelpService} from "ngx-fusio-sdk";
-import {FusioService} from "../../../fusio.service";
+import {BackendService, HelpService} from "ngx-fusio-sdk";
 import {TrashData} from "fusio-sdk/dist/src/generated/backend/TrashData";
-import {
-  CollectionCategoryQuery
-} from "fusio-sdk/dist/src/generated/backend/CollectionCategoryQuery";
+import {CollectionCategoryQuery} from "fusio-sdk/dist/src/generated/backend/CollectionCategoryQuery";
 
 @Component({
   selector: 'app-list',
@@ -24,7 +21,7 @@ export class ListComponent implements OnInit {
   type: string = 'action';
   types?: Array<string>;
 
-  constructor(protected fusio: FusioService, protected help: HelpService, protected route: ActivatedRoute, protected router: Router) {
+  constructor(private backend: BackendService, private help: HelpService, private route: ActivatedRoute, private router: Router) {
   }
 
   async ngOnInit(): Promise<void> {
@@ -47,7 +44,7 @@ export class ListComponent implements OnInit {
       query.search = this.search;
     }
 
-    const resource = await this.fusio.getClient().getBackendTrashByType(this.type);
+    const resource = await this.backend.getClient().getBackendTrashByType(this.type);
     const response = await resource.backendActionTrashGetAll(query);
 
     this.totalResults = response.data.totalResults || 0;
@@ -63,7 +60,7 @@ export class ListComponent implements OnInit {
   }
 
   async doRestore(entry: TrashData) {
-    const resource = await this.fusio.getClient().getBackendTrashByType(this.type);
+    const resource = await this.backend.getClient().getBackendTrashByType(this.type);
     const response = await resource.backendActionTrashRestore({
       id: entry.id
     });
@@ -72,7 +69,7 @@ export class ListComponent implements OnInit {
   }
 
   async loadTypes() {
-    const resource = await this.fusio.getClient().getBackendTrash();
+    const resource = await this.backend.getClient().getBackendTrash();
     const response = await resource.backendActionTrashGetTypes();
     this.types = response.data.types;
   }

@@ -4,8 +4,7 @@ import {Converter} from "../converter";
 import {ChartData} from "chart.js";
 import {FilterComponent} from "../../log/filter/filter.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {FusioService} from "../../../fusio.service";
-import {HelpService} from "ngx-fusio-sdk";
+import {BackendService, HelpService} from "ngx-fusio-sdk";
 import {LogCollectionQuery} from "fusio-sdk/dist/src/generated/backend/LogCollectionQuery";
 import {StatisticChartData} from "fusio-sdk/dist/src/generated/backend/StatisticChartData";
 
@@ -60,7 +59,7 @@ export class ListComponent implements OnInit {
     }
   };
 
-  constructor(protected fusio: FusioService, protected help: HelpService, protected route: ActivatedRoute, protected router: Router, protected modalService: NgbModal) { }
+  constructor(private backend: BackendService, private help: HelpService, private route: ActivatedRoute, private router: Router, private modalService: NgbModal) { }
 
   async ngOnInit(): Promise<void> {
     this.route.paramMap.subscribe(params => {
@@ -76,39 +75,39 @@ export class ListComponent implements OnInit {
 
   async doFilter() {
     if (this.statistic === 'errors_per_route') {
-      const resource = await this.fusio.getClient().getBackendStatisticErrorsPerRoute();
+      const resource = await this.backend.getClient().getBackendStatisticErrorsPerRoute();
       const response = await resource.backendActionStatisticGetErrorsPerRoute(this.filter);
       this.chart = Converter.convertChart(response.data);
     } else if (this.statistic === 'incoming_requests') {
-      const resource = await this.fusio.getClient().getBackendStatisticIncomingRequests();
+      const resource = await this.backend.getClient().getBackendStatisticIncomingRequests();
       const response = await resource.backendActionStatisticGetIncomingRequests(this.filter);
       this.chart = Converter.convertChart(response.data);
     } else if (this.statistic === 'incoming_transactions') {
-      const resource = await this.fusio.getClient().getBackendStatisticIncomingTransactions();
+      const resource = await this.backend.getClient().getBackendStatisticIncomingTransactions();
       const response = await resource.backendActionStatisticGetIncomingTransactions(this.filter);
       this.chart = Converter.convertChart(response.data);
     } else if (this.statistic === 'issued_tokens') {
-      const resource = await this.fusio.getClient().getBackendStatisticIssuedTokens();
+      const resource = await this.backend.getClient().getBackendStatisticIssuedTokens();
       const response = await resource.backendActionStatisticGetIssuedTokens(this.filter);
       this.chart = Converter.convertChart(response.data);
     } else if (this.statistic === 'most_used_apps') {
-      const resource = await this.fusio.getClient().getBackendStatisticMostUsedApps();
+      const resource = await this.backend.getClient().getBackendStatisticMostUsedApps();
       const response = await resource.backendActionStatisticGetMostUsedApps(this.filter);
       this.chart = Converter.convertChart(response.data);
     } else if (this.statistic === 'most_used_routes') {
-      const resource = await this.fusio.getClient().getBackendStatisticMostUsedRoutes();
+      const resource = await this.backend.getClient().getBackendStatisticMostUsedRoutes();
       const response = await resource.backendActionStatisticGetMostUsedRoutes(this.filter);
       this.chart = Converter.convertChart(response.data);
     } else if (this.statistic === 'time_average') {
-      const resource = await this.fusio.getClient().getBackendStatisticTimeAverage();
+      const resource = await this.backend.getClient().getBackendStatisticTimeAverage();
       const response = await resource.backendActionStatisticGetTimeAverage(this.filter);
       this.chart = Converter.convertChart(response.data);
     } else if (this.statistic === 'time_per_route') {
-      const resource = await this.fusio.getClient().getBackendStatisticTimePerRoute();
+      const resource = await this.backend.getClient().getBackendStatisticTimePerRoute();
       const response = await resource.backendActionStatisticGetTimePerRoute(this.filter);
       this.chart = Converter.convertChart(response.data);
     } else if (this.statistic === 'used_points') {
-      const resource = await this.fusio.getClient().getBackendStatisticUsedPoints();
+      const resource = await this.backend.getClient().getBackendStatisticUsedPoints();
       const response = await resource.backendActionStatisticGetUsedPoints(this.filter);
       this.chart = Converter.convertChart(response.data);
     }

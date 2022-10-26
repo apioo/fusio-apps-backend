@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import navigation from './../../navigation.json';
 import packageInfo from './../../../package.json';
-import {FusioService} from "../fusio.service";
+import {BackendService} from "ngx-fusio-sdk";
 
 @Component({
   selector: 'app-navigation',
@@ -13,7 +13,7 @@ export class NavigationComponent implements OnInit {
   version = packageInfo.version;
   navigation: Array<GroupItem> = [];
 
-  constructor(private fusio: FusioService) {
+  constructor(private backend: BackendService) {
   }
 
   ngOnInit(): void {
@@ -31,7 +31,7 @@ export class NavigationComponent implements OnInit {
     for (let i = 0; i < navigation.entries.length; i++) {
       let children = [];
       for (let j = 0; j < navigation.entries[i].children.length; j++) {
-        if (!this.fusio.hasScope(navigation.entries[i].children[j].scope)) {
+        if (!this.backend.hasScope(navigation.entries[i].children[j].scope)) {
           continue;
         }
 

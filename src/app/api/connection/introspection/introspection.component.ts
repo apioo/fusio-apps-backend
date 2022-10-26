@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
-import {FusioService} from "../../../fusio.service";
 import {ConnectionIntrospectionEntity} from "fusio-sdk/dist/src/generated/backend/ConnectionIntrospectionEntity";
+import {BackendService} from "ngx-fusio-sdk";
 
 @Component({
   selector: 'app-connection-introspection',
@@ -16,7 +16,7 @@ export class IntrospectionComponent implements OnInit {
   entity?: ConnectionIntrospectionEntity;
   response?: Message;
 
-  constructor(protected fusio: FusioService, protected route: ActivatedRoute) {
+  constructor(protected backend: BackendService, protected route: ActivatedRoute) {
   }
 
   async ngOnInit(): Promise<void> {
@@ -37,7 +37,7 @@ export class IntrospectionComponent implements OnInit {
     if (!this.connectionId) {
       return;
     }
-    const resource = await this.fusio.getClient().getBackendConnectionByConnectionIdIntrospection(this.connectionId);
+    const resource = await this.backend.getClient().getBackendConnectionByConnectionIdIntrospection(this.connectionId);
     const response = await resource.backendActionConnectionIntrospectionGetEntities();
     this.entites = response.data.entities || [];
   }
@@ -46,7 +46,7 @@ export class IntrospectionComponent implements OnInit {
     if (!this.connectionId) {
       return;
     }
-    const resource = await this.fusio.getClient().getBackendConnectionByConnectionIdIntrospectionAndEntity(this.connectionId, entityName);
+    const resource = await this.backend.getClient().getBackendConnectionByConnectionIdIntrospectionAndEntity(this.connectionId, entityName);
     const response = await resource.backendActionConnectionIntrospectionGetEntity();
     this.entity = response.data;
   }

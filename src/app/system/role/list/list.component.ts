@@ -15,13 +15,13 @@ import {CollectionCategoryQuery} from "fusio-sdk/dist/src/generated/backend/Coll
 export class ListComponent extends List<Client, Role> {
 
   protected async getAll(query: CollectionCategoryQuery): Promise<AxiosResponse<Collection<Role>>> {
-    const group = await this.fusio.getClient().getBackendRole();
-    return await group.backendActionRoleGetAll(query);
+    const resource = await this.fusio.getClient().getBackendRole();
+    return await resource.backendActionRoleGetAll(query);
   }
 
   protected async get(id: string): Promise<AxiosResponse<Role>> {
-    const group = await this.fusio.getClient().getBackendRoleByRoleId(id);
-    return await group.backendActionRoleGet();
+    const resource = await this.fusio.getClient().getBackendRoleByRoleId(id);
+    return await resource.backendActionRoleGet();
   }
 
   protected getDetailComponent(): any {

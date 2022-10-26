@@ -4,10 +4,8 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {DetailComponent} from "../detail/detail.component";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {ActivatedRoute, Router} from "@angular/router";
-import axios from "axios";
 import {Schema} from "fusio-sdk/dist/src/generated/backend/Schema";
-import {Mode} from "ngx-fusio-sdk";
-import {FusioService} from "../../../fusio.service";
+import {BackendService, ErrorService, Mode} from "ngx-fusio-sdk";
 
 @Component({
   selector: 'app-designer',
@@ -24,7 +22,7 @@ export class DesignerComponent implements OnInit {
   schema?: Schema;
   response?: Message;
 
-  constructor(protected fusio: FusioService, private internalToTypeSchemaService: InternalToTypeSchemaService, private typeSchemaToInternalService: TypeSchemaToInternalService, protected route: ActivatedRoute, protected router: Router, protected modalService: NgbModal) { }
+  constructor(private backend: BackendService, private internalToTypeSchemaService: InternalToTypeSchemaService, private typeSchemaToInternalService: TypeSchemaToInternalService, private route: ActivatedRoute, private router: Router, private error: ErrorService, protected modalService: NgbModal) { }
 
   async ngOnInit(): Promise<void> {
     this.route.paramMap.subscribe(params => {
@@ -66,17 +64,13 @@ export class DesignerComponent implements OnInit {
 
   async loadSchema(id: string) {
     try {
-      const resource = await this.fusio.getClient().getBackendSchemaBySchemaId(id);
+      const resource = await this.backend.getClient().getBackendSchemaBySchemaId(id);
       const response = await resource.backendActionSchemaGet();
 
       this.schema = response.data;
       this.spec = this.typeSchemaToInternalService.transform(this.schema.source);
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response)  {
-        this.response = error.response.data as Message;
-      } else {
-        throw error;
-      }
+      this.response = this.error.convert(error);
     }
   }
 
