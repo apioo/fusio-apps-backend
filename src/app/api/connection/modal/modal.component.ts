@@ -1,12 +1,12 @@
 import {Component} from '@angular/core';
-import {Connection_Index_Entry} from "fusio-sdk/dist/src/generated/backend/Connection_Index_Entry";
-import {Form_Container} from "fusio-sdk/dist/src/generated/backend/Form_Container";
 import {Connection} from "fusio-sdk/dist/src/generated/backend/Connection";
 import {AxiosResponse} from "axios";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
-import {Form_Query} from "fusio-sdk/dist/src/generated/backend/Form_Query";
 import {HelpComponent, Modal} from "ngx-fusio-sdk";
 import Client from "fusio-sdk/dist/src/generated/backend/Client";
+import {ConnectionIndexEntry} from "fusio-sdk/dist/src/generated/backend/ConnectionIndexEntry";
+import {FormContainer} from "fusio-sdk/dist/src/generated/backend/FormContainer";
+import {FormQuery} from "fusio-sdk/dist/src/generated/backend/FormQuery";
 
 @Component({
   selector: 'app-connection-modal',
@@ -15,14 +15,14 @@ import Client from "fusio-sdk/dist/src/generated/backend/Client";
 })
 export class ModalComponent extends Modal<Client, Connection> {
 
-  connections?: Array<Connection_Index_Entry>;
-  form?: Form_Container;
+  connections?: Array<ConnectionIndexEntry>;
+  form?: FormContainer;
   entityClass?: string;
   custom: boolean = false;
 
   override async ngOnInit(): Promise<void> {
-    const action = await this.fusio.getClient().backendConnection();
-    const response = await action.getBackendConnectionList().backendActionConnectionGetIndex();
+    const resource = await this.fusio.getClient().getBackendConnectionList();
+    const response = await resource.backendActionConnectionGetIndex();
     this.connections = response.data.connections;
 
     if (this.entity.class) {
@@ -31,18 +31,18 @@ export class ModalComponent extends Modal<Client, Connection> {
   }
 
   protected async create(entity: Connection): Promise<AxiosResponse<Message>> {
-    const group = await this.fusio.getClient().backendConnection();
-    return await group.getBackendConnection().backendActionConnectionCreate(entity);
+    const resource = await this.fusio.getClient().getBackendConnection();
+    return await resource.backendActionConnectionCreate(entity);
   }
 
   protected async update(entity: Connection): Promise<AxiosResponse<Message>> {
-    const group = await this.fusio.getClient().backendConnection();
-    return await group.getBackendConnectionByConnectionId('' + entity.id).backendActionConnectionUpdate(entity);
+    const resource = await this.fusio.getClient().getBackendConnectionByConnectionId('' + entity.id);
+    return await resource.backendActionConnectionUpdate(entity);
   }
 
   protected async delete(entity: Connection): Promise<AxiosResponse<Message>> {
-    const group = await this.fusio.getClient().backendConnection();
-    return await group.getBackendConnectionByConnectionId('' + entity.id).backendActionConnectionDelete();
+    const resource = await this.fusio.getClient().getBackendConnectionByConnectionId('' + entity.id);
+    return await resource.backendActionConnectionDelete();
   }
 
   protected newEntity(): Connection {
@@ -58,12 +58,12 @@ export class ModalComponent extends Modal<Client, Connection> {
       return;
     }
 
-    const query: Form_Query = {
+    const query: FormQuery = {
       class: classString
     };
 
-    const action = await this.fusio.getClient().backendConnection();
-    const response = await action.getBackendConnectionForm().backendActionConnectionGetForm(query);
+    const resource = await this.fusio.getClient().getBackendConnectionForm();
+    const response = await resource.backendActionConnectionGetForm(query);
     this.form = response.data;
 
     const hasChanged = this.entityClass && this.entityClass !== this.entity.class;

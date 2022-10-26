@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {App_Token} from "fusio-sdk/dist/src/generated/backend/App_Token";
 import {Detail} from "ngx-fusio-sdk";
+import {AppToken} from "fusio-sdk/dist/src/generated/backend/AppToken";
 
 @Component({
   selector: 'app-token-detail',
   templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.css']
 })
-export class DetailComponent extends Detail<App_Token> {
+export class DetailComponent extends Detail<AppToken> {
 
 }

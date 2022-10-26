@@ -16,24 +16,24 @@ export class ModalComponent extends Modal<Client, Cronjob> {
   actions?: Array<Action>;
 
   override async ngOnInit(): Promise<void> {
-    const action = await this.fusio.getClient().backendAction();
-    const response = await action.getBackendAction().backendActionActionGetAll({count: 1024});
+    const resource = await this.fusio.getClient().getBackendAction();
+    const response = await resource.backendActionActionGetAll({count: 1024});
     this.actions = response.data.entry;
   }
 
   protected async create(entity: Cronjob): Promise<AxiosResponse<Message>> {
-    const group = await this.fusio.getClient().backendCronjob();
-    return await group.getBackendCronjob().backendActionCronjobCreate(entity);
+    const resource = await this.fusio.getClient().getBackendCronjob();
+    return await resource.backendActionCronjobCreate(entity);
   }
 
   protected async update(entity: Cronjob): Promise<AxiosResponse<Message>> {
-    const group = await this.fusio.getClient().backendCronjob();
-    return await group.getBackendCronjobByCronjobId('' + entity.id).backendActionCronjobUpdate(entity);
+    const resource = await this.fusio.getClient().getBackendCronjobByCronjobId('' + entity.id);
+    return await resource.backendActionCronjobUpdate(entity);
   }
 
   protected async delete(entity: Cronjob): Promise<AxiosResponse<Message>> {
-    const group = await this.fusio.getClient().backendCronjob();
-    return await group.getBackendCronjobByCronjobId('' + entity.id).backendActionCronjobDelete();
+    const resource = await this.fusio.getClient().getBackendCronjobByCronjobId('' + entity.id);
+    return await resource.backendActionCronjobDelete();
   }
 
   protected newEntity(): Cronjob {

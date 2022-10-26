@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {Sdk_Types} from "fusio-sdk/dist/src/generated/backend/Sdk_Types";
 import axios from "axios";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {FusioService} from "../../../fusio.service";
+import {SdkTypes} from "fusio-sdk/dist/src/generated/backend/SdkTypes";
 
 @Component({
   selector: 'app-list',
@@ -13,13 +13,13 @@ export class ListComponent implements OnInit {
 
   constructor(protected fusio: FusioService) { }
 
-  public types?: Sdk_Types;
+  public types?: SdkTypes;
   public response?: Message;
 
   async ngOnInit(): Promise<void> {
     try {
-      const group = await this.fusio.getClient().backendSdk();
-      const response = await group.getBackendSdk().backendActionSdkGetAll();
+      const group = await this.fusio.getClient().getBackendSdk();
+      const response = await group.backendActionSdkGetAll();
 
       this.types = response.data.types;
     } catch (error) {
@@ -33,8 +33,8 @@ export class ListComponent implements OnInit {
 
   async generate(type: string) {
     try {
-      const group = await this.fusio.getClient().backendSdk();
-      const response = await group.getBackendSdk().backendActionSdkGenerate({
+      const group = await this.fusio.getClient().getBackendSdk();
+      const response = await group.backendActionSdkGenerate({
         format: type
       });
 

@@ -1,6 +1,6 @@
 import {ChartData, ChartDataset} from "chart.js";
-import {Statistic_Chart_Data} from "fusio-sdk/dist/src/generated/backend/Statistic_Chart_Data";
-import {Statistic_Chart} from "fusio-sdk/dist/src/generated/backend/Statistic_Chart";
+import {StatisticChart} from "fusio-sdk/dist/src/generated/backend/StatisticChart";
+import {StatisticChartData} from "fusio-sdk/dist/src/generated/backend/StatisticChartData";
 
 export class Converter {
 
@@ -11,7 +11,7 @@ export class Converter {
   private static POINT_HOVER_BACKGROUND_COLOR = ['#fff'];
   private static POINT_HOVER_BORDER_COLOR = ['rgba(148,159,177,0.8)'];
 
-  public static convertChart(data: Statistic_Chart, maxElements?: number): ChartData<'line', Statistic_Chart_Data> {
+  public static convertChart(data: StatisticChart, maxElements?: number): ChartData<'line', StatisticChartData> {
     let labels = data.labels?.map((value) => {
       return value.substring(5);
     });
@@ -26,12 +26,12 @@ export class Converter {
     };
   }
 
-  public static convertChartData(data?: Array<Statistic_Chart_Data>, series?: Array<string>, maxElements?: number): Array<ChartDataset<'line', Statistic_Chart_Data>> {
+  public static convertChartData(data?: Array<StatisticChartData>, series?: Array<string>, maxElements?: number): Array<ChartDataset<'line', StatisticChartData>> {
     if (!data || !series) {
       return [];
     }
 
-    let dataSets: Array<ChartDataset<'line', Statistic_Chart_Data>> = [];
+    let dataSets: Array<ChartDataset<'line', StatisticChartData>> = [];
 
     for (let i = 0; i < series.length; i++) {
       let values: Array<number> = [];

@@ -21,18 +21,18 @@ export class ModalComponent extends Modal<Client, Plan> {
   }];
 
   protected async create(entity: Plan): Promise<AxiosResponse<Message>> {
-    const group = await this.fusio.getClient().backendPlan();
-    return await group.getBackendPlan().backendActionPlanCreate(entity);
+    const resource = await this.fusio.getClient().getBackendPlan();
+    return await resource.backendActionPlanCreate(entity);
   }
 
   protected async update(entity: Plan): Promise<AxiosResponse<Message>> {
-    const group = await this.fusio.getClient().backendPlan();
-    return await group.getBackendPlanByPlanId('' + entity.id).backendActionPlanUpdate(entity);
+    const resource = await this.fusio.getClient().getBackendPlanByPlanId('' + entity.id);
+    return await resource.backendActionPlanUpdate(entity);
   }
 
   protected async delete(entity: Plan): Promise<AxiosResponse<Message>> {
-    const group = await this.fusio.getClient().backendPlan();
-    return await group.getBackendPlanByPlanId('' + entity.id).backendActionPlanDelete();
+    const resource = await this.fusio.getClient().getBackendPlanByPlanId('' + entity.id);
+    return await resource.backendActionPlanDelete();
   }
 
   protected newEntity(): Plan {

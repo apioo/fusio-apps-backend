@@ -2,10 +2,10 @@ import {Component} from '@angular/core';
 import {List} from "ngx-fusio-sdk";
 import Client from "fusio-sdk/dist/src/generated/backend/Client";
 import {Page} from "fusio-sdk/dist/src/generated/backend/Page";
-import {Collection_Category_Query} from "fusio-sdk/dist/src/generated/backend/Collection_Category_Query";
 import {AxiosResponse} from "axios";
 import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
 import {ModalComponent} from "../modal/modal.component";
+import {CollectionCategoryQuery} from "fusio-sdk/dist/src/generated/backend/CollectionCategoryQuery";
 
 @Component({
   selector: 'app-page-list',
@@ -14,14 +14,14 @@ import {ModalComponent} from "../modal/modal.component";
 })
 export class ListComponent extends List<Client, Page> {
 
-  protected async getAll(query: Collection_Category_Query): Promise<AxiosResponse<Collection<Page>>> {
-    const group = await this.fusio.getClient().backendPage();
-    return await group.getBackendPage().backendActionPageGetAll(query);
+  protected async getAll(query: CollectionCategoryQuery): Promise<AxiosResponse<Collection<Page>>> {
+    const resource = await this.fusio.getClient().getBackendPage();
+    return await resource.backendActionPageGetAll(query);
   }
 
   protected async get(id: string): Promise<AxiosResponse<Page>> {
-    const group = await this.fusio.getClient().backendPage();
-    return await group.getBackendPageByPageId(id).backendActionPageGet();
+    const resource = await this.fusio.getClient().getBackendPageByPageId(id);
+    return await resource.backendActionPageGet();
   }
 
   protected getDetailComponent(): any {

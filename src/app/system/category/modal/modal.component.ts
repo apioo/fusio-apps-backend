@@ -13,18 +13,18 @@ import Client from "fusio-sdk/dist/src/generated/backend/Client";
 export class ModalComponent extends Modal<Client, Category> {
 
   protected async create(entity: Category): Promise<AxiosResponse<Message>> {
-    const group = await this.fusio.getClient().backendCategory();
-    return await group.getBackendCategory().backendActionCategoryCreate(entity);
+    const resource = await this.fusio.getClient().getBackendCategory();
+    return await resource.backendActionCategoryCreate(entity);
   }
 
   protected async update(entity: Category): Promise<AxiosResponse<Message>> {
-    const group = await this.fusio.getClient().backendCategory();
-    return await group.getBackendCategoryByCategoryId('' + entity.id).backendActionCategoryUpdate(entity);
+    const resource = await this.fusio.getClient().getBackendCategoryByCategoryId('' + entity.id);
+    return await resource.backendActionCategoryUpdate(entity);
   }
 
   protected async delete(entity: Category): Promise<AxiosResponse<Message>> {
-    const group = await this.fusio.getClient().backendCategory();
-    return await group.getBackendCategoryByCategoryId('' + entity.id).backendActionCategoryDelete();
+    const resource = await this.fusio.getClient().getBackendCategoryByCategoryId('' + entity.id);
+    return await resource.backendActionCategoryDelete();
   }
 
   protected newEntity(): Category {

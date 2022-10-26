@@ -66,8 +66,8 @@ export class DesignerComponent implements OnInit {
 
   async loadSchema(id: string) {
     try {
-      const group = await this.fusio.getClient().backendSchema();
-      const response = await group.getBackendSchemaBySchemaId(id).backendActionSchemaGet();
+      const resource = await this.fusio.getClient().getBackendSchemaBySchemaId(id);
+      const response = await resource.backendActionSchemaGet();
 
       this.schema = response.data;
       this.spec = this.typeSchemaToInternalService.transform(this.schema.source);

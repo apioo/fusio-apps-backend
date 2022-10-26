@@ -34,7 +34,6 @@ import {ModalComponent as EventModal} from "./api/event/modal/modal.component";
 import {ListComponent as CronjobList} from "./api/cronjob/list/list.component";
 import {DetailComponent as CronjobDetail} from "./api/cronjob/detail/detail.component";
 import {ModalComponent as CronjobModal} from "./api/cronjob/modal/modal.component";
-import {ErrorComponent as CronjobError} from './api/cronjob/error/error.component';
 import {ListComponent as AppList} from "./consumer/app/list/list.component";
 import {DetailComponent as AppDetail} from "./consumer/app/detail/detail.component";
 import {ModalComponent as AppModal} from "./consumer/app/modal/modal.component";
@@ -92,6 +91,7 @@ import {CollectionComponent} from './shared/collection/collection.component';
 import {GeneratorComponent} from './api/generator/generator.component';
 import {FusioService} from "./fusio.service";
 import {FusioSdkModule, FusioService as Sdk} from "ngx-fusio-sdk";
+import {ConfigBuilder} from "./config-builder";
 
 @NgModule({
   declarations: [
@@ -123,7 +123,6 @@ import {FusioSdkModule, FusioService as Sdk} from "ngx-fusio-sdk";
     CronjobList,
     CronjobDetail,
     CronjobModal,
-    CronjobError,
     GeneratorComponent,
     AppList,
     AppDetail,
@@ -189,7 +188,7 @@ import {FusioSdkModule, FusioService as Sdk} from "ngx-fusio-sdk";
     NgChartsModule.forRoot(),
     MonacoEditorModule.forRoot(),
     TypeschemaEditorModule,
-    FusioSdkModule
+    FusioSdkModule.forRoot(ConfigBuilder.build())
   ],
   providers: [
     {provide: Sdk, useExisting: FusioService}

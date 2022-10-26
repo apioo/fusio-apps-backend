@@ -25,8 +25,8 @@ export class ModalComponent extends Modal<Client, Schema> {
       entity.source = JSON.parse(this.schema);
     }
 
-    const group = await this.fusio.getClient().backendSchema();
-    return await group.getBackendSchema().backendActionSchemaCreate(entity);
+    const resource = await this.fusio.getClient().getBackendSchema();
+    return await resource.backendActionSchemaCreate(entity);
   }
 
   protected async update(entity: Schema): Promise<AxiosResponse<Message>> {
@@ -34,13 +34,13 @@ export class ModalComponent extends Modal<Client, Schema> {
       entity.source = JSON.parse(this.schema);
     }
 
-    const group = await this.fusio.getClient().backendSchema();
-    return await group.getBackendSchemaBySchemaId('' + entity.id).backendActionSchemaUpdate(entity);
+    const resource = await this.fusio.getClient().getBackendSchemaBySchemaId('' + entity.id);
+    return await resource.backendActionSchemaUpdate(entity);
   }
 
   protected async delete(entity: Schema): Promise<AxiosResponse<Message>> {
-    const group = await this.fusio.getClient().backendSchema();
-    return await group.getBackendSchemaBySchemaId('' + entity.id).backendActionSchemaDelete();
+    const resource = await this.fusio.getClient().getBackendSchemaBySchemaId('' + entity.id);
+    return await resource.backendActionSchemaDelete();
   }
 
   protected newEntity(): Schema {

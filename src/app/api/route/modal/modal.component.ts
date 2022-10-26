@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import {Schema} from "fusio-sdk/dist/src/generated/backend/Schema";
 import {Action} from "fusio-sdk/dist/src/generated/backend/Action";
-import {Route_Version} from "fusio-sdk/dist/src/generated/backend/Route_Version";
 import {Config, HttpResponse} from "../config";
-import {Route_Method} from "fusio-sdk/dist/src/generated/backend/Route_Method";
-import {Route_Methods} from "fusio-sdk/dist/src/generated/backend/Route_Methods";
-import {Route_Method_Responses} from "fusio-sdk/dist/src/generated/backend/Route_Method_Responses";
 import {Route as ModelRoute} from "fusio-sdk/dist/src/generated/backend/Route";
 import {AxiosResponse} from "axios";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {Modal} from "ngx-fusio-sdk";
 import Client from "fusio-sdk/dist/src/generated/backend/Client";
+import {RouteVersion} from "fusio-sdk/dist/src/generated/backend/RouteVersion";
+import {RouteMethod} from "fusio-sdk/dist/src/generated/backend/RouteMethod";
+import {RouteMethods} from "fusio-sdk/dist/src/generated/backend/RouteMethods";
+import {RouteMethodResponses} from "fusio-sdk/dist/src/generated/backend/RouteMethodResponses";
 
 @Component({
   selector: 'app-route-modal',
@@ -88,16 +88,16 @@ export class ModalComponent extends Modal<Client, ModelRoute> {
   }
 
   private async loadSchemas() {
-    const schema = await this.fusio.getClient().backendSchema();
-    const response = await schema.getBackendSchema().backendActionSchemaGetAll({count: 1024});
+    const schema = await this.fusio.getClient().getBackendSchema();
+    const response = await schema.backendActionSchemaGetAll({count: 1024});
     if (response.data.entry) {
       this.schemas = response.data.entry;
     }
   }
 
   private async loadActions() {
-    const action = await this.fusio.getClient().backendAction();
-    const response = await action.getBackendAction().backendActionActionGetAll({count: 1024});
+    const action = await this.fusio.getClient().getBackendAction();
+    const response = await action.backendActionActionGetAll({count: 1024});
     if (response.data.entry) {
       this.actions = response.data.entry;
     }
@@ -111,7 +111,7 @@ export class ModalComponent extends Modal<Client, ModelRoute> {
     this.entity.config.push(this.newVersion());
   }
 
-  newVersion(): Route_Version {
+  newVersion(): RouteVersion {
     const newVersion = Config.getLatestVersion(this.entity) + 1;
     this.activeVersion = newVersion;
 
@@ -128,7 +128,7 @@ export class ModalComponent extends Modal<Client, ModelRoute> {
     }
   }
 
-  newMethod(): Route_Method {
+  newMethod(): RouteMethod {
     return {
       active: true,
       public: true,
@@ -139,18 +139,18 @@ export class ModalComponent extends Modal<Client, ModelRoute> {
     }
   }
 
-  newEmptyMethod(): Route_Method {
+  newEmptyMethod(): RouteMethod {
     return {
       active: false,
       responses: {}
     }
   }
 
-  transformMethods(methods?: Route_Methods): Array<Route_Method> {
+  transformMethods(methods?: RouteMethods): Array<RouteMethod> {
     return Config.transformMethods(methods, false);
   }
 
-  transformResponses(responses?: Route_Method_Responses): Array<HttpResponse> {
+  transformResponses(responses?: RouteMethodResponses): Array<HttpResponse> {
     return Config.transformResponses(responses);
   }
 
@@ -181,18 +181,18 @@ export class ModalComponent extends Modal<Client, ModelRoute> {
   }
 
   protected async create(entity: ModelRoute): Promise<AxiosResponse<Message>> {
-    const group = await this.fusio.getClient().backendRoute();
-    return await group.getBackendRoutes().backendActionRouteCreate(entity);
+    const resource = await this.fusio.getClient().getBackendRoutes();
+    return await resource.backendActionRouteCreate(entity);
   }
 
   protected async update(entity: ModelRoute): Promise<AxiosResponse<Message>> {
-    const group = await this.fusio.getClient().backendRoute();
-    return await group.getBackendRoutesByRouteId('' + entity.id).backendActionRouteUpdate(entity);
+    const resource = await this.fusio.getClient().getBackendRoutesByRouteId('' + entity.id);
+    return await resource.backendActionRouteUpdate(entity);
   }
 
   protected async delete(entity: ModelRoute): Promise<AxiosResponse<Message>> {
-    const group = await this.fusio.getClient().backendRoute();
-    return await group.getBackendRoutesByRouteId('' + entity.id).backendActionRouteDelete();
+    const resource = await this.fusio.getClient().getBackendRoutesByRouteId('' + entity.id);
+    return await resource.backendActionRouteDelete();
   }
 
   protected newEntity(): ModelRoute {

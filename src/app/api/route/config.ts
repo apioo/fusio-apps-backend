@@ -1,12 +1,12 @@
-import {Route_Version} from "fusio-sdk/dist/src/generated/backend/Route_Version";
-import {Route_Method} from "fusio-sdk/dist/src/generated/backend/Route_Method";
-import {Route_Methods} from "fusio-sdk/dist/src/generated/backend/Route_Methods";
-import {Route_Method_Responses} from "fusio-sdk/dist/src/generated/backend/Route_Method_Responses";
 import {Route as ModelRoute} from "fusio-sdk/dist/src/generated/backend/Route";
+import {RouteVersion} from "fusio-sdk/dist/src/generated/backend/RouteVersion";
+import {RouteMethod} from "fusio-sdk/dist/src/generated/backend/RouteMethod";
+import {RouteMethods} from "fusio-sdk/dist/src/generated/backend/RouteMethods";
+import {RouteMethodResponses} from "fusio-sdk/dist/src/generated/backend/RouteMethodResponses";
 
 export class Config {
 
-  public static getActiveVersion(selected?: ModelRoute, activeVersion?: number): Route_Version|null {
+  public static getActiveVersion(selected?: ModelRoute, activeVersion?: number): RouteVersion|null {
     if (!selected || !selected.config) {
       return null;
     }
@@ -21,7 +21,7 @@ export class Config {
     return null;
   }
 
-  public static getActiveMethod(selected?: ModelRoute, activeVersion?: number, activeMethod?: string): Route_Method|null {
+  public static getActiveMethod(selected?: ModelRoute, activeVersion?: number, activeMethod?: string): RouteMethod|null {
     const version = this.getActiveVersion(selected, activeVersion);
     if (!version || !version.methods) {
       return null;
@@ -54,7 +54,7 @@ export class Config {
     return version
   }
 
-  public static transformMethods(methods?: Route_Methods, onlyActive?: boolean): Array<Route_Method> {
+  public static transformMethods(methods?: RouteMethods, onlyActive?: boolean): Array<RouteMethod> {
     if (!methods) {
       return [];
     }
@@ -72,7 +72,7 @@ export class Config {
     return result;
   }
 
-  public static transformResponses(responses?: Route_Method_Responses): Array<HttpResponse> {
+  public static transformResponses(responses?: RouteMethodResponses): Array<HttpResponse> {
     if (!responses) {
       return [];
     }

@@ -27,24 +27,24 @@ export class ModalComponent extends Modal<Client, App> {
   users?: Array<User>;
 
   override async ngOnInit(): Promise<void> {
-    const user = await this.fusio.getClient().backendUser();
-    const response = await user.getBackendUser().backendActionUserGetAll({count: 1024});
+    const resource = await this.fusio.getClient().getBackendUser();
+    const response = await resource.backendActionUserGetAll({count: 1024});
     this.users = response.data.entry;
   }
 
   protected async create(entity: App): Promise<AxiosResponse<Message>> {
-    const group = await this.fusio.getClient().backendApp();
-    return await group.getBackendApp().backendActionAppCreate(entity);
+    const resource = await this.fusio.getClient().getBackendApp();
+    return await resource.backendActionAppCreate(entity);
   }
 
   protected async update(entity: App): Promise<AxiosResponse<Message>> {
-    const group = await this.fusio.getClient().backendApp();
-    return await group.getBackendAppByAppId('' + entity.id).backendActionAppUpdate(entity);
+    const resource = await this.fusio.getClient().getBackendAppByAppId('' + entity.id);
+    return await resource.backendActionAppUpdate(entity);
   }
 
   protected async delete(entity: App): Promise<AxiosResponse<Message>> {
-    const group = await this.fusio.getClient().backendApp();
-    return await group.getBackendAppByAppId('' + entity.id).backendActionAppDelete();
+    const resource = await this.fusio.getClient().getBackendAppByAppId('' + entity.id);
+    return await resource.backendActionAppDelete();
   }
 
   protected newEntity(): App {

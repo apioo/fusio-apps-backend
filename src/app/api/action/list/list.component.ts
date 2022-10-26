@@ -1,11 +1,11 @@
 import {Component} from '@angular/core';
 import {Action} from "fusio-sdk/dist/src/generated/backend/Action";
-import {Collection_Category_Query} from "fusio-sdk/dist/src/generated/backend/Collection_Category_Query";
 import {AxiosResponse} from "axios";
 import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
 import {ModalComponent} from "../modal/modal.component";
 import {List} from "ngx-fusio-sdk";
 import Client from "fusio-sdk/dist/src/generated/backend/Client";
+import {CollectionCategoryQuery} from "fusio-sdk/dist/src/generated/backend/CollectionCategoryQuery";
 
 @Component({
   selector: 'app-action-list',
@@ -14,14 +14,14 @@ import Client from "fusio-sdk/dist/src/generated/backend/Client";
 })
 export class ListComponent extends List<Client, Action> {
 
-  protected async getAll(query: Collection_Category_Query): Promise<AxiosResponse<Collection<Action>>> {
-    const group = await this.fusio.getClient().backendAction();
-    return await group.getBackendAction().backendActionActionGetAll(query);
+  protected async getAll(query: CollectionCategoryQuery): Promise<AxiosResponse<Collection<Action>>> {
+    const resource = await this.fusio.getClient().getBackendAction();
+    return await resource.backendActionActionGetAll(query);
   }
 
   protected async get(id: string): Promise<AxiosResponse<Action>> {
-    const group = await this.fusio.getClient().backendAction();
-    return await group.getBackendActionByActionId(id).backendActionActionGet();
+    const resource = await this.fusio.getClient().getBackendActionByActionId(id);
+    return await resource.backendActionActionGet();
   }
 
   protected getDetailComponent(): any {

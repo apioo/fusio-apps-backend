@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {Connection_Introspection_Entity} from "fusio-sdk/dist/src/generated/backend/Connection_Introspection_Entity";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {FusioService} from "../../../fusio.service";
+import {ConnectionIntrospectionEntity} from "fusio-sdk/dist/src/generated/backend/ConnectionIntrospectionEntity";
 
 @Component({
   selector: 'app-connection-introspection',
@@ -13,7 +13,7 @@ export class IntrospectionComponent implements OnInit {
 
   connectionId: string|null = null;
   entites: Array<string> = [];
-  entity?: Connection_Introspection_Entity;
+  entity?: ConnectionIntrospectionEntity;
   response?: Message;
 
   constructor(protected fusio: FusioService, protected route: ActivatedRoute) {
@@ -37,8 +37,8 @@ export class IntrospectionComponent implements OnInit {
     if (!this.connectionId) {
       return;
     }
-    const group = await this.fusio.getClient().backendConnection();
-    const response = await group.getBackendConnectionByConnectionIdIntrospection(this.connectionId).backendActionConnectionIntrospectionGetEntities();
+    const resource = await this.fusio.getClient().getBackendConnectionByConnectionIdIntrospection(this.connectionId);
+    const response = await resource.backendActionConnectionIntrospectionGetEntities();
     this.entites = response.data.entities || [];
   }
 
@@ -46,8 +46,8 @@ export class IntrospectionComponent implements OnInit {
     if (!this.connectionId) {
       return;
     }
-    const group = await this.fusio.getClient().backendConnection();
-    const response = await group.getBackendConnectionByConnectionIdIntrospectionAndEntity(this.connectionId, entityName).backendActionConnectionIntrospectionGetEntity();
+    const resource = await this.fusio.getClient().getBackendConnectionByConnectionIdIntrospectionAndEntity(this.connectionId, entityName);
+    const response = await resource.backendActionConnectionIntrospectionGetEntity();
     this.entity = response.data;
   }
 

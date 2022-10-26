@@ -1,11 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {Route as ModelRoute} from "fusio-sdk/dist/src/generated/backend/Route";
-import {Log_Collection_Query} from "fusio-sdk/dist/src/generated/backend/Log_Collection_Query";
-import {Log_Collection} from "fusio-sdk/dist/src/generated/backend/Log_Collection";
 import {Log} from "fusio-sdk/dist/src/generated/backend/Log";
 import {Router} from "@angular/router";
 import {FusioService} from "../../../fusio.service";
+import {LogCollection} from "fusio-sdk/dist/src/generated/backend/LogCollection";
+import {LogCollectionQuery} from "fusio-sdk/dist/src/generated/backend/LogCollectionQuery";
 
 @Component({
   selector: 'app-route-log',
@@ -16,7 +16,7 @@ export class LogComponent implements OnInit {
 
   @Input() route?: ModelRoute;
 
-  logs?: Log_Collection;
+  logs?: LogCollection;
 
   constructor(public modal: NgbActiveModal, private fusio: FusioService, private router: Router) { }
 
@@ -25,12 +25,12 @@ export class LogComponent implements OnInit {
       return
     }
 
-    const query: Log_Collection_Query = {
+    const query: LogCollectionQuery = {
       routeId: this.route.id
     };
 
-    const log = await this.fusio.getClient().backendLog();
-    const response = await log.getBackendLog().backendActionLogGetAll(query);
+    const log = await this.fusio.getClient().getBackendLog();
+    const response = await log.backendActionLogGetAll(query);
 
     this.logs = response.data;
   }

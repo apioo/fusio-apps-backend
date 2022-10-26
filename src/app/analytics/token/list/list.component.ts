@@ -1,30 +1,30 @@
 import {Component} from '@angular/core';
 import {List} from "ngx-fusio-sdk";
 import Client from "fusio-sdk/dist/src/generated/backend/Client";
-import {App_Token} from "fusio-sdk/dist/src/generated/backend/App_Token";
-import {Collection_Category_Query} from "fusio-sdk/dist/src/generated/backend/Collection_Category_Query";
 import {AxiosResponse} from "axios";
 import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
-import {App_Token_Collection_Query} from "fusio-sdk/dist/src/generated/backend/App_Token_Collection_Query";
 import {FilterComponent} from "../filter/filter.component";
+import {AppToken} from "fusio-sdk/dist/src/generated/backend/AppToken";
+import {AppTokenCollectionQuery} from "fusio-sdk/dist/src/generated/backend/AppTokenCollectionQuery";
+import {CollectionCategoryQuery} from "fusio-sdk/dist/src/generated/backend/CollectionCategoryQuery";
 
 @Component({
   selector: 'app-token-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent extends List<Client, App_Token> {
+export class ListComponent extends List<Client, AppToken> {
 
-  filter: App_Token_Collection_Query = {};
+  filter: AppTokenCollectionQuery = {};
 
-  protected async getAll(query: Collection_Category_Query): Promise<AxiosResponse<Collection<App_Token>>> {
-    const group = await this.fusio.getClient().backendApp();
-    return await group.getBackendAppToken().backendActionAppTokenGetAll(query);
+  protected async getAll(query: CollectionCategoryQuery): Promise<AxiosResponse<Collection<AppToken>>> {
+    const resource = await this.fusio.getClient().getBackendAppToken();
+    return await resource.backendActionAppTokenGetAll(query);
   }
 
-  protected async get(id: string): Promise<AxiosResponse<App_Token>> {
-    const group = await this.fusio.getClient().backendApp();
-    return await group.getBackendAppTokenByTokenId(id).backendActionAppTokenGet();
+  protected async get(id: string): Promise<AxiosResponse<AppToken>> {
+    const resource = await this.fusio.getClient().getBackendAppTokenByTokenId(id);
+    return await resource.backendActionAppTokenGet();
   }
 
   protected getDetailComponent(): any {
@@ -46,8 +46,8 @@ export class ListComponent extends List<Client, App_Token> {
     });
   }
 
-  protected override getCollectionQuery(): App_Token_Collection_Query {
-    let query: App_Token_Collection_Query = {};
+  protected override getCollectionQuery(): AppTokenCollectionQuery {
+    let query: AppTokenCollectionQuery = {};
     query = Object.assign(query, super.getCollectionQuery());
 
     if (this.filter) {

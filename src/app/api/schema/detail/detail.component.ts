@@ -29,8 +29,8 @@ export class DetailComponent extends Detail<Schema> implements OnChanges {
   }
 
   private async renderPreview(id: string) {
-    const group = await this.fusio.getClient().backendSchema();
-    const response = await group.getBackendSchemaPreviewBySchemaId(id).backendActionSchemaGetPreview();
+    const resource = await this.fusio.getClient().getBackendSchemaPreviewBySchemaId(id);
+    const response = await resource.backendActionSchemaGetPreview();
 
     this.preview = response.data.preview;
     this.loading = false;

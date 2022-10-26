@@ -1,12 +1,12 @@
 import {Component} from '@angular/core';
-import {Action_Index_Entry} from "fusio-sdk/dist/src/generated/backend/Action_Index_Entry";
-import {Form_Container} from "fusio-sdk/dist/src/generated/backend/Form_Container";
 import {Action} from "fusio-sdk/dist/src/generated/backend/Action";
 import {AxiosResponse} from "axios";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
-import {Form_Query} from "fusio-sdk/dist/src/generated/backend/Form_Query";
 import {HelpComponent, Modal} from "ngx-fusio-sdk";
 import Client from "fusio-sdk/dist/src/generated/backend/Client";
+import {ActionIndexEntry} from "fusio-sdk/dist/src/generated/backend/ActionIndexEntry";
+import {FormContainer} from "fusio-sdk/dist/src/generated/backend/FormContainer";
+import {FormQuery} from "fusio-sdk/dist/src/generated/backend/FormQuery";
 
 @Component({
   selector: 'app-action-modal',
@@ -15,14 +15,14 @@ import Client from "fusio-sdk/dist/src/generated/backend/Client";
 })
 export class ModalComponent extends Modal<Client, Action> {
 
-  actions?: Array<Action_Index_Entry>;
-  form?: Form_Container;
+  actions?: Array<ActionIndexEntry>;
+  form?: FormContainer;
   entityClass?: string;
   custom: boolean = false;
 
   override async ngOnInit(): Promise<void> {
-    const action = await this.fusio.getClient().backendAction();
-    const response = await action.getBackendActionList().backendActionActionGetIndex();
+    const resource = await this.fusio.getClient().getBackendActionList();
+    const response = await resource.backendActionActionGetIndex();
     this.actions = response.data.actions;
 
     if (this.entity.class) {
@@ -31,18 +31,18 @@ export class ModalComponent extends Modal<Client, Action> {
   }
 
   protected async create(entity: Action): Promise<AxiosResponse<Message>> {
-    const group = await this.fusio.getClient().backendAction();
-    return await group.getBackendAction().backendActionActionCreate(entity);
+    const resource = await this.fusio.getClient().getBackendAction();
+    return await resource.backendActionActionCreate(entity);
   }
 
   protected async update(entity: Action): Promise<AxiosResponse<Message>> {
-    const group = await this.fusio.getClient().backendAction();
-    return await group.getBackendActionByActionId('' + entity.id).backendActionActionUpdate(entity);
+    const resource = await this.fusio.getClient().getBackendActionByActionId('' + entity.id);
+    return await resource.backendActionActionUpdate(entity);
   }
 
   protected async delete(entity: Action): Promise<AxiosResponse<Message>> {
-    const group = await this.fusio.getClient().backendAction();
-    return await group.getBackendActionByActionId('' + entity.id).backendActionActionDelete();
+    const resource = await this.fusio.getClient().getBackendActionByActionId('' + entity.id);
+    return await resource.backendActionActionDelete();
   }
 
   protected newEntity(): Action {
@@ -65,12 +65,12 @@ export class ModalComponent extends Modal<Client, Action> {
       return;
     }
 
-    const query: Form_Query = {
+    const query: FormQuery = {
       class: classString
     };
 
-    const action = await this.fusio.getClient().backendAction();
-    const response = await action.getBackendActionForm().backendActionActionGetForm(query);
+    const resource = await this.fusio.getClient().getBackendActionForm();
+    const response = await resource.backendActionActionGetForm(query);
     this.form = response.data;
 
     const hasChanged = this.entityClass && this.entityClass !== this.entity.class;

@@ -16,24 +16,24 @@ export class ModalComponent extends Modal<Client, Role> {
   categories?: Array<Category>;
 
   override async ngOnInit(): Promise<void> {
-    const category = await this.fusio.getClient().backendCategory();
-    const response = await category.getBackendCategory().backendActionCategoryGetAll({count: 1024});
+    const category = await this.fusio.getClient().getBackendCategory();
+    const response = await category.backendActionCategoryGetAll({count: 1024});
     this.categories = response.data.entry;
   }
 
   protected async create(entity: Role): Promise<AxiosResponse<Message>> {
-    const group = await this.fusio.getClient().backendRole();
-    return await group.getBackendRole().backendActionRoleCreate(entity);
+    const resource = await this.fusio.getClient().getBackendRole();
+    return await resource.backendActionRoleCreate(entity);
   }
 
   protected async update(entity: Role): Promise<AxiosResponse<Message>> {
-    const group = await this.fusio.getClient().backendRole();
-    return await group.getBackendRoleByRoleId('' + entity.id).backendActionRoleUpdate(entity);
+    const resource = await this.fusio.getClient().getBackendRoleByRoleId('' + entity.id);
+    return await resource.backendActionRoleUpdate(entity);
   }
 
   protected async delete(entity: Role): Promise<AxiosResponse<Message>> {
-    const group = await this.fusio.getClient().backendRole();
-    return await group.getBackendRoleByRoleId('' + entity.id).backendActionRoleDelete();
+    const resource = await this.fusio.getClient().getBackendRoleByRoleId('' + entity.id);
+    return await resource.backendActionRoleDelete();
   }
 
   protected newEntity(): Role {

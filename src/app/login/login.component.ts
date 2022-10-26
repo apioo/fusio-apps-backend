@@ -1,11 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import packageJson from "../../../package.json";
 import {Router} from "@angular/router";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import axios from "axios";
 import {FusioService} from "../fusio.service";
 import {UserService} from "ngx-fusio-sdk";
-import {User} from "fusio-sdk/dist/src/generated/backend/User";
 
 @Component({
   selector: 'app-login',
@@ -24,7 +23,7 @@ export class LoginComponent implements OnInit {
   response?: Message;
   loading = false
 
-  constructor(private fusio: FusioService, private router: Router, private user: UserService<User>) {
+  constructor(private fusio: FusioService, private router: Router, private user: UserService) {
   }
 
   ngOnInit(): void {
@@ -35,8 +34,8 @@ export class LoginComponent implements OnInit {
 
     try {
       const client = this.fusio.getClientWithCredentials(this.credentials.username, this.credentials.password);
-      const account = await client.backendAccount();
-      const response = await account.getBackendAccount().backendActionAccountGet();
+      const resource = await client.getBackendAccount();
+      const response = await resource.backendActionAccountGet();
 
       this.user.login(response.data);
 

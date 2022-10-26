@@ -2,12 +2,12 @@ import {Component} from '@angular/core';
 import {Route as ModelRoute} from "fusio-sdk/dist/src/generated/backend/Route";
 import {Config, HttpResponse} from "../config";
 import {LogComponent} from "../log/log.component";
-import {Route_Methods} from "fusio-sdk/dist/src/generated/backend/Route_Methods";
-import {Route_Method} from "fusio-sdk/dist/src/generated/backend/Route_Method";
-import {Route_Method_Responses} from "fusio-sdk/dist/src/generated/backend/Route_Method_Responses";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Detail} from "ngx-fusio-sdk";
 import {FusioService} from "../../../fusio.service";
+import {RouteMethods} from "fusio-sdk/dist/src/generated/backend/RouteMethods";
+import {RouteMethod} from "fusio-sdk/dist/src/generated/backend/RouteMethod";
+import {RouteMethodResponses} from "fusio-sdk/dist/src/generated/backend/RouteMethodResponses";
 
 @Component({
   selector: 'app-route-detail',
@@ -50,11 +50,11 @@ export class DetailComponent extends Detail<ModelRoute> {
     modalRef.componentInstance.route = this.selected;
   }
 
-  transformMethods(methods?: Route_Methods): Array<Route_Method> {
+  transformMethods(methods?: RouteMethods): Array<RouteMethod> {
     return Config.transformMethods(methods, true);
   }
 
-  transformResponses(responses?: Route_Method_Responses): Array<HttpResponse> {
+  transformResponses(responses?: RouteMethodResponses): Array<HttpResponse> {
     return Config.transformResponses(responses);
   }
 

@@ -16,8 +16,8 @@ export class ModalComponent extends Modal<Client, Config> {
   }
 
   protected async update(entity: Config): Promise<AxiosResponse<Message>> {
-    const group = await this.fusio.getClient().backendConfig();
-    return await group.getBackendConfigByConfigId('' + entity.id).backendActionConfigUpdate(entity);
+    const resource = await this.fusio.getClient().getBackendConfigByConfigId('' + entity.id);
+    return await resource.backendActionConfigUpdate(entity);
   }
 
   protected async delete(entity: Config): Promise<void> {

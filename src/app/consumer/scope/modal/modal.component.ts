@@ -3,9 +3,9 @@ import {Route as ModelRoute} from "fusio-sdk/dist/src/generated/backend/Route";
 import {Scope} from "fusio-sdk/dist/src/generated/backend/Scope";
 import {AxiosResponse} from "axios";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
-import {Scope_Route} from "fusio-sdk/dist/src/generated/backend/Scope_Route";
 import {Modal} from "ngx-fusio-sdk";
 import Client from "fusio-sdk/dist/src/generated/backend/Client";
+import {ScopeRoute} from "fusio-sdk/dist/src/generated/backend/ScopeRoute";
 
 @Component({
   selector: 'app-scope-modal',
@@ -17,8 +17,8 @@ export class ModalComponent extends Modal<Client, Scope> {
   routes: Array<ModelRoute & ExtendRoute> = [];
 
   override async ngOnInit(): Promise<void> {
-    const user = await this.fusio.getClient().backendRoute();
-    const response = await user.getBackendRoutes().backendActionRouteGetAll({count: 1024});
+    const user = await this.fusio.getClient().getBackendRoutes();
+    const response = await user.backendActionRouteGetAll({count: 1024});
 
     this.routes = [];
     response.data.entry?.forEach((route) => {
@@ -53,20 +53,20 @@ export class ModalComponent extends Modal<Client, Scope> {
   protected async create(entity: Scope): Promise<AxiosResponse<Message>> {
     entity.routes = this.getConfiguredScopes();
 
-    const group = await this.fusio.getClient().backendScope();
-    return await group.getBackendScope().backendActionScopeCreate(entity);
+    const resource = await this.fusio.getClient().getBackendScope();
+    return await resource.backendActionScopeCreate(entity);
   }
 
   protected async update(entity: Scope): Promise<AxiosResponse<Message>> {
     entity.routes = this.getConfiguredScopes();
 
-    const group = await this.fusio.getClient().backendScope();
-    return await group.getBackendScopeByScopeId('' + entity.id).backendActionScopeUpdate(entity);
+    const resource = await this.fusio.getClient().getBackendScopeByScopeId('' + entity.id);
+    return await resource.backendActionScopeUpdate(entity);
   }
 
   protected async delete(entity: Scope): Promise<AxiosResponse<Message>> {
-    const group = await this.fusio.getClient().backendScope();
-    return await group.getBackendScopeByScopeId('' + entity.id).backendActionScopeDelete();
+    const resource = await this.fusio.getClient().getBackendScopeByScopeId('' + entity.id);
+    return await resource.backendActionScopeDelete();
   }
 
   protected newEntity(): Scope {
@@ -75,8 +75,8 @@ export class ModalComponent extends Modal<Client, Scope> {
     };
   }
 
-  private getMethodsForRoute(routes: Array<Scope_Route>, targetRoute: ModelRoute): Array<string> {
-    const route: Scope_Route|undefined = routes.find((scopeRoute) => {
+  private getMethodsForRoute(routes: Array<ScopeRoute>, targetRoute: ModelRoute): Array<string> {
+    const route: ScopeRoute|undefined = routes.find((scopeRoute) => {
       return targetRoute.id === scopeRoute.routeId;
     });
 
@@ -87,8 +87,8 @@ export class ModalComponent extends Modal<Client, Scope> {
     return route.methods.split('|');
   }
 
-  private getConfiguredScopes(): Array<Scope_Route> {
-    const routes: Array<Scope_Route> = [];
+  private getConfiguredScopes(): Array<ScopeRoute> {
+    const routes: Array<ScopeRoute> = [];
     this.routes.forEach((route) => {
       const methods = [];
       if (route.allowedMethods) {

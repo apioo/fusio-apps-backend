@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {Account_ChangePassword} from "fusio-sdk/dist/src/generated/backend/Account_ChangePassword";
-import axios from "axios";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {FusioService} from "../../fusio.service";
+import {AccountChangePassword} from "fusio-sdk/dist/src/generated/backend/AccountChangePassword";
+import {ErrorService} from "ngx-fusio-sdk";
 
 @Component({
   selector: 'app-change-password',
@@ -11,30 +11,26 @@ import {FusioService} from "../../fusio.service";
 })
 export class ChangePasswordComponent implements OnInit {
 
-  credentials: Account_ChangePassword = {
+  credentials: AccountChangePassword = {
     oldPassword: '',
     newPassword: '',
     verifyPassword: '',
   };
   response?: Message;
 
-  constructor(protected fusio: FusioService) { }
+  constructor(protected fusio: FusioService, private error: ErrorService) { }
 
   ngOnInit(): void {
   }
 
   async submit() {
     try {
-      const group = await this.fusio.getClient().backendAccount();
-      const response = await group.getBackendAccountChangePassword().backendActionAccountChangePassword(this.credentials);
+      const resource = await this.fusio.getClient().getBackendAccountChangePassword();
+      const response = await resource.backendActionAccountChangePassword(this.credentials);
 
       this.response = response.data;
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response)  {
-        this.response = error.response.data as Message;
-      } else {
-        throw error;
-      }
+      this.response = this.error.convert(error);
     }
   }
 

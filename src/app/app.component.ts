@@ -19,7 +19,7 @@ export class AppComponent {
     path: '/logout'
   }];
 
-  constructor(private userMeta: UserService<User>) { }
+  constructor(private userMeta: UserService) { }
 
   ngOnInit(): void {
     this.user = this.userMeta.get();

@@ -2,11 +2,11 @@ import {Component} from '@angular/core';
 import {List} from "ngx-fusio-sdk";
 import Client from "fusio-sdk/dist/src/generated/backend/Client";
 import {Audit} from "fusio-sdk/dist/src/generated/backend/Audit";
-import {Collection_Category_Query} from "fusio-sdk/dist/src/generated/backend/Collection_Category_Query";
 import {AxiosResponse} from "axios";
 import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
-import {Audit_Collection_Query} from "fusio-sdk/dist/src/generated/backend/Audit_Collection_Query";
 import {FilterComponent} from "../filter/filter.component";
+import {AuditCollectionQuery} from "fusio-sdk/dist/src/generated/backend/AuditCollectionQuery";
+import {CollectionCategoryQuery} from "fusio-sdk/dist/src/generated/backend/CollectionCategoryQuery";
 
 @Component({
   selector: 'app-audit-list',
@@ -15,16 +15,16 @@ import {FilterComponent} from "../filter/filter.component";
 })
 export class ListComponent extends List<Client, Audit> {
 
-  filter: Audit_Collection_Query = {};
+  filter: AuditCollectionQuery = {};
 
-  protected async getAll(query: Collection_Category_Query): Promise<AxiosResponse<Collection<Audit>>> {
-    const group = await this.fusio.getClient().backendAudit();
-    return await group.getBackendAudit().backendActionAuditGetAll(query);
+  protected async getAll(query: CollectionCategoryQuery): Promise<AxiosResponse<Collection<Audit>>> {
+    const resource = await this.fusio.getClient().getBackendAudit();
+    return await resource.backendActionAuditGetAll(query);
   }
 
   protected async get(id: string): Promise<AxiosResponse<Audit>> {
-    const group = await this.fusio.getClient().backendAudit();
-    return await group.getBackendAuditByAuditId(id).backendActionAuditGet();
+    const resource = await this.fusio.getClient().getBackendAuditByAuditId(id);
+    return await resource.backendActionAuditGet();
   }
 
   protected getDetailComponent(): any {
@@ -46,8 +46,8 @@ export class ListComponent extends List<Client, Audit> {
     });
   }
 
-  protected override getCollectionQuery(): Audit_Collection_Query {
-    let query: Audit_Collection_Query = {};
+  protected override getCollectionQuery(): AuditCollectionQuery {
+    let query: AuditCollectionQuery = {};
     query = Object.assign(query, super.getCollectionQuery());
 
     if (this.filter) {

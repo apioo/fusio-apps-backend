@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {Form_Container} from "fusio-sdk/dist/src/generated/backend/Form_Container";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import axios from "axios";
-import {Generator_Provider_Changelog} from "fusio-sdk/dist/src/generated/backend/Generator_Provider_Changelog";
-import {Generator_Index_Provider} from "fusio-sdk/dist/src/generated/backend/Generator_Index_Provider";
-import {Generator_Provider} from "fusio-sdk/dist/src/generated/backend/Generator_Provider";
 import {FusioService} from "../../fusio.service";
+import {GeneratorProviderChangelog} from "fusio-sdk/dist/src/generated/backend/GeneratorProviderChangelog";
+import {FormContainer} from "fusio-sdk/dist/src/generated/backend/FormContainer";
+import {GeneratorProvider} from "fusio-sdk/dist/src/generated/backend/GeneratorProvider";
+import {GeneratorIndexProvider} from "fusio-sdk/dist/src/generated/backend/GeneratorIndexProvider";
 
 @Component({
   selector: 'app-generator',
@@ -14,22 +14,22 @@ import {FusioService} from "../../fusio.service";
 })
 export class GeneratorComponent implements OnInit {
 
-  providers?: Array<Generator_Index_Provider>;
-  provider: Generator_Provider = {
+  providers?: Array<GeneratorIndexProvider>;
+  provider: GeneratorProvider = {
     path: '',
     scopes: [],
     config: {},
   };
   selected?: string;
-  form?: Form_Container;
+  form?: FormContainer;
   response?: Message;
-  changelog?: Generator_Provider_Changelog;
+  changelog?: GeneratorProviderChangelog;
 
   constructor(protected fusio: FusioService) { }
 
   async ngOnInit(): Promise<void> {
-    const route = await this.fusio.getClient().backendGenerator();
-    const response = await route.getBackendGenerator().backendActionGeneratorIndex();
+    const resource = await this.fusio.getClient().getBackendGenerator();
+    const response = await resource.backendActionGeneratorIndex();
     if (response.data.providers) {
       this.providers = response.data.providers;
     }
@@ -40,8 +40,8 @@ export class GeneratorComponent implements OnInit {
       return;
     }
 
-    const action = await this.fusio.getClient().backendGenerator();
-    const response = await action.getBackendGeneratorByProvider(this.selected).backendActionGeneratorForm();
+    const resource = await this.fusio.getClient().getBackendGeneratorByProvider(this.selected);
+    const response = await resource.backendActionGeneratorForm();
     this.form = response.data;
     this.provider.config = {};
   }
@@ -52,8 +52,8 @@ export class GeneratorComponent implements OnInit {
     }
 
     try {
-      const action = await this.fusio.getClient().backendGenerator();
-      const response = await action.getBackendGeneratorByProvider(this.selected).backendActionGeneratorChangelog(this.provider.config);
+      const resource = await this.fusio.getClient().getBackendGeneratorByProvider(this.selected);
+      const response = await resource.backendActionGeneratorChangelog(this.provider.config);
       this.changelog = response.data;
       this.response = undefined;
     } catch (error) {
@@ -71,8 +71,8 @@ export class GeneratorComponent implements OnInit {
     }
 
     try {
-      const route = await this.fusio.getClient().backendGenerator();
-      const response = await route.getBackendGeneratorByProvider(this.selected).backendActionGeneratorCreate(this.provider)
+      const resource = await this.fusio.getClient().getBackendGeneratorByProvider(this.selected);
+      const response = await resource.backendActionGeneratorCreate(this.provider)
       this.response = response.data;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response)  {

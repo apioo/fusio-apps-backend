@@ -1,7 +1,11 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Scope_Category} from "fusio-sdk/dist/src/generated/backend/Scope_Category";
-import {Scope_Category_Scope} from "fusio-sdk/dist/src/generated/backend/Scope_Category_Scope";
 import {FusioService} from "../../fusio.service";
+import {
+  ScopeCategory
+} from "fusio-sdk/dist/src/generated/backend/ScopeCategory";
+import {
+  ScopeCategoryScope
+} from "fusio-sdk/dist/src/generated/backend/ScopeCategoryScope";
 
 @Component({
   selector: 'app-scope-categories',
@@ -13,7 +17,7 @@ export class ScopeCategoriesComponent implements OnInit {
   @Input() scopes?: Array<string>;
   @Output() dataChange = new EventEmitter<any>();
 
-  categories?: Array<Scope_Category>;
+  categories?: Array<ScopeCategory>;
   selected: Array<string> = [];
   selectedCategory: number = 1;
   toggleScope: boolean = true;
@@ -22,8 +26,8 @@ export class ScopeCategoriesComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    const scope = await this.fusio.getClient().backendScope();
-    const response = await scope.getBackendScopeCategories().backendActionScopeGetCategories();
+    const scope = await this.fusio.getClient().getBackendScopeCategories();
+    const response = await scope.backendActionScopeGetCategories();
     this.categories = response.data.categories;
     if (this.scopes) {
       this.selected = this.scopes;
@@ -45,7 +49,7 @@ export class ScopeCategoriesComponent implements OnInit {
     this.dataChange.emit(this.selected)
   }
 
-  toggleScopes(scopes?: Array<Scope_Category_Scope>) {
+  toggleScopes(scopes?: Array<ScopeCategoryScope>) {
     if (!scopes) {
       return;
     }

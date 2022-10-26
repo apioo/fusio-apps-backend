@@ -1,12 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {Statistic_Chart_Data} from "fusio-sdk/dist/src/generated/backend/Statistic_Chart_Data";
-import {Dashboard_Transactions} from "fusio-sdk/dist/src/generated/backend/Dashboard_Transactions";
-import {Dashboard_Users} from "fusio-sdk/dist/src/generated/backend/Dashboard_Users";
-import {Dashboard_Requests} from "fusio-sdk/dist/src/generated/backend/Dashboard_Requests";
-import {Dashboard_Apps} from "fusio-sdk/dist/src/generated/backend/Dashboard_Apps";
 import {ChartData} from "chart.js";
 import {Converter} from "../../../analytics/statistic/converter";
 import {FusioService} from "../../../fusio.service";
+import {StatisticChartData} from "fusio-sdk/dist/src/generated/backend/StatisticChartData";
+import {DashboardTransactions} from "fusio-sdk/dist/src/generated/backend/DashboardTransactions";
+import {DashboardUsers} from "fusio-sdk/dist/src/generated/backend/DashboardUsers";
+import {DashboardRequests} from "fusio-sdk/dist/src/generated/backend/DashboardRequests";
+import {DashboardApps} from "fusio-sdk/dist/src/generated/backend/DashboardApps";
 
 @Component({
   selector: 'app-list',
@@ -15,15 +15,15 @@ import {FusioService} from "../../../fusio.service";
 })
 export class ListComponent implements OnInit {
 
-  errorsPerRoute?: ChartData<'line', Statistic_Chart_Data>;
-  incomingRequests?: ChartData<'line', Statistic_Chart_Data>;
-  incomingTransactions?: ChartData<'line', Statistic_Chart_Data>;
-  mostUsedRoutes?: ChartData<'line', Statistic_Chart_Data>;
-  timePerRoute?: ChartData<'line', Statistic_Chart_Data>;
-  latestApps?: Dashboard_Apps;
-  latestRequests?: Dashboard_Requests;
-  latestUsers?: Dashboard_Users;
-  latestTransactions?: Dashboard_Transactions;
+  errorsPerRoute?: ChartData<'line', StatisticChartData>;
+  incomingRequests?: ChartData<'line', StatisticChartData>;
+  incomingTransactions?: ChartData<'line', StatisticChartData>;
+  mostUsedRoutes?: ChartData<'line', StatisticChartData>;
+  timePerRoute?: ChartData<'line', StatisticChartData>;
+  latestApps?: DashboardApps;
+  latestRequests?: DashboardRequests;
+  latestUsers?: DashboardUsers;
+  latestTransactions?: DashboardTransactions;
 
   chartOptions = {
     responsive: true,
@@ -39,8 +39,8 @@ export class ListComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    const dashboard = await this.fusio.getClient().backendDashboard();
-    const response = await dashboard.getBackendDashboard().backendActionDashboardGetAll()
+    const resource = await this.fusio.getClient().getBackendDashboard();
+    const response = await resource.backendActionDashboardGetAll()
 
     if (response.data.errorsPerRoute) {
       this.errorsPerRoute = Converter.convertChart(response.data.errorsPerRoute, 10);
