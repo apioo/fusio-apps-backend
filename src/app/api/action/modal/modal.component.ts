@@ -92,7 +92,7 @@ export class ModalComponent extends Modal<Client, Action> {
         const modalRef = this.modalService.open(HelpComponent, {
           size: 'lg'
         });
-        modalRef.componentInstance.path = 'api/action/' + action.name.toLowerCase();
+        modalRef.componentInstance.path = 'api/action/' + action.name.toLowerCase() + '/';
       }
     }
   }
