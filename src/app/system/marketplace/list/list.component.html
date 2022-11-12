@@ -8,7 +8,7 @@
     <div *ngFor="let app of apps | keyvalue" class="col">
       <div class="card mb-4">
         <h5 class="card-header">{{app.key}}</h5>
-        <img src="{{app.value.screenshot}}" class="card-img-top" style="padding:16px;">
+        <img src="{{app.value.screenshot}}" class="card-img-top">
         <div class="card-body">
           <p class="card-text">{{app.value.description}}</p>
           <div class="btn-group" role="group">
