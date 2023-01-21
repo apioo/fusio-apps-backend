@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {InternalToTypeSchemaService, Specification, TypeSchemaToInternalService} from "ngx-typeschema-editor";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {DetailComponent} from "../detail/detail.component";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Schema} from "fusio-sdk/dist/src/generated/backend/Schema";
-import {BackendService, ErrorService, Mode} from "ngx-fusio-sdk";
+import {BackendService, ErrorService, Mode, Result} from "ngx-fusio-sdk";
+import {ModalComponent} from "../modal/modal.component";
 
 @Component({
   selector: 'app-designer',
@@ -36,7 +36,7 @@ export class DesignerComponent implements OnInit {
   submit(spec: Specification) {
     const typeSchema = this.internalToTypeSchemaService.transform(spec);
 
-    const modalRef = this.modalService.open(DetailComponent, {
+    const modalRef = this.modalService.open(ModalComponent, {
       size: 'lg'
     });
 
@@ -50,11 +50,11 @@ export class DesignerComponent implements OnInit {
       modalRef.componentInstance.schema = JSON.stringify(typeSchema, null, 2);
     }
 
-    modalRef.closed.subscribe((response) => {
-      this.response = response;
-      if (response.success) {
-        if (this.schema) {
-          this.router.navigate(['/schema/' + this.schema.id]);
+    modalRef.closed.subscribe((data: Result<Schema>) => {
+      this.response = data.response;
+      if (this.response.success) {
+        if (data.entity.id) {
+          this.router.navigate(['/schema/' + data.entity.id]);
         } else {
           this.router.navigate(['/schema']);
         }
