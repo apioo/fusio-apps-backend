@@ -50,9 +50,12 @@ export class ImportComponent implements OnInit {
   }
 
   async doImport(document: Document) {
+    if (!document.name || !document.user?.name) {
+      return;
+    }
 
     try {
-      const resource = await this.typehub.getClientAnonymous().getDocumentByUserAndDocumentExport(document.user?.name || '', document.name || '');
+      const resource = await this.typehub.getClientAnonymous().getDocumentByUserAndDocumentExport(document.user?.name, document.name);
       const response = await resource.postDocumentUserDocumentExport({
         user: document.user?.name,
         document: document.name,
