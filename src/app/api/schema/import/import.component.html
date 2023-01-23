@@ -1,0 +1,33 @@
+
+<h1>Schema / Import</h1>
+
+<fusio-message [response]="response"></fusio-message>
+
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <div class="form-group mt-3">
+        <input type="text" class="form-control" id="search" placeholder="Search documents ..." [(ngModel)]="search" (change)="doSearch()">
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <ul class="list-group mt-3 mb-3">
+        <li *ngFor="let document of entry" class="list-group-item d-flex justify-content-between align-items-start">
+          <div class="ms-2 me-auto">
+            <div class="fw-bold"><a href="https://typehub.cloud/d/{{document.user?.name}}/{{document.name}}">{{ document.user?.name }} / {{ document.name }}</a></div>
+            <small class="text-muted">by <a href="https://typehub.cloud/d/{{document.user?.name}}">{{ document.user?.name }}</a> on {{ document.insertDate | date:'short' }}</small>
+          </div>
+          <span class="badge bg-primary rounded-pill mt-2"><i class="bi bi-star"></i> {{ document.stars }}</span>
+          <button type="button" class="btn btn-primary ms-2" (click)="doImport(document)">Import</button>
+        </li>
+      </ul>
+      <ngb-pagination
+        [(page)]="page"
+        [pageSize]="itemsPerPage"
+        [collectionSize]="totalResults"
+        (pageChange)="doSearch()"></ngb-pagination>
+    </div>
+  </div>
+</div>

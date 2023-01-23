@@ -27,14 +27,15 @@
     "bootstrap-icons": "^1.8.3",
     "chart.js": "^3.8.0",
     "fusio-sdk": "^3.0.2",
-    "ngx-captcha": "^11.0.0",
     "ng2-charts": "^3.1.0",
+    "ngx-captcha": "^11.0.0",
     "ngx-fusio-sdk": "^1.1.7",
     "ngx-gravatar": "^13.0.0",
-    "ngx-typeschema-editor": "^1.1.1",
+    "ngx-typeschema-editor": "^1.1.2",
     "rxjs": "~7.5.0",
     "sdkgen-client": "^0.3.0",
     "tslib": "^2.3.0",
+    "typehub-javascript-sdk": "^0.1.0",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {

@@ -5,7 +5,7 @@
 
 <fusio-search
   [searchTerm]="search"
-  [buttons]="[{routerLink: '/schema/designer', icon: 'bi-bag-plus'}]"
+  [buttons]="[{routerLink: '/schema/designer', icon: 'bi-bag-plus'}, {routerLink: '/schema/import', icon: 'bi bi-building-add'}]"
   (search)="doSearch(1, $event)"
   (newClick)="openCreateDialog()"
   placeholder="schema"
