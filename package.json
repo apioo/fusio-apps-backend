@@ -29,7 +29,7 @@
     "fusio-sdk": "^3.0.2",
     "ng2-charts": "^3.1.0",
     "ngx-captcha": "^11.0.0",
-    "ngx-fusio-sdk": "^1.1.7",
+    "ngx-fusio-sdk": "^1.2.1",
     "ngx-gravatar": "^13.0.0",
     "ngx-typeschema-editor": "^1.1.4",
     "rxjs": "~7.5.0",
