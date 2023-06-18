@@ -2,12 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {Action} from "fusio-sdk/dist/src/generated/backend/Action";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
-import axios from "axios";
 import {BackendService, ErrorService, HelpService} from "ngx-fusio-sdk";
 import {FormContainer} from "fusio-sdk/dist/src/generated/backend/FormContainer";
 import {ActionExecuteRequest} from "fusio-sdk/dist/src/generated/backend/ActionExecuteRequest";
 import {ActionExecuteResponse} from "fusio-sdk/dist/src/generated/backend/ActionExecuteResponse";
-import {FormQuery} from "fusio-sdk/dist/src/generated/backend/FormQuery";
 
 @Component({
   selector: 'app-designer',
@@ -51,11 +49,9 @@ export class DesignerComponent implements OnInit {
         request.body = JSON.parse(this.body);
       }
 
-      await (await this.backend.getClient().getBackendActionByActionId('' + this.action.id)).backendActionActionUpdate(this.action);
+      await this.backend.getClient().action().update('' + this.action.id, this.action);
 
-      const resource = await this.backend.getClient().getBackendActionExecuteByActionId('' + this.action.id);
-      const response = await resource.backendActionActionExecute(request)
-      this.response = response.data;
+      this.response = await this.backend.getClient().action().execute('' + this.action.id, request);
     } catch (error) {
       this.message = this.error.convert(error);
     }
@@ -63,9 +59,7 @@ export class DesignerComponent implements OnInit {
 
   async loadAction(id: string) {
     try {
-      const resource = await this.backend.getClient().getBackendActionByActionId(id);
-      const response = await resource.backendActionActionGet();
-      this.action = response.data;
+      this.action = await this.backend.getClient().action().get(id);
 
       if (this.action.class) {
         this.loadConfig(this.action.class);
@@ -80,13 +74,7 @@ export class DesignerComponent implements OnInit {
       return;
     }
 
-    const query: FormQuery = {
-      class: classString
-    };
-
-    const resource = await this.backend.getClient().getBackendActionForm();
-    const response = await resource.backendActionActionGetForm(query);
-    this.form = response.data;
+    this.form = await this.backend.getClient().action().getForm(classString);
   }
 
 }

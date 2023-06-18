@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {Route as ModelRoute} from "fusio-sdk/dist/src/generated/backend/Route";
+import {Operation} from "fusio-sdk/dist/src/generated/backend/Operation";
 import {Scope} from "fusio-sdk/dist/src/generated/backend/Scope";
 import {AxiosResponse} from "axios";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {Modal} from "ngx-fusio-sdk";
-import Client from "fusio-sdk/dist/src/generated/backend/Client";
-import {ScopeRoute} from "fusio-sdk/dist/src/generated/backend/ScopeRoute";
+import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
+import {ScopeOperation} from "fusio-sdk/dist/src/generated/backend/ScopeOperation";
 
 @Component({
   selector: 'app-scope-modal',
@@ -14,18 +14,17 @@ import {ScopeRoute} from "fusio-sdk/dist/src/generated/backend/ScopeRoute";
 })
 export class ModalComponent extends Modal<Client, Scope> {
 
-  routes: Array<ModelRoute & ExtendRoute> = [];
+  operations: Array<Operation & ExtendOperation> = [];
 
   override async ngOnInit(): Promise<void> {
-    const user = await this.fusio.getClient().getBackendRoutes();
-    const response = await user.backendActionRouteGetAll({count: 1024});
+    const response = await this.fusio.getClient().operation().getAll(0, 1024);
 
-    this.routes = [];
-    response.data.entry?.forEach((route) => {
-      let extendRoute : ModelRoute & ExtendRoute = route;
+    this.operations = [];
+    response.entry?.forEach((operation) => {
+      let extendRoute : Operation & ExtendOperation = operation;
 
-      if (this.entity.routes) {
-        const methods = this.getMethodsForRoute(this.entity.routes, route);
+      if (this.entity.operations) {
+        const methods = this.getMethodsForRoute(this.entity.operations, operation);
 
         extendRoute.allowedMethods = {
           get: methods.includes('GET'),
@@ -46,27 +45,24 @@ export class ModalComponent extends Modal<Client, Scope> {
         };
       }
 
-      this.routes.push(extendRoute);
+      this.operations.push(extendRoute);
     });
   }
 
-  protected async create(entity: Scope): Promise<AxiosResponse<Message>> {
-    entity.routes = this.getConfiguredScopes();
+  protected async create(entity: Scope): Promise<Message> {
+    entity.operations = this.getConfiguredScopes();
 
-    const resource = await this.fusio.getClient().getBackendScope();
-    return await resource.backendActionScopeCreate(entity);
+    return this.fusio.getClient().scope().create(entity);
   }
 
-  protected async update(entity: Scope): Promise<AxiosResponse<Message>> {
-    entity.routes = this.getConfiguredScopes();
+  protected async update(entity: Scope): Promise<Message> {
+    entity.operations = this.getConfiguredScopes();
 
-    const resource = await this.fusio.getClient().getBackendScopeByScopeId('' + entity.id);
-    return await resource.backendActionScopeUpdate(entity);
+    return this.fusio.getClient().scope().update('' + entity.id, entity);
   }
 
-  protected async delete(entity: Scope): Promise<AxiosResponse<Message>> {
-    const resource = await this.fusio.getClient().getBackendScopeByScopeId('' + entity.id);
-    return await resource.backendActionScopeDelete();
+  protected async delete(entity: Scope): Promise<Message> {
+    return this.fusio.getClient().scope().delete('' + entity.id);
   }
 
   protected newEntity(): Scope {
@@ -75,53 +71,53 @@ export class ModalComponent extends Modal<Client, Scope> {
     };
   }
 
-  private getMethodsForRoute(routes: Array<ScopeRoute>, targetRoute: ModelRoute): Array<string> {
-    const route: ScopeRoute|undefined = routes.find((scopeRoute) => {
-      return targetRoute.id === scopeRoute.routeId;
+  private getMethodsForRoute(routes: Array<ScopeOperation>, targetRoute: Operation): Array<string> {
+    const operation: ScopeOperation|undefined = routes.find((scopeRoute) => {
+      return targetRoute.id === scopeRoute.operationId;
     });
 
-    if (!route || !route.methods) {
+    if (!operation || !operation.methods) {
       return [];
     }
 
-    return route.methods.split('|');
+    return operation.methods.split('|');
   }
 
-  private getConfiguredScopes(): Array<ScopeRoute> {
-    const routes: Array<ScopeRoute> = [];
-    this.routes.forEach((route) => {
+  private getConfiguredScopes(): Array<ScopeOperation> {
+    const operations: Array<ScopeOperation> = [];
+    this.operations.forEach((operation) => {
       const methods = [];
-      if (route.allowedMethods) {
-        for (const [methodName, allow] of Object.entries(route.allowedMethods)) {
+      if (operation.allowedMethods) {
+        for (const [methodName, allow] of Object.entries(operation.allowedMethods)) {
           if (allow) {
             methods.push(methodName.toUpperCase());
           }
         }
       }
       if (methods.length > 0) {
-        routes.push({
-          routeId: route.id,
+        operations.push({
+          operationId: operation.id,
           allow: true,
           methods: methods.join('|'),
         });
       }
     });
-    return routes;
+    return operations;
   }
 
   toggleSelect(name: string) {
-    this.routes.forEach((route) => {
-      if (route.allowedMethods) {
+    this.operations.forEach((operation) => {
+      if (operation.allowedMethods) {
         if (name === 'GET') {
-          route.allowedMethods.get = !route.allowedMethods.get;
+          operation.allowedMethods.get = !operation.allowedMethods.get;
         } else if (name === 'POST') {
-          route.allowedMethods.post = !route.allowedMethods.post;
+          operation.allowedMethods.post = !operation.allowedMethods.post;
         } else if (name === 'PUT') {
-          route.allowedMethods.put = !route.allowedMethods.put;
+          operation.allowedMethods.put = !operation.allowedMethods.put;
         } else if (name === 'PATCH') {
-          route.allowedMethods.patch = !route.allowedMethods.patch;
+          operation.allowedMethods.patch = !operation.allowedMethods.patch;
         } else if (name === 'DELETE') {
-          route.allowedMethods.delete = !route.allowedMethods.delete;
+          operation.allowedMethods.delete = !operation.allowedMethods.delete;
         }
       }
     });
@@ -129,7 +125,7 @@ export class ModalComponent extends Modal<Client, Scope> {
 
 }
 
-interface ExtendRoute {
+interface ExtendOperation {
   allowedMethods?: AllowedMethods
 }
 

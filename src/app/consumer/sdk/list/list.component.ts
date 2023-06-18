@@ -17,10 +17,9 @@ export class ListComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     try {
-      const resource = await this.backend.getClient().getBackendSdk();
-      const response = await resource.backendActionSdkGetAll();
+      const response = await this.backend.getClient().sdk().getAll();
 
-      this.types = response.data.types;
+      this.types = response.types;
     } catch (error) {
       this.response = this.error.convert(error);
     }
@@ -28,12 +27,11 @@ export class ListComponent implements OnInit {
 
   async generate(type: string) {
     try {
-      const resource = await this.backend.getClient().getBackendSdk();
-      const response = await resource.backendActionSdkGenerate({
+      const response = await this.backend.getClient().sdk().generate({
         format: type
       });
 
-      this.response = response.data;
+      this.response = response;
     } catch (error) {
       this.response = this.error.convert(error);
     }

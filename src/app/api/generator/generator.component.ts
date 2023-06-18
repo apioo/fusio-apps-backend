@@ -27,10 +27,9 @@ export class GeneratorComponent implements OnInit {
   constructor(private backend: BackendService, private error: ErrorService) { }
 
   async ngOnInit(): Promise<void> {
-    const resource = await this.backend.getClient().getBackendGenerator();
-    const response = await resource.backendActionGeneratorIndex();
-    if (response.data.providers) {
-      this.providers = response.data.providers;
+    const response = await this.backend.getClient().generator().getProviders();
+    if (response.providers) {
+      this.providers = response.providers;
     }
   }
 
@@ -39,9 +38,7 @@ export class GeneratorComponent implements OnInit {
       return;
     }
 
-    const resource = await this.backend.getClient().getBackendGeneratorByProvider(this.selected);
-    const response = await resource.backendActionGeneratorForm();
-    this.form = response.data;
+    this.form = await this.backend.getClient().generator().getProviderForm(this.selected);
     this.provider.config = {};
   }
 
@@ -51,9 +48,7 @@ export class GeneratorComponent implements OnInit {
     }
 
     try {
-      const resource = await this.backend.getClient().getBackendGeneratorByProvider(this.selected);
-      const response = await resource.backendActionGeneratorChangelog(this.provider.config);
-      this.changelog = response.data;
+      this.changelog = await this.backend.getClient().generator().getChangelog(this.selected, this.provider.config);
       this.response = undefined;
     } catch (error) {
       this.response = this.error.convert(error);
@@ -66,9 +61,7 @@ export class GeneratorComponent implements OnInit {
     }
 
     try {
-      const resource = await this.backend.getClient().getBackendGeneratorByProvider(this.selected);
-      const response = await resource.backendActionGeneratorCreate(this.provider)
-      this.response = response.data;
+      this.response = await this.backend.getClient().generator().executeProvider(this.selected, this.provider);
     } catch (error) {
       this.response = this.error.convert(error);
     }

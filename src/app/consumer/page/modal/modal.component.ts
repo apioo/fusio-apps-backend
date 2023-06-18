@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Modal} from "ngx-fusio-sdk";
-import Client from "fusio-sdk/dist/src/generated/backend/Client";
+import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
 import {Page} from "fusio-sdk/dist/src/generated/backend/Page";
-import {AxiosResponse} from "axios";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 
 @Component({
@@ -20,19 +19,16 @@ export class ModalComponent extends Modal<Client, Page> {
     value: 'Hidden'
   }];
 
-  protected async create(entity: Page): Promise<AxiosResponse<Message>> {
-    const resource = await this.fusio.getClient().getBackendPage();
-    return await resource.backendActionPageCreate(entity);
+  protected async create(entity: Page): Promise<Message> {
+    return this.fusio.getClient().page().create(entity);
   }
 
-  protected async update(entity: Page): Promise<AxiosResponse<Message>> {
-    const resource = await this.fusio.getClient().getBackendPageByPageId('' + entity.id);
-    return await resource.backendActionPageUpdate(entity);
+  protected async update(entity: Page): Promise<Message> {
+    return this.fusio.getClient().page().update('' + entity.id, entity);
   }
 
-  protected async delete(entity: Page): Promise<AxiosResponse<Message>> {
-    const resource = await this.fusio.getClient().getBackendPageByPageId('' + entity.id);
-    return await resource.backendActionPageDelete();
+  protected async delete(entity: Page): Promise<Message> {
+    return this.fusio.getClient().page().delete('' + entity.id);
   }
 
   protected newEntity(): Page {

@@ -1,11 +1,9 @@
 import {Component} from '@angular/core';
 import {List} from "ngx-fusio-sdk";
-import Client from "fusio-sdk/dist/src/generated/backend/Client";
+import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
 import {Page} from "fusio-sdk/dist/src/generated/backend/Page";
-import {AxiosResponse} from "axios";
 import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
 import {ModalComponent} from "../modal/modal.component";
-import {CollectionCategoryQuery} from "fusio-sdk/dist/src/generated/backend/CollectionCategoryQuery";
 
 @Component({
   selector: 'app-page-list',
@@ -14,14 +12,12 @@ import {CollectionCategoryQuery} from "fusio-sdk/dist/src/generated/backend/Coll
 })
 export class ListComponent extends List<Client, Page> {
 
-  protected async getAll(query: CollectionCategoryQuery): Promise<AxiosResponse<Collection<Page>>> {
-    const resource = await this.fusio.getClient().getBackendPage();
-    return await resource.backendActionPageGetAll(query);
+  protected async getAll(parameters: Array<any>): Promise<Collection<Page>> {
+    return this.fusio.getClient().page().getAll(...parameters);
   }
 
-  protected async get(id: string): Promise<AxiosResponse<Page>> {
-    const resource = await this.fusio.getClient().getBackendPageByPageId(id);
-    return await resource.backendActionPageGet();
+  protected async get(id: string): Promise<Page> {
+    return this.fusio.getClient().page().get(id);
   }
 
   protected getDetailComponent(): any {

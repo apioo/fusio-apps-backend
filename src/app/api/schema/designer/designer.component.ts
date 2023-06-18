@@ -64,10 +64,9 @@ export class DesignerComponent implements OnInit {
 
   async loadSchema(id: string) {
     try {
-      const resource = await this.backend.getClient().getBackendSchemaBySchemaId(id);
-      const response = await resource.backendActionSchemaGet();
+      const response = await this.backend.getClient().schema().get(id);
 
-      this.schema = response.data;
+      this.schema = response;
       this.spec = this.typeSchemaToInternalService.transform(this.schema.source);
     } catch (error) {
       this.response = this.error.convert(error);

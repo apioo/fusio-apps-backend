@@ -18,10 +18,9 @@ export class ListComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     try {
-      const resource = await this.backend.getClient().getBackendMarketplace();
-      const response = await resource.backendActionMarketplaceGetAll();
+      const response = await this.backend.getClient().marketplace().getAll()
 
-      this.apps = response.data.apps;
+      this.apps = response.apps;
     } catch (error) {
       this.response = this.error.convert(error);
     }
@@ -29,12 +28,9 @@ export class ListComponent implements OnInit {
 
   async install(appName: string) {
     try {
-      const resource = await this.backend.getClient().getBackendMarketplace();
-      const response = await resource.backendActionMarketplaceInstall({
+      this.response = await this.backend.getClient().marketplace().install({
         name: appName
       });
-
-      //this.response = response.data;
     } catch (error) {
       this.response = this.error.convert(error);
     }
@@ -42,10 +38,7 @@ export class ListComponent implements OnInit {
 
   async update(appName: string) {
     try {
-      const resource = await this.backend.getClient().getBackendMarketplaceByAppName(appName);
-      const response = await resource.backendActionMarketplaceUpdate();
-
-      this.response = response.data;
+      this.response = await this.backend.getClient().marketplace().update(appName);
     } catch (error) {
       this.response = this.error.convert(error);
     }
@@ -53,10 +46,7 @@ export class ListComponent implements OnInit {
 
   async remove(appName: string) {
     try {
-      const resource = await this.backend.getClient().getBackendMarketplaceByAppName(appName);
-      const response = await resource.backendActionMarketplaceRemove();
-
-      this.response = response.data;
+      this.response = await this.backend.getClient().marketplace().remove(appName);
     } catch (error) {
       this.response = this.error.convert(error);
     }

@@ -1,11 +1,9 @@
 import {Component} from '@angular/core';
 import {List} from "ngx-fusio-sdk";
-import Client from "fusio-sdk/dist/src/generated/backend/Client";
-import {AxiosResponse} from "axios";
+import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
 import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
 import {Event} from "fusio-sdk/dist/src/generated/backend/Event";
 import {ModalComponent} from "../modal/modal.component";
-import {CollectionCategoryQuery} from "fusio-sdk/dist/src/generated/backend/CollectionCategoryQuery";
 
 @Component({
   selector: 'app-event-list',
@@ -14,14 +12,12 @@ import {CollectionCategoryQuery} from "fusio-sdk/dist/src/generated/backend/Coll
 })
 export class ListComponent extends List<Client, Event> {
 
-  protected async getAll(query: CollectionCategoryQuery): Promise<AxiosResponse<Collection<Event>>> {
-    const resource = await this.fusio.getClient().getBackendEvent();
-    return await resource.backendActionEventGetAll(query);
+  protected async getAll(parameters: Array<any>): Promise<Collection<Event>> {
+    return this.fusio.getClient().event().getAll(...parameters);
   }
 
-  protected async get(id: string): Promise<AxiosResponse<Event>> {
-    const resource = await this.fusio.getClient().getBackendEventByEventId(id);
-    return await resource.backendActionEventGet();
+  protected async get(id: string): Promise<Event> {
+    return this.fusio.getClient().event().get(id);
   }
 
   protected getDetailComponent(): any {

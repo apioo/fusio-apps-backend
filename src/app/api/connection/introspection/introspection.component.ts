@@ -37,18 +37,17 @@ export class IntrospectionComponent implements OnInit {
     if (!this.connectionId) {
       return;
     }
-    const resource = await this.backend.getClient().getBackendConnectionByConnectionIdIntrospection(this.connectionId);
-    const response = await resource.backendActionConnectionIntrospectionGetEntities();
-    this.entites = response.data.entities || [];
+
+    const response = await this.backend.getClient().connection().getIntrospection(this.connectionId);
+    this.entites = response.entities || [];
   }
 
   private async loadEntity(entityName: string): Promise<void> {
     if (!this.connectionId) {
       return;
     }
-    const resource = await this.backend.getClient().getBackendConnectionByConnectionIdIntrospectionAndEntity(this.connectionId, entityName);
-    const response = await resource.backendActionConnectionIntrospectionGetEntity();
-    this.entity = response.data;
+
+    this.entity = await this.backend.getClient().connection().getIntrospectionForEntity(this.connectionId, entityName);
   }
 
 }

@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {Route as ModelRoute} from "fusio-sdk/dist/src/generated/backend/Route";
+import {Operation} from "fusio-sdk/dist/src/generated/backend/Operation";
 import {User} from "fusio-sdk/dist/src/generated/backend/User";
 import {Plan} from "fusio-sdk/dist/src/generated/backend/Plan";
 import {App} from "fusio-sdk/dist/src/generated/backend/App";
@@ -7,7 +7,7 @@ import {Rate} from "fusio-sdk/dist/src/generated/backend/Rate";
 import {AxiosResponse} from "axios";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {Modal} from "ngx-fusio-sdk";
-import Client from "fusio-sdk/dist/src/generated/backend/Client";
+import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
 
 @Component({
   selector: 'app-rate-modal',
@@ -49,35 +49,32 @@ export class ModalComponent extends Modal<Client, Rate> {
     value: 'No'
   }]
 
-  routes?: Array<ModelRoute>;
+  operations?: Array<Operation>;
   users?: Array<User>;
   plans?: Array<Plan>;
   apps?: Array<App>;
 
   override async ngOnInit(): Promise<void> {
-    this.loadRoutes();
+    this.loadOperations();
     this.loadUsers();
     this.loadPlans();
     this.loadApps();
   }
 
-  protected async create(entity: Rate): Promise<AxiosResponse<Message>> {
+  protected async create(entity: Rate): Promise<Message> {
     entity.timespan = this.getTimespan();
 
-    const resource = await this.fusio.getClient().getBackendRate();
-    return await resource.backendActionRateCreate(entity);
+    return this.fusio.getClient().rate().create(entity);
   }
 
-  protected async update(entity: Rate): Promise<AxiosResponse<Message>> {
+  protected async update(entity: Rate): Promise<Message> {
     entity.timespan = this.getTimespan();
 
-    const resource = await this.fusio.getClient().getBackendRateByRateId('' + entity.id);
-    return await resource.backendActionRateUpdate(entity);
+    return this.fusio.getClient().rate().update('' + entity.id, entity);
   }
 
-  protected async delete(entity: Rate): Promise<AxiosResponse<Message>> {
-    const resource = await this.fusio.getClient().getBackendRateByRateId('' + entity.id);
-    return await resource.backendActionRateDelete();
+  protected async delete(entity: Rate): Promise<Message> {
+    return this.fusio.getClient().rate().delete('' + entity.id);
   }
 
   protected newEntity(): Rate {
@@ -90,28 +87,24 @@ export class ModalComponent extends Modal<Client, Rate> {
     };
   }
 
-  private async loadRoutes() {
-    const resource = await this.fusio.getClient().getBackendRoutes();
-    const response = await resource.backendActionRouteGetAll({count: 1024});
-    this.routes = response.data.entry;
+  private async loadOperations() {
+    const response = await this.fusio.getClient().operation().getAll(0, 1024);
+    this.operations = response.entry;
   }
 
   private async loadUsers() {
-    const resource = await this.fusio.getClient().getBackendUser();
-    const response = await resource.backendActionUserGetAll({count: 1024});
-    this.users = response.data.entry;
+    const response = await this.fusio.getClient().user().getAll(0, 1024);
+    this.users = response.entry;
   }
 
   private async loadPlans() {
-    const resource = await this.fusio.getClient().getBackendPlan();
-    const response = await resource.backendActionPlanGetAll({count: 1024});
-    this.plans = response.data.entry;
+    const response = await this.fusio.getClient().plan().getAll(0, 1024);
+    this.plans = response.entry;
   }
 
   private async loadApps() {
-    const resource = await this.fusio.getClient().getBackendApp();
-    const response = await resource.backendActionAppGetAll({count: 1024});
-    this.apps = response.data.entry;
+    const response = await this.fusio.getClient().app().getAll(0, 1024);
+    this.apps = response.entry;
   }
 
   addAllocation() {

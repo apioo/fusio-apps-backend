@@ -3,10 +3,9 @@ import {Connection} from "fusio-sdk/dist/src/generated/backend/Connection";
 import {AxiosResponse} from "axios";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {HelpComponent, Modal} from "ngx-fusio-sdk";
-import Client from "fusio-sdk/dist/src/generated/backend/Client";
+import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
 import {ConnectionIndexEntry} from "fusio-sdk/dist/src/generated/backend/ConnectionIndexEntry";
 import {FormContainer} from "fusio-sdk/dist/src/generated/backend/FormContainer";
-import {FormQuery} from "fusio-sdk/dist/src/generated/backend/FormQuery";
 
 @Component({
   selector: 'app-connection-modal',
@@ -21,28 +20,24 @@ export class ModalComponent extends Modal<Client, Connection> {
   custom: boolean = false;
 
   override async ngOnInit(): Promise<void> {
-    const resource = await this.fusio.getClient().getBackendConnectionList();
-    const response = await resource.backendActionConnectionGetIndex();
-    this.connections = response.data.connections;
+    const response = await this.fusio.getClient().connection().getClasses();
+    this.connections = response.connections;
 
     if (this.entity.class) {
       this.loadConfig(this.entity.class);
     }
   }
 
-  protected async create(entity: Connection): Promise<AxiosResponse<Message>> {
-    const resource = await this.fusio.getClient().getBackendConnection();
-    return await resource.backendActionConnectionCreate(entity);
+  protected async create(entity: Connection): Promise<Message> {
+    return this.fusio.getClient().connection().create(entity);
   }
 
-  protected async update(entity: Connection): Promise<AxiosResponse<Message>> {
-    const resource = await this.fusio.getClient().getBackendConnectionByConnectionId('' + entity.id);
-    return await resource.backendActionConnectionUpdate(entity);
+  protected async update(entity: Connection): Promise<Message> {
+    return this.fusio.getClient().connection().update('' + entity.id, entity);
   }
 
-  protected async delete(entity: Connection): Promise<AxiosResponse<Message>> {
-    const resource = await this.fusio.getClient().getBackendConnectionByConnectionId('' + entity.id);
-    return await resource.backendActionConnectionDelete();
+  protected async delete(entity: Connection): Promise<Message> {
+    return this.fusio.getClient().connection().delete('' + entity.id);
   }
 
   protected newEntity(): Connection {

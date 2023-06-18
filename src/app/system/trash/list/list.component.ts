@@ -3,7 +3,6 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {BackendService, HelpService} from "ngx-fusio-sdk";
 import {TrashData} from "fusio-sdk/dist/src/generated/backend/TrashData";
-import {CollectionCategoryQuery} from "fusio-sdk/dist/src/generated/backend/CollectionCategoryQuery";
 
 @Component({
   selector: 'app-list',
@@ -37,18 +36,12 @@ export class ListComponent implements OnInit {
   }
 
   async doSearch() {
-    let query: CollectionCategoryQuery = {};
-    query.startIndex = (this.page - 1) * this.pageSize;
-    query.count = this.pageSize;
-    if (this.search) {
-      query.search = this.search;
-    }
+    const startIndex = (this.page - 1) * this.pageSize;
+    const count = this.pageSize;
+    const response = await this.backend.getClient().trash().getAllByType(this.type, startIndex, count, this.search);
 
-    const resource = await this.backend.getClient().getBackendTrashByType(this.type);
-    const response = await resource.backendActionTrashGetAll(query);
-
-    this.totalResults = response.data.totalResults || 0;
-    this.entries = response.data.entry || [];
+    this.totalResults = response.totalResults || 0;
+    this.entries = response.entry || [];
   }
 
   selectType() {
@@ -60,17 +53,14 @@ export class ListComponent implements OnInit {
   }
 
   async doRestore(entry: TrashData) {
-    const resource = await this.backend.getClient().getBackendTrashByType(this.type);
-    const response = await resource.backendActionTrashRestore({
+    this.response = await this.backend.getClient().trash().restore(this.type, {
       id: entry.id
     });
-    this.response = response.data;
     this.doSearch();
   }
 
   async loadTypes() {
-    const resource = await this.backend.getClient().getBackendTrash();
-    const response = await resource.backendActionTrashGetTypes();
-    this.types = response.data.types;
+    const response = await this.backend.getClient().trash().getTypes();
+    this.types = response.types;
   }
 }

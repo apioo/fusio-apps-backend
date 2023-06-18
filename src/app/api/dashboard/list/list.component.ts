@@ -39,33 +39,32 @@ export class ListComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    const resource = await this.backend.getClient().getBackendDashboard();
-    const response = await resource.backendActionDashboardGetAll()
+    const response = await this.backend.getClient().dashboard().getAll();
 
-    if (response.data.errorsPerRoute) {
-      this.errorsPerRoute = Converter.convertChart(response.data.errorsPerRoute, 10);
+    if (response.errorsPerOperation) {
+      this.errorsPerRoute = Converter.convertChart(response.errorsPerOperation, 10);
     }
 
-    if (response.data.incomingRequests) {
-      this.incomingRequests = Converter.convertChart(response.data.incomingRequests, 10);
+    if (response.incomingRequests) {
+      this.incomingRequests = Converter.convertChart(response.incomingRequests, 10);
     }
 
-    if (response.data.incomingTransactions) {
-      this.incomingTransactions = Converter.convertChart(response.data.incomingTransactions, 10);
+    if (response.incomingTransactions) {
+      this.incomingTransactions = Converter.convertChart(response.incomingTransactions, 10);
     }
 
-    if (response.data.mostUsedRoutes) {
-      this.mostUsedRoutes = Converter.convertChart(response.data.mostUsedRoutes, 10);
+    if (response.mostUsedOperations) {
+      this.mostUsedRoutes = Converter.convertChart(response.mostUsedOperations, 10);
     }
 
-    if (response.data.timePerRoute) {
-      this.timePerRoute = Converter.convertChart(response.data.timePerRoute, 10);
+    if (response.timePerOperation) {
+      this.timePerRoute = Converter.convertChart(response.timePerOperation, 10);
     }
 
-    this.latestApps = response.data.latestApps;
-    this.latestRequests = response.data.latestRequests;
-    this.latestUsers = response.data.latestUsers;
-    this.latestTransactions = response.data.latestTransactions;
+    this.latestApps = response.latestApps;
+    this.latestRequests = response.latestRequests;
+    this.latestUsers = response.latestUsers;
+    this.latestTransactions = response.latestTransactions;
   }
 
 }

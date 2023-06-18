@@ -28,10 +28,9 @@ export class DetailComponent extends Detail<Schema> implements OnChanges {
   }
 
   private async renderPreview(id: string) {
-    const resource = await this.backend.getClient().getBackendSchemaPreviewBySchemaId(id);
-    const response = await resource.backendActionSchemaGetPreview();
+    const response = await this.backend.getClient().schema().getPreview(id);
 
-    this.preview = response.data.preview;
+    this.preview = response.preview;
     this.loading = false;
   }
 

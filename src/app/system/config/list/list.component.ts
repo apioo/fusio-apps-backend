@@ -1,12 +1,11 @@
 import {Component} from '@angular/core';
 import {List} from "ngx-fusio-sdk";
-import Client from "fusio-sdk/dist/src/generated/backend/Client";
+import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
 import {Category} from "fusio-sdk/dist/src/generated/backend/Category";
 import {AxiosResponse} from "axios";
 import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
 import {Config} from "fusio-sdk/dist/src/generated/backend/Config";
 import {ModalComponent} from "../modal/modal.component";
-import {CollectionCategoryQuery} from "fusio-sdk/dist/src/generated/backend/CollectionCategoryQuery";
 
 @Component({
   selector: 'app-config-list',
@@ -15,14 +14,12 @@ import {CollectionCategoryQuery} from "fusio-sdk/dist/src/generated/backend/Coll
 })
 export class ListComponent extends List<Client, Config> {
 
-  protected async getAll(query: CollectionCategoryQuery): Promise<AxiosResponse<Collection<Category>>> {
-    const resource = await this.fusio.getClient().getBackendConfig();
-    return await resource.backendActionConfigGetAll(query);
+  protected async getAll(parameters: Array<any>): Promise<Collection<Category>> {
+    return this.fusio.getClient().config().getAll(...parameters);
   }
 
-  protected async get(id: string): Promise<AxiosResponse<Category>> {
-    const resource = await this.fusio.getClient().getBackendConfigByConfigId(id);
-    return await resource.backendActionConfigGet();
+  protected async get(id: string): Promise<Category> {
+    return this.fusio.getClient().config().get(id);
   }
 
   protected getDetailComponent(): any {

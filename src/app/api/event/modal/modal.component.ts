@@ -4,7 +4,7 @@ import {Event} from "fusio-sdk/dist/src/generated/backend/Event";
 import {AxiosResponse} from "axios";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {Modal} from "ngx-fusio-sdk";
-import Client from "fusio-sdk/dist/src/generated/backend/Client";
+import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
 
 @Component({
   selector: 'app-event-modal',
@@ -16,24 +16,20 @@ export class ModalComponent extends Modal<Client, Event> {
   schemas?: Array<Schema>;
 
   override async ngOnInit(): Promise<void> {
-    const resource = await this.fusio.getClient().getBackendSchema();
-    const response = await resource.backendActionSchemaGetAll({count: 1024});
-    this.schemas = response.data.entry;
+    const response = await this.fusio.getClient().schema().getAll(0, 1024);
+    this.schemas = response.entry;
   }
 
-  protected async create(entity: Event): Promise<AxiosResponse<Message>> {
-    const resource = await this.fusio.getClient().getBackendEvent();
-    return await resource.backendActionEventCreate(entity);
+  protected async create(entity: Event): Promise<Message> {
+    return this.fusio.getClient().event().create(entity);
   }
 
-  protected async update(entity: Event): Promise<AxiosResponse<Message>> {
-    const resource = await this.fusio.getClient().getBackendEventByEventId('' + entity.id);
-    return await resource.backendActionEventUpdate(entity);
+  protected async update(entity: Event): Promise<Message> {
+    return this.fusio.getClient().event().update('' + entity.id, entity);
   }
 
-  protected async delete(entity: Event): Promise<AxiosResponse<Message>> {
-    const resource = await this.fusio.getClient().getBackendEventByEventId('' + entity.id);
-    return await resource.backendActionEventDelete();
+  protected async delete(entity: Event): Promise<Message> {
+    return this.fusio.getClient().event().delete('' + entity.id);
   }
 
   protected newEntity(): Event {

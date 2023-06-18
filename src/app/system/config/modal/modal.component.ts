@@ -3,7 +3,7 @@ import {Config} from "fusio-sdk/dist/src/generated/backend/Config";
 import {AxiosResponse} from "axios";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {Modal} from "ngx-fusio-sdk";
-import Client from "fusio-sdk/dist/src/generated/backend/Client";
+import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
 
 @Component({
   selector: 'app-modal',
@@ -15,9 +15,8 @@ export class ModalComponent extends Modal<Client, Config> {
   protected async create(entity: Config): Promise<void> {
   }
 
-  protected async update(entity: Config): Promise<AxiosResponse<Message>> {
-    const resource = await this.fusio.getClient().getBackendConfigByConfigId('' + entity.id);
-    return await resource.backendActionConfigUpdate(entity);
+  protected async update(entity: Config): Promise<Message> {
+    return this.fusio.getClient().config().update('' + entity.id, entity);
   }
 
   protected async delete(entity: Config): Promise<void> {

@@ -1,11 +1,9 @@
 import {Component} from '@angular/core';
 import {List} from "ngx-fusio-sdk";
-import Client from "fusio-sdk/dist/src/generated/backend/Client";
+import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
 import {Connection} from "fusio-sdk/dist/src/generated/backend/Connection";
-import {AxiosResponse} from "axios";
 import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
 import {ModalComponent} from "../modal/modal.component";
-import {CollectionCategoryQuery} from "fusio-sdk/dist/src/generated/backend/CollectionCategoryQuery";
 
 @Component({
   selector: 'app-connection-list',
@@ -14,14 +12,12 @@ import {CollectionCategoryQuery} from "fusio-sdk/dist/src/generated/backend/Coll
 })
 export class ListComponent extends List<Client, Connection> {
 
-  protected async getAll(query: CollectionCategoryQuery): Promise<AxiosResponse<Collection<Connection>>> {
-    const resource = await this.fusio.getClient().getBackendConnection();
-    return await resource.backendActionConnectionGetAll(query);
+  protected async getAll(parameters: Array<any>): Promise<Collection<Connection>> {
+    return this.fusio.getClient().connection().getAll(...parameters);
   }
 
-  protected async get(id: string): Promise<AxiosResponse<Connection>> {
-    const resource = await this.fusio.getClient().getBackendConnectionByConnectionId(id);
-    return await resource.backendActionConnectionGet();
+  protected async get(id: string): Promise<Connection> {
+    return this.fusio.getClient().connection().get(id);
   }
 
   protected getDetailComponent(): any {

@@ -4,7 +4,7 @@ import {AxiosResponse} from "axios";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {App} from "fusio-sdk/dist/src/generated/backend/App";
 import {Modal} from "ngx-fusio-sdk";
-import Client from "fusio-sdk/dist/src/generated/backend/Client";
+import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
 
 @Component({
   selector: 'app-app-modal',
@@ -27,24 +27,20 @@ export class ModalComponent extends Modal<Client, App> {
   users?: Array<User>;
 
   override async ngOnInit(): Promise<void> {
-    const resource = await this.fusio.getClient().getBackendUser();
-    const response = await resource.backendActionUserGetAll({count: 1024});
-    this.users = response.data.entry;
+    const response = await this.fusio.getClient().user().getAll(0, 1024);
+    this.users = response.entry;
   }
 
-  protected async create(entity: App): Promise<AxiosResponse<Message>> {
-    const resource = await this.fusio.getClient().getBackendApp();
-    return await resource.backendActionAppCreate(entity);
+  protected async create(entity: App): Promise<Message> {
+    return this.fusio.getClient().app().create(entity);
   }
 
-  protected async update(entity: App): Promise<AxiosResponse<Message>> {
-    const resource = await this.fusio.getClient().getBackendAppByAppId('' + entity.id);
-    return await resource.backendActionAppUpdate(entity);
+  protected async update(entity: App): Promise<Message> {
+    return this.fusio.getClient().app().update('' + entity.id, entity);
   }
 
-  protected async delete(entity: App): Promise<AxiosResponse<Message>> {
-    const resource = await this.fusio.getClient().getBackendAppByAppId('' + entity.id);
-    return await resource.backendActionAppDelete();
+  protected async delete(entity: App): Promise<Message> {
+    return this.fusio.getClient().app().delete('' + entity.id);
   }
 
   protected newEntity(): App {

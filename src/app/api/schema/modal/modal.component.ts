@@ -3,7 +3,7 @@ import {Schema} from "fusio-sdk/dist/src/generated/backend/Schema";
 import {AxiosResponse} from "axios";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {Modal} from "ngx-fusio-sdk";
-import Client from "fusio-sdk/dist/src/generated/backend/Client";
+import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
 
 @Component({
   selector: 'app-schema-modal',
@@ -20,27 +20,24 @@ export class ModalComponent extends Modal<Client, Schema> {
     }
   }
 
-  protected async create(entity: Schema): Promise<AxiosResponse<Message>> {
+  protected async create(entity: Schema): Promise<Message> {
     if (this.schema) {
       entity.source = JSON.parse(this.schema);
     }
 
-    const resource = await this.fusio.getClient().getBackendSchema();
-    return await resource.backendActionSchemaCreate(entity);
+    return this.fusio.getClient().schema().create(entity);
   }
 
-  protected async update(entity: Schema): Promise<AxiosResponse<Message>> {
+  protected async update(entity: Schema): Promise<Message> {
     if (this.schema) {
       entity.source = JSON.parse(this.schema);
     }
 
-    const resource = await this.fusio.getClient().getBackendSchemaBySchemaId('' + entity.id);
-    return await resource.backendActionSchemaUpdate(entity);
+    return this.fusio.getClient().schema().update('' + entity.id, entity);
   }
 
-  protected async delete(entity: Schema): Promise<AxiosResponse<Message>> {
-    const resource = await this.fusio.getClient().getBackendSchemaBySchemaId('' + entity.id);
-    return await resource.backendActionSchemaDelete();
+  protected async delete(entity: Schema): Promise<Message> {
+    return this.fusio.getClient().schema().delete('' + entity.id);
   }
 
   protected newEntity(): Schema {

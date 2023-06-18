@@ -4,8 +4,7 @@ import {AxiosResponse} from "axios";
 import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
 import {ModalComponent} from "../modal/modal.component";
 import {List} from "ngx-fusio-sdk";
-import Client from "fusio-sdk/dist/src/generated/backend/Client";
-import {CollectionCategoryQuery} from "fusio-sdk/dist/src/generated/backend/CollectionCategoryQuery";
+import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
 
 @Component({
   selector: 'app-action-list',
@@ -14,14 +13,12 @@ import {CollectionCategoryQuery} from "fusio-sdk/dist/src/generated/backend/Coll
 })
 export class ListComponent extends List<Client, Action> {
 
-  protected async getAll(query: CollectionCategoryQuery): Promise<AxiosResponse<Collection<Action>>> {
-    const resource = await this.fusio.getClient().getBackendAction();
-    return await resource.backendActionActionGetAll(query);
+  protected async getAll(parameters: Array<any>): Promise<Collection<Action>> {
+    return this.fusio.getClient().action().getAll(...parameters);
   }
 
-  protected async get(id: string): Promise<AxiosResponse<Action>> {
-    const resource = await this.fusio.getClient().getBackendActionByActionId(id);
-    return await resource.backendActionActionGet();
+  protected async get(id: string): Promise<Action> {
+    return this.fusio.getClient().action().get(id);
   }
 
   protected getDetailComponent(): any {

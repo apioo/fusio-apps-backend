@@ -1,24 +1,23 @@
 import {Component} from '@angular/core';
+import {Operation} from "fusio-sdk/dist/src/generated/backend/Operation";
 import {List} from "ngx-fusio-sdk";
 import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
-import {Schema} from "fusio-sdk/dist/src/generated/backend/Schema";
-import {AxiosResponse} from "axios";
 import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
 import {ModalComponent} from "../modal/modal.component";
 
 @Component({
-  selector: 'app-schema-list',
+  selector: 'app-operation-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent extends List<Client, Schema> {
+export class ListComponent extends List<Client, Operation> {
 
-  protected async getAll(parameters: Array<any>): Promise<Collection<Schema>> {
-    return this.fusio.getClient().schema().getAll(...parameters);
+  protected async getAll(parameters: Array<any>): Promise<Collection<Operation>> {
+    return this.fusio.getClient().operation().getAll(...parameters);
   }
 
-  protected async get(id: string): Promise<Schema> {
-    return this.fusio.getClient().schema().get(id);
+  protected async get(id: string): Promise<Operation> {
+    return this.fusio.getClient().operation().get(id);
   }
 
   protected getDetailComponent(): any {
@@ -26,7 +25,7 @@ export class ListComponent extends List<Client, Schema> {
   }
 
   protected getRoute(): any {
-    return '/schema';
+    return '/operation';
   }
 
 }

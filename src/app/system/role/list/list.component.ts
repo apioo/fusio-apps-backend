@@ -1,11 +1,9 @@
 import {Component} from '@angular/core';
 import {List} from "ngx-fusio-sdk";
-import Client from "fusio-sdk/dist/src/generated/backend/Client";
+import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
 import {Role} from "fusio-sdk/dist/src/generated/backend/Role";
-import {AxiosResponse} from "axios";
 import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
 import {ModalComponent} from "../modal/modal.component";
-import {CollectionCategoryQuery} from "fusio-sdk/dist/src/generated/backend/CollectionCategoryQuery";
 
 @Component({
   selector: 'app-role-list',
@@ -14,14 +12,12 @@ import {CollectionCategoryQuery} from "fusio-sdk/dist/src/generated/backend/Coll
 })
 export class ListComponent extends List<Client, Role> {
 
-  protected async getAll(query: CollectionCategoryQuery): Promise<AxiosResponse<Collection<Role>>> {
-    const resource = await this.fusio.getClient().getBackendRole();
-    return await resource.backendActionRoleGetAll(query);
+  protected async getAll(parameters: Array<any>): Promise<Collection<Role>> {
+    return this.fusio.getClient().role().getAll(...parameters);
   }
 
-  protected async get(id: string): Promise<AxiosResponse<Role>> {
-    const resource = await this.fusio.getClient().getBackendRoleByRoleId(id);
-    return await resource.backendActionRoleGet();
+  protected async get(id: string): Promise<Role> {
+    return this.fusio.getClient().role().get(id);
   }
 
   protected getDetailComponent(): any {

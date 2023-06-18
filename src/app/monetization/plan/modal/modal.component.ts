@@ -1,9 +1,8 @@
 import {Component} from '@angular/core';
 import {Plan} from "fusio-sdk/dist/src/generated/backend/Plan";
-import {AxiosResponse} from "axios";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {Modal} from "ngx-fusio-sdk";
-import Client from "fusio-sdk/dist/src/generated/backend/Client";
+import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
 
 @Component({
   selector: 'app-plan-modal',
@@ -20,19 +19,16 @@ export class ModalComponent extends Modal<Client, Plan> {
     name: 'Subscription'
   }];
 
-  protected async create(entity: Plan): Promise<AxiosResponse<Message>> {
-    const resource = await this.fusio.getClient().getBackendPlan();
-    return await resource.backendActionPlanCreate(entity);
+  protected async create(entity: Plan): Promise<Message> {
+    return this.fusio.getClient().plan().create(entity);
   }
 
-  protected async update(entity: Plan): Promise<AxiosResponse<Message>> {
-    const resource = await this.fusio.getClient().getBackendPlanByPlanId('' + entity.id);
-    return await resource.backendActionPlanUpdate(entity);
+  protected async update(entity: Plan): Promise<Message> {
+    return this.fusio.getClient().plan().update('' + entity.id, entity);
   }
 
-  protected async delete(entity: Plan): Promise<AxiosResponse<Message>> {
-    const resource = await this.fusio.getClient().getBackendPlanByPlanId('' + entity.id);
-    return await resource.backendActionPlanDelete();
+  protected async delete(entity: Plan): Promise<Message> {
+    return this.fusio.getClient().plan().delete('' + entity.id);
   }
 
   protected newEntity(): Plan {

@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {Category} from "fusio-sdk/dist/src/generated/backend/Category";
 import {Role} from "fusio-sdk/dist/src/generated/backend/Role";
-import {AxiosResponse} from "axios";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {Modal} from "ngx-fusio-sdk";
-import Client from "fusio-sdk/dist/src/generated/backend/Client";
+import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
 
 @Component({
   selector: 'app-role-modal',
@@ -16,24 +15,20 @@ export class ModalComponent extends Modal<Client, Role> {
   categories?: Array<Category>;
 
   override async ngOnInit(): Promise<void> {
-    const category = await this.fusio.getClient().getBackendCategory();
-    const response = await category.backendActionCategoryGetAll({count: 1024});
-    this.categories = response.data.entry;
+    const response = await this.fusio.getClient().category().getAll(0, 1024);
+    this.categories = response.entry;
   }
 
-  protected async create(entity: Role): Promise<AxiosResponse<Message>> {
-    const resource = await this.fusio.getClient().getBackendRole();
-    return await resource.backendActionRoleCreate(entity);
+  protected async create(entity: Role): Promise<Message> {
+    return this.fusio.getClient().role().create(entity);
   }
 
-  protected async update(entity: Role): Promise<AxiosResponse<Message>> {
-    const resource = await this.fusio.getClient().getBackendRoleByRoleId('' + entity.id);
-    return await resource.backendActionRoleUpdate(entity);
+  protected async update(entity: Role): Promise<Message> {
+    return this.fusio.getClient().role().update('' + entity.id, entity);
   }
 
-  protected async delete(entity: Role): Promise<AxiosResponse<Message>> {
-    const resource = await this.fusio.getClient().getBackendRoleByRoleId('' + entity.id);
-    return await resource.backendActionRoleDelete();
+  protected async delete(entity: Role): Promise<Message> {
+    return this.fusio.getClient().role().delete('' + entity.id);
   }
 
   protected newEntity(): Role {

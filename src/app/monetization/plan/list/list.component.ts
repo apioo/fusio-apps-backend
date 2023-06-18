@@ -1,11 +1,10 @@
 import {Component} from '@angular/core';
 import {List} from "ngx-fusio-sdk";
-import Client from "fusio-sdk/dist/src/generated/backend/Client";
+import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
 import {Plan} from "fusio-sdk/dist/src/generated/backend/Plan";
 import {AxiosResponse} from "axios";
 import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
 import {ModalComponent} from "../modal/modal.component";
-import {CollectionCategoryQuery} from "fusio-sdk/dist/src/generated/backend/CollectionCategoryQuery";
 
 @Component({
   selector: 'app-plan-list',
@@ -14,14 +13,12 @@ import {CollectionCategoryQuery} from "fusio-sdk/dist/src/generated/backend/Coll
 })
 export class ListComponent extends List<Client, Plan> {
 
-  protected async getAll(query: CollectionCategoryQuery): Promise<AxiosResponse<Collection<Plan>>> {
-    const resource = await this.fusio.getClient().getBackendPlan();
-    return await resource.backendActionPlanGetAll(query);
+  protected async getAll(parameters: Array<any>): Promise<Collection<Plan>> {
+    return this.fusio.getClient().plan().getAll(...parameters);
   }
 
-  protected async get(id: string): Promise<AxiosResponse<Plan>> {
-    const resource = await this.fusio.getClient().getBackendPlanByPlanId(id);
-    return await resource.backendActionPlanGet();
+  protected async get(id: string): Promise<Plan> {
+    return this.fusio.getClient().plan().get(id);
   }
 
   protected getDetailComponent(): any {
