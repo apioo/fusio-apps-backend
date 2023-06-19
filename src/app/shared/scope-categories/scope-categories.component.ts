@@ -22,9 +22,8 @@ export class ScopeCategoriesComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    const resource = await this.backend.getClient().getBackendScopeCategories();
-    const response = await resource.backendActionScopeGetCategories();
-    this.categories = response.data.categories;
+    const response = await this.backend.getClient().scope().getCategories();
+    this.categories = response.categories;
     if (this.scopes) {
       this.selected = this.scopes;
     }

@@ -31,53 +31,25 @@
       </div>
     </div>
     <div class="mb-3 row">
-      <label for="description" class="col-sm-2 col-form-label fw-bold">Routes</label>
+      <label for="description" class="col-sm-2 col-form-label fw-bold">Operations</label>
       <div class="col-sm-10">
         <table class="table">
           <colgroup>
-            <col style="width:50%;">
-            <col style="width:10%;">
-            <col style="width:10%;">
-            <col style="width:10%;">
-            <col style="width:10%;">
-            <col style="width:10%;">
+            <col style="width:80%;">
+            <col style="width:20%;">
           </colgroup>
           <thead>
           <tr>
-            <th>Route</th>
-            <th>GET</th>
-            <th>POST</th>
-            <th>PUT</th>
-            <th>PATCH</th>
-            <th>DELETE</th>
+            <th>Operation</th>
+            <th>Allowed</th>
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let route of routes">
-            <td><code>{{route.path}}</code></td>
+          <tr *ngFor="let operation of operations">
+            <td>{{operation.name}} <code>{{operation.httpMethod}} {{operation.httpPath}}</code></td>
             <td>
-              <div class="form-check" *ngIf="route.allowedMethods">
-                <input type="checkbox" name="get-{{route.id}}" [(ngModel)]="route.allowedMethods.get" class="form-check-input">
-              </div>
-            </td>
-            <td>
-              <div class="form-check" *ngIf="route.allowedMethods">
-                <input type="checkbox" name="post-{{route.id}}" [(ngModel)]="route.allowedMethods.post" class="form-check-input">
-              </div>
-            </td>
-            <td>
-              <div class="form-check" *ngIf="route.allowedMethods">
-                <input type="checkbox" name="put-{{route.id}}" [(ngModel)]="route.allowedMethods.put" class="form-check-input">
-              </div>
-            </td>
-            <td>
-              <div class="form-check" *ngIf="route.allowedMethods">
-                <input type="checkbox" name="patch-{{route.id}}" [(ngModel)]="route.allowedMethods.patch" class="form-check-input">
-              </div>
-            </td>
-            <td>
-              <div class="form-check" *ngIf="route.allowedMethods">
-                <input type="checkbox" name="delete-{{route.id}}" [(ngModel)]="route.allowedMethods.delete" class="form-check-input">
+              <div class="form-check" *ngIf="operation.allowedMethods">
+                <input type="checkbox" name="get-{{operation.id}}" [(ngModel)]="operation.allowedMethods.get" class="form-check-input">
               </div>
             </td>
           </tr>
@@ -85,18 +57,6 @@
             <td></td>
             <td>
               <button (click)="toggleSelect('GET')" class="btn btn-outline-secondary" type="button"><i class="bi bi-arrow-clockwise"></i></button>
-            </td>
-            <td>
-              <button (click)="toggleSelect('POST')" class="btn btn-outline-secondary" type="button"><i class="bi bi-arrow-clockwise"></i></button>
-            </td>
-            <td>
-              <button (click)="toggleSelect('PUT')" class="btn btn-outline-secondary" type="button"><i class="bi bi-arrow-clockwise"></i></button>
-            </td>
-            <td>
-              <button (click)="toggleSelect('PATCH')" class="btn btn-outline-secondary" type="button"><i class="bi bi-arrow-clockwise"></i></button>
-            </td>
-            <td>
-              <button (click)="toggleSelect('DELETE')" class="btn btn-outline-secondary" type="button"><i class="bi bi-arrow-clockwise"></i></button>
             </td>
           </tr>
           </tbody>

@@ -24,10 +24,7 @@ export class ChangePasswordComponent implements OnInit {
 
   async submit() {
     try {
-      const resource = await this.backend.getClient().getBackendAccountChangePassword();
-      const response = await resource.backendActionAccountChangePassword(this.credentials);
-
-      this.response = response.data;
+      this.response = await this.backend.getClient().account().changePassword(this.credentials);
     } catch (error) {
       this.response = this.error.convert(error);
     }

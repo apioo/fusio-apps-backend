@@ -1,5 +1,5 @@
 <div class="card" *ngIf="selected">
-  <div class="card-header"><a href="{{baseUrl}}{{selected?.path}}" class="fusio-route-path">{{selected?.path}}</a></div>
+  <div class="card-header"><a href="{{baseUrl}}{{selected?.name}}" class="fusio-route-path">{{selected?.name}}</a></div>
   <div class="card-body">
     <div class="btn-group" role="group">
       <button type="button" (click)="doUpdateClick()" class="btn btn-primary fusio-btn-update">Update</button>
@@ -9,77 +9,64 @@
     <div class="float-end fusio-route-scope">
       <fusio-scopes [scopes]="selected?.scopes"></fusio-scopes>
     </div>
-    <br><br>
-    <ul ngbNav #versionNav="ngbNav" [(activeId)]="activeVersion" class="nav-tabs">
-      <li [ngbNavItem]="config?.version" [destroyOnHide]="true" *ngFor="let config of selected?.config">
-        <a ngbNavLink>v{{config?.version}}</a>
-        <ng-template ngbNavContent>
-          <div class="float-end">
-            <span *ngIf="config?.status === 4" class="badge bg-warning fusio-route-status">Development</span>
-            <span *ngIf="config?.status === 1" class="badge bg-success fusio-route-status">Production</span>
-            <span *ngIf="config?.status === 2" class="badge bg-info fusio-route-status">Deprecated</span>
-            <span *ngIf="config?.status === 3" class="badge bg-secondary fusio-route-status">Closed</span>
+    <div class="fusio-detail">
+      <div class="float-end">
+        <span *ngIf="selected?.stability === 0" class="badge bg-warning fusio-operation-stability">Deprecated</span>
+        <span *ngIf="selected?.stability === 1" class="badge bg-success fusio-operation-stability">Experimental</span>
+        <span *ngIf="selected?.stability === 2" class="badge bg-info fusio-operation-stability">Stable</span>
+        <span *ngIf="selected?.stability === 3" class="badge bg-secondary fusio-operation-stability">Legacy</span>
+      </div>
+      <div class="row">
+        <div class="col-2 fw-bold">Status</div>
+        <div class="col-10">
+          <span *ngIf="selected?.active === true" class="badge bg-success fusio-route-active">Active</span>
+          <span *ngIf="selected?.active !== true" class="badge bg-secondary fusio-route-active">Inactive</span>
+          <span *ngIf="selected?.public === true" class="badge bg-primary fusio-route-public">Public</span>
+          <span *ngIf="selected?.public !== true" class="badge bg-info fusio-route-public">Private</span>
+        </div>
+      </div>
+      <div class="row" *ngIf="selected?.name">
+        <div class="col-2 fw-bold">Name</div>
+        <div class="col-10"><code class="fusio-operation-name">{{selected?.name}}</code></div>
+      </div>
+      <div class="row" *ngIf="selected?.description">
+        <div class="col-2 fw-bold">Description</div>
+        <div class="col-10"><span class="fusio-operation-description">{{selected?.description}}</span></div>
+      </div>
+      <div class="row" *ngIf="selected?.parameters">
+        <div class="col-2 fw-bold">Parameters</div>
+        <div class="col-8"><span class="fusio-operation-parameters">{{selected?.parameters}}</span></div>
+        <div class="col-2"><button routerLink="/schema/~{{selected?.parameters}}" type="button" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
+      </div>
+      <div class="row" *ngIf="selected?.incoming">
+        <div class="col-2 fw-bold">Incoming</div>
+        <div class="col-8"><span class="fusio-operation-incoming">{{selected?.incoming}}</span></div>
+        <div class="col-2"><button routerLink="/schema/~{{selected?.incoming}}" type="button" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
+      </div>
+      <div class="row" *ngIf="selected?.outgoing">
+        <div class="col-2 fw-bold">Outgoing</div>
+        <div class="col-8"><span class="fusio-operation-outgoing">{{selected?.outgoing}}</span></div>
+        <div class="col-2"><button routerLink="/schema/~{{selected?.outgoing}}" type="button" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
+      </div>
+      <div class="row" *ngIf="selected?.throws">
+        <div class="col-2 fw-bold">Throws</div>
+        <div class="col-10">
+          <div class="row" *ngFor="let throw of transformThrows(selected?.throws)">
+            <div class="col-2"><code>{{throw.code}}</code></div>
+            <div class="col-8"><span class="fusio-operation-throw">{{throw.schema}}</span></div>
+            <div class="col-2"><button routerLink="/schema/~{{throw.schema}}" type="button" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
           </div>
-          <br>
-          <ul ngbNav #methodNav="ngbNav" [(activeId)]="activeMethod" class="nav-tabs">
-            <li [ngbNavItem]="method?.method" [destroyOnHide]="true" *ngFor="let method of transformMethods(config?.methods)">
-              <a ngbNavLink>{{method?.method}}</a>
-              <ng-template ngbNavContent>
-                <div class="fusio-detail">
-                  <div class="row">
-                    <div class="col-2 fw-bold">Status</div>
-                    <div class="col-10">
-                      <span *ngIf="method?.active === true" class="badge bg-success fusio-route-active">Active</span>
-                      <span *ngIf="method?.active !== true" class="badge bg-secondary fusio-route-active">Inactive</span>
-                      <span *ngIf="method?.public === true" class="badge bg-primary fusio-route-public">Public</span>
-                      <span *ngIf="method?.public !== true" class="badge bg-info fusio-route-public">Private</span>
-                    </div>
-                  </div>
-                  <div class="row" *ngIf="method?.description">
-                    <div class="col-2 fw-bold">Description</div>
-                    <div class="col-10"><span class="fusio-route-description">{{method?.description}}</span></div>
-                  </div>
-                  <div class="row" *ngIf="method?.operationId">
-                    <div class="col-2 fw-bold">Operation-Id</div>
-                    <div class="col-10"><code class="fusio-route-operation-id">{{method?.operationId}}</code></div>
-                  </div>
-                  <div class="row" *ngIf="method?.parameters">
-                    <div class="col-2 fw-bold">Parameters</div>
-                    <div class="col-8"><span class="fusio-route-parameters">{{method?.parameters}}</span></div>
-                    <div class="col-2"><button *ngIf="method?.parameters && config?.status === 4" routerLink="/schema/~{{method?.parameters}}" type="button" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
-                  </div>
-                  <div class="row" *ngIf="method?.request">
-                    <div class="col-2 fw-bold">Request</div>
-                    <div class="col-8"><span class="fusio-route-request">{{method?.request}}</span></div>
-                    <div class="col-2"><button *ngIf="method?.request && config?.status === 4" routerLink="/schema/~{{method?.request}}" type="button" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
-                  </div>
-                  <div class="row" *ngIf="method?.responses">
-                    <div class="col-2 fw-bold">Responses</div>
-                    <div class="col-10">
-                      <div class="row" *ngFor="let response of transformResponses(method?.responses)">
-                        <div class="col-2"><code>{{response.code}}</code></div>
-                        <div class="col-8"><span class="fusio-route-response">{{response.schema}}</span></div>
-                        <div class="col-2"><button *ngIf="response.schema && config?.status === 4" routerLink="/schema/~{{response.schema}}" type="button" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row" *ngIf="method?.action">
-                    <div class="col-2 fw-bold">Action</div>
-                    <div class="col-8"><span class="fusio-route-action">{{method?.action}}</span></div>
-                    <div class="col-2"><button *ngIf="method?.action && config?.status === 4" routerLink="/action/~{{method?.action}}" type="button" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
-                  </div>
-                  <div class="row" *ngIf="method?.costs">
-                    <div class="col-2 fw-bold">Costs</div>
-                    <div class="col-10"><span class="fusio-route-costs align-middle">{{method?.costs}}</span></div>
-                  </div>
-                </div>
-              </ng-template>
-            </li>
-          </ul>
-          <div [ngbNavOutlet]="methodNav"></div>
-        </ng-template>
-      </li>
-    </ul>
-    <div [ngbNavOutlet]="versionNav"></div>
+        </div>
+      </div>
+      <div class="row" *ngIf="selected?.action">
+        <div class="col-2 fw-bold">Action</div>
+        <div class="col-8"><span class="fusio-operation-action">{{selected?.action}}</span></div>
+        <div class="col-2"><button routerLink="/action/~{{selected?.action}}" type="button" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
+      </div>
+      <div class="row" *ngIf="selected?.costs">
+        <div class="col-2 fw-bold">Costs</div>
+        <div class="col-10"><span class="fusio-operation-costs align-middle">{{selected?.costs}}</span></div>
+      </div>
+    </div>
   </div>
 </div>

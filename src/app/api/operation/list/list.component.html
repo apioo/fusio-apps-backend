@@ -27,10 +27,10 @@
   </div>
   <div class="col-md-10">
     <fusio-empty *ngIf="!selected" [loading]="loading" (newClick)="openCreateDialog()"></fusio-empty>
-    <app-route-detail *ngIf="selected"
+    <app-operation-detail *ngIf="selected"
       [selected]="selected"
       (updateClick)="openUpdateDialog(selected)"
       (deleteClick)="openDeleteDialog(selected)">
-    </app-route-detail>
+    </app-operation-detail>
   </div>
 </div>

@@ -5,7 +5,6 @@ import {ChartData} from "chart.js";
 import {FilterComponent} from "../../log/filter/filter.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {BackendService, HelpService} from "ngx-fusio-sdk";
-import {LogCollectionQuery} from "fusio-sdk/dist/src/generated/backend/LogCollectionQuery";
 import {StatisticChartData} from "fusio-sdk/dist/src/generated/backend/StatisticChartData";
 
 @Component({
@@ -15,7 +14,7 @@ import {StatisticChartData} from "fusio-sdk/dist/src/generated/backend/Statistic
 })
 export class ListComponent implements OnInit {
 
-  filter: LogCollectionQuery = {};
+  filter: any = {};
   chart?: ChartData<'line', StatisticChartData>;
   statistic = 'incoming_requests';
   search: string = '';
@@ -75,41 +74,32 @@ export class ListComponent implements OnInit {
 
   async doFilter() {
     if (this.statistic === 'errors_per_route') {
-      const resource = await this.backend.getClient().getBackendStatisticErrorsPerRoute();
-      const response = await resource.backendActionStatisticGetErrorsPerRoute(this.filter);
-      this.chart = Converter.convertChart(response.data);
+      const response = await this.backend.getClient().statistic().getErrorsPerRoute(...this.filter);
+      this.chart = Converter.convertChart(response);
     } else if (this.statistic === 'incoming_requests') {
-      const resource = await this.backend.getClient().getBackendStatisticIncomingRequests();
-      const response = await resource.backendActionStatisticGetIncomingRequests(this.filter);
-      this.chart = Converter.convertChart(response.data);
+      const response = await this.backend.getClient().statistic().getIncomingRequests(...this.filter);
+      this.chart = Converter.convertChart(response);
     } else if (this.statistic === 'incoming_transactions') {
-      const resource = await this.backend.getClient().getBackendStatisticIncomingTransactions();
-      const response = await resource.backendActionStatisticGetIncomingTransactions(this.filter);
-      this.chart = Converter.convertChart(response.data);
+      const response = await this.backend.getClient().statistic().getIncomingTransactions(...this.filter);
+      this.chart = Converter.convertChart(response);
     } else if (this.statistic === 'issued_tokens') {
-      const resource = await this.backend.getClient().getBackendStatisticIssuedTokens();
-      const response = await resource.backendActionStatisticGetIssuedTokens(this.filter);
-      this.chart = Converter.convertChart(response.data);
+      const response = await this.backend.getClient().statistic().getIssuedTokens(...this.filter);
+      this.chart = Converter.convertChart(response);
     } else if (this.statistic === 'most_used_apps') {
-      const resource = await this.backend.getClient().getBackendStatisticMostUsedApps();
-      const response = await resource.backendActionStatisticGetMostUsedApps(this.filter);
-      this.chart = Converter.convertChart(response.data);
+      const response = await this.backend.getClient().statistic().getMostUsedApps(...this.filter);
+      this.chart = Converter.convertChart(response);
     } else if (this.statistic === 'most_used_routes') {
-      const resource = await this.backend.getClient().getBackendStatisticMostUsedRoutes();
-      const response = await resource.backendActionStatisticGetMostUsedRoutes(this.filter);
-      this.chart = Converter.convertChart(response.data);
+      const response = await this.backend.getClient().statistic().getMostUsedRoutes(...this.filter);
+      this.chart = Converter.convertChart(response);
     } else if (this.statistic === 'time_average') {
-      const resource = await this.backend.getClient().getBackendStatisticTimeAverage();
-      const response = await resource.backendActionStatisticGetTimeAverage(this.filter);
-      this.chart = Converter.convertChart(response.data);
+      const response = await this.backend.getClient().statistic().getTimeAverage(...this.filter);
+      this.chart = Converter.convertChart(response);
     } else if (this.statistic === 'time_per_route') {
-      const resource = await this.backend.getClient().getBackendStatisticTimePerRoute();
-      const response = await resource.backendActionStatisticGetTimePerRoute(this.filter);
-      this.chart = Converter.convertChart(response.data);
+      const response = await this.backend.getClient().statistic().getTimePerRoute(...this.filter);
+      this.chart = Converter.convertChart(response);
     } else if (this.statistic === 'used_points') {
-      const resource = await this.backend.getClient().getBackendStatisticUsedPoints();
-      const response = await resource.backendActionStatisticGetUsedPoints(this.filter);
-      this.chart = Converter.convertChart(response.data);
+      const response = await this.backend.getClient().statistic().getUsedPoints(...this.filter);
+      this.chart = Converter.convertChart(response);
     }
   }
 

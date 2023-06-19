@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {Connection} from "fusio-sdk/dist/src/generated/backend/Connection";
-import {AxiosResponse} from "axios";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {HelpComponent, Modal} from "ngx-fusio-sdk";
 import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
@@ -53,13 +52,7 @@ export class ModalComponent extends Modal<Client, Connection> {
       return;
     }
 
-    const query: FormQuery = {
-      class: classString
-    };
-
-    const resource = await this.fusio.getClient().getBackendConnectionForm();
-    const response = await resource.backendActionConnectionGetForm(query);
-    this.form = response.data;
+    this.form = await this.fusio.getClient().connection().getForm(classString);
 
     const hasChanged = this.entityClass && this.entityClass !== this.entity.class;
     this.entityClass = this.entity.class;

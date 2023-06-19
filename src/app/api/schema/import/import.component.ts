@@ -5,7 +5,6 @@ import {ModalComponent} from "../modal/modal.component";
 import {ErrorService, Mode, Result} from "ngx-fusio-sdk";
 import {Schema} from "fusio-sdk/dist/src/generated/backend/Schema";
 import {Router} from "@angular/router";
-import {TypehubService} from "../../../typehub.service";
 import {HttpClient} from "@angular/common/http";
 import {Document} from "typehub-javascript-sdk/dist/src/Document";
 
@@ -25,7 +24,7 @@ export class ImportComponent implements OnInit {
   page = 0;
   response?: Message;
 
-  constructor(private typehub: TypehubService, private http: HttpClient, private router: Router, private error: ErrorService, protected modalService: NgbModal) { }
+  constructor(private http: HttpClient, private router: Router, private error: ErrorService, protected modalService: NgbModal) { }
 
   ngOnInit(): void {
   }
@@ -34,6 +33,7 @@ export class ImportComponent implements OnInit {
     const startIndex = (this.page - 1) * this.itemsPerPage;
 
     try {
+      /*
       const resource = await this.typehub.getClientAnonymous().getExplore();
       const response = await resource.getExplore({
         startIndex: startIndex,
@@ -44,6 +44,7 @@ export class ImportComponent implements OnInit {
       this.startIndex = response.data.startIndex || 0;
       this.itemsPerPage = response.data.itemsPerPage || 0;
       this.entry = response.data.entry || [];
+      */
     } catch (e) {
       this.response = this.error.convert(e);
     }
@@ -55,6 +56,7 @@ export class ImportComponent implements OnInit {
     }
 
     try {
+      /*
       const resource = await this.typehub.getClientAnonymous().getDocumentByUserAndDocumentExport(document.user?.name, document.name);
       const response = await resource.postDocumentUserDocumentExport({
         user: document.user?.name,
@@ -86,6 +88,7 @@ export class ImportComponent implements OnInit {
           }
         });
       });
+      */
     } catch (e) {
       this.response = this.error.convert(e);
     }

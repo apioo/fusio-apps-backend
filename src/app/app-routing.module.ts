@@ -4,7 +4,7 @@ import {LoginComponent} from "./login/login.component";
 import {LogoutComponent} from "./logout/logout.component";
 import {ChangePasswordComponent} from "./account/change-password/change-password.component";
 import {ListComponent as DashboardList} from "./api/dashboard/list/list.component";
-import {ListComponent as RouteList} from "./api/route/list/list.component";
+import {ListComponent as OperationList} from "./api/operation/list/list.component";
 import {ListComponent as ActionList} from "./api/action/list/list.component";
 import {DesignerComponent as ActionDesigner} from "./api/action/designer/designer.component";
 import {ListComponent as SchemaList} from "./api/schema/list/list.component";
@@ -43,8 +43,8 @@ const routes: Routes = [
   { path: 'account/change-password', component: ChangePasswordComponent },
 
   { path: 'dashboard', component: DashboardList, canActivate: [AuthenticationGuard] },
-  { path: 'route', component: RouteList, canActivate: [AuthenticationGuard] },
-  { path: 'route/:id', component: RouteList, canActivate: [AuthenticationGuard] },
+  { path: 'operation', component: OperationList, canActivate: [AuthenticationGuard] },
+  { path: 'operation/:id', component: OperationList, canActivate: [AuthenticationGuard] },
   { path: 'action', component: ActionList, canActivate: [AuthenticationGuard] },
   { path: 'action/:id', component: ActionList, canActivate: [AuthenticationGuard] },
   { path: 'action/designer/:id', component: ActionDesigner, canActivate: [AuthenticationGuard] },

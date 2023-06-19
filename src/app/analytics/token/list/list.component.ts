@@ -1,12 +1,10 @@
 import {Component} from '@angular/core';
 import {List} from "ngx-fusio-sdk";
-import Client from "fusio-sdk/dist/src/generated/backend/Client";
+import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
 import {AxiosResponse} from "axios";
 import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
 import {FilterComponent} from "../filter/filter.component";
 import {AppToken} from "fusio-sdk/dist/src/generated/backend/AppToken";
-import {AppTokenCollectionQuery} from "fusio-sdk/dist/src/generated/backend/AppTokenCollectionQuery";
-import {CollectionCategoryQuery} from "fusio-sdk/dist/src/generated/backend/CollectionCategoryQuery";
 
 @Component({
   selector: 'app-token-list',
@@ -15,16 +13,14 @@ import {CollectionCategoryQuery} from "fusio-sdk/dist/src/generated/backend/Coll
 })
 export class ListComponent extends List<Client, AppToken> {
 
-  filter: AppTokenCollectionQuery = {};
+  filter: any = {};
 
-  protected async getAll(query: CollectionCategoryQuery): Promise<AxiosResponse<Collection<AppToken>>> {
-    const resource = await this.fusio.getClient().getBackendAppToken();
-    return await resource.backendActionAppTokenGetAll(query);
+  protected async getAll(parameters: Array<any>): Promise<Collection<AppToken>> {
+    return this.fusio.getClient().app().getAllTokens(...parameters);
   }
 
-  protected async get(id: string): Promise<AxiosResponse<AppToken>> {
-    const resource = await this.fusio.getClient().getBackendAppTokenByTokenId(id);
-    return await resource.backendActionAppTokenGet();
+  protected async get(id: string): Promise<AppToken> {
+    return this.fusio.getClient().app().getToken(id);
   }
 
   protected getDetailComponent(): any {
@@ -46,12 +42,11 @@ export class ListComponent extends List<Client, AppToken> {
     });
   }
 
-  protected override getCollectionQuery(): AppTokenCollectionQuery {
-    let query: AppTokenCollectionQuery = {};
-    query = Object.assign(query, super.getCollectionQuery());
+  protected override getCollectionQuery(): Array<any> {
+    let query = super.getCollectionQuery();
 
     if (this.filter) {
-      query = Object.assign(query, this.filter);
+      query.push(this.filter);
     }
 
     return query;

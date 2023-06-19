@@ -13,42 +13,49 @@ import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
 })
 export class ModalComponent extends Modal<Client, Operation> {
 
-  methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
   schemas: Array<Schema> = []
   actions: Array<Action> = []
 
-  activeVersion: number = 1;
-  activeMethod: string = 'GET';
-  responseCode: string = '200';
-
-  statuuus = [{
-    key: 4,
-    value: 'Development'
-  }, {
-    key: 1,
-    value: 'Production'
-  }, {
-    key: 2,
+  stabilities = [{
+    key: 0,
     value: 'Deprecated'
   }, {
+    key: 1,
+    value: 'Experimental'
+  }, {
+    key: 2,
+    value: 'Stable'
+  }, {
     key: 3,
-    value: 'Closed'
+    value: 'Legacy'
   }]
 
-  statusCodes = {
+  methods = [{
+    key: 'GET',
+    value: 'GET'
+  }, {
+    key: 'POST',
+    value: 'POST'
+  }, {
+    key: 'PUT',
+    value: 'PUT'
+  }, {
+    key: 'PATCH',
+    value: 'PATCH'
+  }, {
+    key: 'DELETE',
+    value: 'DELETE'
+  }]
+
+  successStatusCodes = {
     '200': 'OK',
     '201': 'Created',
     '202': 'Accepted',
     '204': 'No Content',
     '205': 'Reset Content',
-    '226': 'IM Used',
-    '300': 'Multiple Choices',
-    '301': 'Moved Permanently',
-    '302': 'Found',
-    '303': 'See Other',
-    '304': 'Not Modified',
-    '307': 'Temporary Redirect',
-    '308': 'Permanent Redirect',
+  }
+
+  errorStatusCodes = {
     '400': 'Bad Request',
     '402': 'Payment Required',
     '403': 'Forbidden',
@@ -107,10 +114,17 @@ export class ModalComponent extends Modal<Client, Operation> {
   protected newEntity(): Operation {
     return {
       name: '',
-      scopes: [],
+      stability: 1,
       httpMethod: 'GET',
-      httpPath: '/',
+      httpPath: '',
+      httpCode: 200,
+      parameters: {},
+      throws: {},
     };
+  }
+
+  public isDisabled(): boolean {
+    return this.mode === 3 || (this.entity.stability === 2 || this.entity.stability === 3);
   }
 
 }

@@ -65,7 +65,7 @@
           </colgroup>
           <thead>
           <tr>
-            <th>Route</th>
+            <th>Operation</th>
             <th>User</th>
             <th>Plan</th>
             <th>App</th>
@@ -76,9 +76,9 @@
           <tbody>
           <tr *ngFor="let allocation of entity.allocation; let key = index">
             <td>
-              <select [name]="'route_' + key" [(ngModel)]="allocation.routeId" class="form-select">
-                <option [value]="undefined">Any route</option>
-                <option *ngFor="let route of routes" [ngValue]="route.id">{{route.path}}</option>
+              <select [name]="'operation_' + key" [(ngModel)]="allocation.operationId" class="form-select">
+                <option [value]="undefined">Any operation</option>
+                <option *ngFor="let operation of operations" [ngValue]="operation.id">{{operation.name}}</option>
               </select>
             </td>
             <td>

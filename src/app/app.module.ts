@@ -4,18 +4,18 @@ import {HttpClientModule} from '@angular/common/http';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {NgChartsModule} from 'ng2-charts';
+//import {NgChartsModule} from 'ng2-charts';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {MonacoEditorModule} from '@dmlukichev/ngx-monaco-editor';
+import {MonacoEditorModule} from 'ngx-monaco-editor-v2';
 import {ChangePasswordComponent} from './account/change-password/change-password.component';
 import {LoginComponent} from './login/login.component';
 import {LogoutComponent} from './logout/logout.component';
 import {NavigationComponent} from './navigation/navigation.component';
 import {ListComponent as DashboardList} from "./api/dashboard/list/list.component";
-import {ListComponent as RouteList} from "./api/route/list/list.component";
-import {DetailComponent as RouteDetail} from "./api/route/detail/detail.component";
-import {ModalComponent as RouteModal} from "./api/route/modal/modal.component";
-import {LogComponent as RouteLog} from './api/route/log/log.component';
+import {ListComponent as OperationList} from "./api/operation/list/list.component";
+import {DetailComponent as OperationDetail} from "./api/operation/detail/detail.component";
+import {ModalComponent as OperationModal} from "./api/operation/modal/modal.component";
+import {LogComponent as OperationLog} from './api/operation/log/log.component';
 import {ListComponent as ActionList} from "./api/action/list/list.component";
 import {DetailComponent as ActionDetail} from "./api/action/detail/detail.component";
 import {ModalComponent as ActionModal} from "./api/action/modal/modal.component";
@@ -93,6 +93,8 @@ import {GeneratorComponent} from './api/generator/generator.component';
 import {FusioService} from "./fusio.service";
 import {FusioSdkModule, FusioService as Sdk} from "ngx-fusio-sdk";
 import {ConfigBuilder} from "./config-builder";
+import { OperationParametersComponent } from './shared/operation-parameters/operation-parameters.component';
+import { OperationThrowsComponent } from './shared/operation-throws/operation-throws.component';
 
 @NgModule({
   declarations: [
@@ -102,10 +104,10 @@ import {ConfigBuilder} from "./config-builder";
     LoginComponent,
     LogoutComponent,
     DashboardList,
-    RouteList,
-    RouteDetail,
-    RouteModal,
-    RouteLog,
+    OperationList,
+    OperationDetail,
+    OperationModal,
+    OperationLog,
     ActionList,
     ActionDetail,
     ActionModal,
@@ -179,6 +181,8 @@ import {ConfigBuilder} from "./config-builder";
     TagEditorComponent,
     MapComponent,
     CollectionComponent,
+    OperationParametersComponent,
+    OperationThrowsComponent,
   ],
   imports: [
     BrowserModule,
@@ -187,7 +191,7 @@ import {ConfigBuilder} from "./config-builder";
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
-    NgChartsModule.forRoot(),
+    //NgChartsModule.forRoot(),
     MonacoEditorModule.forRoot(),
     TypeschemaEditorModule,
     FusioSdkModule.forRoot(ConfigBuilder.build())

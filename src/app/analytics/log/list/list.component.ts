@@ -4,9 +4,7 @@ import {AxiosResponse} from "axios";
 import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
 import {FilterComponent} from "../filter/filter.component";
 import {List} from "ngx-fusio-sdk";
-import Client from "fusio-sdk/dist/src/generated/backend/Client";
-import {LogCollectionQuery} from "fusio-sdk/dist/src/generated/backend/LogCollectionQuery";
-import {CollectionCategoryQuery} from "fusio-sdk/dist/src/generated/backend/CollectionCategoryQuery";
+import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
 
 @Component({
   selector: 'app-log-list',
@@ -15,16 +13,14 @@ import {CollectionCategoryQuery} from "fusio-sdk/dist/src/generated/backend/Coll
 })
 export class ListComponent extends List<Client, Log> {
 
-  filter: LogCollectionQuery = {};
+  filter: any = {};
 
-  protected async getAll(query: CollectionCategoryQuery): Promise<AxiosResponse<Collection<Log>>> {
-    const resource = await this.fusio.getClient().getBackendLog();
-    return await resource.backendActionLogGetAll(query);
+  protected async getAll(parameters: Array<any>): Promise<Collection<Log>> {
+    return this.fusio.getClient().log().getAll(...parameters);
   }
 
-  protected async get(id: string): Promise<AxiosResponse<Log>> {
-    const resource = await this.fusio.getClient().getBackendLogByLogId(id);
-    return await resource.backendActionLogGet();
+  protected async get(id: string): Promise<Log> {
+    return this.fusio.getClient().log().get(id);
   }
 
   protected getDetailComponent(): any {
@@ -46,12 +42,11 @@ export class ListComponent extends List<Client, Log> {
     });
   }
 
-  protected override getCollectionQuery(): LogCollectionQuery {
-    let query: LogCollectionQuery = {};
-    query = Object.assign(query, super.getCollectionQuery());
+  protected override getCollectionQuery(): Array<any> {
+    let query = super.getCollectionQuery();
 
     if (this.filter) {
-      query = Object.assign(query, this.filter);
+      query.push(this.filter);
     }
 
     return query;
