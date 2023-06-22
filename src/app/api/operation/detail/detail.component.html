@@ -51,10 +51,10 @@
       <div class="row" *ngIf="selected?.throws">
         <div class="col-2 fw-bold">Throws</div>
         <div class="col-10">
-          <div class="row" *ngFor="let throw of transformThrows(selected?.throws)">
-            <div class="col-2"><code>{{throw.code}}</code></div>
-            <div class="col-8"><span class="fusio-operation-throw">{{throw.schema}}</span></div>
-            <div class="col-2"><button routerLink="/schema/~{{throw.schema}}" type="button" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
+          <div class="row" *ngFor="let throw_ of selected?.throws | keyvalue">
+            <div class="col-2"><code>{{throw_.key}}</code></div>
+            <div class="col-8"><span class="fusio-operation-throw">{{throw_.value}}</span></div>
+            <div class="col-2"><button routerLink="/schema/~{{throw_.value}}" type="button" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
           </div>
         </div>
       </div>

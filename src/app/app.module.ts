@@ -3,7 +3,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {HttpClientModule} from '@angular/common/http';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModule, NgbTypeaheadModule} from '@ng-bootstrap/ng-bootstrap';
 //import {NgChartsModule} from 'ng2-charts';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MonacoEditorModule} from 'ngx-monaco-editor-v2';
@@ -95,6 +95,7 @@ import {FusioSdkModule, FusioService as Sdk} from "ngx-fusio-sdk";
 import {ConfigBuilder} from "./config-builder";
 import { OperationParametersComponent } from './shared/operation-parameters/operation-parameters.component';
 import { OperationThrowsComponent } from './shared/operation-throws/operation-throws.component';
+import { SchemaSelectorComponent } from './shared/schema-selector/schema-selector.component';
 
 @NgModule({
   declarations: [
@@ -183,6 +184,7 @@ import { OperationThrowsComponent } from './shared/operation-throws/operation-th
     CollectionComponent,
     OperationParametersComponent,
     OperationThrowsComponent,
+    SchemaSelectorComponent,
   ],
   imports: [
     BrowserModule,
@@ -191,6 +193,7 @@ import { OperationThrowsComponent } from './shared/operation-throws/operation-th
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
+    NgbTypeaheadModule,
     //NgChartsModule.forRoot(),
     MonacoEditorModule.forRoot(),
     TypeschemaEditorModule,

@@ -1,0 +1,31 @@
+
+<div class="input-group">
+  <select [id]="name + '_scheme'" [name]="name + '_scheme'" [(ngModel)]="scheme" (ngModelChange)="changeScheme()" class="form-select">
+    <option *ngFor="let scheme of schemes" [ngValue]="scheme.key">{{scheme.value}}</option>
+  </select>
+  <ng-container [ngSwitch]="scheme">
+    <ng-container *ngSwitchCase="'schema'">
+      <input
+        type="text"
+        [id]="name + '_value'"
+        [name]="name + '_value'"
+        class="form-control"
+        [(ngModel)]="schema"
+        [ngbTypeahead]="schemaSearch"
+        [inputFormatter]="schemaFormatter"
+        [resultFormatter]="schemaFormatter"
+        [editable]="false"
+        (ngModelChange)="changeValue()"
+      />
+    </ng-container>
+    <ng-container *ngIf="'typehub'">
+    </ng-container>
+    <ng-container *ngSwitchDefault>
+      <input type="text" [id]="name + '_value'" [name]="name + '_value'" [(ngModel)]="value" (ngModelChange)="changeValue()" class="form-control">
+    </ng-container>
+  </ng-container>
+  <button class="btn btn-outline-secondary" type="button" [ngbPopover]="schemeHelp"><i class="bi bi-question"></i></button>
+  <ng-template #schemeHelp>Describes an {{name}} schema, the schema can be loaded from different sources, by default out internal schema store
+  gets used but it is also possible to load a schema from a remote location or also from the <a href="https://typehub.cloud/">TypeHub</a> platform.</ng-template>
+</div>
+

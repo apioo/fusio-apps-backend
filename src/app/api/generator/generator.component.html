@@ -58,41 +58,27 @@
     <div class="card">
       <div class="card-header">Changelog</div>
       <div class="card-body" *ngIf="changelog">
-        <ngb-accordion [activeIds]="['ngb-panel-0', 'ngb-panel-1', 'ngb-panel-2']">
-          <ngb-panel title="Routes" *ngIf="changelog.routes && changelog.routes.length > 0">
-            <ng-template ngbPanelContent>
-              <table class="table">
-                <tbody>
-                <tr *ngFor="let route of changelog.routes">
-                  <th>{{route.path}}</th>
-                </tr>
-                </tbody>
-              </table>
-            </ng-template>
-          </ngb-panel>
-          <ngb-panel title="Actions" *ngIf="changelog.actions && changelog.actions.length > 0">
-            <ng-template ngbPanelContent>
-              <table class="table">
-                <tbody>
-                <tr *ngFor="let action of changelog.actions">
-                  <th>{{action.name}}</th>
-                </tr>
-                </tbody>
-              </table>
-            </ng-template>
-          </ngb-panel>
-          <ngb-panel title="Schemas" *ngIf="changelog.schemas && changelog.schemas.length > 0">
-            <ng-template ngbPanelContent>
-              <table class="table">
-                <tbody>
-                <tr *ngFor="let schema of changelog.schemas">
-                  <th>{{schema.name}}</th>
-                </tr>
-                </tbody>
-              </table>
-            </ng-template>
-          </ngb-panel>
-        </ngb-accordion>
+        <table class="table">
+          <tbody>
+          <tr *ngFor="let operation of changelog.operations">
+            <th>{{operation.name}} - <code>{{operation.httpMethod}} {{operation.httpPath}}</code></th>
+          </tr>
+          </tbody>
+        </table>
+        <table class="table">
+          <tbody>
+          <tr *ngFor="let action of changelog.actions">
+            <th>{{action.name}}</th>
+          </tr>
+          </tbody>
+        </table>
+        <table class="table">
+          <tbody>
+          <tr *ngFor="let schema of changelog.schemas">
+            <th>{{schema.name}}</th>
+          </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>

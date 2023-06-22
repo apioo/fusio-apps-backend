@@ -22,17 +22,20 @@
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0",
     "@ng-bootstrap/ng-bootstrap": "^15.0.0",
+    "monaco-editor": "^0.38.0",
     "ngx-monaco-editor-v2": "^16.0.0",
     "@popperjs/core": "2.11.7",
     "axios": "^1.3.0",
     "bootstrap": "^5.2.3",
     "bootstrap-icons": "^1.10.5",
     "chart.js": "^4.3.0",
-    "fusio-sdk": "^3.0.5",
-    "ngx-fusio-sdk": "^2.0.0",
+    "fusio-sdk": "^3.0.6",
+    "ngx-fusio-sdk": "^2.0.2",
     "ngx-typeschema-editor": "^2.0.0",
     "sdkgen-client": "^1.0.0",
-    "typehub-javascript-sdk": "^0.1.0"
+    "typehub-javascript-sdk": "^0.1.0",
+    "ngx-captcha": "^13.0.0",
+    "ngx-gravatar": "^13.0.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^16.1.0",

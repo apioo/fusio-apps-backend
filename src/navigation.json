@@ -11,10 +11,10 @@
           "scope": "backend.dashboard"
         },
         {
-          "title": "Route",
+          "title": "Operation",
           "icon": "bi-router",
-          "path": "/route",
-          "scope": "backend.route"
+          "path": "/operation",
+          "scope": "backend.operation"
         },
         {
           "title": "Action",

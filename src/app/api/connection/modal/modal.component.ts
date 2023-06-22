@@ -28,7 +28,7 @@ export class ModalComponent extends Modal<Client, Connection> {
   }
 
   protected async create(entity: Connection): Promise<Message> {
-    return this.fusio.getClient().connection().create(entity);
+    return this.fusio.getClient().action().create(entity);
   }
 
   protected async update(entity: Connection): Promise<Message> {

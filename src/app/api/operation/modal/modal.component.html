@@ -46,7 +46,7 @@
       <label for="stability" class="col-sm-2 col-form-label fw-bold">Stability</label>
       <div class="col-sm-10">
         <div class="input-group">
-          <select id="stability" name=stability" [(ngModel)]="entity.stability" class="form-select">
+          <select id="stability" name="stability" [(ngModel)]="entity.stability" class="form-select">
             <option *ngFor="let stability of stabilities" [ngValue]="stability.key">{{stability.value}}</option>
           </select>
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="stabilityHelp"><i class="bi bi-question"></i></button>
@@ -68,7 +68,7 @@
       <label for="httpMethod" class="col-sm-2 col-form-label fw-bold">HTTP-Method</label>
       <div class="col-sm-10">
         <div class="input-group">
-          <select id="httpMethod" name=httpMethod" [(ngModel)]="entity.httpMethod" [disabled]="isDisabled()" class="form-select">
+          <select id="httpMethod" name="httpMethod" [(ngModel)]="entity.httpMethod" (ngModelChange)="changeHttpMethod()" [disabled]="isDisabled()" class="form-select">
             <option *ngFor="let method of methods" [ngValue]="method.key">{{method.value}}</option>
           </select>
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="httpMethodHelp"><i class="bi bi-question"></i></button>
@@ -90,8 +90,8 @@
       <label for="httpCode" class="col-sm-2 col-form-label fw-bold">HTTP-Code</label>
       <div class="col-sm-10">
         <div class="input-group">
-          <select id="httpCode" name=httpCode" [(ngModel)]="entity.httpCode" [disabled]="isDisabled()" class="form-select">
-            <option *ngFor="let code of successStatusCodes | keyvalue" [ngValue]="code.key">{{code.value}}</option>
+          <select id="httpCode" name="httpCode" [(ngModel)]="entity.httpCode" [disabled]="isDisabled()" class="form-select">
+            <option *ngFor="let code of successStatusCodes" [ngValue]="code.key">{{code.value}}</option>
           </select>
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="httpCodeHelp"><i class="bi bi-question"></i></button>
           <ng-template #httpCodeHelp>The assigned HTTP request method for this operation</ng-template>
@@ -104,30 +104,16 @@
         <app-operation-parameters [data]="entity.parameters" (dataChange)="entity.parameters = $event"></app-operation-parameters>
       </div>
     </div>
-    <div class="mb-3 row">
+    <div class="mb-3 row" *ngIf="entity.httpMethod !== 'GET' && entity.httpMethod !== 'DELETE'">
       <label for="incoming" class="col-sm-2 col-form-label fw-bold">Incoming</label>
       <div class="col-sm-10">
-        <div class="input-group">
-          <select id="incoming" name="incoming" [(ngModel)]="entity.incoming" [disabled]="isDisabled()" class="form-select">
-            <option>No schema</option>
-            <option *ngFor="let schema of schemas" [ngValue]="schema.name">{{schema.name}}</option>
-          </select>
-          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="incomingHelp"><i class="bi bi-question"></i></button>
-          <ng-template #incomingHelp>Describes the format for incoming request. The <code>Passthru</code> schema forwards all incoming data unfiltered to the action</ng-template>
-        </div>
+        <app-schema-selector name="incoming" [data]="entity.incoming" (dataChange)="entity.incoming = $event"></app-schema-selector>
       </div>
     </div>
     <div class="mb-3 row">
       <label for="outgoing" class="col-sm-2 col-form-label fw-bold">Outgoing</label>
       <div class="col-sm-10">
-        <div class="input-group">
-          <select id="outgoing" name="outgoing" [(ngModel)]="entity.outgoing" [disabled]="isDisabled()" class="form-select">
-            <option>No schema</option>
-            <option *ngFor="let schema of schemas" [ngValue]="schema.name">{{schema.name}}</option>
-          </select>
-          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="outgoingHelp"><i class="bi bi-question"></i></button>
-          <ng-template #outgoingHelp>Describes the format for the outgoing success response. The <code>Passthru</code> schema returns all data</ng-template>
-        </div>
+        <app-schema-selector name="outgoing" [data]="entity.outgoing" (dataChange)="entity.outgoing = $event"></app-schema-selector>
       </div>
     </div>
     <div class="mb-3 row">
@@ -155,11 +141,13 @@
         <div class="input-group">
           <input type="number" id="costs" name="costs" [(ngModel)]="entity.costs" [disabled]="isDisabled()" class="form-control">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="costsHelp"><i class="bi bi-question"></i></button>
-          <ng-template #costsHelp>The amount of points a user needs to pay to invoke this request method</ng-template>
+          <ng-template #costsHelp>The amount of points a user needs to pay to invoke this operation</ng-template>
         </div>
       </div>
     </div>
   </form>
+
+  <pre>{{entity|json}}</pre>
 </div>
 <div class="modal-footer">
   <ng-container *ngIf="mode === 1"><button type="button" class="btn btn-primary" (click)="submit()">Create</button></ng-container>

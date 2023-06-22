@@ -16,68 +16,52 @@ export class ModalComponent extends Modal<Client, Operation> {
   schemas: Array<Schema> = []
   actions: Array<Action> = []
 
-  stabilities = [{
-    key: 0,
-    value: 'Deprecated'
-  }, {
-    key: 1,
-    value: 'Experimental'
-  }, {
-    key: 2,
-    value: 'Stable'
-  }, {
-    key: 3,
-    value: 'Legacy'
-  }]
+  stabilities = [
+    {key: 0, value: 'Deprecated'},
+    {key: 1, value: 'Experimental'},
+    {key: 2, value: 'Stable'},
+    {key: 3, value: 'Legacy'}
+  ]
 
-  methods = [{
-    key: 'GET',
-    value: 'GET'
-  }, {
-    key: 'POST',
-    value: 'POST'
-  }, {
-    key: 'PUT',
-    value: 'PUT'
-  }, {
-    key: 'PATCH',
-    value: 'PATCH'
-  }, {
-    key: 'DELETE',
-    value: 'DELETE'
-  }]
+  methods = [
+    {key: 'GET', value: 'GET'},
+    {key: 'POST', value: 'POST'},
+    {key: 'PUT', value: 'PUT'},
+    {key: 'PATCH', value: 'PATCH'},
+    {key: 'DELETE', value: 'DELETE'}
+  ]
 
-  successStatusCodes = {
-    '200': 'OK',
-    '201': 'Created',
-    '202': 'Accepted',
-    '204': 'No Content',
-    '205': 'Reset Content',
-  }
+  successStatusCodes = [
+    {key: 200, value: 'OK'},
+    {key: 201, value: 'Created'},
+    {key: 202, value: 'Accepted'},
+    {key: 204, value: 'No Content'},
+    {key: 205, value: 'Reset Content'},
+  ]
 
-  errorStatusCodes = {
-    '400': 'Bad Request',
-    '402': 'Payment Required',
-    '403': 'Forbidden',
-    '404': 'Not Found',
-    '405': 'Method Not Allowed',
-    '408': 'Request Timeout',
-    '409': 'Conflict',
-    '410': 'Gone',
-    '412': 'Precondition Failed',
-    '417': 'Expectation Failed',
-    '422': 'Unprocessable Entity',
-    '423': 'Locked',
-    '424': 'Failed Dependency',
-    '429': 'Too Many Requests',
-    '500': 'Internal Server Error',
-    '501': 'Not Implemented',
-    '502': 'Bad Gateway',
-    '503': 'Service Unavailable',
-    '504': 'Gateway Timeout',
-    '507': 'Insufficient Storage',
-    '508': 'Loop Detected'
-  }
+  errorStatusCodes = [
+    {key: 400, value: 'Bad Request'},
+    {key: 402, value: 'Payment Required'},
+    {key: 403, value: 'Forbidden'},
+    {key: 404, value: 'Not Found'},
+    {key: 405, value: 'Method Not Allowed'},
+    {key: 408, value: 'Request Timeout'},
+    {key: 409, value: 'Conflict'},
+    {key: 410, value: 'Gone'},
+    {key: 412, value: 'Precondition Failed'},
+    {key: 417, value: 'Expectation Failed'},
+    {key: 422, value: 'Unprocessable Entity'},
+    {key: 423, value: 'Locked'},
+    {key: 424, value: 'Failed Dependency'},
+    {key: 429, value: 'Too Many Requests'},
+    {key: 500, value: 'Internal Server Error'},
+    {key: 501, value: 'Not Implemented'},
+    {key: 502, value: 'Bad Gateway'},
+    {key: 503, value: 'Service Unavailable'},
+    {key: 504, value: 'Gateway Timeout'},
+    {key: 507, value: 'Insufficient Storage'},
+    {key: 508, value: 'Loop Detected'},
+  ]
 
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
@@ -114,17 +98,26 @@ export class ModalComponent extends Modal<Client, Operation> {
   protected newEntity(): Operation {
     return {
       name: '',
+      active: true,
+      public: false,
       stability: 1,
       httpMethod: 'GET',
       httpPath: '',
       httpCode: 200,
       parameters: {},
+      outgoing: 'schema://Passthru',
       throws: {},
     };
   }
 
   public isDisabled(): boolean {
     return this.mode === 3 || (this.entity.stability === 2 || this.entity.stability === 3);
+  }
+
+  changeHttpMethod(): void {
+    if (this.entity.incoming && (this.entity.httpMethod === 'GET' || this.entity.httpMethod === 'DELETE')) {
+      delete this.entity.incoming;
+    }
   }
 
 }

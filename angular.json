@@ -30,7 +30,8 @@
               {
                 "glob": "**/*",
                 "ignore": ["**/dev/**/*", "**/esm/**/*", "**/min-maps/**/*"],
-                "input": "node_modules/monaco-editor", "output": "assets/monaco-editor"
+                "input": "node_modules/monaco-editor",
+                "output": "assets/monaco"
               }
             ],
             "styles": [
@@ -104,7 +105,8 @@
               {
                 "glob": "**/*",
                 "ignore": ["**/dev/**/*", "**/esm/**/*", "**/min-maps/**/*"],
-                "input": "node_modules/monaco-editor", "output": "assets/monaco-editor"
+                "input": "node_modules/monaco-editor",
+                "output": "assets/monaco"
               }
             ],
             "styles": [
@@ -115,6 +117,5 @@
         }
       }
     }
-  },
-  "defaultProject": "fusio"
+  }
 }
