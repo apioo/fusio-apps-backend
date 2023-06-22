@@ -1,5 +1,5 @@
 <div class="card" *ngIf="selected">
-  <div class="card-header"><a href="{{baseUrl}}{{selected?.name}}" class="fusio-route-path">{{selected?.name}}</a></div>
+  <div class="card-header"><a href="{{baseUrl}}{{selected?.httpPath}}" class="fusio-route-path">{{selected?.name}}</a></div>
   <div class="card-body">
     <div class="btn-group" role="group">
       <button type="button" (click)="doUpdateClick()" class="btn btn-primary fusio-btn-update">Update</button>
@@ -10,11 +10,14 @@
       <fusio-scopes [scopes]="selected?.scopes"></fusio-scopes>
     </div>
     <div class="fusio-detail">
-      <div class="float-end">
-        <span *ngIf="selected?.stability === 0" class="badge bg-warning fusio-operation-stability">Deprecated</span>
-        <span *ngIf="selected?.stability === 1" class="badge bg-success fusio-operation-stability">Experimental</span>
-        <span *ngIf="selected?.stability === 2" class="badge bg-info fusio-operation-stability">Stable</span>
-        <span *ngIf="selected?.stability === 3" class="badge bg-secondary fusio-operation-stability">Legacy</span>
+      <div class="row">
+        <div class="col-2 fw-bold">Stability</div>
+        <div class="col-10">
+          <span *ngIf="selected?.stability === 0" class="badge bg-warning fusio-operation-stability">Deprecated</span>
+          <span *ngIf="selected?.stability === 1" class="badge bg-success fusio-operation-stability">Experimental</span>
+          <span *ngIf="selected?.stability === 2" class="badge bg-info fusio-operation-stability">Stable</span>
+          <span *ngIf="selected?.stability === 3" class="badge bg-secondary fusio-operation-stability">Legacy</span>
+        </div>
       </div>
       <div class="row">
         <div class="col-2 fw-bold">Status</div>

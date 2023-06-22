@@ -60,7 +60,7 @@ export class SchemaSelectorComponent implements OnInit {
       distinctUntilChanged(),
       tap(() => (this.searching = true)),
       switchMap((term) =>
-        fromPromise(this.backend.getClient().schema().getAll(1, 0, 16, term)).pipe(
+        fromPromise(this.backend.getClient().schema().getAll(0, 16, term)).pipe(
           map((response) => {
             return response.entry ? response.entry : [];
           }),
