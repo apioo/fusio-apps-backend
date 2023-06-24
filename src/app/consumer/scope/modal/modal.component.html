@@ -46,17 +46,17 @@
           </thead>
           <tbody>
           <tr *ngFor="let operation of operations">
-            <td>{{operation.name}} <code>{{operation.httpMethod}} {{operation.httpPath}}</code></td>
+            <td>{{operation.name}}</td>
             <td>
-              <div class="form-check" *ngIf="operation.allowedMethods">
-                <input type="checkbox" name="get-{{operation.id}}" [(ngModel)]="operation.allowedMethods.get" class="form-check-input">
+              <div class="form-check">
+                <input type="checkbox" name="get-{{operation.id}}" [(ngModel)]="operation.allow" class="form-check-input">
               </div>
             </td>
           </tr>
           <tr>
             <td></td>
             <td>
-              <button (click)="toggleSelect('GET')" class="btn btn-outline-secondary" type="button"><i class="bi bi-arrow-clockwise"></i></button>
+              <button (click)="toggleSelect()" class="btn btn-outline-secondary" type="button"><i class="bi bi-arrow-clockwise"></i></button>
             </td>
           </tr>
           </tbody>

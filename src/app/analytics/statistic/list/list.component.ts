@@ -1,11 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {ChartOptions, Converter} from "../converter";
-import {ChartData} from "chart.js";
 import {FilterComponent} from "../../log/filter/filter.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {BackendService, HelpService} from "ngx-fusio-sdk";
-import {StatisticChartData} from "fusio-sdk/dist/src/generated/backend/StatisticChartData";
 
 @Component({
   selector: 'app-list',
@@ -14,14 +12,14 @@ import {StatisticChartData} from "fusio-sdk/dist/src/generated/backend/Statistic
 })
 export class ListComponent implements OnInit {
 
-  filter: any = {};
+  filter: Array<any> = [0, 16];
   chart?: ChartOptions;
   statistic = 'incoming_requests';
   search: string = '';
 
   statistics: Array<Statistic> = [{
-    name: 'Errors per route',
-    value: 'errors_per_route'
+    name: 'Errors per operation',
+    value: 'errors_per_operation'
   }, {
     name: 'Incoming requests',
     value: 'incoming_requests'
@@ -35,14 +33,14 @@ export class ListComponent implements OnInit {
     name: 'Most used apps',
     value: 'most_used_apps'
   }, {
-    name: 'Most used routes',
-    value: 'most_used_routes'
+    name: 'Most used operations',
+    value: 'most_used_operations'
   }, {
     name: 'Time average',
     value: 'time_average'
   }, {
-    name: 'Time per route',
-    value: 'time_per_route'
+    name: 'Time per operation',
+    value: 'time_per_operation'
   }, {
     name: 'Used points',
     value: 'used_points'
@@ -63,7 +61,7 @@ export class ListComponent implements OnInit {
   }
 
   async doFilter() {
-    if (this.statistic === 'errors_per_route') {
+    if (this.statistic === 'errors_per_operation') {
       const response = await this.backend.getClient().statistic().getErrorsPerRoute(...this.filter);
       this.chart = Converter.convertChart(response);
     } else if (this.statistic === 'incoming_requests') {
@@ -94,13 +92,7 @@ export class ListComponent implements OnInit {
   }
 
   doSearch() {
-    if (!this.filter) {
-      this.filter = {
-        search: this.search
-      };
-    } else {
-      this.filter.search = this.search;
-    }
+    this.filter = [0, 16, this.search];
     this.doFilter();
   }
 

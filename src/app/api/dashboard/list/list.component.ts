@@ -1,7 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ChartData} from "chart.js";
 import {ChartOptions, Converter} from "../../../analytics/statistic/converter";
-import {StatisticChartData} from "fusio-sdk/dist/src/generated/backend/StatisticChartData";
 import {DashboardTransactions} from "fusio-sdk/dist/src/generated/backend/DashboardTransactions";
 import {DashboardUsers} from "fusio-sdk/dist/src/generated/backend/DashboardUsers";
 import {DashboardRequests} from "fusio-sdk/dist/src/generated/backend/DashboardRequests";
