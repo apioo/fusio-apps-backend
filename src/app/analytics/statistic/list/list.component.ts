@@ -19,31 +19,31 @@ export class ListComponent implements OnInit {
 
   statistics: Array<Statistic> = [{
     name: 'Errors per operation',
-    value: 'errors_per_operation'
+    value: StatisticType.errors_per_operation
   }, {
     name: 'Incoming requests',
-    value: 'incoming_requests'
+    value: StatisticType.incoming_requests
   }, {
     name: 'Incoming transactions',
-    value: 'incoming_transactions'
+    value: StatisticType.incoming_transactions
   }, {
     name: 'Issued tokens',
-    value: 'issued_tokens'
+    value: StatisticType.issued_tokens
   }, {
     name: 'Most used apps',
-    value: 'most_used_apps'
+    value: StatisticType.most_used_apps
   }, {
     name: 'Most used operations',
-    value: 'most_used_operations'
+    value: StatisticType.most_used_operations
   }, {
     name: 'Time average',
-    value: 'time_average'
+    value: StatisticType.time_average
   }, {
     name: 'Time per operation',
-    value: 'time_per_operation'
+    value: StatisticType.time_per_operation
   }, {
     name: 'Used points',
-    value: 'used_points'
+    value: StatisticType.used_points
   }];
 
   constructor(private backend: BackendService, private help: HelpService, private route: ActivatedRoute, private router: Router, private modalService: NgbModal) { }
@@ -61,31 +61,31 @@ export class ListComponent implements OnInit {
   }
 
   async doFilter() {
-    if (this.statistic === 'errors_per_operation') {
+    if (this.statistic === StatisticType.errors_per_operation) {
       const response = await this.backend.getClient().statistic().getErrorsPerRoute(...this.filter);
       this.chart = Converter.convertChart(response);
-    } else if (this.statistic === 'incoming_requests') {
+    } else if (this.statistic === StatisticType.incoming_requests) {
       const response = await this.backend.getClient().statistic().getIncomingRequests(...this.filter);
       this.chart = Converter.convertChart(response);
-    } else if (this.statistic === 'incoming_transactions') {
+    } else if (this.statistic === StatisticType.incoming_transactions) {
       const response = await this.backend.getClient().statistic().getIncomingTransactions(...this.filter);
       this.chart = Converter.convertChart(response);
-    } else if (this.statistic === 'issued_tokens') {
+    } else if (this.statistic === StatisticType.issued_tokens) {
       const response = await this.backend.getClient().statistic().getIssuedTokens(...this.filter);
       this.chart = Converter.convertChart(response);
-    } else if (this.statistic === 'most_used_apps') {
+    } else if (this.statistic === StatisticType.most_used_apps) {
       const response = await this.backend.getClient().statistic().getMostUsedApps(...this.filter);
       this.chart = Converter.convertChart(response);
-    } else if (this.statistic === 'most_used_routes') {
+    } else if (this.statistic === StatisticType.most_used_operations) {
       const response = await this.backend.getClient().statistic().getMostUsedRoutes(...this.filter);
       this.chart = Converter.convertChart(response);
-    } else if (this.statistic === 'time_average') {
+    } else if (this.statistic === StatisticType.time_average) {
       const response = await this.backend.getClient().statistic().getTimeAverage(...this.filter);
       this.chart = Converter.convertChart(response);
-    } else if (this.statistic === 'time_per_route') {
+    } else if (this.statistic === StatisticType.time_per_operation) {
       const response = await this.backend.getClient().statistic().getTimePerRoute(...this.filter);
       this.chart = Converter.convertChart(response);
-    } else if (this.statistic === 'used_points') {
+    } else if (this.statistic === StatisticType.used_points) {
       const response = await this.backend.getClient().statistic().getUsedPoints(...this.filter);
       this.chart = Converter.convertChart(response);
     }
@@ -128,5 +128,17 @@ export class ListComponent implements OnInit {
 
 interface Statistic {
   name: string,
-  value: string,
+  value: StatisticType,
+}
+
+enum StatisticType {
+  errors_per_operation = 'errors_per_operation',
+  incoming_requests = 'incoming_requests',
+  incoming_transactions = 'incoming_transactions',
+  most_used_apps = 'most_used_apps',
+  issued_tokens = 'issued_tokens',
+  most_used_operations = 'most_used_operations',
+  time_average = 'time_average',
+  time_per_operation = 'time_per_operation',
+  used_points = 'used_points',
 }
