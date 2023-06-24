@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ChartData} from "chart.js";
-import {Converter} from "../../../analytics/statistic/converter";
+import {ChartOptions, Converter} from "../../../analytics/statistic/converter";
 import {StatisticChartData} from "fusio-sdk/dist/src/generated/backend/StatisticChartData";
 import {DashboardTransactions} from "fusio-sdk/dist/src/generated/backend/DashboardTransactions";
 import {DashboardUsers} from "fusio-sdk/dist/src/generated/backend/DashboardUsers";
@@ -15,25 +15,15 @@ import {BackendService} from "ngx-fusio-sdk";
 })
 export class ListComponent implements OnInit {
 
-  errorsPerRoute?: ChartData<'line', StatisticChartData>;
-  incomingRequests?: ChartData<'line', StatisticChartData>;
-  incomingTransactions?: ChartData<'line', StatisticChartData>;
-  mostUsedRoutes?: ChartData<'line', StatisticChartData>;
-  timePerRoute?: ChartData<'line', StatisticChartData>;
+  errorsPerOperation?: ChartOptions;
+  incomingRequests?: ChartOptions;
+  incomingTransactions?: ChartOptions;
+  mostUsedOperations?: ChartOptions;
+  timePerOperation?: ChartOptions;
   latestApps?: DashboardApps;
   latestRequests?: DashboardRequests;
   latestUsers?: DashboardUsers;
   latestTransactions?: DashboardTransactions;
-
-  chartOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    elements: {
-      line: {
-        borderWidth: 2
-      }
-    }
-  };
 
   constructor(private backend: BackendService) {
   }
@@ -42,7 +32,7 @@ export class ListComponent implements OnInit {
     const response = await this.backend.getClient().dashboard().getAll();
 
     if (response.errorsPerOperation) {
-      this.errorsPerRoute = Converter.convertChart(response.errorsPerOperation, 10);
+      this.errorsPerOperation = Converter.convertChart(response.errorsPerOperation, 10);
     }
 
     if (response.incomingRequests) {
@@ -54,11 +44,11 @@ export class ListComponent implements OnInit {
     }
 
     if (response.mostUsedOperations) {
-      this.mostUsedRoutes = Converter.convertChart(response.mostUsedOperations, 10);
+      this.mostUsedOperations = Converter.convertChart(response.mostUsedOperations, 10);
     }
 
     if (response.timePerOperation) {
-      this.timePerRoute = Converter.convertChart(response.timePerOperation, 10);
+      this.timePerOperation = Converter.convertChart(response.timePerOperation, 10);
     }
 
     this.latestApps = response.latestApps;

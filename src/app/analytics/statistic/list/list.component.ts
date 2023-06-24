@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {Converter} from "../converter";
+import {ChartOptions, Converter} from "../converter";
 import {ChartData} from "chart.js";
 import {FilterComponent} from "../../log/filter/filter.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
@@ -15,7 +15,7 @@ import {StatisticChartData} from "fusio-sdk/dist/src/generated/backend/Statistic
 export class ListComponent implements OnInit {
 
   filter: any = {};
-  chart?: ChartData<'line', StatisticChartData>;
+  chart?: ChartOptions;
   statistic = 'incoming_requests';
   search: string = '';
 
@@ -47,16 +47,6 @@ export class ListComponent implements OnInit {
     name: 'Used points',
     value: 'used_points'
   }];
-
-  chartOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    elements: {
-      line: {
-        borderWidth: 2
-      }
-    }
-  };
 
   constructor(private backend: BackendService, private help: HelpService, private route: ActivatedRoute, private router: Router, private modalService: NgbModal) { }
 

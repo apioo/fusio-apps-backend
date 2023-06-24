@@ -96,6 +96,9 @@ import {ConfigBuilder} from "./config-builder";
 import { OperationParametersComponent } from './shared/operation-parameters/operation-parameters.component';
 import { OperationThrowsComponent } from './shared/operation-throws/operation-throws.component';
 import { SchemaSelectorComponent } from './shared/schema-selector/schema-selector.component';
+import {NgxApexchartsModule} from "ngx-apexcharts";
+import { ActionSelectorComponent } from './shared/action-selector/action-selector.component';
+import { UserSelectorComponent } from './shared/user-selector/user-selector.component';
 
 @NgModule({
   declarations: [
@@ -185,6 +188,8 @@ import { SchemaSelectorComponent } from './shared/schema-selector/schema-selecto
     OperationParametersComponent,
     OperationThrowsComponent,
     SchemaSelectorComponent,
+    ActionSelectorComponent,
+    UserSelectorComponent,
   ],
   imports: [
     BrowserModule,
@@ -194,7 +199,7 @@ import { SchemaSelectorComponent } from './shared/schema-selector/schema-selecto
     FormsModule,
     ReactiveFormsModule,
     NgbTypeaheadModule,
-    //NgChartsModule.forRoot(),
+    NgxApexchartsModule,
     MonacoEditorModule.forRoot(),
     TypeschemaEditorModule,
     FusioSdkModule.forRoot(ConfigBuilder.build())

@@ -5,50 +5,23 @@
     <div class="card fusio-panel">
       <div class="card-header">Incoming request chart</div>
       <div class="card-body">
-        <!--
-        <canvas baseChart
-                [datasets]="incomingRequests?.datasets"
-                [labels]="incomingRequests?.labels"
-                [options]="chartOptions"
-                [type]="'line'"
-                [legend]="false"
-                height="240">
-        </canvas>
-        -->
+        <apx-chart *ngIf="incomingRequests" [series]="incomingRequests.series" [chart]="{type: 'line', height: 240}" [xaxis]="incomingRequests.xaxis" [stroke]="{curve: 'smooth'}"></apx-chart>
       </div>
     </div>
   </div>
   <div class="col-4">
     <div class="card fusio-panel">
-      <div class="card-header">Most used routes</div>
+      <div class="card-header">Most used operations</div>
       <div class="card-body">
-        <!--
-        <canvas baseChart
-                [datasets]="mostUsedRoutes?.datasets"
-                [labels]="mostUsedRoutes?.labels"
-                [options]="chartOptions"
-                [type]="'line'"
-                [legend]="false"
-                height="240">
-        </canvas>
-        -->
+        <apx-chart *ngIf="mostUsedOperations" [series]="mostUsedOperations.series" [chart]="{type: 'line', height: 240}" [xaxis]="mostUsedOperations.xaxis" [stroke]="{curve: 'smooth'}"></apx-chart>
       </div>
     </div>
   </div>
   <div class="col-4">
     <div class="card fusio-panel">
-      <div class="card-header">Execution time per route (ms)</div>
+      <div class="card-header">Execution time per operation (ms)</div>
       <div class="card-body">
-        <!--
-        <canvas baseChart
-                [datasets]="timePerRoute?.datasets"
-                [labels]="timePerRoute?.labels"
-                [options]="chartOptions"
-                [type]="'line'"
-                [legend]="false"
-                height="240">
-        </canvas>
-        -->
+        <apx-chart *ngIf="timePerOperation" [series]="timePerOperation.series" [chart]="{type: 'line', height: 240}" [xaxis]="timePerOperation.xaxis" [stroke]="{curve: 'smooth'}"></apx-chart>
       </div>
     </div>
   </div>
@@ -71,18 +44,9 @@
   </div>
   <div class="col-4">
     <div class="card fusio-panel">
-      <div class="card-header">Errors per route</div>
+      <div class="card-header">Errors per operation</div>
       <div class="card-body">
-        <!--
-        <canvas baseChart
-                [datasets]="errorsPerRoute?.datasets"
-                [labels]="errorsPerRoute?.labels"
-                [options]="chartOptions"
-                [type]="'line'"
-                [legend]="false"
-                height="240">
-        </canvas>
-        -->
+        <apx-chart *ngIf="errorsPerOperation" [series]="errorsPerOperation.series" [chart]="{type: 'line', height: 240}" [xaxis]="errorsPerOperation.xaxis" [stroke]="{curve: 'smooth'}"></apx-chart>
       </div>
     </div>
   </div>
@@ -90,16 +54,7 @@
     <div class="card fusio-panel">
       <div class="card-header">Incoming transactions</div>
       <div class="card-body">
-        <!--
-        <canvas baseChart
-                [datasets]="incomingTransactions?.datasets"
-                [labels]="incomingTransactions?.labels"
-                [options]="chartOptions"
-                [type]="'line'"
-                [legend]="false"
-                height="240">
-        </canvas>
-        -->
+        <apx-chart *ngIf="incomingTransactions" [series]="incomingTransactions.series" [chart]="{type: 'line', height: 240}" [xaxis]="incomingTransactions.xaxis" [stroke]="{curve: 'smooth'}"></apx-chart>
       </div>
     </div>
   </div>

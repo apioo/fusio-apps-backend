@@ -23,16 +23,7 @@
 <div class="card">
   <div class="card-header">{{statisticName}}</div>
   <div class="card-body">
-    <!--
-    <canvas baseChart
-            [datasets]="chart?.datasets"
-            [labels]="chart?.labels"
-            [options]="chartOptions"
-            [type]="'line'"
-            [legend]="false"
-            height="500">
-    </canvas>
-    -->
+    <apx-chart *ngIf="chart" [series]="chart.series" [chart]="{type: 'line', height: 500}" [xaxis]="chart.xaxis" [stroke]="{curve: 'smooth'}"></apx-chart>
   </div>
 </div>
 

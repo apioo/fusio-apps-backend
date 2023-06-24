@@ -1,17 +1,11 @@
 import {ChartData, ChartDataset} from "chart.js";
 import {StatisticChart} from "fusio-sdk/dist/src/generated/backend/StatisticChart";
 import {StatisticChartData} from "fusio-sdk/dist/src/generated/backend/StatisticChartData";
+import {ApexAxisChartSeries, ApexChart, ApexTitleSubtitle, ApexXAxis} from "ngx-apexcharts";
 
 export class Converter {
 
-  private static BACKGROUND_COLOR = ['rgba(148,159,177,0.2)'];
-  private static BORDER_COLOR = ['rgba(148,159,177,1)'];
-  private static POINT_BACKGROUND_COLOR = ['rgba(148,159,177,1)'];
-  private static POINT_BORDER_COLOR = ['#fff'];
-  private static POINT_HOVER_BACKGROUND_COLOR = ['#fff'];
-  private static POINT_HOVER_BORDER_COLOR = ['rgba(148,159,177,0.8)'];
-
-  public static convertChart(data: StatisticChart, maxElements?: number): ChartData<'line', StatisticChartData> {
+  public static convertChart(data: StatisticChart, maxElements?: number): ChartOptions {
     let labels = data.labels?.map((value) => {
       return value.substring(5);
     });
@@ -21,17 +15,19 @@ export class Converter {
     }
 
     return {
-      datasets: Converter.convertChartData(data.data, data.series, maxElements),
-      labels: labels || [],
+      series: Converter.convertChartData(data.data, data.series, maxElements),
+      xaxis: {
+        categories: labels || []
+      },
     };
   }
 
-  public static convertChartData(data?: Array<StatisticChartData>, series?: Array<string>, maxElements?: number): Array<ChartDataset<'line', StatisticChartData>> {
+  public static convertChartData(data?: Array<StatisticChartData>, series?: Array<string>, maxElements?: number): ApexAxisChartSeries {
     if (!data || !series) {
       return [];
     }
 
-    let dataSets: Array<ChartDataset<'line', StatisticChartData>> = [];
+    let dataSets: Array<{ name: string, data: Array<number> }> = [];
 
     for (let i = 0; i < series.length; i++) {
       let values: Array<number> = [];
@@ -44,18 +40,16 @@ export class Converter {
       }
 
       dataSets.push({
-        label: series[i],
+        name: series[i],
         data: values,
-        backgroundColor: Converter.BACKGROUND_COLOR[i],
-        borderColor: Converter.BORDER_COLOR[i],
-        pointBackgroundColor: Converter.POINT_BACKGROUND_COLOR[i],
-        pointBorderColor: Converter.POINT_BORDER_COLOR[i],
-        pointHoverBackgroundColor: Converter.POINT_HOVER_BACKGROUND_COLOR[i],
-        pointHoverBorderColor: Converter.POINT_HOVER_BORDER_COLOR[i],
-        fill: 'origin',
       })
     }
 
     return dataSets;
   }
 }
+
+export type ChartOptions = {
+  series: ApexAxisChartSeries
+  xaxis: ApexXAxis
+};
