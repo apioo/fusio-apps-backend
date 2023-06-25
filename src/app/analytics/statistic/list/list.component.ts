@@ -61,6 +61,7 @@ export class ListComponent implements OnInit {
   }
 
   async doFilter() {
+    console.log('filter', this.filter);
     if (this.statistic === StatisticType.errors_per_operation) {
       const response = await this.backend.getClient().statistic().getErrorsPerRoute(...this.filter);
       this.chart = Converter.convertChart(response);
@@ -100,9 +101,9 @@ export class ListComponent implements OnInit {
     const modalRef = this.modalService.open(FilterComponent, {
       size: 'lg'
     });
-    modalRef.componentInstance.filter = this.filter;
+    modalRef.componentInstance.filter = this.filter.slice(3);
     modalRef.closed.subscribe(async (filter) => {
-      this.filter = filter;
+      this.filter = [0, 16, this.search, ...filter];
       await this.doFilter();
     });
   }

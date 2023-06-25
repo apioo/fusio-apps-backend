@@ -1,26 +1,26 @@
 <div class="card" *ngIf="selected">
-  <div class="card-header">{{selected?.transactionId}}</div>
+  <div class="card-header">{{selected.transactionId}}</div>
   <div class="card-body">
     <div class="fusio-detail">
       <div class="row">
         <div class="col-2 fw-bold">Transaction-Id</div>
-        <div class="col-10">{{selected?.transactionId}}</div>
+        <div class="col-10">{{selected.transactionId}}</div>
       </div>
       <div class="row">
         <div class="col-2 fw-bold">Amount</div>
-        <div class="col-10">{{selected?.amount|currency}}</div>
+        <div class="col-10">{{selected.amount|currency}}</div>
       </div>
       <div class="row">
         <div class="col-2 fw-bold">Period-Start</div>
-        <div class="col-10">{{selected?.periodStart|date:'short'}}</div>
+        <div class="col-10">{{selected.periodStart|date:'short'}}</div>
       </div>
       <div class="row">
         <div class="col-2 fw-bold">Period-End</div>
-        <div class="col-10">{{selected?.periodEnd|date:'short'}}</div>
+        <div class="col-10">{{selected.periodEnd|date:'short'}}</div>
       </div>
       <div class="row">
         <div class="col-2 fw-bold">Insert-Date</div>
-        <div class="col-10">{{selected?.insertDate|date:'short'}}</div>
+        <div class="col-10">{{selected.insertDate|date:'short'}}</div>
       </div>
     </div>
   </div>

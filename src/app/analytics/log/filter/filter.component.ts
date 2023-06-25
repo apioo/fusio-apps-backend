@@ -13,7 +13,7 @@ import {Operation} from "fusio-sdk/dist/src/generated/backend/Operation";
 export class FilterComponent implements OnInit {
 
   @Input()
-  filter!: any;
+  filter!: Array<any>;
 
   constructor(private backend: BackendService, public modal: NgbActiveModal) { }
 

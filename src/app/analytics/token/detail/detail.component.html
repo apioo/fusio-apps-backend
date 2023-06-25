@@ -1,29 +1,29 @@
 <div class="card" *ngIf="selected">
-  <div class="card-header">{{selected?.ip}}</div>
+  <div class="card-header">{{selected.ip}}</div>
   <div class="card-body">
     <div class="fusio-detail">
       <div class="row">
         <div class="col-2 fw-bold">Status</div>
         <div class="col-10">
-          <span *ngIf="selected?.status === 1" class="badge bg-success">Active</span>
-          <span *ngIf="selected?.status === 2" class="badge bg-danger">Deleted</span>
+          <span *ngIf="selected.status === 1" class="badge bg-success">Active</span>
+          <span *ngIf="selected.status === 2" class="badge bg-danger">Deleted</span>
         </div>
       </div>
       <div class="row">
         <div class="col-2 fw-bold">IP</div>
-        <div class="col-10">{{selected?.ip}}</div>
+        <div class="col-10">{{selected.ip}}</div>
       </div>
       <div class="row">
         <div class="col-2 fw-bold">Scopes</div>
-        <div class="col-10"><fusio-scopes [scopes]="selected?.scope"></fusio-scopes></div>
+        <div class="col-10"><fusio-scopes [scopes]="selected.scope"></fusio-scopes></div>
       </div>
       <div class="row">
         <div class="col-2 fw-bold">Expire</div>
-        <div class="col-10">{{selected?.expire|date:'short'}}</div>
+        <div class="col-10">{{selected.expire|date:'short'}}</div>
       </div>
       <div class="row">
         <div class="col-2 fw-bold">Date</div>
-        <div class="col-10">{{selected?.date|date:'short'}}</div>
+        <div class="col-10">{{selected.date|date:'short'}}</div>
       </div>
     </div>
   </div>

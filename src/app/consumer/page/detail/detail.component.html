@@ -1,10 +1,10 @@
 <div class="card" *ngIf="selected">
-  <div class="card-header">{{selected?.title}}</div>
+  <div class="card-header">{{selected.title}}</div>
   <div class="card-body">
     <div class="btn-group" role="group">
       <button type="button" (click)="doUpdateClick()" class="btn btn-primary fusio-btn-update">Update</button>
       <button type="button" (click)="doDeleteClick()" class="btn btn-danger fusio-btn-delete">Delete</button>
     </div>
-    <div *ngIf="selected?.content" [innerHtml]="selected?.content" style="margin-top:1rem"></div>
+    <div *ngIf="selected.content" [innerHtml]="selected.content" style="margin-top:1rem"></div>
   </div>
 </div>

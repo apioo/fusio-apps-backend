@@ -1,5 +1,5 @@
 <div class="card" *ngIf="selected">
-  <div class="card-header">{{selected?.name}}</div>
+  <div class="card-header">{{selected.name}}</div>
   <div class="card-body">
     <div class="btn-group" role="group">
       <button type="button" (click)="doUpdateClick()" class="btn btn-primary fusio-btn-update">Update</button>
@@ -9,31 +9,31 @@
       <div class="row">
         <div class="col-2 fw-bold">Status</div>
         <div class="col-10">
-          <span *ngIf="selected?.status === 1" class="badge bg-success">Active</span>
-          <span *ngIf="selected?.status === 2" class="badge bg-success">Pending</span>
-          <span *ngIf="selected?.status === 3" class="badge bg-success">Deactivated</span>
-          <span *ngIf="selected?.status === 4" class="badge bg-success">Deleted</span>
+          <span *ngIf="selected.status === 1" class="badge bg-success">Active</span>
+          <span *ngIf="selected.status === 2" class="badge bg-success">Pending</span>
+          <span *ngIf="selected.status === 3" class="badge bg-success">Deactivated</span>
+          <span *ngIf="selected.status === 4" class="badge bg-success">Deleted</span>
         </div>
       </div>
       <div class="row">
         <div class="col-2 fw-bold">Name</div>
-        <div class="col-10">{{selected?.name}}</div>
+        <div class="col-10">{{selected.name}}</div>
       </div>
       <div class="row">
         <div class="col-2 fw-bold">Url</div>
-        <div class="col-10">{{selected?.url}}</div>
+        <div class="col-10">{{selected.url}}</div>
       </div>
       <div class="row">
         <div class="col-2 fw-bold">App-Key</div>
-        <div class="col-10">{{selected?.appKey}}</div>
+        <div class="col-10">{{selected.appKey}}</div>
       </div>
       <div class="row">
         <div class="col-2 fw-bold">Scopes</div>
-        <div class="col-10"><fusio-scopes [scopes]="selected?.scopes"></fusio-scopes></div>
+        <div class="col-10"><fusio-scopes [scopes]="selected.scopes"></fusio-scopes></div>
       </div>
       <div class="row">
         <div class="col-2 fw-bold">Date</div>
-        <div class="col-10">{{selected?.date|date:'short'}}</div>
+        <div class="col-10">{{selected.date|date:'short'}}</div>
       </div>
     </div>
   </div>

@@ -1,5 +1,5 @@
 <div class="card" *ngIf="selected">
-  <div class="card-header">{{selected?.name}}</div>
+  <div class="card-header">{{selected.name}}</div>
   <div class="card-body">
     <div class="btn-group" role="group">
       <button type="button" (click)="doUpdateClick()" class="btn btn-primary fusio-btn-update">Update</button>
@@ -8,11 +8,11 @@
     <div class="fusio-detail">
       <div class="row">
         <div class="col-2 fw-bold">Name</div>
-        <div class="col-10">{{selected?.name}}</div>
+        <div class="col-10">{{selected.name}}</div>
       </div>
       <div class="row">
         <div class="col-2 fw-bold">Scopes</div>
-        <div class="col-10"><fusio-scopes [scopes]="selected?.scopes"></fusio-scopes></div>
+        <div class="col-10"><fusio-scopes [scopes]="selected.scopes"></fusio-scopes></div>
       </div>
     </div>
   </div>
