@@ -99,6 +99,8 @@ import { SchemaSelectorComponent } from './shared/schema-selector/schema-selecto
 import {NgxApexchartsModule} from "ngx-apexcharts";
 import { ActionSelectorComponent } from './shared/action-selector/action-selector.component';
 import { UserSelectorComponent } from './shared/user-selector/user-selector.component';
+import { SchemaLinkComponent } from './shared/schema-link/schema-link.component';
+import { ActionLinkComponent } from './shared/action-link/action-link.component';
 
 @NgModule({
   declarations: [
@@ -190,6 +192,8 @@ import { UserSelectorComponent } from './shared/user-selector/user-selector.comp
     SchemaSelectorComponent,
     ActionSelectorComponent,
     UserSelectorComponent,
+    SchemaLinkComponent,
+    ActionLinkComponent,
   ],
   imports: [
     BrowserModule,

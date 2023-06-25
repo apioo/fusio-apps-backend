@@ -7,17 +7,17 @@
     </div>
     <div class="fusio-detail">
       <div class="row">
-        <div class="col-2 fw-bold">Name</div>
-        <div class="col-10">{{selected.name}}</div>
+        <div class="col-lg-2 fw-bold">Name</div>
+        <div class="col-lg-10">{{selected.name}}</div>
       </div>
       <div class="row">
-        <div class="col-2 fw-bold">Description</div>
-        <div class="col-10"><code>{{selected.description}}</code></div>
+        <div class="col-lg-2 fw-bold">Description</div>
+        <div class="col-lg-10"><code>{{selected.description}}</code></div>
       </div>
       <div class="row">
-        <div class="col-2 fw-bold">Schema</div>
-        <div class="col-8">{{selected.schema}}</div>
-        <div class="col-2"><button *ngIf="selected.schema" routerLink="/schema/~{{selected.schema}}" type="button" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
+        <div class="col-lg-2 fw-bold">Schema</div>
+        <div class="col-lg-8">{{selected.schema}}</div>
+        <div class="col-lg-2"><button *ngIf="selected.schema" routerLink="/schema/~{{selected.schema}}" type="button" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
       </div>
     </div>
   </div>

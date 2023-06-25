@@ -1,0 +1,7 @@
+
+<ng-container *ngIf="link">
+  <a [href]="link" class="schema-link">{{data}}</a>
+</ng-container>
+<ng-container *ngIf="!link">
+  <span class="schema-link">{{data}}</span>
+</ng-container>

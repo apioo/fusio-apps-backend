@@ -11,8 +11,17 @@
     </div>
     <div class="fusio-detail">
       <div class="row">
-        <div class="col-2 fw-bold">Stability</div>
-        <div class="col-10">
+        <div class="col-lg-2 fw-bold">Status</div>
+        <div class="col-lg-10">
+          <span *ngIf="selected.active === true" class="badge bg-success fusio-operation-active">Active</span>
+          <span *ngIf="selected.active !== true" class="badge bg-secondary fusio-operation-active">Inactive</span>
+          <span *ngIf="selected.public === true" class="badge bg-primary fusio-operation-public">Public</span>
+          <span *ngIf="selected.public !== true" class="badge bg-info fusio-operation-public">Private</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-2 fw-bold">Stability</div>
+        <div class="col-lg-10">
           <span *ngIf="selected.stability === 0" class="badge bg-warning fusio-operation-stability">Deprecated</span>
           <span *ngIf="selected.stability === 1" class="badge bg-success fusio-operation-stability">Experimental</span>
           <span *ngIf="selected.stability === 2" class="badge bg-info fusio-operation-stability">Stable</span>
@@ -20,55 +29,80 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-2 fw-bold">Status</div>
-        <div class="col-10">
-          <span *ngIf="selected.active === true" class="badge bg-success fusio-route-active">Active</span>
-          <span *ngIf="selected.active !== true" class="badge bg-secondary fusio-route-active">Inactive</span>
-          <span *ngIf="selected.public === true" class="badge bg-primary fusio-route-public">Public</span>
-          <span *ngIf="selected.public !== true" class="badge bg-info fusio-route-public">Private</span>
+        <div class="col-lg-2 fw-bold">Name</div>
+        <div class="col-lg-10"><code class="fusio-operation-name">{{selected.name}}</code></div>
+      </div>
+      <div class="row">
+        <div class="col-lg-2 fw-bold">Description</div>
+        <div class="col-lg-10"><span class="fusio-operation-description">{{selected.description}}</span></div>
+      </div>
+      <div class="row">
+        <div class="col-lg-2 fw-bold">HTTP-Method</div>
+        <div class="col-lg-10"><span class="badge text-bg-dark fusio-operation-http-method">{{selected.httpMethod}}</span></div>
+      </div>
+      <div class="row">
+        <div class="col-lg-2 fw-bold">HTTP-Path</div>
+        <div class="col-lg-10"><code class="fusio-operation-http-path">{{selected.httpPath}}</code></div>
+      </div>
+      <div class="row">
+        <div class="col-lg-2 fw-bold">HTTP-Code</div>
+        <div class="col-lg-10"><span class="badge text-bg-dark fusio-operation-http-code">{{selected.httpCode}}</span></div>
+      </div>
+      <div class="row" *ngIf="selected.parameters">
+        <div class="col-lg-2 fw-bold">Parameters</div>
+        <div class="col-lg-10">
+          <table class="table">
+            <thead>
+              <tr>
+                <th style="width:20%">Name</th>
+                <th style="width:10%">Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let entry of selected.parameters | keyvalue">
+                <td>{{entry.key}}</td>
+                <td>{{entry.value.type}}</td>
+                <td>{{entry.value.description}}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
-      <div class="row">
-        <div class="col-2 fw-bold">Name</div>
-        <div class="col-10"><code class="fusio-operation-name">{{selected.name}}</code></div>
+      <div class="row" *ngIf="selected.incoming">
+        <div class="col-lg-2 fw-bold">Incoming</div>
+        <div class="col-lg-10"><span class="fusio-operation-incoming"><app-schema-link [data]="selected.incoming"></app-schema-link></span></div>
       </div>
       <div class="row">
-        <div class="col-2 fw-bold">Description</div>
-        <div class="col-10"><span class="fusio-operation-description">{{selected.description}}</span></div>
-      </div>
-      <div class="row">
-        <div class="col-2 fw-bold">Parameters</div>
-        <div class="col-8"><span class="fusio-operation-parameters">{{selected.parameters}}</span></div>
-        <div class="col-2"><button routerLink="/schema/~{{selected.parameters}}" type="button" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
-      </div>
-      <div class="row">
-        <div class="col-2 fw-bold">Incoming</div>
-        <div class="col-8"><span class="fusio-operation-incoming">{{selected.incoming}}</span></div>
-        <div class="col-2"><button routerLink="/schema/~{{selected.incoming}}" type="button" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
-      </div>
-      <div class="row">
-        <div class="col-2 fw-bold">Outgoing</div>
-        <div class="col-8"><span class="fusio-operation-outgoing">{{selected.outgoing}}</span></div>
-        <div class="col-2"><button routerLink="/schema/~{{selected.outgoing}}" type="button" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
+        <div class="col-lg-2 fw-bold">Outgoing</div>
+        <div class="col-lg-10"><span class="fusio-operation-outgoing"><app-schema-link [data]="selected.outgoing"></app-schema-link></span></div>
       </div>
       <div class="row" *ngIf="selected.throws">
-        <div class="col-2 fw-bold">Throws</div>
-        <div class="col-10">
-          <div class="row" *ngFor="let throw_ of selected.throws | keyvalue">
-            <div class="col-2"><code>{{throw_.key}}</code></div>
-            <div class="col-8"><span class="fusio-operation-throw">{{throw_.value}}</span></div>
-            <div class="col-2"><button routerLink="/schema/~{{throw_.value}}" type="button" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
-          </div>
+        <div class="col-lg-2 fw-bold">Throws</div>
+        <div class="col-lg-10">
+          <table class="table">
+            <thead>
+            <tr>
+              <th style="width:20%">Code</th>
+              <th>Schema</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let entry of selected.throws | keyvalue">
+              <td><code>{{entry.key}}</code></td>
+              <td><span class="fusio-operation-throw"><app-schema-link [data]="entry.value"></app-schema-link></span></td>
+            </tr>
+            </tbody>
+          </table>
         </div>
       </div>
-      <div class="row" *ngIf="selected.action">
-        <div class="col-2 fw-bold">Action</div>
-        <div class="col-8"><span class="fusio-operation-action">{{selected.action}}</span></div>
-        <div class="col-2"><button routerLink="/action/~{{selected.action}}" type="button" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
+      <div class="row">
+        <div class="col-lg-2 fw-bold">Action</div>
+        <div class="col-lg-10"><span class="fusio-operation-action"><app-action-link [data]="selected.action"></app-action-link></span></div>
       </div>
-      <div class="row" *ngIf="selected.costs">
-        <div class="col-2 fw-bold">Costs</div>
-        <div class="col-10"><span class="fusio-operation-costs align-middle">{{selected.costs}}</span></div>
+      <div class="row">
+        <div class="col-lg-2 fw-bold">Costs</div>
+        <div class="col-lg-10"><span class="fusio-operation-costs align-middle">{{selected.costs}}</span></div>
       </div>
     </div>
   </div>

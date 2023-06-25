@@ -7,25 +7,25 @@
     </div>
     <div class="fusio-detail">
       <div class="row">
-        <div class="col-2 fw-bold">Name</div>
-        <div class="col-10">{{selected.name}}</div>
+        <div class="col-lg-2 fw-bold">Name</div>
+        <div class="col-lg-10">{{selected.name}}</div>
       </div>
       <div class="row">
-        <div class="col-2 fw-bold">Cron</div>
-        <div class="col-10"><code>{{selected.cron}}</code></div>
+        <div class="col-lg-2 fw-bold">Cron</div>
+        <div class="col-lg-10"><code>{{selected.cron}}</code></div>
       </div>
       <div class="row">
-        <div class="col-2 fw-bold">Exit-Code</div>
-        <div class="col-10"><code>{{selected.exitCode}}</code></div>
+        <div class="col-lg-2 fw-bold">Exit-Code</div>
+        <div class="col-lg-10"><code>{{selected.exitCode}}</code></div>
       </div>
       <div class="row">
-        <div class="col-2 fw-bold">Last execution</div>
-        <div class="col-10"><code>{{selected.executeDate|date:'short'}}</code></div>
+        <div class="col-lg-2 fw-bold">Last execution</div>
+        <div class="col-lg-10"><code>{{selected.executeDate|date:'short'}}</code></div>
       </div>
       <div class="row">
-        <div class="col-2 fw-bold">Action</div>
-        <div class="col-8">{{selected.action}}</div>
-        <div class="col-2"><button routerLink="/action/~{{selected.action}}" type="button" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
+        <div class="col-lg-2 fw-bold">Action</div>
+        <div class="col-lg-8">{{selected.action}}</div>
+        <div class="col-lg-2"><button routerLink="/action/~{{selected.action}}" type="button" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
       </div>
     </div>
   </div>
