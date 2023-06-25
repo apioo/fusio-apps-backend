@@ -1,33 +1,36 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Schema} from "fusio-sdk/dist/src/generated/backend/Schema";
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {
   catchError,
   debounceTime,
   distinctUntilChanged,
-  filter, from,
   map,
-  Observable, of,
+  Observable,
+  of,
   OperatorFunction,
   switchMap,
   tap
 } from "rxjs";
-import {BackendService} from "ngx-fusio-sdk";
 import {fromPromise} from "rxjs/internal/observable/innerFrom";
+import {BackendService} from "ngx-fusio-sdk";
+import {Action} from "fusio-sdk/dist/src/generated/backend/Action";
 
 @Component({
-  selector: 'app-schema-selector',
-  templateUrl: './schema-selector.component.html',
-  styleUrls: ['./schema-selector.component.css']
+  selector: 'app-action-selector',
+  templateUrl: './action-selector.component.html',
+  styleUrls: ['./action-selector.component.css']
 })
-export class SchemaSelectorComponent implements OnInit {
+export class ActionSelectorComponent {
 
-  @Input() name: string = 'schema-selector';
+  @Input() name: string = 'action-selector';
   @Input() data?: string = '';
   @Output() dataChange = new EventEmitter<string>();
 
   schemes = [{
-    key: 'schema',
-    value: 'Schema'
+    key: 'action',
+    value: 'Action'
+  }, {
+    key: 'class',
+    value: 'Class'
   }, {
     key: 'http',
     value: 'HTTP'
@@ -37,10 +40,7 @@ export class SchemaSelectorComponent implements OnInit {
   }, {
     key: 'file',
     value: 'File'
-  }/*, {
-    key: 'typehub',
-    value: 'TypeHub'
-  }*/];
+  }];
 
   scheme: string = '';
   value: string = '';
@@ -48,17 +48,17 @@ export class SchemaSelectorComponent implements OnInit {
   searching = false;
   searchFailed = false;
 
-  schema?: Schema
+  action?: Action
   type?: any
 
-  schemaFormatter = (schema: Schema) => schema.name ? schema.name : '-';
-  schemaSearch: OperatorFunction<string, Array<Schema>> = (text$: Observable<string>) =>
+  actionFormatter = (action: Action) => action.name ? action.name : '-';
+  actionSearch: OperatorFunction<string, Array<Action>> = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
       tap(() => (this.searching = true)),
       switchMap((term) =>
-        fromPromise(this.backend.getClient().schema().getAll(0, 16, term)).pipe(
+        fromPromise(this.backend.getClient().action().getAll(0, 16)).pipe( // @TODO add term
           map((response) => {
             return response.entry ? response.entry : [];
           }),
@@ -82,13 +82,13 @@ export class SchemaSelectorComponent implements OnInit {
         this.scheme = this.data.substring(0, pos);
         this.value = this.data.substring(pos + 3);
 
-        if (this.scheme === 'schema') {
-          this.schema = await this.backend.getClient().schema().get('~' + this.value);
+        if (this.scheme === 'action') {
+          this.action = await this.backend.getClient().action().get('~' + this.value);
         }
       }
     }
     if (!this.scheme) {
-      this.scheme = 'schema';
+      this.scheme = 'action';
     }
   }
 
@@ -97,8 +97,8 @@ export class SchemaSelectorComponent implements OnInit {
   }
 
   changeValue() {
-    if (this.scheme === 'schema' && this.schema?.name) {
-      this.value = this.schema?.name;
+    if (this.scheme === 'action' && this.action?.name) {
+      this.value = this.action?.name;
     }
 
     this.dataChange.emit(this.scheme + '://' + this.value);

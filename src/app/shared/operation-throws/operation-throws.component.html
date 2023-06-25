@@ -1,1 +1,20 @@
-<p>operation-throws works!</p>
+<div class="row mb-3" *ngFor="let row of result;">
+  <div class="col-3">
+    <select [id]="name + '_httpCode'" [name]="name + '_httpCode'" [(ngModel)]="row.code" (ngModelChange)="remove(); changeValue()" class="form-select">
+      <option *ngFor="let code of errorStatusCodes" [ngValue]="code.key">{{code.value}}</option>
+    </select>
+  </div>
+  <div class="col-9">
+    <app-schema-selector [name]="name + '_schema_' + row.code" [data]="row.schema" (dataChange)="row.schema = $event; changeValue()"></app-schema-selector>
+  </div>
+</div>
+<div class="row">
+  <div class="col-3">
+    <select [id]="name + '_newHttpCode'" [name]="name + '_newHttpCode'" [(ngModel)]="newCode" class="form-select">
+      <option *ngFor="let code of getNotUsedCodes()" [ngValue]="code.key">{{code.value}}</option>
+    </select>
+  </div>
+  <div class="col-9">
+    <button class="btn btn-outline-secondary" (click)="add(); changeValue()"><i class="bi bi-plus"></i></button>
+  </div>
+</div>

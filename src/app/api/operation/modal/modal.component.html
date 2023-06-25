@@ -125,14 +125,7 @@
     <div class="mb-3 row">
       <label for="action" class="col-sm-2 col-form-label fw-bold">Action</label>
       <div class="col-sm-10">
-        <div class="input-group">
-          <select id="action" name="action" [(ngModel)]="entity.action" [disabled]="isDisabled()" class="form-select">
-            <option value="">No action</option>
-            <option *ngFor="let action of actions" [ngValue]="action.name">{{action.name}}</option>
-          </select>
-          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="actionHelp"><i class="bi bi-question"></i></button>
-          <ng-template #actionHelp>The action to execute on invocation of this operation</ng-template>
-        </div>
+        <app-action-selector name="action" [data]="entity.action" (dataChange)="entity.action = $event"></app-action-selector>
       </div>
     </div>
     <div class="mb-3 row">

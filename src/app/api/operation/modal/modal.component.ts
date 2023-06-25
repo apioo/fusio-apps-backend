@@ -39,30 +39,6 @@ export class ModalComponent extends Modal<Client, Operation> {
     {key: 205, value: 'Reset Content'},
   ]
 
-  errorStatusCodes = [
-    {key: 400, value: 'Bad Request'},
-    {key: 402, value: 'Payment Required'},
-    {key: 403, value: 'Forbidden'},
-    {key: 404, value: 'Not Found'},
-    {key: 405, value: 'Method Not Allowed'},
-    {key: 408, value: 'Request Timeout'},
-    {key: 409, value: 'Conflict'},
-    {key: 410, value: 'Gone'},
-    {key: 412, value: 'Precondition Failed'},
-    {key: 417, value: 'Expectation Failed'},
-    {key: 422, value: 'Unprocessable Entity'},
-    {key: 423, value: 'Locked'},
-    {key: 424, value: 'Failed Dependency'},
-    {key: 429, value: 'Too Many Requests'},
-    {key: 500, value: 'Internal Server Error'},
-    {key: 501, value: 'Not Implemented'},
-    {key: 502, value: 'Bad Gateway'},
-    {key: 503, value: 'Service Unavailable'},
-    {key: 504, value: 'Gateway Timeout'},
-    {key: 507, value: 'Insufficient Storage'},
-    {key: 508, value: 'Loop Detected'},
-  ]
-
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
     await this.loadSchemas();
