@@ -63,7 +63,7 @@ export class ListComponent implements OnInit {
   async doFilter() {
     console.log('filter', this.filter);
     if (this.statistic === StatisticType.errors_per_operation) {
-      const response = await this.backend.getClient().statistic().getErrorsPerRoute(...this.filter);
+      const response = await this.backend.getClient().statistic().getErrorsPerOperation(...this.filter);
       this.chart = Converter.convertChart(response);
     } else if (this.statistic === StatisticType.incoming_requests) {
       const response = await this.backend.getClient().statistic().getIncomingRequests(...this.filter);
@@ -78,13 +78,13 @@ export class ListComponent implements OnInit {
       const response = await this.backend.getClient().statistic().getMostUsedApps(...this.filter);
       this.chart = Converter.convertChart(response);
     } else if (this.statistic === StatisticType.most_used_operations) {
-      const response = await this.backend.getClient().statistic().getMostUsedRoutes(...this.filter);
+      const response = await this.backend.getClient().statistic().getMostUsedOperations(...this.filter);
       this.chart = Converter.convertChart(response);
     } else if (this.statistic === StatisticType.time_average) {
       const response = await this.backend.getClient().statistic().getTimeAverage(...this.filter);
       this.chart = Converter.convertChart(response);
     } else if (this.statistic === StatisticType.time_per_operation) {
-      const response = await this.backend.getClient().statistic().getTimePerRoute(...this.filter);
+      const response = await this.backend.getClient().statistic().getTimePerOperation(...this.filter);
       this.chart = Converter.convertChart(response);
     } else if (this.statistic === StatisticType.used_points) {
       const response = await this.backend.getClient().statistic().getUsedPoints(...this.filter);

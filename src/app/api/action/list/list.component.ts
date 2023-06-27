@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {Action} from "fusio-sdk/dist/src/generated/backend/Action";
-import {AxiosResponse} from "axios";
 import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
 import {ModalComponent} from "../modal/modal.component";
 import {List} from "ngx-fusio-sdk";

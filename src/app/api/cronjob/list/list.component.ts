@@ -2,7 +2,6 @@ import {Component} from '@angular/core';
 import {List} from "ngx-fusio-sdk";
 import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
 import {Cronjob} from "fusio-sdk/dist/src/generated/backend/Cronjob";
-import {AxiosResponse} from "axios";
 import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
 import {ModalComponent} from "../modal/modal.component";
 

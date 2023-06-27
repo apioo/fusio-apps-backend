@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {Log} from "fusio-sdk/dist/src/generated/backend/Log";
-import {AxiosResponse} from "axios";
 import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
 import {FilterComponent} from "../filter/filter.component";
 import {List} from "ngx-fusio-sdk";

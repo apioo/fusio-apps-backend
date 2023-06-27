@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Schema} from "fusio-sdk/dist/src/generated/backend/Schema";
 import {Event} from "fusio-sdk/dist/src/generated/backend/Event";
-import {AxiosResponse} from "axios";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {Modal} from "ngx-fusio-sdk";
 import {Client} from "fusio-sdk/dist/src/generated/backend/Client";

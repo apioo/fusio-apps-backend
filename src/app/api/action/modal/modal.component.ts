@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {Action} from "fusio-sdk/dist/src/generated/backend/Action";
-import {AxiosResponse} from "axios";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {HelpComponent, Modal} from "ngx-fusio-sdk";
 import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
@@ -45,7 +44,6 @@ export class ModalComponent extends Modal<Client, Action> {
       name: '',
       class: '',
       async: false,
-      engine: 'Fusio\\Engine\\Factory\\Resolver\\PhpClass',
       config: {}
     };
   }

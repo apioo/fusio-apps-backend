@@ -4,7 +4,6 @@ import {User} from "fusio-sdk/dist/src/generated/backend/User";
 import {Plan} from "fusio-sdk/dist/src/generated/backend/Plan";
 import {App} from "fusio-sdk/dist/src/generated/backend/App";
 import {Rate} from "fusio-sdk/dist/src/generated/backend/Rate";
-import {AxiosResponse} from "axios";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {Modal} from "ngx-fusio-sdk";
 import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
