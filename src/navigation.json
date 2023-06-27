@@ -50,7 +50,7 @@
           "title": "Generator",
           "icon": "bi-cpu",
           "path": "/generator",
-          "scope": "backend.route"
+          "scope": "backend.generator"
         }
       ]
     },
