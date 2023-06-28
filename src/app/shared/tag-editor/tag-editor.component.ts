@@ -8,6 +8,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 export class TagEditorComponent implements OnInit {
 
   @Input() name: string = 'tag-editor';
+  @Input() disabled: boolean = false;
   @Input() data?: Array<string> = [];
   @Output() dataChange = new EventEmitter<Array<string>>();
 
