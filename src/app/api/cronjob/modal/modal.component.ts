@@ -12,13 +12,6 @@ import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
 })
 export class ModalComponent extends Modal<Client, Cronjob> {
 
-  actions?: Array<Action>;
-
-  override async ngOnInit(): Promise<void> {
-    const response = await this.fusio.getClient().action().getAll(0, 1024);
-    this.actions = response.entry;
-  }
-
   protected async create(entity: Cronjob): Promise<Message> {
     return this.fusio.getClient().cronjob().create(entity);
   }

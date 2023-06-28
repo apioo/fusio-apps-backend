@@ -13,9 +13,6 @@ import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
 })
 export class ModalComponent extends Modal<Client, Operation> {
 
-  schemas: Array<Schema> = []
-  actions: Array<Action> = []
-
   stabilities = [
     {key: 0, value: 'Deprecated'},
     {key: 1, value: 'Experimental'},
@@ -38,26 +35,6 @@ export class ModalComponent extends Modal<Client, Operation> {
     {key: 204, value: 'No Content'},
     {key: 205, value: 'Reset Content'},
   ]
-
-  override async ngOnInit(): Promise<void> {
-    super.ngOnInit();
-    await this.loadSchemas();
-    await this.loadActions();
-  }
-
-  private async loadSchemas() {
-    const response = await this.fusio.getClient().schema().getAll(0, 1024);
-    if (response.entry) {
-      this.schemas = response.entry;
-    }
-  }
-
-  private async loadActions() {
-    const response = await this.fusio.getClient().action().getAll(0, 1024);
-    if (response.entry) {
-      this.actions = response.entry;
-    }
-  }
 
   protected async create(entity: Operation): Promise<Message> {
     return this.fusio.getClient().operation().create(entity);

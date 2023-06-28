@@ -1,0 +1,18 @@
+
+<div class="input-group">
+  <input
+    type="text"
+    [id]="name + '_value'"
+    [name]="name + '_value'"
+    class="form-control"
+    [(ngModel)]="user"
+    [ngbTypeahead]="userSearch"
+    [inputFormatter]="userFormatter"
+    [resultFormatter]="userFormatter"
+    [editable]="false"
+    (ngModelChange)="changeValue()"
+    [disabled]="disabled"
+  />
+  <button class="btn btn-outline-secondary" type="button" [ngbPopover]="userHelp"><i class="bi bi-question"></i></button>
+  <ng-template #userHelp>Select a user by typing a name.</ng-template>
+</div>

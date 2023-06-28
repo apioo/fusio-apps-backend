@@ -33,14 +33,7 @@
     <div class="mb-3 row">
       <label for="schema" class="col-sm-2 col-form-label fw-bold">Schema</label>
       <div class="col-sm-10">
-        <div class="input-group">
-          <select id="schema" name="schema" [(ngModel)]="entity.schema" class="form-select">
-            <option>No schema</option>
-            <option *ngFor="let schema of schemas" [ngValue]="schema.name">{{schema.name}}</option>
-          </select>
-          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="schemaHelp"><i class="bi bi-question"></i></button>
-          <ng-template #schemaHelp>Optional a schema which describes the payload of the event</ng-template>
-        </div>
+        <app-schema-selector name="incoming" [data]="entity.schema" (dataChange)="entity.schema = $event"></app-schema-selector>
       </div>
     </div>
   </form>

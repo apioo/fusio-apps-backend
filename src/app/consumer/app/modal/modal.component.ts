@@ -23,13 +23,6 @@ export class ModalComponent extends Modal<Client, App> {
     value: 'Deactivated'
   }];
 
-  users?: Array<User>;
-
-  override async ngOnInit(): Promise<void> {
-    const response = await this.fusio.getClient().user().getAll(0, 1024);
-    this.users = response.entry;
-  }
-
   protected async create(entity: App): Promise<Message> {
     return this.fusio.getClient().app().create(entity);
   }

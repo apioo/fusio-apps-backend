@@ -25,13 +25,7 @@
     <div class="mb-3 row">
       <label for="user" class="col-sm-2 col-form-label fw-bold">User</label>
       <div class="col-sm-10">
-        <div class="input-group">
-          <select id="user" name="user" [(ngModel)]="entity.userId" class="form-select">
-            <option *ngFor="let user of users" [ngValue]="user.id">{{user.name}}</option>
-          </select>
-          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="userHelp"><i class="bi bi-question"></i></button>
-          <ng-template #userHelp>User assigned to the app</ng-template>
-        </div>
+        <app-user-selector name="user" [data]="entity.userId" (dataChange)="entity.userId = $event"></app-user-selector>
       </div>
     </div>
     <div class="mb-3 row">
