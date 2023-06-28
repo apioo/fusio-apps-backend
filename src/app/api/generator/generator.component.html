@@ -59,23 +59,42 @@
       <div class="card-header">Changelog</div>
       <div class="card-body" *ngIf="changelog">
         <table class="table">
+          <thead>
+          <tr>
+            <th>Operation</th>
+            <th>Method</th>
+            <th>Path</th>
+          </tr>
+          </thead>
           <tbody>
           <tr *ngFor="let operation of changelog.operations">
-            <th>{{operation.name}} - <code>{{operation.httpMethod}} {{operation.httpPath}}</code></th>
+            <td>{{operation.name}}</td>
+            <td><code>{{operation.httpMethod}}</code></td>
+            <td><code>{{operation.httpPath}}</code></td>
           </tr>
           </tbody>
         </table>
         <table class="table">
+          <thead>
+          <tr>
+            <th>Action</th>
+          </tr>
+          </thead>
           <tbody>
           <tr *ngFor="let action of changelog.actions">
-            <th>{{action.name}}</th>
+            <td>{{action.name}}</td>
           </tr>
           </tbody>
         </table>
         <table class="table">
+          <thead>
+          <tr>
+            <th>Schema</th>
+          </tr>
+          </thead>
           <tbody>
           <tr *ngFor="let schema of changelog.schemas">
-            <th>{{schema.name}}</th>
+            <td>{{schema.name}}</td>
           </tr>
           </tbody>
         </table>
