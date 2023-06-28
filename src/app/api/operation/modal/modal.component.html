@@ -101,31 +101,31 @@
     <div class="mb-3 row">
       <label for="parameters" class="col-sm-2 col-form-label fw-bold">Parameters</label>
       <div class="col-sm-10">
-        <app-operation-parameters [data]="entity.parameters" (dataChange)="entity.parameters = $event"></app-operation-parameters>
+        <app-operation-parameters [data]="entity.parameters" [disabled]="isDisabled()" (dataChange)="entity.parameters = $event"></app-operation-parameters>
       </div>
     </div>
     <div class="mb-3 row" *ngIf="entity.httpMethod !== 'GET' && entity.httpMethod !== 'DELETE'">
       <label for="incoming" class="col-sm-2 col-form-label fw-bold">Incoming</label>
       <div class="col-sm-10">
-        <app-schema-selector name="incoming" [data]="entity.incoming" (dataChange)="entity.incoming = $event"></app-schema-selector>
+        <app-schema-selector name="incoming" [data]="entity.incoming" [disabled]="isDisabled()" (dataChange)="entity.incoming = $event"></app-schema-selector>
       </div>
     </div>
     <div class="mb-3 row">
       <label for="outgoing" class="col-sm-2 col-form-label fw-bold">Outgoing</label>
       <div class="col-sm-10">
-        <app-schema-selector name="outgoing" [data]="entity.outgoing" (dataChange)="entity.outgoing = $event"></app-schema-selector>
+        <app-schema-selector name="outgoing" [data]="entity.outgoing" [disabled]="isDisabled()" (dataChange)="entity.outgoing = $event"></app-schema-selector>
       </div>
     </div>
     <div class="mb-3 row">
       <label class="col-sm-2 col-form-label fw-bold">Throws</label>
       <div class="col-sm-10">
-        <app-operation-throws [data]="entity.throws" (dataChange)="entity.throws = $event"></app-operation-throws>
+        <app-operation-throws [data]="entity.throws" [disabled]="isDisabled()" (dataChange)="entity.throws = $event"></app-operation-throws>
       </div>
     </div>
     <div class="mb-3 row">
       <label for="action" class="col-sm-2 col-form-label fw-bold">Action</label>
       <div class="col-sm-10">
-        <app-action-selector name="action" [data]="entity.action" (dataChange)="entity.action = $event"></app-action-selector>
+        <app-action-selector name="action" [data]="entity.action" [disabled]="isDisabled()" (dataChange)="entity.action = $event"></app-action-selector>
       </div>
     </div>
     <div class="mb-3 row">

@@ -22,6 +22,7 @@ import {Action} from "fusio-sdk/dist/src/generated/backend/Action";
 export class ActionSelectorComponent {
 
   @Input() name: string = 'action-selector';
+  @Input() disabled: boolean = false;
   @Input() data?: string = '';
   @Output() dataChange = new EventEmitter<string>();
 
@@ -93,10 +94,18 @@ export class ActionSelectorComponent {
   }
 
   changeScheme() {
+    if (this.disabled) {
+      return;
+    }
+
     this.dataChange.emit(this.scheme + '://' + this.value);
   }
 
   changeValue() {
+    if (this.disabled) {
+      return;
+    }
+
     if (this.scheme === 'action' && this.action?.name) {
       this.value = this.action?.name;
     }

@@ -9,6 +9,7 @@ import {OperationParameters} from "fusio-sdk/dist/src/generated/backend/Operatio
 export class OperationParametersComponent {
 
   @Input() name: string = 'operation-parameters';
+  @Input() disabled: boolean = false;
   @Input() data?: OperationParameters = {};
   @Output() dataChange = new EventEmitter<OperationParameters>();
 
@@ -40,7 +41,7 @@ export class OperationParametersComponent {
   }
 
   add() {
-    if (!this.newName || !this.newType) {
+    if (!this.newName || !this.newType || this.disabled) {
       return;
     }
 
@@ -56,12 +57,20 @@ export class OperationParametersComponent {
   }
 
   remove(name?: string) {
+    if (this.disabled) {
+      return;
+    }
+
     this.result = this.result.filter((row) => {
       return row.name !== name;
     });
   }
 
   changeValue() {
+    if (this.disabled) {
+      return;
+    }
+
     const result: OperationParameters = {};
     this.result.forEach((row) => {
       if (!row.name) {

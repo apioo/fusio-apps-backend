@@ -22,6 +22,7 @@ import {fromPromise} from "rxjs/internal/observable/innerFrom";
 export class SchemaSelectorComponent implements OnInit {
 
   @Input() name: string = 'schema-selector';
+  @Input() disabled: boolean = false;
   @Input() data?: string = '';
   @Output() dataChange = new EventEmitter<string>();
 
@@ -93,10 +94,18 @@ export class SchemaSelectorComponent implements OnInit {
   }
 
   changeScheme() {
+    if (this.disabled) {
+      return;
+    }
+
     this.dataChange.emit(this.scheme + '://' + this.value);
   }
 
   changeValue() {
+    if (this.disabled) {
+      return;
+    }
+
     if (this.scheme === 'schema' && this.schema?.name) {
       this.value = this.schema?.name;
     }

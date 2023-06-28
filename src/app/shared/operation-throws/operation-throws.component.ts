@@ -9,6 +9,7 @@ import {OperationThrows} from "fusio-sdk/dist/src/generated/backend/OperationThr
 export class OperationThrowsComponent implements OnInit {
 
   @Input() name: string = 'operation-throws';
+  @Input() disabled: boolean = false;
   @Input() data?: OperationThrows = {};
   @Output() dataChange = new EventEmitter<OperationThrows>();
 
@@ -54,7 +55,7 @@ export class OperationThrowsComponent implements OnInit {
   }
 
   add() {
-    if (!this.newCode) {
+    if (!this.newCode || this.disabled) {
       return;
     }
 
@@ -67,6 +68,10 @@ export class OperationThrowsComponent implements OnInit {
   }
 
   remove() {
+    if (this.disabled) {
+      return;
+    }
+
     this.result = this.result.filter((row) => {
       return row.code !== 0;
     });
@@ -82,6 +87,10 @@ export class OperationThrowsComponent implements OnInit {
   }
 
   changeValue() {
+    if (this.disabled) {
+      return;
+    }
+
     const result: OperationThrows = {};
     this.result.forEach((row) => {
       result[row.code] = row.schema;

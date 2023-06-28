@@ -1,7 +1,7 @@
 
 <div class="row">
   <div class="col-3">
-    <select [id]="name + '_scheme'" [name]="name + '_scheme'" [(ngModel)]="scheme" (ngModelChange)="changeScheme()" class="form-select">
+    <select [id]="name + '_scheme'" [name]="name + '_scheme'" [(ngModel)]="scheme" (ngModelChange)="changeScheme()" [disabled]="disabled" class="form-select">
       <option *ngFor="let scheme of schemes" [ngValue]="scheme.key">{{scheme.value}}</option>
     </select>
   </div>
@@ -20,27 +20,28 @@
             [resultFormatter]="actionFormatter"
             [editable]="false"
             (ngModelChange)="changeValue()"
+            [disabled]="disabled"
           />
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="actionHelp"><i class="bi bi-question"></i></button>
           <ng-template #actionHelp>Select a configured action which is executed on invocation of this operation. Type a name to select a fitting action. If you can not find a fitting action you can also create a new action at the action panel.</ng-template>
         </ng-container>
         <ng-container *ngSwitchCase="'class'">
-          <input type="text" [id]="name + '_value'" [name]="name + '_value'" [(ngModel)]="value" (ngModelChange)="changeValue()" class="form-control">
+          <input type="text" [id]="name + '_value'" [name]="name + '_value'" [(ngModel)]="value" (ngModelChange)="changeValue()" [disabled]="disabled" class="form-control">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="actionHelp"><i class="bi bi-question"></i></button>
           <ng-template #actionHelp>Enter a PHP class name i.e. <code>App\Action\MyAction</code> which is executed on invocation of this operation.</ng-template>
         </ng-container>
         <ng-container *ngSwitchCase="'http'">
-          <input type="text" [id]="name + '_value'" [name]="name + '_value'" [(ngModel)]="value" (ngModelChange)="changeValue()" class="form-control">
+          <input type="text" [id]="name + '_value'" [name]="name + '_value'" [(ngModel)]="value" (ngModelChange)="changeValue()" [disabled]="disabled" class="form-control">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="actionHelp"><i class="bi bi-question"></i></button>
           <ng-template #actionHelp>Proxies the incoming request to the provided remote url.</ng-template>
         </ng-container>
         <ng-container *ngSwitchCase="'https'">
-          <input type="text" [id]="name + '_value'" [name]="name + '_value'" [(ngModel)]="value" (ngModelChange)="changeValue()" class="form-control">
+          <input type="text" [id]="name + '_value'" [name]="name + '_value'" [(ngModel)]="value" (ngModelChange)="changeValue()" [disabled]="disabled" class="form-control">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="actionHelp"><i class="bi bi-question"></i></button>
           <ng-template #actionHelp>Proxies the incoming request to the provided remote url.</ng-template>
         </ng-container>
         <ng-container *ngSwitchCase="'file'">
-          <input type="text" [id]="name + '_value'" [name]="name + '_value'" [(ngModel)]="value" (ngModelChange)="changeValue()" class="form-control">
+          <input type="text" [id]="name + '_value'" [name]="name + '_value'" [(ngModel)]="value" (ngModelChange)="changeValue()" [disabled]="disabled" class="form-control">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="actionHelp"><i class="bi bi-question"></i></button>
           <ng-template #actionHelp>Returns the provided file as static response.</ng-template>
         </ng-container>
