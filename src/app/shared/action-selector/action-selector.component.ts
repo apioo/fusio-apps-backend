@@ -58,7 +58,7 @@ export class ActionSelectorComponent {
       distinctUntilChanged(),
       tap(() => (this.searching = true)),
       switchMap((term) =>
-        fromPromise(this.backend.getClient().action().getAll(0, 16)).pipe( // @TODO add term
+        fromPromise(this.backend.getClient().action().getAll(0, 16, term)).pipe( // @TODO add term
           map((response) => {
             return response.entry ? response.entry : [];
           }),

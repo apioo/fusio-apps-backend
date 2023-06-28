@@ -1,7 +1,24 @@
 
-<ng-container *ngIf="link">
-  <a [href]="link" class="schema-link">{{data}}</a>
-</ng-container>
-<ng-container *ngIf="!link">
-  <span class="schema-link">{{data}}</span>
+<ng-container [ngSwitch]="scheme">
+  <ng-container *ngSwitchCase="'schema'">
+    <a routerLink="/schema/~{{value}}">{{value}}</a>
+  </ng-container>
+  <ng-container *ngSwitchCase="'php+class'">
+    <span>{{value}}</span>
+  </ng-container>
+  <ng-container *ngSwitchCase="'file'">
+    <span>{{value}}</span>
+  </ng-container>
+  <ng-container *ngSwitchCase="'http'">
+    <a href="http://{{value}}">{{value}}</a>
+  </ng-container>
+  <ng-container *ngSwitchCase="'https'">
+    <a href="https://{{value}}">{{value}}</a>
+  </ng-container>
+  <ng-container *ngSwitchCase="'typehub'">
+    <span>{{value}}</span>
+  </ng-container>
+  <ng-container *ngSwitchDefault>
+    <span>{{data}}</span>
+  </ng-container>
 </ng-container>

@@ -32,17 +32,17 @@
         <ng-container *ngSwitchCase="'http'">
           <input type="text" [id]="name + '_value'" [name]="name + '_value'" [(ngModel)]="value" (ngModelChange)="changeValue()" class="form-control">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="actionHelp"><i class="bi bi-question"></i></button>
-          <ng-template #actionHelp>Calls the provided remote url on invocation of this operation.</ng-template>
+          <ng-template #actionHelp>Proxies the incoming request to the provided remote url.</ng-template>
         </ng-container>
         <ng-container *ngSwitchCase="'https'">
           <input type="text" [id]="name + '_value'" [name]="name + '_value'" [(ngModel)]="value" (ngModelChange)="changeValue()" class="form-control">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="actionHelp"><i class="bi bi-question"></i></button>
-          <ng-template #actionHelp>Calls the provided remote url on invocation of this operation.</ng-template>
+          <ng-template #actionHelp>Proxies the incoming request to the provided remote url.</ng-template>
         </ng-container>
         <ng-container *ngSwitchCase="'file'">
           <input type="text" [id]="name + '_value'" [name]="name + '_value'" [(ngModel)]="value" (ngModelChange)="changeValue()" class="form-control">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="actionHelp"><i class="bi bi-question"></i></button>
-          <ng-template #actionHelp>Returns the content of provided file on invocation of this operation.</ng-template>
+          <ng-template #actionHelp>Returns the provided file as static response.</ng-template>
         </ng-container>
       </ng-container>
     </div>
