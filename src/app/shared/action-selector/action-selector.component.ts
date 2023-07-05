@@ -30,7 +30,7 @@ export class ActionSelectorComponent {
     key: 'action',
     value: 'Action'
   }, {
-    key: 'class',
+    key: 'php+class',
     value: 'Class'
   }, {
     key: 'http',

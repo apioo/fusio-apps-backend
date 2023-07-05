@@ -25,10 +25,10 @@
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="actionHelp"><i class="bi bi-question"></i></button>
           <ng-template #actionHelp>Select a configured action which is executed on invocation of this operation. Type a name to select a fitting action. If you can not find a fitting action you can also create a new action at the action panel.</ng-template>
         </ng-container>
-        <ng-container *ngSwitchCase="'class'">
+        <ng-container *ngSwitchCase="'php+class'">
           <input type="text" [id]="name + '_value'" [name]="name + '_value'" [(ngModel)]="value" (ngModelChange)="changeValue()" [disabled]="disabled" class="form-control">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="actionHelp"><i class="bi bi-question"></i></button>
-          <ng-template #actionHelp>Enter a PHP class name i.e. <code>App\Action\MyAction</code> which is executed on invocation of this operation.</ng-template>
+          <ng-template #actionHelp>Loads a PHP class i.e. <code>App.Action.MyAction</code> which is executed on invocation of this operation.</ng-template>
         </ng-container>
         <ng-container *ngSwitchCase="'http'">
           <input type="text" [id]="name + '_value'" [name]="name + '_value'" [(ngModel)]="value" (ngModelChange)="changeValue()" [disabled]="disabled" class="form-control">

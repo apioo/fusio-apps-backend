@@ -30,6 +30,9 @@ export class SchemaSelectorComponent implements OnInit {
     key: 'schema',
     value: 'Schema'
   }, {
+    key: 'php+class',
+    value: 'Class'
+  }, {
     key: 'http',
     value: 'HTTP'
   }, {

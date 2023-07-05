@@ -25,6 +25,11 @@
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="schemeHelp"><i class="bi bi-question"></i></button>
           <ng-template #schemeHelp>Loads a schema from the internal schema store. Type a name to select a fitting schema. If you can not find a fitting schema you can also create a new schema at the schema panel.</ng-template>
         </ng-container>
+        <ng-container *ngSwitchCase="'php+class'">
+          <input type="text" [id]="name + '_value'" [name]="name + '_value'" [(ngModel)]="value" (ngModelChange)="changeValue()" [disabled]="disabled" class="form-control">
+          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="schemeHelp"><i class="bi bi-question"></i></button>
+          <ng-template #schemeHelp>Loads a schema from a PHP class i.e. <code>App.Model.MyModel</code>.</ng-template>
+        </ng-container>
         <ng-container *ngSwitchCase="'http'">
           <input type="text" [id]="name + '_value'" [name]="name + '_value'" [(ngModel)]="value" (ngModelChange)="changeValue()" [disabled]="disabled" class="form-control">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="schemeHelp"><i class="bi bi-question"></i></button>
