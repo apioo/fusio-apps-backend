@@ -4,7 +4,6 @@ import {HttpClientModule} from '@angular/common/http';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {NgbModule, NgbTypeaheadModule} from '@ng-bootstrap/ng-bootstrap';
-//import {NgChartsModule} from 'ng2-charts';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MonacoEditorModule} from 'ngx-monaco-editor-v2';
 import {ChangePasswordComponent} from './account/change-password/change-password.component';
