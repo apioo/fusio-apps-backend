@@ -6,7 +6,6 @@ import {AppComponent} from './app.component';
 import {NgbModule, NgbTypeaheadModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MonacoEditorModule} from 'ngx-monaco-editor-v2';
-import {ChangePasswordComponent} from './account/change-password/change-password.component';
 import {LoginComponent} from './login/login.component';
 import {LogoutComponent} from './logout/logout.component';
 import {NavigationComponent} from './navigation/navigation.component';
@@ -100,12 +99,12 @@ import { ActionSelectorComponent } from './shared/action-selector/action-selecto
 import { UserSelectorComponent } from './shared/user-selector/user-selector.component';
 import { SchemaLinkComponent } from './shared/schema-link/schema-link.component';
 import { ActionLinkComponent } from './shared/action-link/action-link.component';
+import { AccountComponent } from './account/account.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavigationComponent,
-    ChangePasswordComponent,
     LoginComponent,
     LogoutComponent,
     DashboardList,
@@ -193,6 +192,7 @@ import { ActionLinkComponent } from './shared/action-link/action-link.component'
     UserSelectorComponent,
     SchemaLinkComponent,
     ActionLinkComponent,
+    AccountComponent,
   ],
   imports: [
     BrowserModule,

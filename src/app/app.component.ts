@@ -12,8 +12,8 @@ export class AppComponent {
 
   user?: User;
   menu = [{
-    title: 'Change password',
-    path: '/account/change-password'
+    title: 'Account',
+    path: '/account'
   }, {
     title: 'Logout',
     path: '/logout'
