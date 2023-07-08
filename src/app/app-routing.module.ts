@@ -8,7 +8,6 @@ import {ListComponent as ActionList} from "./api/action/list/list.component";
 import {DesignerComponent as ActionDesigner} from "./api/action/designer/designer.component";
 import {ListComponent as SchemaList} from "./api/schema/list/list.component";
 import {DesignerComponent as SchemaDesigner} from "./api/schema/designer/designer.component";
-import {ImportComponent as SchemaImport} from "./api/schema/import/import.component";
 import {ListComponent as ConnectionList} from "./api/connection/list/list.component";
 import {IntrospectionComponent} from "./api/connection/introspection/introspection.component";
 import {ListComponent as EventList} from "./api/event/list/list.component";
@@ -52,7 +51,6 @@ const routes: Routes = [
   { path: 'schema', component: SchemaList, canActivate: [isAuthenticated] },
   { path: 'schema/designer', component: SchemaDesigner, canActivate: [isAuthenticated] },
   { path: 'schema/designer/:id', component: SchemaDesigner, canActivate: [isAuthenticated] },
-  { path: 'schema/import', component: SchemaImport, canActivate: [isAuthenticated] },
   { path: 'schema/:id', component: SchemaList, canActivate: [isAuthenticated] },
   { path: 'connection', component: ConnectionList, canActivate: [isAuthenticated] },
   { path: 'connection/:id', component: ConnectionList, canActivate: [isAuthenticated] },

@@ -22,7 +22,6 @@ import {ListComponent as SchemaList} from "./api/schema/list/list.component";
 import {DetailComponent as SchemaDetail} from "./api/schema/detail/detail.component";
 import {ModalComponent as SchemaModal} from "./api/schema/modal/modal.component";
 import {DesignerComponent as SchemaDesigner} from './api/schema/designer/designer.component';
-import {ImportComponent as SchemaImport} from './api/schema/import/import.component';
 import {ListComponent as ConnectionList} from "./api/connection/list/list.component";
 import {DetailComponent as ConnectionDetail} from "./api/connection/detail/detail.component";
 import {ModalComponent as ConnectionModal} from "./api/connection/modal/modal.component";
@@ -120,7 +119,6 @@ import { AccountComponent } from './account/account.component';
     SchemaDetail,
     SchemaModal,
     SchemaDesigner,
-    SchemaImport,
     ConnectionList,
     ConnectionDetail,
     ConnectionModal,
