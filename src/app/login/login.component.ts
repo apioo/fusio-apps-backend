@@ -4,6 +4,7 @@ import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import axios from "axios";
 import {BackendService, UserService} from "ngx-fusio-sdk";
 import {VersionService} from "../version.service";
+import {ClientException} from "sdkgen-client";
 
 @Component({
   selector: 'app-login',
@@ -43,7 +44,12 @@ export class LoginComponent implements OnInit {
       });
     } catch (error) {
       this.loading = false;
-      if (axios.isAxiosError(error) && error.response)  {
+      if (error instanceof ClientException) {
+        this.response = {
+          success: false,
+          message: 'Could not authenticate',
+        };
+      } else if (axios.isAxiosError(error) && error.response)  {
         this.response = {
           success: false,
           message: error.response.data.error_description || 'An unknown error occurred',
