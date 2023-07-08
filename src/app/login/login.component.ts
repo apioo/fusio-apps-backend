@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import packageJson from "../../../package.json";
 import {Router} from "@angular/router";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import axios from "axios";
 import {BackendService, UserService} from "ngx-fusio-sdk";
+import {VersionService} from "../version.service";
 
 @Component({
   selector: 'app-login',
@@ -12,7 +12,7 @@ import {BackendService, UserService} from "ngx-fusio-sdk";
 })
 export class LoginComponent implements OnInit {
 
-  version = packageJson.version;
+  currentVersion = '';
 
   credentials: Credentials = {
     username: '',
@@ -22,10 +22,11 @@ export class LoginComponent implements OnInit {
   response?: Message;
   loading = false
 
-  constructor(private backend: BackendService, private router: Router, private user: UserService) {
+  constructor(private backend: BackendService, private router: Router, private user: UserService, private version: VersionService) {
   }
 
   ngOnInit(): void {
+    this.currentVersion = this.version.get();
   }
 
   async login() {

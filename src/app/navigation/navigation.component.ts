@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import navigation from './../../navigation.json';
-import packageInfo from './../../../package.json';
-import {BackendService} from "ngx-fusio-sdk";
+import {GroupItem, NavigationService} from "../navigation.service";
+import {VersionService} from "../version.service";
 
 @Component({
   selector: 'app-navigation',
@@ -10,55 +9,21 @@ import {BackendService} from "ngx-fusio-sdk";
 })
 export class NavigationComponent implements OnInit {
 
-  version = packageInfo.version;
-  navigation: Array<GroupItem> = [];
+  currentVersion = '';
+  items: Array<GroupItem> = [];
 
-  constructor(private backend: BackendService) {
+  constructor(private navigation: NavigationService, private version: VersionService) {
   }
 
   ngOnInit(): void {
-    this.navigation = this.getNavigation();
+    this.currentVersion = this.version.get();
+    this.items = this.navigation.getAll();
   }
 
   changeNavHeading(item: GroupItem): void {
-    for (let i = 0; i < this.navigation.length; i++) {
-      this.navigation[i].visible = this.navigation[i].title === item.title
+    for (let i = 0; i < this.items.length; i++) {
+      this.items[i].visible = this.items[i].title === item.title
     }
   }
 
-  getNavigation() {
-    let result = [];
-    for (let i = 0; i < navigation.entries.length; i++) {
-      let children = [];
-      for (let j = 0; j < navigation.entries[i].children.length; j++) {
-        if (!this.backend.hasScope(navigation.entries[i].children[j].scope)) {
-          continue;
-        }
-
-        children.push(navigation.entries[i].children[j])
-      }
-
-      if (children.length > 0) {
-        let menu = navigation.entries[i];
-        menu.children = children;
-        result.push(menu);
-      }
-    }
-
-    return result;
-  }
-
-}
-
-interface GroupItem {
-  title: string
-  visible: boolean
-  children: Array<Item>
-}
-
-interface Item {
-  title: string
-  icon: string
-  path: string
-  scope: string
 }
