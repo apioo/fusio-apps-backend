@@ -12,7 +12,7 @@ import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
 export class ModalComponent extends Modal<Client, Category> {
 
   protected async create(entity: Category): Promise<Message> {
-    return this.fusio.getClient().category().insert(entity);
+    return this.fusio.getClient().category().create(entity);
   }
 
   protected async update(entity: Category): Promise<Message> {
