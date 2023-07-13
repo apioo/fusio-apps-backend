@@ -101,7 +101,7 @@
             </td>
             <td>
               <div class="form-check form-switch">
-                <input name="authenticated" type="checkbox" [(ngModel)]="allocation.authenticated" class="form-check-input">
+                <input [name]="'authenticated_' + key" type="checkbox" [(ngModel)]="allocation.authenticated" class="form-check-input">
               </div>
             </td>
             <td>
