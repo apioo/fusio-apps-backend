@@ -6,8 +6,8 @@ import {AppComponent} from './app.component';
 import {NgbModule, NgbTypeaheadModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MonacoEditorModule} from 'ngx-monaco-editor-v2';
-import {LoginComponent} from './login/login.component';
-import {LogoutComponent} from './logout/logout.component';
+import {NgxApexchartsModule} from "ngx-apexcharts";
+import {FusioSdkModule, FusioService as Sdk} from "ngx-fusio-sdk";
 import {NavigationComponent} from './navigation/navigation.component';
 import {ListComponent as DashboardList} from "./api/dashboard/list/list.component";
 import {ListComponent as OperationList} from "./api/operation/list/list.component";
@@ -71,6 +71,9 @@ import {ModalComponent as CategoryModal} from "./system/category/modal/modal.com
 import {ListComponent as RoleList} from "./system/role/list/list.component";
 import {DetailComponent as RoleDetail} from "./system/role/detail/detail.component";
 import {ModalComponent as RoleModal} from "./system/role/modal/modal.component";
+import {ListComponent as IdentityList} from './system/identity/list/list.component';
+import {ModalComponent as IdentityDetail} from './system/identity/modal/modal.component';
+import {DetailComponent as IdentityModal} from './system/identity/detail/detail.component';
 import {ListComponent as MarketplaceList} from "./system/marketplace/list/list.component";
 import {ListComponent as ConfigList} from "./system/config/list/list.component";
 import {DetailComponent as ConfigDetail} from "./system/config/detail/detail.component";
@@ -88,24 +91,21 @@ import {MapComponent} from './shared/map/map.component';
 import {CollectionComponent} from './shared/collection/collection.component';
 import {GeneratorComponent} from './api/generator/generator.component';
 import {FusioService} from "./fusio.service";
-import {FusioSdkModule, FusioService as Sdk} from "ngx-fusio-sdk";
 import {ConfigBuilder} from "./config-builder";
-import { OperationParametersComponent } from './shared/operation-parameters/operation-parameters.component';
-import { OperationThrowsComponent } from './shared/operation-throws/operation-throws.component';
-import { SchemaSelectorComponent } from './shared/schema-selector/schema-selector.component';
-import {NgxApexchartsModule} from "ngx-apexcharts";
-import { ActionSelectorComponent } from './shared/action-selector/action-selector.component';
-import { UserSelectorComponent } from './shared/user-selector/user-selector.component';
-import { SchemaLinkComponent } from './shared/schema-link/schema-link.component';
-import { ActionLinkComponent } from './shared/action-link/action-link.component';
-import { AccountComponent } from './account/account.component';
+import {AccountComponent} from './account/account.component';
+import {OperationParametersComponent} from './shared/operation-parameters/operation-parameters.component';
+import {OperationThrowsComponent} from './shared/operation-throws/operation-throws.component';
+import {SchemaSelectorComponent} from './shared/schema-selector/schema-selector.component';
+import {ActionSelectorComponent} from './shared/action-selector/action-selector.component';
+import {UserSelectorComponent} from './shared/user-selector/user-selector.component';
+import {SchemaLinkComponent} from './shared/schema-link/schema-link.component';
+import {ActionLinkComponent} from './shared/action-link/action-link.component';
+import {AppSelectorComponent} from './shared/app-selector/app-selector.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavigationComponent,
-    LoginComponent,
-    LogoutComponent,
     DashboardList,
     OperationList,
     OperationDetail,
@@ -169,6 +169,9 @@ import { AccountComponent } from './account/account.component';
     RoleList,
     RoleDetail,
     RoleModal,
+    IdentityList,
+    IdentityDetail,
+    IdentityModal,
     MarketplaceList,
     ConfigList,
     ConfigDetail,
@@ -191,6 +194,7 @@ import { AccountComponent } from './account/account.component';
     SchemaLinkComponent,
     ActionLinkComponent,
     AccountComponent,
+    AppSelectorComponent
   ],
   imports: [
     BrowserModule,

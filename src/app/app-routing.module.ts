@@ -1,7 +1,5 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {LoginComponent} from "./login/login.component";
-import {LogoutComponent} from "./logout/logout.component";
 import {ListComponent as DashboardList} from "./api/dashboard/list/list.component";
 import {ListComponent as OperationList} from "./api/operation/list/list.component";
 import {ListComponent as ActionList} from "./api/action/list/list.component";
@@ -28,17 +26,27 @@ import {ListComponent as PlanList} from "./monetization/plan/list/list.component
 import {ListComponent as TransactionList} from "./monetization/transaction/list/list.component";
 import {ListComponent as CategoryList} from "./system/category/list/list.component";
 import {ListComponent as RoleList} from "./system/role/list/list.component";
+import {ListComponent as IdentityList} from "./system/identity/list/list.component";
 import {ListComponent as MarketplaceList} from "./system/marketplace/list/list.component";
 import {ListComponent as ConfigList} from "./system/config/list/list.component";
 import {ListComponent as AuditList} from "./system/audit/list/list.component";
 import {ListComponent as TrashList} from "./system/trash/list/list.component";
-import {AccountRoute, isAuthenticated} from "ngx-fusio-sdk";
 import {AccountComponent} from "./account/account.component";
+import {
+  AccountRoute,
+  ConfirmComponent,
+  isAuthenticated, LoginComponent,
+  LogoutComponent, ProviderComponent,
+  ResetComponent
+} from "ngx-fusio-sdk";
 
 const routes: Routes = [
   { path: '', component: DashboardList, canActivate: [isAuthenticated] },
   { path: 'login', component: LoginComponent },
+  { path: 'login/:provider', component: ProviderComponent },
   { path: 'logout', component: LogoutComponent },
+  { path: 'password/reset', component: ResetComponent },
+  { path: 'password/confirm/:token', component: ConfirmComponent },
 
   { path: 'account', component: AccountComponent, canActivate: [isAuthenticated], children: AccountRoute.getAll()},
 
@@ -94,6 +102,8 @@ const routes: Routes = [
   { path: 'category/:id', component: CategoryList, canActivate: [isAuthenticated] },
   { path: 'role', component: RoleList, canActivate: [isAuthenticated] },
   { path: 'role/:id', component: RoleList, canActivate: [isAuthenticated] },
+  { path: 'identity', component: IdentityList, canActivate: [isAuthenticated] },
+  { path: 'identity/:id', component: IdentityList, canActivate: [isAuthenticated] },
   { path: 'marketplace', component: MarketplaceList, canActivate: [isAuthenticated] },
   { path: 'config', component: ConfigList, canActivate: [isAuthenticated] },
   { path: 'config/:id', component: ConfigList, canActivate: [isAuthenticated] },

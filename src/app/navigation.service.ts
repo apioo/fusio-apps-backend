@@ -202,6 +202,12 @@ export class NavigationService {
               "scope": "backend.role"
             },
             {
+              "title": "Identity",
+              "icon": "bi-file-person",
+              "path": "/identity",
+              "scope": "backend.identity"
+            },
+            {
               "title": "Marketplace",
               "icon": "bi-shop-window",
               "path": "/marketplace",

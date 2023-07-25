@@ -1,0 +1,36 @@
+
+<h1>Identity</h1>
+
+<fusio-message [response]="response"></fusio-message>
+
+<fusio-search
+  [searchTerm]="search"
+  (search)="doSearch(1, $event)"
+  (newClick)="openCreateDialog()"
+  placeholder="identity"
+  helpPath="system/identity/">
+</fusio-search>
+
+<div class="row">
+  <div class="col-lg-2 mb-3">
+    <fusio-sidebar
+      name="identity"
+      nameKey="name"
+      [entries]="entries"
+      [totalResults]="totalResults"
+      [selected]="selected"
+      [page]="page"
+      [pageSize]="pageSize"
+      (pageChange)="doSearch($event, search)"
+      (entrySelect)="doSelect($event)">
+    </fusio-sidebar>
+  </div>
+  <div class="col-lg-10 mb-3">
+    <fusio-empty *ngIf="!selected" [loading]="loading" (newClick)="openCreateDialog()"></fusio-empty>
+    <app-identity-detail *ngIf="selected"
+                     [selected]="selected"
+                     (updateClick)="openUpdateDialog(selected)"
+                     (deleteClick)="openDeleteDialog(selected)">
+    </app-identity-detail>
+  </div>
+</div>
