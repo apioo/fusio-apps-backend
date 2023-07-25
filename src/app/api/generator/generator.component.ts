@@ -27,7 +27,7 @@ export class GeneratorComponent implements OnInit {
   constructor(private backend: BackendService, private error: ErrorService) { }
 
   async ngOnInit(): Promise<void> {
-    const response = await this.backend.getClient().generator().getProviders();
+    const response = await this.backend.getClient().generator().getClasses();
     if (response.providers) {
       this.providers = response.providers;
     }
@@ -38,7 +38,7 @@ export class GeneratorComponent implements OnInit {
       return;
     }
 
-    this.form = await this.backend.getClient().generator().getProviderForm(this.selected);
+    this.form = await this.backend.getClient().generator().getForm(this.selected);
     this.provider.config = {};
   }
 
