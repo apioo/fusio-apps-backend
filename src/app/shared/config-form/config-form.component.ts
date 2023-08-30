@@ -19,6 +19,7 @@ export class ConfigFormComponent implements OnInit, OnChanges {
 
   spec: Specification = {
     imports: [],
+    operations: [],
     types: []
   };
 

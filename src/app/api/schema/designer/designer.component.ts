@@ -1,5 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {InternalToTypeSchemaService, Specification, TypeSchemaToInternalService} from "ngx-typeschema-editor";
+import {
+  ExportService,
+  Specification,
+  ImportService
+} from "ngx-typeschema-editor";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -16,13 +20,14 @@ export class DesignerComponent implements OnInit {
 
   spec: Specification = {
     imports: [],
+    operations: [],
     types: []
   };
 
   schema?: Schema;
   response?: Message;
 
-  constructor(private backend: BackendService, private internalToTypeSchemaService: InternalToTypeSchemaService, private typeSchemaToInternalService: TypeSchemaToInternalService, private route: ActivatedRoute, private router: Router, private error: ErrorService, protected modalService: NgbModal) { }
+  constructor(private backend: BackendService, private exportService: ExportService, private importService: ImportService, private route: ActivatedRoute, private router: Router, private error: ErrorService, protected modalService: NgbModal) { }
 
   async ngOnInit(): Promise<void> {
     this.route.paramMap.subscribe(params => {
@@ -34,7 +39,7 @@ export class DesignerComponent implements OnInit {
   }
 
   submit(spec: Specification) {
-    const typeSchema = this.internalToTypeSchemaService.transform(spec);
+    const typeSchema = this.exportService.transform(spec);
 
     const modalRef = this.modalService.open(ModalComponent, {
       size: 'lg'
@@ -67,7 +72,7 @@ export class DesignerComponent implements OnInit {
       const response = await this.backend.getClient().schema().get(id);
 
       this.schema = response;
-      this.spec = this.typeSchemaToInternalService.transform(this.schema.source);
+      this.spec = await this.importService.transform('typeschema', JSON.stringify(this.schema.source));
     } catch (error) {
       this.response = this.error.convert(error);
     }

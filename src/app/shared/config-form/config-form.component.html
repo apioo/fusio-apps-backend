@@ -29,7 +29,7 @@
       </ng-container>
       <ng-container *ngSwitchCase="'typeschema'">
         <div style="width:100%;min-height:500px;border:1px solid #ced4da">
-          <typeschema-editor [specification]="spec" (preview)="doChange(element.name, $event)" [importEnabled]="false"></typeschema-editor>
+          <typeschema-editor [specification]="spec" (change)="doChange(element.name, $event)" [importEnabled]="false"></typeschema-editor>
         </div>
       </ng-container>
     </ng-container>
