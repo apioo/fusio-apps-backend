@@ -3,8 +3,8 @@
 
 <nav class="fusio-tabs">
   <ul ngbNav [(activeId)]="active" class="nav-tabs">
-    <li [ngbNavItem]="item.id" *ngFor="let item of items">
-      <a ngbNavLink [routerLink]="item.link" class="nav-link">{{item.name}}</a>
+    <li [ngbNavItem]="item.title" *ngFor="let item of items">
+      <a ngbNavLink [routerLink]="item.path" class="nav-link">{{item.title}}</a>
     </li>
   </ul>
 </nav>
