@@ -12,8 +12,6 @@ import {BackendService, Detail} from "ngx-fusio-sdk";
 export class DetailComponent extends Detail<Operation> {
 
   public baseUrl: string = '';
-  public activeVersion: number = 1;
-  public activeMethod: string = 'GET';
 
   constructor(private backend: BackendService, protected modalService: NgbModal) {
     super();
