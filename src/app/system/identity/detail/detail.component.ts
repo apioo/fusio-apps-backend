@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {Detail} from "ngx-fusio-sdk";
+import {BackendService, Detail} from "ngx-fusio-sdk";
 import {Identity} from "fusio-sdk/dist/src/generated/backend/Identity";
 
 @Component({
@@ -8,5 +8,15 @@ import {Identity} from "fusio-sdk/dist/src/generated/backend/Identity";
   styleUrls: ['./detail.component.css']
 })
 export class DetailComponent extends Detail<Identity> {
+
+  public baseUrl: string = '';
+
+  constructor(private backend: BackendService) {
+    super();
+  }
+
+  override async ngOnInit(): Promise<void> {
+    this.baseUrl = this.backend.getBaseUrl();
+  }
 
 }
