@@ -29,7 +29,7 @@
     "monaco-editor": "^0.41.0",
     "ngx-apexcharts": "^0.3.2",
     "ngx-captcha": "^13.0.0",
-    "ngx-fusio-sdk": "^2.1.0",
+    "ngx-fusio-sdk": "^2.1.6",
     "ngx-gravatar": "^13.0.0",
     "ngx-monaco-editor-v2": "^16.0.1",
     "ngx-typeschema-editor": "^2.0.0",
