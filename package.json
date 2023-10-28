@@ -34,7 +34,7 @@
     "ngx-monaco-editor-v2": "^16.0.1",
     "ngx-typeschema-editor": "^2.0.0",
     "rxjs": "~7.8.0",
-    "sdkgen-client": "^1.0.0",
+    "sdkgen-client": "^1.0.4",
     "tslib": "^2.3.0",
     "typehub-javascript-sdk": "^1.1.0",
     "zone.js": "~0.13.0"
