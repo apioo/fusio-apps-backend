@@ -1,11 +1,11 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 
 @Component({
   selector: 'app-action-link',
   templateUrl: './action-link.component.html',
   styleUrls: ['./action-link.component.css']
 })
-export class ActionLinkComponent implements OnInit {
+export class ActionLinkComponent implements OnInit, OnChanges {
 
   @Input() data?: string = '';
 
@@ -13,6 +13,14 @@ export class ActionLinkComponent implements OnInit {
   value?: string = '';
 
   ngOnInit(): void {
+    this.parse();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.parse();
+  }
+
+  private parse() {
     const data = this.data;
     if (!data) {
       return;
@@ -26,5 +34,4 @@ export class ActionLinkComponent implements OnInit {
     this.scheme = data.substring(0, pos);
     this.value = data.substring(pos + 3);
   }
-
 }
