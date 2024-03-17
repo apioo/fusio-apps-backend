@@ -1,23 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-import {Category} from "fusio-sdk/dist/src/generated/backend/Category";
-import {Identity} from "fusio-sdk/dist/src/generated/backend/Identity";
-import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {Modal} from "ngx-fusio-sdk";
-import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
-import {Role} from "fusio-sdk/dist/src/generated/backend/Role";
-import {FormContainer} from "fusio-sdk/dist/src/generated/backend/FormContainer";
-import {ConnectionIndexEntry} from "fusio-sdk/dist/src/generated/backend/ConnectionIndexEntry";
+import {
+  BackendConnectionIndexEntry,
+  BackendIdentity,
+  BackendRole,
+  Client,
+  CommonFormContainer,
+  CommonMessage
+} from "fusio-sdk";
 
 @Component({
   selector: 'app-identity-modal',
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.css']
 })
-export class ModalComponent extends Modal<Client, Identity> {
+export class ModalComponent extends Modal<Client, BackendIdentity> {
 
-  roles?: Array<Role>;
-  providers?: Array<ConnectionIndexEntry>;
-  form?: FormContainer;
+  roles?: Array<BackendRole>;
+  providers?: Array<BackendConnectionIndexEntry>;
+  form?: CommonFormContainer;
   entityClass?: string;
 
   override async ngOnInit(): Promise<void> {
@@ -28,19 +29,19 @@ export class ModalComponent extends Modal<Client, Identity> {
     }
   }
 
-  protected async create(entity: Identity): Promise<Message> {
-    return this.fusio.getClient().identity().create(entity);
+  protected async create(entity: BackendIdentity): Promise<CommonMessage> {
+    return this.fusio.getClient().backend().identity().create(entity);
   }
 
-  protected async update(entity: Identity): Promise<Message> {
-    return this.fusio.getClient().identity().update('' + entity.id, entity);
+  protected async update(entity: BackendIdentity): Promise<CommonMessage> {
+    return this.fusio.getClient().backend().identity().update('' + entity.id, entity);
   }
 
-  protected async delete(entity: Identity): Promise<Message> {
-    return this.fusio.getClient().identity().delete('' + entity.id);
+  protected async delete(entity: BackendIdentity): Promise<CommonMessage> {
+    return this.fusio.getClient().backend().identity().delete('' + entity.id);
   }
 
-  protected newEntity(): Identity {
+  protected newEntity(): BackendIdentity {
     return {
       name: '',
       icon: '',
@@ -50,12 +51,12 @@ export class ModalComponent extends Modal<Client, Identity> {
   }
 
   async loadRoles() {
-    const response = await this.fusio.getClient().role().getAll(0, 1024);
+    const response = await this.fusio.getClient().backend().role().getAll(0, 1024);
     this.roles = response.entry;
   }
 
   async loadProviders() {
-    const response = await this.fusio.getClient().identity().getClasses();
+    const response = await this.fusio.getClient().backend().identity().getClasses();
     this.providers = response.providers;
   }
 
@@ -64,7 +65,7 @@ export class ModalComponent extends Modal<Client, Identity> {
       return;
     }
 
-    this.form = await this.fusio.getClient().identity().getForm(classString);
+    this.form = await this.fusio.getClient().backend().identity().getForm(classString);
 
     const hasChanged = this.entityClass && this.entityClass !== this.entity.class;
     this.entityClass = this.entity.class;

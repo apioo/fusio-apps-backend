@@ -1,8 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
-import {App} from "fusio-sdk/dist/src/generated/backend/App";
-import {User} from "fusio-sdk/dist/src/generated/backend/User";
-import {BackendService} from "ngx-fusio-sdk";
+import {ApiService} from "../../../api.service";
+import {BackendApp, BackendUser} from "fusio-sdk";
 
 @Component({
   selector: 'app-filter',
@@ -14,10 +13,10 @@ export class FilterComponent implements OnInit {
   @Input()
   filter!: any;
 
-  constructor(private backend: BackendService, public modal: NgbActiveModal) { }
+  constructor(private fusio: ApiService, public modal: NgbActiveModal) { }
 
-  apps?: Array<App>;
-  users?: Array<User>;
+  apps?: Array<BackendApp>;
+  users?: Array<BackendUser>;
 
   async ngOnInit(): Promise<void> {
     this.loadApps();
@@ -29,12 +28,12 @@ export class FilterComponent implements OnInit {
   }
 
   private async loadApps(): Promise<void> {
-    const response = await this.backend.getClient().app().getAll(0, 1024);
+    const response = await this.fusio.getClient().backend().app().getAll(0, 1024);
     this.apps = response.entry;
   }
 
   private async loadUsers(): Promise<void> {
-    const response = await this.backend.getClient().user().getAll(0, 1024);
+    const response = await this.fusio.getClient().backend().user().getAll(0, 1024);
     this.users = response.entry;
   }
 

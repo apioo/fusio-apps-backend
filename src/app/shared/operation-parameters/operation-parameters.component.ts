@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {OperationParameters} from "fusio-sdk/dist/src/generated/backend/OperationParameters";
+import {BackendOperationParameters} from "fusio-sdk";
 
 @Component({
   selector: 'app-operation-parameters',
@@ -10,8 +10,8 @@ export class OperationParametersComponent {
 
   @Input() name: string = 'operation-parameters';
   @Input() disabled: boolean = false;
-  @Input() data?: OperationParameters = {};
-  @Output() dataChange = new EventEmitter<OperationParameters>();
+  @Input() data?: BackendOperationParameters = {};
+  @Output() dataChange = new EventEmitter<BackendOperationParameters>();
 
   result: Array<{ name?: string, type?: string, format?: string, description?: string }> = [];
 
@@ -71,7 +71,7 @@ export class OperationParametersComponent {
       return;
     }
 
-    const result: OperationParameters = {};
+    const result: BackendOperationParameters = {};
     this.result.forEach((row) => {
       if (!row.name) {
         return;

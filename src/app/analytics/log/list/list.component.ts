@@ -1,25 +1,23 @@
 import {Component} from '@angular/core';
-import {Log} from "fusio-sdk/dist/src/generated/backend/Log";
-import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
 import {FilterComponent} from "../filter/filter.component";
 import {List} from "ngx-fusio-sdk";
-import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
+import {BackendLog, BackendLogCollection, Client} from "fusio-sdk";
 
 @Component({
   selector: 'app-log-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent extends List<Client, Log> {
+export class ListComponent extends List<Client, BackendLog> {
 
   filter: any = {};
 
-  protected async getAll(parameters: Array<any>): Promise<Collection<Log>> {
-    return this.fusio.getClient().log().getAll(...parameters);
+  protected async getAll(parameters: Array<any>): Promise<BackendLogCollection> {
+    return this.fusio.getClient().backend().log().getAll(...parameters);
   }
 
-  protected async get(id: string): Promise<Log> {
-    return this.fusio.getClient().log().get(id);
+  protected async get(id: string): Promise<BackendLog> {
+    return this.fusio.getClient().backend().log().get(id);
   }
 
   protected getDetailComponent(): any {

@@ -1,8 +1,6 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {Specification} from "ngx-typeschema-editor/lib/model/Specification";
-import {
-  FormContainer
-} from "fusio-sdk/dist/src/generated/backend/FormContainer";
+import {CommonFormContainer} from "fusio-sdk";
 
 @Component({
   selector: 'app-config-form',
@@ -11,7 +9,7 @@ import {
 })
 export class ConfigFormComponent implements OnInit, OnChanges {
 
-  @Input() container?: FormContainer;
+  @Input() container?: CommonFormContainer;
   @Input() data?: Record<string, any> = {};
   @Output() dataChange = new EventEmitter<Record<string, any>>();
 
@@ -44,7 +42,7 @@ export class ConfigFormComponent implements OnInit, OnChanges {
     this.dataChange.emit(this.data);
   }
 
-  private loadElements(container?: FormContainer): void {
+  private loadElements(container?: CommonFormContainer): void {
     this.elements = [];
 
     let data: Record<string, any> = {};

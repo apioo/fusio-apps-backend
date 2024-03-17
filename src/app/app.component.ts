@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import {User} from "fusio-sdk/dist/src/generated/backend/User";
 import {UserService} from "ngx-fusio-sdk";
+import {BackendUser} from "fusio-sdk";
 
 @Component({
   selector: 'app-root',
@@ -10,7 +10,7 @@ import {UserService} from "ngx-fusio-sdk";
 export class AppComponent {
   title = 'fusio';
 
-  user?: User;
+  user?: BackendUser;
   menu = [{
     title: 'Account',
     path: '/account'

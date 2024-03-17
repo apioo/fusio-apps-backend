@@ -1,30 +1,27 @@
 import {Component} from '@angular/core';
-import {Action} from "fusio-sdk/dist/src/generated/backend/Action";
-import {Cronjob} from "fusio-sdk/dist/src/generated/backend/Cronjob";
-import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {Modal} from "ngx-fusio-sdk";
-import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
+import {BackendCronjob, Client, CommonMessage} from "fusio-sdk";
 
 @Component({
   selector: 'app-cronjob-modal',
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.css']
 })
-export class ModalComponent extends Modal<Client, Cronjob> {
+export class ModalComponent extends Modal<Client, BackendCronjob> {
 
-  protected async create(entity: Cronjob): Promise<Message> {
-    return this.fusio.getClient().cronjob().create(entity);
+  protected async create(entity: BackendCronjob): Promise<CommonMessage> {
+    return this.fusio.getClient().backend().cronjob().create(entity);
   }
 
-  protected async update(entity: Cronjob): Promise<Message> {
-    return this.fusio.getClient().cronjob().update('' + entity.id, entity);
+  protected async update(entity: BackendCronjob): Promise<CommonMessage> {
+    return this.fusio.getClient().backend().cronjob().update('' + entity.id, entity);
   }
 
-  protected async delete(entity: Cronjob): Promise<Message> {
-    return this.fusio.getClient().cronjob().delete('' + entity.id);
+  protected async delete(entity: BackendCronjob): Promise<CommonMessage> {
+    return this.fusio.getClient().backend().cronjob().delete('' + entity.id);
   }
 
-  protected newEntity(): Cronjob {
+  protected newEntity(): BackendCronjob {
     return {
       name: '',
       cron: '',

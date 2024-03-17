@@ -1,10 +1,13 @@
 import {Component, OnInit} from '@angular/core';
-import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
-import {GeneratorProviderChangelog} from "fusio-sdk/dist/src/generated/backend/GeneratorProviderChangelog";
-import {FormContainer} from "fusio-sdk/dist/src/generated/backend/FormContainer";
-import {GeneratorProvider} from "fusio-sdk/dist/src/generated/backend/GeneratorProvider";
-import {GeneratorIndexProvider} from "fusio-sdk/dist/src/generated/backend/GeneratorIndexProvider";
-import {BackendService, ErrorService} from "ngx-fusio-sdk";
+import {ErrorService} from "ngx-fusio-sdk";
+import {
+  BackendGeneratorIndexProvider,
+  BackendGeneratorProvider,
+  BackendGeneratorProviderChangelog,
+  CommonFormContainer,
+  CommonMessage
+} from "fusio-sdk";
+import {ApiService} from "../../api.service";
 
 @Component({
   selector: 'app-generator',
@@ -13,21 +16,21 @@ import {BackendService, ErrorService} from "ngx-fusio-sdk";
 })
 export class GeneratorComponent implements OnInit {
 
-  providers?: Array<GeneratorIndexProvider>;
-  provider: GeneratorProvider = {
+  providers?: Array<BackendGeneratorIndexProvider>;
+  provider: BackendGeneratorProvider = {
     path: '',
     scopes: [],
     config: {},
   };
   selected?: string;
-  form?: FormContainer;
-  response?: Message;
-  changelog?: GeneratorProviderChangelog;
+  form?: CommonFormContainer;
+  response?: CommonMessage;
+  changelog?: BackendGeneratorProviderChangelog;
 
-  constructor(private backend: BackendService, private error: ErrorService) { }
+  constructor(private fusio: ApiService, private error: ErrorService) { }
 
   async ngOnInit(): Promise<void> {
-    const response = await this.backend.getClient().generator().getClasses();
+    const response = await this.fusio.getClient().backend().generator().getClasses();
     if (response.providers) {
       this.providers = response.providers;
     }
@@ -38,7 +41,7 @@ export class GeneratorComponent implements OnInit {
       return;
     }
 
-    this.form = await this.backend.getClient().generator().getForm(this.selected);
+    this.form = await this.fusio.getClient().backend().generator().getForm(this.selected);
     this.provider.config = {};
   }
 
@@ -48,7 +51,7 @@ export class GeneratorComponent implements OnInit {
     }
 
     try {
-      this.changelog = await this.backend.getClient().generator().getChangelog(this.selected, this.provider.config);
+      this.changelog = await this.fusio.getClient().backend().generator().getChangelog(this.selected, this.provider.config);
       this.response = undefined;
     } catch (error) {
       this.response = this.error.convert(error);
@@ -61,7 +64,7 @@ export class GeneratorComponent implements OnInit {
     }
 
     try {
-      this.response = await this.backend.getClient().generator().executeProvider(this.selected, this.provider);
+      this.response = await this.fusio.getClient().backend().generator().executeProvider(this.selected, this.provider);
     } catch (error) {
       this.response = this.error.convert(error);
     }

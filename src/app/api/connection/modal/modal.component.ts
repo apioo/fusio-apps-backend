@@ -1,25 +1,21 @@
 import {Component} from '@angular/core';
-import {Connection} from "fusio-sdk/dist/src/generated/backend/Connection";
-import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {HelpComponent, Modal} from "ngx-fusio-sdk";
-import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
-import {ConnectionIndexEntry} from "fusio-sdk/dist/src/generated/backend/ConnectionIndexEntry";
-import {FormContainer} from "fusio-sdk/dist/src/generated/backend/FormContainer";
+import {BackendConnection, BackendConnectionIndexEntry, Client, CommonFormContainer, CommonMessage} from "fusio-sdk";
 
 @Component({
   selector: 'app-connection-modal',
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.css']
 })
-export class ModalComponent extends Modal<Client, Connection> {
+export class ModalComponent extends Modal<Client, BackendConnection> {
 
-  connections?: Array<ConnectionIndexEntry>;
-  form?: FormContainer;
+  connections?: Array<BackendConnectionIndexEntry>;
+  form?: CommonFormContainer;
   entityClass?: string;
   custom: boolean = false;
 
   override async ngOnInit(): Promise<void> {
-    const response = await this.fusio.getClient().connection().getClasses();
+    const response = await this.fusio.getClient().backend().connection().getClasses();
     this.connections = response.connections;
 
     if (this.entity.class) {
@@ -27,19 +23,19 @@ export class ModalComponent extends Modal<Client, Connection> {
     }
   }
 
-  protected async create(entity: Connection): Promise<Message> {
-    return this.fusio.getClient().connection().create(entity);
+  protected async create(entity: BackendConnection): Promise<CommonMessage> {
+    return this.fusio.getClient().backend().connection().create(entity);
   }
 
-  protected async update(entity: Connection): Promise<Message> {
-    return this.fusio.getClient().connection().update('' + entity.id, entity);
+  protected async update(entity: BackendConnection): Promise<CommonMessage> {
+    return this.fusio.getClient().backend().connection().update('' + entity.id, entity);
   }
 
-  protected async delete(entity: Connection): Promise<Message> {
-    return this.fusio.getClient().connection().delete('' + entity.id);
+  protected async delete(entity: BackendConnection): Promise<CommonMessage> {
+    return this.fusio.getClient().backend().connection().delete('' + entity.id);
   }
 
-  protected newEntity(): Connection {
+  protected newEntity(): BackendConnection {
     return {
       name: '',
       class: '',
@@ -52,7 +48,7 @@ export class ModalComponent extends Modal<Client, Connection> {
       return;
     }
 
-    this.form = await this.fusio.getClient().connection().getForm(classString);
+    this.form = await this.fusio.getClient().backend().connection().getForm(classString);
 
     const hasChanged = this.entityClass && this.entityClass !== this.entity.class;
     this.entityClass = this.entity.class;

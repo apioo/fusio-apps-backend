@@ -1,10 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {ChartOptions, Converter} from "../../../analytics/statistic/converter";
-import {DashboardTransactions} from "fusio-sdk/dist/src/generated/backend/DashboardTransactions";
-import {DashboardUsers} from "fusio-sdk/dist/src/generated/backend/DashboardUsers";
-import {DashboardRequests} from "fusio-sdk/dist/src/generated/backend/DashboardRequests";
-import {DashboardApps} from "fusio-sdk/dist/src/generated/backend/DashboardApps";
-import {BackendService} from "ngx-fusio-sdk";
+import {
+  BackendDashboardApps,
+  BackendDashboardRequests,
+  BackendDashboardTransactions,
+  BackendDashboardUsers
+} from "fusio-sdk";
+import {ApiService} from "../../../api.service";
 
 @Component({
   selector: 'app-list',
@@ -18,16 +20,16 @@ export class ListComponent implements OnInit {
   incomingTransactions?: ChartOptions;
   mostUsedOperations?: ChartOptions;
   timePerOperation?: ChartOptions;
-  latestApps?: DashboardApps;
-  latestRequests?: DashboardRequests;
-  latestUsers?: DashboardUsers;
-  latestTransactions?: DashboardTransactions;
+  latestApps?: BackendDashboardApps;
+  latestRequests?: BackendDashboardRequests;
+  latestUsers?: BackendDashboardUsers;
+  latestTransactions?: BackendDashboardTransactions;
 
-  constructor(private backend: BackendService) {
+  constructor(private fusio: ApiService) {
   }
 
   async ngOnInit(): Promise<void> {
-    const response = await this.backend.getClient().dashboard().getAll();
+    const response = await this.fusio.getClient().backend().dashboard().getAll();
 
     if (response.errorsPerOperation) {
       this.errorsPerOperation = Converter.convertChart(response.errorsPerOperation, 10);

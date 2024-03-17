@@ -1,29 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-import {Category} from "fusio-sdk/dist/src/generated/backend/Category";
-import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {Modal} from "ngx-fusio-sdk";
-import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
+import {BackendCategory, Client, CommonMessage} from "fusio-sdk";
 
 @Component({
   selector: 'app-category-modal',
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.css']
 })
-export class ModalComponent extends Modal<Client, Category> {
+export class ModalComponent extends Modal<Client, BackendCategory> {
 
-  protected async create(entity: Category): Promise<Message> {
-    return this.fusio.getClient().category().create(entity);
+  protected async create(entity: BackendCategory): Promise<CommonMessage> {
+    return this.fusio.getClient().backend().category().create(entity);
   }
 
-  protected async update(entity: Category): Promise<Message> {
-    return this.fusio.getClient().category().update('' + entity.id, entity);
+  protected async update(entity: BackendCategory): Promise<CommonMessage> {
+    return this.fusio.getClient().backend().category().update('' + entity.id, entity);
   }
 
-  protected async delete(entity: Category): Promise<Message> {
-    return this.fusio.getClient().category().delete('' + entity.id);
+  protected async delete(entity: BackendCategory): Promise<CommonMessage> {
+    return this.fusio.getClient().backend().category().delete('' + entity.id);
   }
 
-  protected newEntity(): Category {
+  protected newEntity(): BackendCategory {
     return {
       name: '',
     };

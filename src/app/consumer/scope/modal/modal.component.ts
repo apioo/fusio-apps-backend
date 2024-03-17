@@ -1,26 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import {Operation} from "fusio-sdk/dist/src/generated/backend/Operation";
-import {Scope} from "fusio-sdk/dist/src/generated/backend/Scope";
-import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {Modal} from "ngx-fusio-sdk";
-import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
-import {ScopeOperation} from "fusio-sdk/dist/src/generated/backend/ScopeOperation";
+import {BackendOperation, BackendScope, BackendScopeOperation, Client, CommonMessage} from "fusio-sdk";
 
 @Component({
   selector: 'app-scope-modal',
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.css']
 })
-export class ModalComponent extends Modal<Client, Scope> {
+export class ModalComponent extends Modal<Client, BackendScope> {
 
-  operations: Array<Operation & ExtendOperation> = [];
+  operations: Array<BackendOperation & ExtendOperation> = [];
 
   override async ngOnInit(): Promise<void> {
-    const response = await this.fusio.getClient().operation().getAll(0, 1024);
+    const response = await this.fusio.getClient().backend().operation().getAll(0, 1024);
 
     this.operations = [];
     response.entry?.forEach((operation) => {
-      let extendOperation : Operation & ExtendOperation = operation;
+      let extendOperation : BackendOperation & ExtendOperation = operation;
 
       if (this.entity.operations) {
         extendOperation.allow = this.isOperationAllowed(this.entity.operations, operation);
@@ -32,38 +28,38 @@ export class ModalComponent extends Modal<Client, Scope> {
     });
   }
 
-  protected async create(entity: Scope): Promise<Message> {
+  protected async create(entity: BackendScope): Promise<CommonMessage> {
     entity.operations = this.getConfiguredScopes();
 
-    return this.fusio.getClient().scope().create(entity);
+    return this.fusio.getClient().backend().scope().create(entity);
   }
 
-  protected async update(entity: Scope): Promise<Message> {
+  protected async update(entity: BackendScope): Promise<CommonMessage> {
     entity.operations = this.getConfiguredScopes();
 
-    return this.fusio.getClient().scope().update('' + entity.id, entity);
+    return this.fusio.getClient().backend().scope().update('' + entity.id, entity);
   }
 
-  protected async delete(entity: Scope): Promise<Message> {
-    return this.fusio.getClient().scope().delete('' + entity.id);
+  protected async delete(entity: BackendScope): Promise<CommonMessage> {
+    return this.fusio.getClient().backend().scope().delete('' + entity.id);
   }
 
-  protected newEntity(): Scope {
+  protected newEntity(): BackendScope {
     return {
       name: ''
     };
   }
 
-  private isOperationAllowed(operations: Array<ScopeOperation>, targetRoute: Operation): boolean {
-    const operation: ScopeOperation|undefined = operations.find((scopeRoute) => {
+  private isOperationAllowed(operations: Array<BackendScopeOperation>, targetRoute: BackendOperation): boolean {
+    const operation: BackendScopeOperation|undefined = operations.find((scopeRoute) => {
       return targetRoute.id === scopeRoute.operationId;
     });
 
     return !(!operation || !operation.allow);
   }
 
-  private getConfiguredScopes(): Array<ScopeOperation> {
-    const operations: Array<ScopeOperation> = [];
+  private getConfiguredScopes(): Array<BackendScopeOperation> {
+    const operations: Array<BackendScopeOperation> = [];
     this.operations.forEach((operation) => {
       if (operation.allow) {
         operations.push({

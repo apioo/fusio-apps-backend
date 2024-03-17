@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
-import {MarketplaceCollectionApps} from "fusio-sdk/dist/src/generated/backend/MarketplaceCollectionApps";
-import {BackendService, ErrorService} from "ngx-fusio-sdk";
+import {ErrorService} from "ngx-fusio-sdk";
+import {ApiService} from "../../../api.service";
+import {BackendMarketplaceCollectionApps, CommonMessage} from "fusio-sdk";
 
 @Component({
   selector: 'app-list',
@@ -10,15 +10,15 @@ import {BackendService, ErrorService} from "ngx-fusio-sdk";
 })
 export class ListComponent implements OnInit {
 
-  constructor(private backend: BackendService, private error: ErrorService) { }
+  constructor(private fusio: ApiService, private error: ErrorService) { }
 
   working: boolean = false;
-  public apps?: MarketplaceCollectionApps;
-  public response?: Message;
+  public apps?: BackendMarketplaceCollectionApps;
+  public response?: CommonMessage;
 
   async ngOnInit(): Promise<void> {
     try {
-      const response = await this.backend.getClient().marketplace().getAll()
+      const response = await this.fusio.getClient().backend().marketplace().getAll()
 
       this.apps = response.apps;
     } catch (error) {
@@ -28,7 +28,7 @@ export class ListComponent implements OnInit {
 
   async install(appName: string) {
     try {
-      this.response = await this.backend.getClient().marketplace().install({
+      this.response = await this.fusio.getClient().backend().marketplace().install({
         name: appName
       });
     } catch (error) {
@@ -38,7 +38,7 @@ export class ListComponent implements OnInit {
 
   async update(appName: string) {
     try {
-      this.response = await this.backend.getClient().marketplace().update(appName);
+      this.response = await this.fusio.getClient().backend().marketplace().update(appName);
     } catch (error) {
       this.response = this.error.convert(error);
     }
@@ -46,7 +46,7 @@ export class ListComponent implements OnInit {
 
   async remove(appName: string) {
     try {
-      this.response = await this.backend.getClient().marketplace().remove(appName);
+      this.response = await this.fusio.getClient().backend().marketplace().remove(appName);
     } catch (error) {
       this.response = this.error.convert(error);
     }

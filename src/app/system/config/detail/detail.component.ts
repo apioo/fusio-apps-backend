@@ -1,12 +1,12 @@
 import {Component} from '@angular/core';
 import {Detail} from "ngx-fusio-sdk";
-import {Config} from "fusio-sdk/dist/src/generated/backend/Config";
+import {BackendConfig} from "fusio-sdk";
 
 @Component({
   selector: 'app-config-detail',
   templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.css']
 })
-export class DetailComponent extends Detail<Config> {
+export class DetailComponent extends Detail<BackendConfig> {
 
 }

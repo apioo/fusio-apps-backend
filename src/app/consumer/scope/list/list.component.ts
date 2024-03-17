@@ -1,23 +1,21 @@
 import {Component} from '@angular/core';
 import {List} from "ngx-fusio-sdk";
-import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
-import {Scope} from "fusio-sdk/dist/src/generated/backend/Scope";
-import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
 import {ModalComponent} from "../modal/modal.component";
+import {BackendScope, BackendScopeCollection, Client} from "fusio-sdk";
 
 @Component({
   selector: 'app-scope-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent extends List<Client, Scope> {
+export class ListComponent extends List<Client, BackendScope> {
 
-  protected async getAll(parameters: Array<any>): Promise<Collection<Scope>> {
-    return this.fusio.getClient().scope().getAll(...parameters);
+  protected async getAll(parameters: Array<any>): Promise<BackendScopeCollection> {
+    return this.fusio.getClient().backend().scope().getAll(...parameters);
   }
 
-  protected async get(id: string): Promise<Scope> {
-    return this.fusio.getClient().scope().get(id);
+  protected async get(id: string): Promise<BackendScope> {
+    return this.fusio.getClient().backend().scope().get(id);
   }
 
   protected getDetailComponent(): any {

@@ -1,9 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
-import {User} from "fusio-sdk/dist/src/generated/backend/User";
-import {App} from "fusio-sdk/dist/src/generated/backend/App";
-import {BackendService} from "ngx-fusio-sdk";
-import {Operation} from "fusio-sdk/dist/src/generated/backend/Operation";
+import {ApiService} from "../../../api.service";
+import {BackendApp, BackendOperation, BackendUser} from "fusio-sdk";
 
 @Component({
   selector: 'app-log-filter',
@@ -15,11 +13,11 @@ export class FilterComponent implements OnInit {
   @Input()
   filter!: Array<any>;
 
-  constructor(private backend: BackendService, public modal: NgbActiveModal) { }
+  constructor(private fusio: ApiService, public modal: NgbActiveModal) { }
 
-  operations?: Array<Operation>;
-  apps?: Array<App>;
-  users?: Array<User>;
+  operations?: Array<BackendOperation>;
+  apps?: Array<BackendApp>;
+  users?: Array<BackendUser>;
 
   async ngOnInit(): Promise<void> {
     this.loadOperations();
@@ -32,17 +30,17 @@ export class FilterComponent implements OnInit {
   }
 
   private async loadOperations(): Promise<void> {
-    const response = await this.backend.getClient().operation().getAll(0, 1024);
+    const response = await this.fusio.getClient().backend().operation().getAll(0, 1024);
     this.operations = response.entry;
   }
 
   private async loadApps(): Promise<void> {
-    const response = await this.backend.getClient().app().getAll(0, 1024);
+    const response = await this.fusio.getClient().backend().app().getAll(0, 1024);
     this.apps = response.entry;
   }
 
   private async loadUsers(): Promise<void> {
-    const response = await this.backend.getClient().user().getAll(0, 1024);
+    const response = await this.fusio.getClient().backend().user().getAll(0, 1024);
     this.users = response.entry;
   }
 

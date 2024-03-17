@@ -1,25 +1,23 @@
 import {Component} from '@angular/core';
 import {List} from "ngx-fusio-sdk";
-import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
-import {Audit} from "fusio-sdk/dist/src/generated/backend/Audit";
-import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
 import {FilterComponent} from "../filter/filter.component";
+import {BackendAudit, BackendAuditCollection, Client} from "fusio-sdk";
 
 @Component({
   selector: 'app-audit-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent extends List<Client, Audit> {
+export class ListComponent extends List<Client, BackendAudit> {
 
   filter: any = {};
 
-  protected async getAll(parameters: Array<any>): Promise<Collection<Audit>> {
-    return this.fusio.getClient().audit().getAll(...parameters);
+  protected async getAll(parameters: Array<any>): Promise<BackendAuditCollection> {
+    return this.fusio.getClient().backend().audit().getAll(...parameters);
   }
 
-  protected async get(id: string): Promise<Audit> {
-    return this.fusio.getClient().audit().get(id);
+  protected async get(id: string): Promise<BackendAudit> {
+    return this.fusio.getClient().backend().audit().get(id);
   }
 
   protected getDetailComponent(): any {

@@ -1,22 +1,23 @@
 import {Component} from '@angular/core';
-import {BackendService, Detail} from "ngx-fusio-sdk";
-import {Identity} from "fusio-sdk/dist/src/generated/backend/Identity";
+import {Detail} from "ngx-fusio-sdk";
+import {BackendIdentity} from "fusio-sdk";
+import {ApiService} from "../../../api.service";
 
 @Component({
   selector: 'app-identity-detail',
   templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.css']
 })
-export class DetailComponent extends Detail<Identity> {
+export class DetailComponent extends Detail<BackendIdentity> {
 
   public baseUrl: string = '';
 
-  constructor(private backend: BackendService) {
+  constructor(private fusio: ApiService) {
     super();
   }
 
   override async ngOnInit(): Promise<void> {
-    this.baseUrl = this.backend.getBaseUrl();
+    this.baseUrl = this.fusio.getBaseUrl();
   }
 
 }

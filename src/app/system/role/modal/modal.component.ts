@@ -1,37 +1,34 @@
 import { Component, OnInit } from '@angular/core';
-import {Category} from "fusio-sdk/dist/src/generated/backend/Category";
-import {Role} from "fusio-sdk/dist/src/generated/backend/Role";
-import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {Modal} from "ngx-fusio-sdk";
-import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
+import {BackendCategory, BackendRole, Client, CommonMessage} from "fusio-sdk";
 
 @Component({
   selector: 'app-role-modal',
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.css']
 })
-export class ModalComponent extends Modal<Client, Role> {
+export class ModalComponent extends Modal<Client, BackendRole> {
 
-  categories?: Array<Category>;
+  categories?: Array<BackendCategory>;
 
   override async ngOnInit(): Promise<void> {
-    const response = await this.fusio.getClient().category().getAll(0, 1024);
+    const response = await this.fusio.getClient().backend().category().getAll(0, 1024);
     this.categories = response.entry;
   }
 
-  protected async create(entity: Role): Promise<Message> {
-    return this.fusio.getClient().role().create(entity);
+  protected async create(entity: BackendRole): Promise<CommonMessage> {
+    return this.fusio.getClient().backend().role().create(entity);
   }
 
-  protected async update(entity: Role): Promise<Message> {
-    return this.fusio.getClient().role().update('' + entity.id, entity);
+  protected async update(entity: BackendRole): Promise<CommonMessage> {
+    return this.fusio.getClient().backend().role().update('' + entity.id, entity);
   }
 
-  protected async delete(entity: Role): Promise<Message> {
-    return this.fusio.getClient().role().delete('' + entity.id);
+  protected async delete(entity: BackendRole): Promise<CommonMessage> {
+    return this.fusio.getClient().backend().role().delete('' + entity.id);
   }
 
-  protected newEntity(): Role {
+  protected newEntity(): BackendRole {
     return {
       name: ''
     };

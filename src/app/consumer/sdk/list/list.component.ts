@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
-import {SdkTypes} from "fusio-sdk/dist/src/generated/backend/SdkTypes";
-import {BackendService, ErrorService} from "ngx-fusio-sdk";
+import {ErrorService} from "ngx-fusio-sdk";
+import {ApiService} from "../../../api.service";
+import {BackendSdkTypes, CommonMessage} from "fusio-sdk";
 
 @Component({
   selector: 'app-list',
@@ -10,14 +10,14 @@ import {BackendService, ErrorService} from "ngx-fusio-sdk";
 })
 export class ListComponent implements OnInit {
 
-  constructor(private backend: BackendService, private error: ErrorService) { }
+  constructor(private fusio: ApiService, private error: ErrorService) { }
 
-  public types?: SdkTypes;
-  public response?: Message;
+  public types?: BackendSdkTypes;
+  public response?: CommonMessage;
 
   async ngOnInit(): Promise<void> {
     try {
-      const response = await this.backend.getClient().sdk().getAll();
+      const response = await this.fusio.getClient().backend().sdk().getAll();
 
       this.types = response.types;
     } catch (error) {
@@ -27,7 +27,7 @@ export class ListComponent implements OnInit {
 
   async generate(type: string) {
     try {
-      const response = await this.backend.getClient().sdk().generate({
+      const response = await this.fusio.getClient().backend().sdk().generate({
         format: type
       });
 

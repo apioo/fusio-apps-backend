@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {OperationThrows} from "fusio-sdk/dist/src/generated/backend/OperationThrows";
+import {BackendOperationThrows} from "fusio-sdk";
 
 @Component({
   selector: 'app-operation-throws',
@@ -10,8 +10,8 @@ export class OperationThrowsComponent implements OnInit {
 
   @Input() name: string = 'operation-throws';
   @Input() disabled: boolean = false;
-  @Input() data?: OperationThrows = {};
-  @Output() dataChange = new EventEmitter<OperationThrows>();
+  @Input() data?: BackendOperationThrows = {};
+  @Output() dataChange = new EventEmitter<BackendOperationThrows>();
 
   result: Array<{ code: number, schema: string }> = [];
 
@@ -91,7 +91,7 @@ export class OperationThrowsComponent implements OnInit {
       return;
     }
 
-    const result: OperationThrows = {};
+    const result: BackendOperationThrows = {};
     this.result.forEach((row) => {
       result[row.code] = row.schema;
     });

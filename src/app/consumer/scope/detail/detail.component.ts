@@ -1,12 +1,12 @@
 import {Component} from '@angular/core';
 import {Detail} from "ngx-fusio-sdk";
-import {Scope} from "fusio-sdk/dist/src/generated/backend/Scope";
+import {BackendScope} from "fusio-sdk";
 
 @Component({
   selector: 'app-scope-detail',
   templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.css']
 })
-export class DetailComponent extends Detail<Scope> {
+export class DetailComponent extends Detail<BackendScope> {
 
 }

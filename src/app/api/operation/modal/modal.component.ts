@@ -1,17 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {Schema} from "fusio-sdk/dist/src/generated/backend/Schema";
-import {Action} from "fusio-sdk/dist/src/generated/backend/Action";
-import {Operation} from "fusio-sdk/dist/src/generated/backend/Operation";
-import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {Modal} from "ngx-fusio-sdk";
-import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
+import {BackendOperation, Client, CommonMessage} from "fusio-sdk";
 
 @Component({
   selector: 'app-operation-modal',
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.css']
 })
-export class ModalComponent extends Modal<Client, Operation> {
+export class ModalComponent extends Modal<Client, BackendOperation> {
 
   stabilities = [
     {key: 0, value: 'Deprecated'},
@@ -36,19 +32,19 @@ export class ModalComponent extends Modal<Client, Operation> {
     {key: 205, value: 'Reset Content'},
   ]
 
-  protected async create(entity: Operation): Promise<Message> {
-    return this.fusio.getClient().operation().create(entity);
+  protected async create(entity: BackendOperation): Promise<CommonMessage> {
+    return this.fusio.getClient().backend().operation().create(entity);
   }
 
-  protected async update(entity: Operation): Promise<Message> {
-    return this.fusio.getClient().operation().update('' + entity.id, entity);
+  protected async update(entity: BackendOperation): Promise<CommonMessage> {
+    return this.fusio.getClient().backend().operation().update('' + entity.id, entity);
   }
 
-  protected async delete(entity: Operation): Promise<Message> {
-    return this.fusio.getClient().operation().delete('' + entity.id);
+  protected async delete(entity: BackendOperation): Promise<CommonMessage> {
+    return this.fusio.getClient().backend().operation().delete('' + entity.id);
   }
 
-  protected newEntity(): Operation {
+  protected newEntity(): BackendOperation {
     return {
       name: '',
       active: true,

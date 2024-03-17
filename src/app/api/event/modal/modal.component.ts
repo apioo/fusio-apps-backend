@@ -1,29 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-import {Event} from "fusio-sdk/dist/src/generated/backend/Event";
-import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {Modal} from "ngx-fusio-sdk";
-import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
+import {BackendEvent, Client, CommonMessage} from "fusio-sdk";
 
 @Component({
   selector: 'app-event-modal',
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.css']
 })
-export class ModalComponent extends Modal<Client, Event> {
+export class ModalComponent extends Modal<Client, BackendEvent> {
 
-  protected async create(entity: Event): Promise<Message> {
-    return this.fusio.getClient().event().create(entity);
+  protected async create(entity: BackendEvent): Promise<CommonMessage> {
+    return this.fusio.getClient().backend().event().create(entity);
   }
 
-  protected async update(entity: Event): Promise<Message> {
-    return this.fusio.getClient().event().update('' + entity.id, entity);
+  protected async update(entity: BackendEvent): Promise<CommonMessage> {
+    return this.fusio.getClient().backend().event().update('' + entity.id, entity);
   }
 
-  protected async delete(entity: Event): Promise<Message> {
-    return this.fusio.getClient().event().delete('' + entity.id);
+  protected async delete(entity: BackendEvent): Promise<CommonMessage> {
+    return this.fusio.getClient().backend().event().delete('' + entity.id);
   }
 
-  protected newEntity(): Event {
+  protected newEntity(): BackendEvent {
     return {
       name: '',
       description: ''

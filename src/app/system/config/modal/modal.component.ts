@@ -1,27 +1,25 @@
 import {Component} from '@angular/core';
-import {Config} from "fusio-sdk/dist/src/generated/backend/Config";
-import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {Modal} from "ngx-fusio-sdk";
-import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
+import {BackendConfig, Client, CommonMessage} from "fusio-sdk";
 
 @Component({
   selector: 'app-modal',
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.css']
 })
-export class ModalComponent extends Modal<Client, Config> {
+export class ModalComponent extends Modal<Client, BackendConfig> {
 
-  protected async create(entity: Config): Promise<void> {
+  protected async create(entity: BackendConfig): Promise<void> {
   }
 
-  protected async update(entity: Config): Promise<Message> {
-    return this.fusio.getClient().config().update('' + entity.id, entity);
+  protected async update(entity: BackendConfig): Promise<CommonMessage> {
+    return this.fusio.getClient().backend().config().update('' + entity.id, entity);
   }
 
-  protected async delete(entity: Config): Promise<void> {
+  protected async delete(entity: BackendConfig): Promise<void> {
   }
 
-  protected newEntity(): Config {
+  protected newEntity(): BackendConfig {
     return {
       name: '',
     };

@@ -1,12 +1,12 @@
 import {Component} from '@angular/core';
 import {Detail} from "ngx-fusio-sdk";
-import {Category} from "fusio-sdk/dist/src/generated/backend/Category";
+import {BackendCategory} from "fusio-sdk";
 
 @Component({
   selector: 'app-category-detail',
   templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.css']
 })
-export class DetailComponent extends Detail<Category> {
+export class DetailComponent extends Detail<BackendCategory> {
 
 }

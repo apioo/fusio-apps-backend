@@ -3,7 +3,8 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {ChartOptions, Converter} from "../converter";
 import {FilterComponent} from "../../log/filter/filter.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {BackendService, HelpService} from "ngx-fusio-sdk";
+import {HelpService} from "ngx-fusio-sdk";
+import {ApiService} from "../../../api.service";
 
 @Component({
   selector: 'app-list',
@@ -46,7 +47,7 @@ export class ListComponent implements OnInit {
     value: StatisticType.used_points
   }];
 
-  constructor(private backend: BackendService, private help: HelpService, private route: ActivatedRoute, private router: Router, private modalService: NgbModal) { }
+  constructor(private fusio: ApiService, private help: HelpService, private route: ActivatedRoute, private router: Router, private modalService: NgbModal) { }
 
   async ngOnInit(): Promise<void> {
     this.route.paramMap.subscribe(params => {
@@ -63,31 +64,31 @@ export class ListComponent implements OnInit {
   async doFilter() {
     console.log('filter', this.filter);
     if (this.statistic === StatisticType.errors_per_operation) {
-      const response = await this.backend.getClient().statistic().getErrorsPerOperation(...this.filter);
+      const response = await this.fusio.getClient().backend().statistic().getErrorsPerOperation(...this.filter);
       this.chart = Converter.convertChart(response);
     } else if (this.statistic === StatisticType.incoming_requests) {
-      const response = await this.backend.getClient().statistic().getIncomingRequests(...this.filter);
+      const response = await this.fusio.getClient().backend().statistic().getIncomingRequests(...this.filter);
       this.chart = Converter.convertChart(response);
     } else if (this.statistic === StatisticType.incoming_transactions) {
-      const response = await this.backend.getClient().statistic().getIncomingTransactions(...this.filter);
+      const response = await this.fusio.getClient().backend().statistic().getIncomingTransactions(...this.filter);
       this.chart = Converter.convertChart(response);
     } else if (this.statistic === StatisticType.issued_tokens) {
-      const response = await this.backend.getClient().statistic().getIssuedTokens(...this.filter);
+      const response = await this.fusio.getClient().backend().statistic().getIssuedTokens(...this.filter);
       this.chart = Converter.convertChart(response);
     } else if (this.statistic === StatisticType.most_used_apps) {
-      const response = await this.backend.getClient().statistic().getMostUsedApps(...this.filter);
+      const response = await this.fusio.getClient().backend().statistic().getMostUsedApps(...this.filter);
       this.chart = Converter.convertChart(response);
     } else if (this.statistic === StatisticType.most_used_operations) {
-      const response = await this.backend.getClient().statistic().getMostUsedOperations(...this.filter);
+      const response = await this.fusio.getClient().backend().statistic().getMostUsedOperations(...this.filter);
       this.chart = Converter.convertChart(response);
     } else if (this.statistic === StatisticType.time_average) {
-      const response = await this.backend.getClient().statistic().getTimeAverage(...this.filter);
+      const response = await this.fusio.getClient().backend().statistic().getTimeAverage(...this.filter);
       this.chart = Converter.convertChart(response);
     } else if (this.statistic === StatisticType.time_per_operation) {
-      const response = await this.backend.getClient().statistic().getTimePerOperation(...this.filter);
+      const response = await this.fusio.getClient().backend().statistic().getTimePerOperation(...this.filter);
       this.chart = Converter.convertChart(response);
     } else if (this.statistic === StatisticType.used_points) {
-      const response = await this.backend.getClient().statistic().getUsedPoints(...this.filter);
+      const response = await this.fusio.getClient().backend().statistic().getUsedPoints(...this.filter);
       this.chart = Converter.convertChart(response);
     }
   }

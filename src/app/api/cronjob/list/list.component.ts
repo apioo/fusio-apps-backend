@@ -1,23 +1,21 @@
 import {Component} from '@angular/core';
 import {List} from "ngx-fusio-sdk";
-import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
-import {Cronjob} from "fusio-sdk/dist/src/generated/backend/Cronjob";
-import {Collection} from "fusio-sdk/dist/src/generated/backend/Collection";
 import {ModalComponent} from "../modal/modal.component";
+import {BackendCronjob, BackendCronjobCollection, Client} from "fusio-sdk";
 
 @Component({
   selector: 'app-cronjob-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent extends List<Client, Cronjob> {
+export class ListComponent extends List<Client, BackendCronjob> {
 
-  protected async getAll(parameters: Array<any>): Promise<Collection<Cronjob>> {
-    return this.fusio.getClient().cronjob().getAll(...parameters);
+  protected async getAll(parameters: Array<any>): Promise<BackendCronjobCollection> {
+    return this.fusio.getClient().backend().cronjob().getAll(...parameters);
   }
 
-  protected async get(id: string): Promise<Cronjob> {
-    return this.fusio.getClient().cronjob().get(id);
+  protected async get(id: string): Promise<BackendCronjob> {
+    return this.fusio.getClient().backend().cronjob().get(id);
   }
 
   protected getDetailComponent(): any {

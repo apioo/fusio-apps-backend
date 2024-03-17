@@ -11,8 +11,8 @@ import {
   tap
 } from "rxjs";
 import {fromPromise} from "rxjs/internal/observable/innerFrom";
-import {BackendService} from "ngx-fusio-sdk";
-import {App} from "fusio-sdk/dist/src/generated/backend/App";
+import {BackendApp} from "fusio-sdk";
+import {ApiService} from "../../api.service";
 
 @Component({
   selector: 'app-app-selector',
@@ -29,17 +29,17 @@ export class AppSelectorComponent {
   searching = false;
   searchFailed = false;
 
-  app?: App
+  app?: BackendApp
   type?: any
 
-  appFormatter = (app: App) => app.name ? app.name : '-';
-  appSearch: OperatorFunction<string, Array<App>> = (text$: Observable<string>) =>
+  appFormatter = (app: BackendApp) => app.name ? app.name : '-';
+  appSearch: OperatorFunction<string, Array<BackendApp>> = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
       tap(() => (this.searching = true)),
       switchMap((term) =>
-        fromPromise(this.backend.getClient().app().getAll(0, 16, term)).pipe(
+        fromPromise(this.fusio.getClient().backend().app().getAll(0, 16, term)).pipe(
           map((response) => {
             return response.entry ? response.entry : [];
           }),
@@ -53,12 +53,12 @@ export class AppSelectorComponent {
       tap(() => (this.searching = false)),
     );
 
-  constructor(private backend: BackendService) {
+  constructor(private fusio: ApiService) {
   }
 
   async ngOnInit(): Promise<void> {
     if (this.data) {
-      this.app = await this.backend.getClient().app().get('' + this.data);
+      this.app = await this.fusio.getClient().backend().app().get('' + this.data);
     }
   }
 

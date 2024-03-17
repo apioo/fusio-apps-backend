@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import {FusioService as Sdk} from "ngx-fusio-sdk";
-import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
 import {CredentialsInterface} from "sdkgen-client";
+import {ApiService as Sdk} from "ngx-fusio-sdk";
+import {Client} from "fusio-sdk";
 
 @Injectable({
   providedIn: 'root'
 })
-export class FusioService extends Sdk<Client> {
+export class ApiService extends Sdk<Client> {
 
   protected newClient(baseUrl: string, credentials: CredentialsInterface | null | undefined): Client {
     return new Client(baseUrl, credentials);

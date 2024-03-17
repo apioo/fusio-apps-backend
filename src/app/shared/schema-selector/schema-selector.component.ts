@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Schema} from "fusio-sdk/dist/src/generated/backend/Schema";
 import {
   catchError,
   debounceTime,
@@ -11,8 +10,9 @@ import {
   switchMap,
   tap
 } from "rxjs";
-import {BackendService} from "ngx-fusio-sdk";
 import {fromPromise} from "rxjs/internal/observable/innerFrom";
+import {BackendSchema} from "fusio-sdk";
+import {ApiService} from "../../api.service";
 
 @Component({
   selector: 'app-schema-selector',
@@ -52,17 +52,17 @@ export class SchemaSelectorComponent implements OnInit {
   searching = false;
   searchFailed = false;
 
-  schema?: Schema
+  schema?: BackendSchema
   type?: any
 
-  schemaFormatter = (schema: Schema) => schema.name ? schema.name : '-';
-  schemaSearch: OperatorFunction<string, Array<Schema>> = (text$: Observable<string>) =>
+  schemaFormatter = (schema: BackendSchema) => schema.name ? schema.name : '-';
+  schemaSearch: OperatorFunction<string, Array<BackendSchema>> = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
       tap(() => (this.searching = true)),
       switchMap((term) =>
-        fromPromise(this.backend.getClient().schema().getAll(0, 16, term)).pipe(
+        fromPromise(this.fusio.getClient().backend().schema().getAll(0, 16, term)).pipe(
           map((response) => {
             return response.entry ? response.entry : [];
           }),
@@ -76,7 +76,7 @@ export class SchemaSelectorComponent implements OnInit {
       tap(() => (this.searching = false)),
     );
 
-  constructor(private backend: BackendService) {
+  constructor(private fusio: ApiService) {
   }
 
   async ngOnInit(): Promise<void> {
@@ -87,7 +87,7 @@ export class SchemaSelectorComponent implements OnInit {
         this.value = this.data.substring(pos + 3);
 
         if (this.scheme === 'schema') {
-          this.schema = await this.backend.getClient().schema().get('~' + this.value);
+          this.schema = await this.fusio.getClient().backend().schema().get('~' + this.value);
         }
       }
     }

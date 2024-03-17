@@ -11,8 +11,8 @@ import {
   tap
 } from "rxjs";
 import {fromPromise} from "rxjs/internal/observable/innerFrom";
-import {BackendService} from "ngx-fusio-sdk";
-import {User} from "fusio-sdk/dist/src/generated/backend/User";
+import {BackendUser} from "fusio-sdk";
+import {ApiService} from "../../api.service";
 
 @Component({
   selector: 'app-user-selector',
@@ -29,17 +29,17 @@ export class UserSelectorComponent {
   searching = false;
   searchFailed = false;
 
-  user?: User
+  user?: BackendUser
   type?: any
 
-  userFormatter = (user: User) => user.name ? user.name : '-';
-  userSearch: OperatorFunction<string, Array<User>> = (text$: Observable<string>) =>
+  userFormatter = (user: BackendUser) => user.name ? user.name : '-';
+  userSearch: OperatorFunction<string, Array<BackendUser>> = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
       tap(() => (this.searching = true)),
       switchMap((term) =>
-        fromPromise(this.backend.getClient().user().getAll(0, 16, term)).pipe(
+        fromPromise(this.fusio.getClient().backend().user().getAll(0, 16, term)).pipe(
           map((response) => {
             return response.entry ? response.entry : [];
           }),
@@ -53,12 +53,12 @@ export class UserSelectorComponent {
       tap(() => (this.searching = false)),
     );
 
-  constructor(private backend: BackendService) {
+  constructor(private fusio: ApiService) {
   }
 
   async ngOnInit(): Promise<void> {
     if (this.data) {
-      this.user = await this.backend.getClient().user().get('' + this.data);
+      this.user = await this.fusio.getClient().backend().user().get('' + this.data);
     }
   }
 

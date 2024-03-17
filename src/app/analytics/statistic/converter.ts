@@ -1,10 +1,9 @@
-import {StatisticChart} from "fusio-sdk/dist/src/generated/backend/StatisticChart";
-import {StatisticChartData} from "fusio-sdk/dist/src/generated/backend/StatisticChartData";
 import {ApexAxisChartSeries, ApexXAxis} from "ngx-apexcharts";
+import {BackendStatisticChart, BackendStatisticChartData} from "fusio-sdk";
 
 export class Converter {
 
-  public static convertChart(data: StatisticChart, maxElements?: number): ChartOptions {
+  public static convertChart(data: BackendStatisticChart, maxElements?: number): ChartOptions {
     let labels = data.labels?.map((value) => {
       return value.substring(5);
     });
@@ -21,7 +20,7 @@ export class Converter {
     };
   }
 
-  public static convertChartData(data?: Array<StatisticChartData>, series?: Array<string>, maxElements?: number): ApexAxisChartSeries {
+  public static convertChartData(data?: Array<BackendStatisticChartData>, series?: Array<string>, maxElements?: number): ApexAxisChartSeries {
     if (!data || !series) {
       return [];
     }

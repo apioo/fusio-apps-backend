@@ -1,15 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {Schema} from "fusio-sdk/dist/src/generated/backend/Schema";
-import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {Modal} from "ngx-fusio-sdk";
-import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
+import {BackendSchema, Client, CommonMessage} from "fusio-sdk";
 
 @Component({
   selector: 'app-schema-modal',
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.css']
 })
-export class ModalComponent extends Modal<Client, Schema> {
+export class ModalComponent extends Modal<Client, BackendSchema> {
 
   schema: string = '';
 
@@ -19,27 +17,27 @@ export class ModalComponent extends Modal<Client, Schema> {
     }
   }
 
-  protected async create(entity: Schema): Promise<Message> {
+  protected async create(entity: BackendSchema): Promise<CommonMessage> {
     if (this.schema) {
       entity.source = JSON.parse(this.schema);
     }
 
-    return this.fusio.getClient().schema().create(entity);
+    return this.fusio.getClient().backend().schema().create(entity);
   }
 
-  protected async update(entity: Schema): Promise<Message> {
+  protected async update(entity: BackendSchema): Promise<CommonMessage> {
     if (this.schema) {
       entity.source = JSON.parse(this.schema);
     }
 
-    return this.fusio.getClient().schema().update('' + entity.id, entity);
+    return this.fusio.getClient().backend().schema().update('' + entity.id, entity);
   }
 
-  protected async delete(entity: Schema): Promise<Message> {
-    return this.fusio.getClient().schema().delete('' + entity.id);
+  protected async delete(entity: BackendSchema): Promise<CommonMessage> {
+    return this.fusio.getClient().backend().schema().delete('' + entity.id);
   }
 
-  protected newEntity(): Schema {
+  protected newEntity(): BackendSchema {
     return {
       name: ''
     };

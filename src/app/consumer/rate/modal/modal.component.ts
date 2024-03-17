@@ -1,19 +1,13 @@
 import {Component} from '@angular/core';
-import {Operation} from "fusio-sdk/dist/src/generated/backend/Operation";
-import {User} from "fusio-sdk/dist/src/generated/backend/User";
-import {Plan} from "fusio-sdk/dist/src/generated/backend/Plan";
-import {App} from "fusio-sdk/dist/src/generated/backend/App";
-import {Rate} from "fusio-sdk/dist/src/generated/backend/Rate";
-import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {Modal} from "ngx-fusio-sdk";
-import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
+import {BackendApp, BackendOperation, BackendPlan, BackendRate, BackendUser, Client, CommonMessage} from "fusio-sdk";
 
 @Component({
   selector: 'app-rate-modal',
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.css']
 })
-export class ModalComponent extends Modal<Client, Rate> {
+export class ModalComponent extends Modal<Client, BackendRate> {
 
   timespan = {
     value: 1,
@@ -48,10 +42,10 @@ export class ModalComponent extends Modal<Client, Rate> {
     value: 'No'
   }]
 
-  operations?: Array<Operation>;
-  users?: Array<User>;
-  plans?: Array<Plan>;
-  apps?: Array<App>;
+  operations?: Array<BackendOperation>;
+  users?: Array<BackendUser>;
+  plans?: Array<BackendPlan>;
+  apps?: Array<BackendApp>;
 
   override async ngOnInit(): Promise<void> {
     this.loadOperations();
@@ -60,23 +54,23 @@ export class ModalComponent extends Modal<Client, Rate> {
     this.loadApps();
   }
 
-  protected async create(entity: Rate): Promise<Message> {
+  protected async create(entity: BackendRate): Promise<CommonMessage> {
     entity.timespan = this.getTimespan();
 
-    return this.fusio.getClient().rate().create(entity);
+    return this.fusio.getClient().backend().rate().create(entity);
   }
 
-  protected async update(entity: Rate): Promise<Message> {
+  protected async update(entity: BackendRate): Promise<CommonMessage> {
     entity.timespan = this.getTimespan();
 
-    return this.fusio.getClient().rate().update('' + entity.id, entity);
+    return this.fusio.getClient().backend().rate().update('' + entity.id, entity);
   }
 
-  protected async delete(entity: Rate): Promise<Message> {
-    return this.fusio.getClient().rate().delete('' + entity.id);
+  protected async delete(entity: BackendRate): Promise<CommonMessage> {
+    return this.fusio.getClient().backend().rate().delete('' + entity.id);
   }
 
-  protected newEntity(): Rate {
+  protected newEntity(): BackendRate {
     return {
       priority: 0,
       name: '',
@@ -87,22 +81,22 @@ export class ModalComponent extends Modal<Client, Rate> {
   }
 
   private async loadOperations() {
-    const response = await this.fusio.getClient().operation().getAll(0, 1024);
+    const response = await this.fusio.getClient().backend().operation().getAll(0, 1024);
     this.operations = response.entry;
   }
 
   private async loadUsers() {
-    const response = await this.fusio.getClient().user().getAll(0, 1024);
+    const response = await this.fusio.getClient().backend().user().getAll(0, 1024);
     this.users = response.entry;
   }
 
   private async loadPlans() {
-    const response = await this.fusio.getClient().plan().getAll(0, 1024);
+    const response = await this.fusio.getClient().backend().plan().getAll(0, 1024);
     this.plans = response.entry;
   }
 
   private async loadApps() {
-    const response = await this.fusio.getClient().app().getAll(0, 1024);
+    const response = await this.fusio.getClient().backend().app().getAll(0, 1024);
     this.apps = response.entry;
   }
 

@@ -5,11 +5,11 @@ import {
   ImportService
 } from "ngx-typeschema-editor";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Schema} from "fusio-sdk/dist/src/generated/backend/Schema";
-import {BackendService, ErrorService, Mode, Result} from "ngx-fusio-sdk";
+import {ErrorService, Mode, Result} from "ngx-fusio-sdk";
 import {ModalComponent} from "../modal/modal.component";
+import {BackendSchema, CommonMessage} from "fusio-sdk";
+import {ApiService} from "../../../api.service";
 
 @Component({
   selector: 'app-designer',
@@ -24,10 +24,10 @@ export class DesignerComponent implements OnInit {
     types: []
   };
 
-  schema?: Schema;
-  response?: Message;
+  schema?: BackendSchema;
+  response?: CommonMessage;
 
-  constructor(private backend: BackendService, private exportService: ExportService, private importService: ImportService, private route: ActivatedRoute, private router: Router, private error: ErrorService, protected modalService: NgbModal) { }
+  constructor(private fusio: ApiService, private exportService: ExportService, private importService: ImportService, private route: ActivatedRoute, private router: Router, private error: ErrorService, protected modalService: NgbModal) { }
 
   async ngOnInit(): Promise<void> {
     this.route.paramMap.subscribe(params => {
@@ -55,7 +55,7 @@ export class DesignerComponent implements OnInit {
       modalRef.componentInstance.schema = JSON.stringify(typeSchema, null, 2);
     }
 
-    modalRef.closed.subscribe((data: Result<Schema>) => {
+    modalRef.closed.subscribe((data: Result<BackendSchema>) => {
       this.response = data.response;
       if (this.response.success) {
         if (data.entity.id) {
@@ -69,7 +69,7 @@ export class DesignerComponent implements OnInit {
 
   async loadSchema(id: string) {
     try {
-      const response = await this.backend.getClient().schema().get(id);
+      const response = await this.fusio.getClient().backend().schema().get(id);
 
       this.schema = response;
       this.spec = await this.importService.transform('typeschema', JSON.stringify(this.schema.source));

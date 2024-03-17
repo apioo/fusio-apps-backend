@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import {BackendService} from "ngx-fusio-sdk";
+import {ApiService} from "./api.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class NavigationService {
 
-  constructor(private backend: BackendService) {
+  constructor(private fusio: ApiService) {
   }
 
   getAll(): Array<GroupItem> {
@@ -15,7 +15,7 @@ export class NavigationService {
     for (let i = 0; i < navigation.entries.length; i++) {
       let children = [];
       for (let j = 0; j < navigation.entries[i].children.length; j++) {
-        if (!this.backend.hasScope(navigation.entries[i].children[j].scope)) {
+        if (!this.fusio.hasScope(navigation.entries[i].children[j].scope)) {
           continue;
         }
 

@@ -1,16 +1,13 @@
 import {Component} from '@angular/core';
-import {User} from "fusio-sdk/dist/src/generated/backend/User";
-import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
-import {App} from "fusio-sdk/dist/src/generated/backend/App";
 import {Modal} from "ngx-fusio-sdk";
-import {Client} from "fusio-sdk/dist/src/generated/backend/Client";
+import {BackendApp, Client, CommonMessage} from "fusio-sdk";
 
 @Component({
   selector: 'app-app-modal',
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.css']
 })
-export class ModalComponent extends Modal<Client, App> {
+export class ModalComponent extends Modal<Client, BackendApp> {
 
   status = [{
     key: 1,
@@ -23,19 +20,19 @@ export class ModalComponent extends Modal<Client, App> {
     value: 'Deactivated'
   }];
 
-  protected async create(entity: App): Promise<Message> {
-    return this.fusio.getClient().app().create(entity);
+  protected async create(entity: BackendApp): Promise<CommonMessage> {
+    return this.fusio.getClient().backend().app().create(entity);
   }
 
-  protected async update(entity: App): Promise<Message> {
-    return this.fusio.getClient().app().update('' + entity.id, entity);
+  protected async update(entity: BackendApp): Promise<CommonMessage> {
+    return this.fusio.getClient().backend().app().update('' + entity.id, entity);
   }
 
-  protected async delete(entity: App): Promise<Message> {
-    return this.fusio.getClient().app().delete('' + entity.id);
+  protected async delete(entity: BackendApp): Promise<CommonMessage> {
+    return this.fusio.getClient().backend().app().delete('' + entity.id);
   }
 
-  protected newEntity(): App {
+  protected newEntity(): BackendApp {
     return {
       status: 1,
       name: '',

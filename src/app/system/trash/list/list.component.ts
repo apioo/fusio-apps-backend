@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {Message} from "fusio-sdk/dist/src/generated/backend/Message";
-import {BackendService, HelpService} from "ngx-fusio-sdk";
-import {TrashData} from "fusio-sdk/dist/src/generated/backend/TrashData";
+import {HelpService} from "ngx-fusio-sdk";
+import {BackendTrashData, CommonMessage} from "fusio-sdk";
+import {ApiService} from "../../../api.service";
 
 @Component({
   selector: 'app-list',
@@ -13,14 +13,14 @@ export class ListComponent implements OnInit {
 
   search: string = '';
   totalResults: number = 0;
-  entries: Array<TrashData> = [];
+  entries: Array<BackendTrashData> = [];
   page: number = 1;
   pageSize: number = 16;
-  response?: Message;
+  response?: CommonMessage;
   type: string = 'action';
   types?: Array<string>;
 
-  constructor(private backend: BackendService, private help: HelpService, private route: ActivatedRoute, private router: Router) {
+  constructor(private fusio: ApiService, private help: HelpService, private route: ActivatedRoute, private router: Router) {
   }
 
   async ngOnInit(): Promise<void> {
@@ -38,7 +38,7 @@ export class ListComponent implements OnInit {
   async doSearch() {
     const startIndex = (this.page - 1) * this.pageSize;
     const count = this.pageSize;
-    const response = await this.backend.getClient().trash().getAllByType(this.type, startIndex, count, this.search);
+    const response = await this.fusio.getClient().backend().trash().getAllByType(this.type, startIndex, count, this.search);
 
     this.totalResults = response.totalResults || 0;
     this.entries = response.entry || [];
@@ -52,15 +52,15 @@ export class ListComponent implements OnInit {
     this.help.showDialog(path);
   }
 
-  async doRestore(entry: TrashData) {
-    this.response = await this.backend.getClient().trash().restore(this.type, {
+  async doRestore(entry: BackendTrashData) {
+    this.response = await this.fusio.getClient().backend().trash().restore(this.type, {
       id: entry.id
     });
     this.doSearch();
   }
 
   async loadTypes() {
-    const response = await this.backend.getClient().trash().getTypes();
+    const response = await this.fusio.getClient().backend().trash().getTypes();
     this.types = response.types;
   }
 }

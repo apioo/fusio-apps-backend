@@ -11,8 +11,8 @@ import {
   tap
 } from "rxjs";
 import {fromPromise} from "rxjs/internal/observable/innerFrom";
-import {BackendService} from "ngx-fusio-sdk";
-import {Action} from "fusio-sdk/dist/src/generated/backend/Action";
+import {BackendAction} from "fusio-sdk";
+import {ApiService} from "../../api.service";
 
 @Component({
   selector: 'app-action-selector',
@@ -49,17 +49,17 @@ export class ActionSelectorComponent {
   searching = false;
   searchFailed = false;
 
-  action?: Action
+  action?: BackendAction
   type?: any
 
-  actionFormatter = (action: Action) => action.name ? action.name : '-';
-  actionSearch: OperatorFunction<string, Array<Action>> = (text$: Observable<string>) =>
+  actionFormatter = (action: BackendAction) => action.name ? action.name : '-';
+  actionSearch: OperatorFunction<string, Array<BackendAction>> = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
       tap(() => (this.searching = true)),
       switchMap((term) =>
-        fromPromise(this.backend.getClient().action().getAll(0, 16, term)).pipe(
+        fromPromise(this.fusio.getClient().backend().action().getAll(0, 16, term)).pipe(
           map((response) => {
             return response.entry ? response.entry : [];
           }),
@@ -73,7 +73,7 @@ export class ActionSelectorComponent {
       tap(() => (this.searching = false)),
     );
 
-  constructor(private backend: BackendService) {
+  constructor(private fusio: ApiService) {
   }
 
   async ngOnInit(): Promise<void> {
@@ -84,7 +84,7 @@ export class ActionSelectorComponent {
         this.value = this.data.substring(pos + 3);
 
         if (this.scheme === 'action') {
-          this.action = await this.backend.getClient().action().get('~' + this.value);
+          this.action = await this.fusio.getClient().backend().action().get('~' + this.value);
         }
       }
     }

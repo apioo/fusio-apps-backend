@@ -90,7 +90,7 @@ import {TypeschemaEditorModule} from "ngx-typeschema-editor";
 import {MapComponent} from './shared/map/map.component';
 import {CollectionComponent} from './shared/collection/collection.component';
 import {GeneratorComponent} from './api/generator/generator.component';
-import {FusioService} from "./fusio.service";
+import {ApiService} from "./api.service";
 import {ConfigBuilder} from "./config-builder";
 import {AccountComponent} from './account/account.component';
 import {OperationParametersComponent} from './shared/operation-parameters/operation-parameters.component';
@@ -210,7 +210,10 @@ import {AppSelectorComponent} from './shared/app-selector/app-selector.component
     FusioSdkModule.forRoot(ConfigBuilder.build())
   ],
   providers: [
-    {provide: Sdk, useExisting: FusioService}
+    {
+      provide: Sdk,
+      useExisting: ApiService
+    }
   ],
   bootstrap: [AppComponent]
 })
