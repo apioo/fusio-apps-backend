@@ -7,7 +7,7 @@ import {NgbModule, NgbTypeaheadModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MonacoEditorModule} from 'ngx-monaco-editor-v2';
 import {NgxApexchartsModule} from "ngx-apexcharts";
-import {FusioSdkModule, FusioService as Sdk} from "ngx-fusio-sdk";
+import {FusioSdkModule, ApiService as SDK} from "ngx-fusio-sdk";
 import {NavigationComponent} from './navigation/navigation.component';
 import {ListComponent as DashboardList} from "./api/dashboard/list/list.component";
 import {ListComponent as OperationList} from "./api/operation/list/list.component";
@@ -211,7 +211,7 @@ import {AppSelectorComponent} from './shared/app-selector/app-selector.component
   ],
   providers: [
     {
-      provide: Sdk,
+      provide: SDK,
       useExisting: ApiService
     }
   ],
