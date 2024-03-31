@@ -7,6 +7,7 @@ import {NgbModule, NgbTypeaheadModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MonacoEditorModule} from 'ngx-monaco-editor-v2';
 import {NgxApexchartsModule} from "ngx-apexcharts";
+import {MarkdownModule} from "ngx-markdown";
 import {FusioSdkModule, ApiService as SDK} from "ngx-fusio-sdk";
 import {NavigationComponent} from './navigation/navigation.component';
 import {ListComponent as DashboardList} from "./api/dashboard/list/list.component";
@@ -206,6 +207,7 @@ import {AppSelectorComponent} from './shared/app-selector/app-selector.component
     NgbTypeaheadModule,
     NgxApexchartsModule,
     MonacoEditorModule.forRoot(),
+    MarkdownModule.forRoot(),
     TypeschemaEditorModule,
     FusioSdkModule.forRoot(ConfigBuilder.build())
   ],
