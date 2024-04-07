@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ErrorService} from "ngx-fusio-sdk";
 import {ApiService} from "../../../api.service";
-import {BackendMarketplaceCollectionApps, CommonMessage} from "fusio-sdk";
+import {BackendMarketplaceCollectionApps} from "fusio-sdk/dist/BackendMarketplaceCollectionApps";
+import {CommonMessage} from "fusio-sdk/dist/CommonMessage";
 
 @Component({
   selector: 'app-list',

@@ -1,6 +1,8 @@
 import {Component} from '@angular/core';
 import {List} from "ngx-fusio-sdk";
-import {BackendTransaction, BackendTransactionCollection, Client} from "fusio-sdk";
+import {Client} from "fusio-sdk/dist/Client";
+import {BackendTransaction} from "fusio-sdk/dist/BackendTransaction";
+import {BackendTransactionCollection} from "fusio-sdk/dist/BackendTransactionCollection";
 
 @Component({
   selector: 'app-transaction-list',

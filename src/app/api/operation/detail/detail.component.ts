@@ -2,8 +2,8 @@ import {Component} from '@angular/core';
 import {LogComponent} from "../log/log.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Detail} from "ngx-fusio-sdk";
-import {BackendOperation} from "fusio-sdk";
 import {ApiService} from "../../../api.service";
+import {BackendOperation} from "fusio-sdk/dist/BackendOperation";
 
 @Component({
   selector: 'app-operation-detail',

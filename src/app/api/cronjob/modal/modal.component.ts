@@ -1,6 +1,8 @@
 import {Component} from '@angular/core';
 import {Modal} from "ngx-fusio-sdk";
-import {BackendCronjob, Client, CommonMessage} from "fusio-sdk";
+import {Client} from "fusio-sdk/dist/Client";
+import {BackendCronjob} from "fusio-sdk/dist/BackendCronjob";
+import {CommonMessage} from "fusio-sdk/dist/CommonMessage";
 
 @Component({
   selector: 'app-cronjob-modal',

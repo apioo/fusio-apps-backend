@@ -1,12 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {ChartOptions, Converter} from "../../../analytics/statistic/converter";
-import {
-  BackendDashboardApps,
-  BackendDashboardRequests,
-  BackendDashboardTransactions,
-  BackendDashboardUsers
-} from "fusio-sdk";
 import {ApiService} from "../../../api.service";
+import {BackendDashboardApps} from "fusio-sdk/dist/BackendDashboardApps";
+import {BackendDashboardRequests} from "fusio-sdk/dist/BackendDashboardRequests";
+import {BackendDashboardUsers} from "fusio-sdk/dist/BackendDashboardUsers";
+import {BackendDashboardTransactions} from "fusio-sdk/dist/BackendDashboardTransactions";
 
 @Component({
   selector: 'app-list',

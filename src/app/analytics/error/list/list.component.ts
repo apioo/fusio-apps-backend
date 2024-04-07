@@ -1,6 +1,8 @@
 import {Component} from '@angular/core';
 import {List} from "ngx-fusio-sdk";
-import {BackendLogError, BackendLogErrorCollection, Client} from "fusio-sdk";
+import {Client} from "fusio-sdk/dist/Client";
+import {BackendLogError} from "fusio-sdk/dist/BackendLogError";
+import {BackendLogErrorCollection} from "fusio-sdk/dist/BackendLogErrorCollection";
 
 @Component({
   selector: 'app-error-list',

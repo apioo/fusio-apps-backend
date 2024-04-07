@@ -1,7 +1,9 @@
 import {Component} from '@angular/core';
 import {FilterComponent} from "../filter/filter.component";
 import {List} from "ngx-fusio-sdk";
-import {BackendLog, BackendLogCollection, Client} from "fusio-sdk";
+import {Client} from "fusio-sdk/dist/Client";
+import {BackendLog} from "fusio-sdk/dist/BackendLog";
+import {BackendLogCollection} from "fusio-sdk/dist/BackendLogCollection";
 
 @Component({
   selector: 'app-log-list',

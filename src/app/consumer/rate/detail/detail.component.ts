@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Detail} from "ngx-fusio-sdk";
-import {BackendRate} from "fusio-sdk";
+import {BackendRate} from "fusio-sdk/dist/BackendRate";
 
 @Component({
   selector: 'app-rate-detail',

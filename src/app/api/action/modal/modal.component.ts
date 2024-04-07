@@ -1,6 +1,10 @@
 import {Component} from '@angular/core';
 import {HelpComponent, Modal} from "ngx-fusio-sdk";
-import {BackendAction, BackendActionIndexEntry, Client, CommonFormContainer, CommonMessage} from "fusio-sdk";
+import {Client} from "fusio-sdk/dist/Client";
+import {BackendAction} from "fusio-sdk/dist/BackendAction";
+import {BackendActionIndexEntry} from "fusio-sdk/dist/BackendActionIndexEntry";
+import {CommonFormContainer} from "fusio-sdk/dist/CommonFormContainer";
+import {CommonMessage} from "fusio-sdk/dist/CommonMessage";
 
 @Component({
   selector: 'app-action-modal',

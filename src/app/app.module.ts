@@ -49,9 +49,9 @@ import {ListComponent as PageList} from "./consumer/page/list/list.component";
 import {DetailComponent as PageDetail} from "./consumer/page/detail/detail.component";
 import {ModalComponent as PageModal} from "./consumer/page/modal/modal.component";
 import {ListComponent as SdkList} from "./consumer/sdk/list/list.component";
-import {ListComponent as SubscriptionList} from "./consumer/subscription/list/list.component";
-import {DetailComponent as SubscriptionDetail} from "./consumer/subscription/detail/detail.component";
-import {ModalComponent as SubscriptionModal} from "./consumer/subscription/modal/modal.component";
+import {ListComponent as WebhookList} from "./consumer/webhook/list/list.component";
+import {DetailComponent as WebhookDetail} from "./consumer/webhook/detail/detail.component";
+import {ModalComponent as WebhookModal} from "./consumer/webhook/modal/modal.component";
 import {ListComponent as LogList} from "./analytics/log/list/list.component";
 import {DetailComponent as LogDetail} from "./analytics/log/detail/detail.component";
 import {FilterComponent as LogFilter} from './analytics/log/filter/filter.component';
@@ -82,6 +82,7 @@ import {ModalComponent as ConfigModal} from "./system/config/modal/modal.compone
 import {ListComponent as AuditList} from "./system/audit/list/list.component";
 import {DetailComponent as AuditDetail} from "./system/audit/detail/detail.component";
 import {FilterComponent as AuditFilter} from './system/audit/filter/filter.component';
+import {ListComponent as BackupList} from './system/backup/list/list.component';
 import {ListComponent as TrashList} from "./system/trash/list/list.component";
 import {ConfigFormComponent} from './shared/config-form/config-form.component';
 import {ScopeCategoriesComponent} from './shared/scope-categories/scope-categories.component';
@@ -147,9 +148,9 @@ import {AppSelectorComponent} from './shared/app-selector/app-selector.component
     PageDetail,
     PageModal,
     SdkList,
-    SubscriptionList,
-    SubscriptionDetail,
-    SubscriptionModal,
+    WebhookList,
+    WebhookDetail,
+    WebhookModal,
     StatisticList,
     LogList,
     LogDetail,
@@ -180,6 +181,7 @@ import {AppSelectorComponent} from './shared/app-selector/app-selector.component
     AuditList,
     AuditDetail,
     AuditFilter,
+    BackupList,
     TrashList,
     CsvPipe,
     ConfigFormComponent,

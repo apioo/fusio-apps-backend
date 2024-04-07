@@ -1,6 +1,12 @@
 import {Component} from '@angular/core';
 import {Modal} from "ngx-fusio-sdk";
-import {BackendApp, BackendOperation, BackendPlan, BackendRate, BackendUser, Client, CommonMessage} from "fusio-sdk";
+import {Client} from "fusio-sdk/dist/Client";
+import {BackendRate} from "fusio-sdk/dist/BackendRate";
+import {BackendOperation} from "fusio-sdk/dist/BackendOperation";
+import {BackendUser} from "fusio-sdk/dist/BackendUser";
+import {BackendPlan} from "fusio-sdk/dist/BackendPlan";
+import {BackendApp} from "fusio-sdk/dist/BackendApp";
+import {CommonMessage} from "fusio-sdk/dist/CommonMessage";
 
 @Component({
   selector: 'app-rate-modal',

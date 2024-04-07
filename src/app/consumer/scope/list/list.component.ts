@@ -1,7 +1,9 @@
 import {Component} from '@angular/core';
 import {List} from "ngx-fusio-sdk";
 import {ModalComponent} from "../modal/modal.component";
-import {BackendScope, BackendScopeCollection, Client} from "fusio-sdk";
+import {Client} from "fusio-sdk/dist/Client";
+import {BackendScope} from "fusio-sdk/dist/BackendScope";
+import {BackendScopeCollection} from "fusio-sdk/dist/BackendScopeCollection";
 
 @Component({
   selector: 'app-scope-list',

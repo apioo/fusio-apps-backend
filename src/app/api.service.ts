@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {CredentialsInterface} from "sdkgen-client";
 import {ApiService as Sdk} from "ngx-fusio-sdk";
-import {Client} from "fusio-sdk";
+import {Client} from "fusio-sdk/dist/Client";
 
 @Injectable({
   providedIn: 'root'

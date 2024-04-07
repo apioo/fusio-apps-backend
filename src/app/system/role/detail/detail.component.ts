@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Detail} from "ngx-fusio-sdk";
-import {BackendRole} from "fusio-sdk";
+import {BackendRole} from "fusio-sdk/dist/BackendRole";
 
 @Component({
   selector: 'app-role-detail',

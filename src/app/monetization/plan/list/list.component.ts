@@ -1,7 +1,9 @@
 import {Component} from '@angular/core';
 import {List} from "ngx-fusio-sdk";
 import {ModalComponent} from "../modal/modal.component";
-import {BackendPlan, BackendPlanCollection, Client} from "fusio-sdk";
+import {Client} from "fusio-sdk/dist/Client";
+import {BackendPlan} from "fusio-sdk/dist/BackendPlan";
+import {BackendPlanCollection} from "fusio-sdk/dist/BackendPlanCollection";
 
 @Component({
   selector: 'app-plan-list',

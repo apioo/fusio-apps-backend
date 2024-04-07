@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Detail} from "ngx-fusio-sdk";
-import {BackendCronjob} from "fusio-sdk";
+import {BackendCronjob} from "fusio-sdk/dist/BackendCronjob";
 
 @Component({
   selector: 'app-cronjob-detail',

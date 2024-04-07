@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Modal} from "ngx-fusio-sdk";
-import {BackendSchema, Client, CommonMessage} from "fusio-sdk";
+import {Client} from "fusio-sdk/dist/Client";
+import {BackendSchema} from "fusio-sdk/dist/BackendSchema";
+import {CommonMessage} from "fusio-sdk/dist/CommonMessage";
 
 @Component({
   selector: 'app-schema-modal',

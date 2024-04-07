@@ -2,7 +2,9 @@ import {Component, Input, OnInit} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {Router} from "@angular/router";
 import {ApiService} from "../../../api.service";
-import {BackendLog, BackendLogCollection, BackendOperation} from "fusio-sdk";
+import {BackendOperation} from "fusio-sdk/dist/BackendOperation";
+import {BackendLogCollection} from "fusio-sdk/dist/BackendLogCollection";
+import {BackendLog} from "fusio-sdk/dist/BackendLog";
 
 @Component({
   selector: 'app-operation-log',

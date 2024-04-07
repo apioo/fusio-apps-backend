@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component} from '@angular/core';
 import {Modal} from "ngx-fusio-sdk";
-import {BackendCategory, BackendRole, Client, CommonMessage} from "fusio-sdk";
+import {BackendRole} from "fusio-sdk/dist/BackendRole";
+import {Client} from "fusio-sdk/dist/Client";
+import {BackendCategory} from "fusio-sdk/dist/BackendCategory";
+import {CommonMessage} from "fusio-sdk/dist/CommonMessage";
 
 @Component({
   selector: 'app-role-modal',

@@ -8,8 +8,9 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ErrorService, Mode, Result} from "ngx-fusio-sdk";
 import {ModalComponent} from "../modal/modal.component";
-import {BackendSchema, CommonMessage} from "fusio-sdk";
 import {ApiService} from "../../../api.service";
+import {BackendSchema} from "fusio-sdk/dist/BackendSchema";
+import {CommonMessage} from "fusio-sdk/dist/CommonMessage";
 
 @Component({
   selector: 'app-designer',

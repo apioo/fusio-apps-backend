@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {UserService} from "ngx-fusio-sdk";
-import {BackendUser} from "fusio-sdk";
+import {BackendUser} from "fusio-sdk/dist/BackendUser";
 
 @Component({
   selector: 'app-root',

@@ -1,23 +1,25 @@
 import {Component} from '@angular/core';
 import {List} from "ngx-fusio-sdk";
 import {FilterComponent} from "../filter/filter.component";
-import {BackendAppToken, BackendAppTokenCollection, Client} from "fusio-sdk";
+import {Client} from "fusio-sdk/dist/Client";
+import {BackendToken} from "fusio-sdk/dist/BackendToken";
+import {BackendTokenCollection} from "fusio-sdk/dist/BackendTokenCollection";
 
 @Component({
   selector: 'app-token-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent extends List<Client, BackendAppToken> {
+export class ListComponent extends List<Client, BackendToken> {
 
   filter: any = {};
 
-  protected async getAll(parameters: Array<any>): Promise<BackendAppTokenCollection> {
-    return this.fusio.getClient().backend().app().getAllTokens(...parameters);
+  protected async getAll(parameters: Array<any>): Promise<BackendTokenCollection> {
+    return this.fusio.getClient().backend().token().getAll(...parameters);
   }
 
-  protected async get(id: string): Promise<BackendAppToken> {
-    return this.fusio.getClient().backend().app().getToken(id);
+  protected async get(id: string): Promise<BackendToken> {
+    return this.fusio.getClient().backend().token().get(id);
   }
 
   protected getDetailComponent(): any {

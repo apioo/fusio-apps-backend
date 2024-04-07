@@ -11,8 +11,8 @@ import {
   tap
 } from "rxjs";
 import {fromPromise} from "rxjs/internal/observable/innerFrom";
-import {BackendSchema} from "fusio-sdk";
 import {ApiService} from "../../api.service";
+import {BackendSchema} from "fusio-sdk/dist/BackendSchema";
 
 @Component({
   selector: 'app-schema-selector',

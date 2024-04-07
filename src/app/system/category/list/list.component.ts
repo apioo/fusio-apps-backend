@@ -1,7 +1,9 @@
 import {Component} from '@angular/core';
 import {List} from "ngx-fusio-sdk";
 import {ModalComponent} from "../modal/modal.component";
-import {BackendCategory, BackendCategoryCollection, Client} from "fusio-sdk";
+import {Client} from "fusio-sdk/dist/Client";
+import {BackendCategory} from "fusio-sdk/dist/BackendCategory";
+import {BackendCategoryCollection} from "fusio-sdk/dist/BackendCategoryCollection";
 
 @Component({
   selector: 'app-category-list',

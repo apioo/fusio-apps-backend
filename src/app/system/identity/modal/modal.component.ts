@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {Modal} from "ngx-fusio-sdk";
-import {
-  BackendConnectionIndexEntry,
-  BackendIdentity,
-  BackendRole,
-  Client,
-  CommonFormContainer,
-  CommonMessage
-} from "fusio-sdk";
+import {Client} from "fusio-sdk/dist/Client";
+import {BackendIdentity} from "fusio-sdk/dist/BackendIdentity";
+import {BackendRole} from "fusio-sdk/dist/BackendRole";
+import {BackendConnectionIndexEntry} from "fusio-sdk/dist/BackendConnectionIndexEntry";
+import {CommonFormContainer} from "fusio-sdk/dist/CommonFormContainer";
+import {CommonMessage} from "fusio-sdk/dist/CommonMessage";
 
 @Component({
   selector: 'app-identity-modal',

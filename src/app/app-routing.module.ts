@@ -17,7 +17,7 @@ import {ListComponent as UserList} from "./consumer/user/list/list.component";
 import {ListComponent as RateList} from "./consumer/rate/list/list.component";
 import {ListComponent as PageList} from "./consumer/page/list/list.component";
 import {ListComponent as SdkList} from "./consumer/sdk/list/list.component";
-import {ListComponent as SubscriptionList} from "./consumer/subscription/list/list.component";
+import {ListComponent as WebhookList} from "./consumer/webhook/list/list.component";
 import {ListComponent as LogList} from "./analytics/log/list/list.component";
 import {ListComponent as StatisticList} from "./analytics/statistic/list/list.component";
 import {ListComponent as ErrorList} from "./analytics/error/list/list.component";
@@ -29,6 +29,7 @@ import {ListComponent as RoleList} from "./system/role/list/list.component";
 import {ListComponent as IdentityList} from "./system/identity/list/list.component";
 import {ListComponent as MarketplaceList} from "./system/marketplace/list/list.component";
 import {ListComponent as ConfigList} from "./system/config/list/list.component";
+import {ListComponent as BackupList} from "./system/backup/list/list.component";
 import {ListComponent as AuditList} from "./system/audit/list/list.component";
 import {ListComponent as TrashList} from "./system/trash/list/list.component";
 import {AccountComponent} from "./account/account.component";
@@ -81,8 +82,8 @@ const routes: Routes = [
   { path: 'page', component: PageList, canActivate: [isAuthenticated] },
   { path: 'page/:id', component: PageList, canActivate: [isAuthenticated] },
   { path: 'sdk', component: SdkList, canActivate: [isAuthenticated] },
-  { path: 'subscription', component: SubscriptionList, canActivate: [isAuthenticated] },
-  { path: 'subscription/:id', component: SubscriptionList, canActivate: [isAuthenticated] },
+  { path: 'webhook', component: WebhookList, canActivate: [isAuthenticated] },
+  { path: 'webhook/:id', component: WebhookList, canActivate: [isAuthenticated] },
 
   { path: 'log', component: LogList, canActivate: [isAuthenticated] },
   { path: 'log/:id', component: LogList, canActivate: [isAuthenticated] },
@@ -109,6 +110,8 @@ const routes: Routes = [
   { path: 'config/:id', component: ConfigList, canActivate: [isAuthenticated] },
   { path: 'audit', component: AuditList, canActivate: [isAuthenticated] },
   { path: 'audit/:id', component: AuditList, canActivate: [isAuthenticated] },
+  { path: 'backup', component: BackupList, canActivate: [isAuthenticated] },
+  { path: 'backup/:id', component: BackupList, canActivate: [isAuthenticated] },
   { path: 'trash', component: TrashList, canActivate: [isAuthenticated] },
   { path: 'trash/:type', component: TrashList, canActivate: [isAuthenticated] },
 ];

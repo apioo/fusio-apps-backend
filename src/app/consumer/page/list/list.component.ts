@@ -1,7 +1,9 @@
 import {Component} from '@angular/core';
 import {List} from "ngx-fusio-sdk";
 import {ModalComponent} from "../modal/modal.component";
-import {BackendPage, BackendPageCollection, Client} from "fusio-sdk";
+import {Client} from "fusio-sdk/dist/Client";
+import {BackendPage} from "fusio-sdk/dist/BackendPage";
+import {BackendPageCollection} from "fusio-sdk/dist/BackendPageCollection";
 
 @Component({
   selector: 'app-page-list',

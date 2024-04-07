@@ -1,13 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {ErrorService} from "ngx-fusio-sdk";
-import {
-  BackendGeneratorIndexProvider,
-  BackendGeneratorProvider,
-  BackendGeneratorProviderChangelog,
-  CommonFormContainer,
-  CommonMessage
-} from "fusio-sdk";
 import {ApiService} from "../../api.service";
+import {BackendGeneratorIndexProvider} from "fusio-sdk/dist/BackendGeneratorIndexProvider";
+import {BackendGeneratorProvider} from "fusio-sdk/dist/BackendGeneratorProvider";
+import {CommonFormContainer} from "fusio-sdk/dist/CommonFormContainer";
+import {CommonMessage} from "fusio-sdk/dist/CommonMessage";
+import {BackendGeneratorProviderChangelog} from "fusio-sdk/dist/BackendGeneratorProviderChangelog";
 
 @Component({
   selector: 'app-generator',

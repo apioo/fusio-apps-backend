@@ -1,7 +1,9 @@
 import {Component} from '@angular/core';
 import {List} from "ngx-fusio-sdk";
 import {ModalComponent} from "../modal/modal.component";
-import {BackendUser, BackendUserCollection, Client} from "fusio-sdk";
+import {Client} from "fusio-sdk/dist/Client";
+import {BackendUser} from "fusio-sdk/dist/BackendUser";
+import {BackendUserCollection} from "fusio-sdk/dist/BackendUserCollection";
 
 @Component({
   selector: 'app-user-list',

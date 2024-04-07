@@ -1,7 +1,9 @@
 import {Component} from '@angular/core';
 import {List} from "ngx-fusio-sdk";
 import {ModalComponent} from "../modal/modal.component";
-import {BackendCategory, BackendCategoryCollection, BackendConfig, Client} from "fusio-sdk";
+import {Client} from "fusio-sdk/dist/Client";
+import {BackendConfig} from "fusio-sdk/dist/BackendConfig";
+import {BackendConfigCollection} from "fusio-sdk/dist/BackendConfigCollection";
 
 @Component({
   selector: 'app-config-list',
@@ -10,11 +12,11 @@ import {BackendCategory, BackendCategoryCollection, BackendConfig, Client} from 
 })
 export class ListComponent extends List<Client, BackendConfig> {
 
-  protected async getAll(parameters: Array<any>): Promise<BackendCategoryCollection> {
+  protected async getAll(parameters: Array<any>): Promise<BackendConfigCollection> {
     return this.fusio.getClient().backend().config().getAll(...parameters);
   }
 
-  protected async get(id: string): Promise<BackendCategory> {
+  protected async get(id: string): Promise<BackendConfig> {
     return this.fusio.getClient().backend().config().get(id);
   }
 

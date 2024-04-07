@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Modal} from "ngx-fusio-sdk";
-import {BackendEvent, Client, CommonMessage} from "fusio-sdk";
+import {Client} from "fusio-sdk/dist/Client";
+import {BackendEvent} from "fusio-sdk/dist/BackendEvent";
+import {CommonMessage} from "fusio-sdk/dist/CommonMessage";
 
 @Component({
   selector: 'app-event-modal',

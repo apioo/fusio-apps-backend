@@ -130,10 +130,10 @@ export class NavigationService {
               "scope": "backend.sdk"
             },
             {
-              "title": "Subscription",
+              "title": "Webhook",
               "icon": "bi-calendar-plus",
-              "path": "/subscription",
-              "scope": "backend.event"
+              "path": "/webhook",
+              "scope": "backend.webhook"
             }
           ]
         },
@@ -224,6 +224,12 @@ export class NavigationService {
               "icon": "bi-camera-video",
               "path": "/audit",
               "scope": "backend.audit"
+            },
+            {
+              "title": "Backup",
+              "icon": "bi-arrow-down-up",
+              "path": "/backup",
+              "scope": "backend.backup"
             },
             {
               "title": "Trash",

@@ -1,7 +1,9 @@
 import {Component} from '@angular/core';
 import {List} from "ngx-fusio-sdk";
 import {ModalComponent} from "../modal/modal.component";
-import {BackendSchema, BackendSchemaCollection, Client} from "fusio-sdk";
+import {Client} from "fusio-sdk/dist/Client";
+import {BackendSchema} from "fusio-sdk/dist/BackendSchema";
+import {BackendSchemaCollection} from "fusio-sdk/dist/BackendSchemaCollection";
 
 @Component({
   selector: 'app-schema-list',

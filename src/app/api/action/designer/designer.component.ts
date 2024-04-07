@@ -1,14 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {ErrorService, HelpService} from "ngx-fusio-sdk";
-import {
-  BackendAction,
-  BackendActionExecuteRequest,
-  BackendActionExecuteResponse,
-  CommonFormContainer,
-  CommonMessage
-} from "fusio-sdk";
 import {ApiService} from "../../../api.service";
+import {CommonMessage} from "fusio-sdk/dist/CommonMessage";
+import {BackendAction} from "fusio-sdk/dist/BackendAction";
+import {CommonFormContainer} from "fusio-sdk/dist/CommonFormContainer";
+import {BackendActionExecuteRequest} from "fusio-sdk/dist/BackendActionExecuteRequest";
+import {BackendActionExecuteResponse} from "fusio-sdk/dist/BackendActionExecuteResponse";
 
 @Component({
   selector: 'app-designer',

@@ -1,6 +1,10 @@
 import {Component} from '@angular/core';
 import {HelpComponent, Modal} from "ngx-fusio-sdk";
-import {BackendConnection, BackendConnectionIndexEntry, Client, CommonFormContainer, CommonMessage} from "fusio-sdk";
+import {Client} from "fusio-sdk/dist/Client";
+import {BackendConnection} from "fusio-sdk/dist/BackendConnection";
+import {BackendConnectionIndexEntry} from "fusio-sdk/dist/BackendConnectionIndexEntry";
+import {CommonFormContainer} from "fusio-sdk/dist/CommonFormContainer";
+import {CommonMessage} from "fusio-sdk/dist/CommonMessage";
 
 @Component({
   selector: 'app-connection-modal',
