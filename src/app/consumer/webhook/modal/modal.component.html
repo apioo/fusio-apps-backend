@@ -11,6 +11,16 @@
   <fusio-message [response]="response"></fusio-message>
   <form>
     <div class="mb-3 row">
+      <label for="endpoint" class="col-sm-2 col-form-label fw-bold">Name</label>
+      <div class="col-sm-10">
+        <div class="input-group">
+          <input type="url" id="name" name="name" [(ngModel)]="entity.name" class="form-control">
+          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
+          <ng-template #nameHelp>The name of the webhook</ng-template>
+        </div>
+      </div>
+    </div>
+    <div class="mb-3 row">
       <label for="event" class="col-sm-2 col-form-label fw-bold">Event</label>
       <div class="col-sm-10">
         <div class="input-group">
