@@ -32,6 +32,11 @@
           <typeschema-editor [specification]="spec" (change)="doChange(element.name, $event)" [importEnabled]="false"></typeschema-editor>
         </div>
       </ng-container>
+      <ng-container *ngSwitchCase="'typeapi'">
+        <div style="width:100%;min-height:500px;border:1px solid #ced4da">
+          <typeschema-editor [specification]="spec" [operationEnabled]="true" [importEnabled]="false" (change)="doChange(element.name, $event)"></typeschema-editor>
+        </div>
+      </ng-container>
     </ng-container>
   </div>
 </div>
