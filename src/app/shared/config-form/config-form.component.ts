@@ -69,6 +69,12 @@ export class ConfigFormComponent implements OnInit, OnChanges {
           imports: [],
           types: []
         };
+      } else if (element.element === 'typeapi') {
+        data[element.name] = {
+          imports: [],
+          operations: [],
+          types: []
+        };
       }
 
       this.elements.push(element);
