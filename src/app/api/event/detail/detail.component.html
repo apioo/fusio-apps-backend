@@ -16,8 +16,7 @@
       </div>
       <div class="row">
         <div class="col-lg-2 fw-bold">Schema</div>
-        <div class="col-lg-8">{{selected.schema}}</div>
-        <div class="col-lg-2"><button *ngIf="selected.schema" routerLink="/schema/~{{selected.schema}}" type="button" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
+        <div class="col-lg-8"><app-schema-link [data]="selected.schema"></app-schema-link></div>
       </div>
     </div>
   </div>
