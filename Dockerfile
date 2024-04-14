@@ -9,6 +9,7 @@ RUN npm run build --prod
 FROM nginx:alpine
 ENV BASE_PATH=""
 ENV API_URL=""
+ENV APP_KEY=""
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 COPY nginx/replace_env.sh /docker-entrypoint.d/replace_env.sh
 RUN chmod +x /docker-entrypoint.d/replace_env.sh
