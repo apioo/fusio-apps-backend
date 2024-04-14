@@ -8,10 +8,12 @@ export class ConfigBuilder {
       throw new Error('No base url configured, please provide a variable "FUSIO_URL" containing the Fusio base url');
     }
 
+    let appKey = FUSIO_APP_KEY;
+
     return {
       baseUrl: baseUrl,
       logo: 'fusio_64px.png',
-      appKey: FUSIO_APP_KEY,
+      appKey: appKey && appKey !== '${APP_KEY}' ? appKey : undefined,
       homePath: '/',
       helpUrl: 'https://docs.fusio-project.org/docs/backend/',
     }
