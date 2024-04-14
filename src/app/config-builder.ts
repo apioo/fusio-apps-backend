@@ -11,7 +11,7 @@ export class ConfigBuilder {
     return {
       baseUrl: baseUrl,
       logo: 'fusio_64px.png',
-      appId: 1,
+      appKey: FUSIO_APP_KEY,
       homePath: '/',
       helpUrl: 'https://docs.fusio-project.org/docs/backend/',
     }
