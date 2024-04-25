@@ -1,4 +1,5 @@
 RewriteEngine On
+RewriteBase ${BASE_PATH}/fusio/
 RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -f [OR]
 RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -d
 RewriteRule ^.*$ - [NC,L]
