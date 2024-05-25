@@ -4,9 +4,15 @@
     <div class="btn-group" role="group">
       <button type="button" (click)="doUpdateClick()" class="btn btn-primary fusio-btn-update">Update</button>
       <button type="button" routerLink="/connection/introspection/{{selected.id}}" class="btn btn-secondary fusio-btn-introspection">Introspection</button>
+      <button *ngIf="selected.oauth2" type="button" (click)="doAuthorizeClick()" class="btn btn-secondary fusio-btn-authorize">Authorize</button>
       <button type="button" (click)="doDeleteClick()" class="btn btn-danger fusio-btn-delete">Delete</button>
     </div>
     <div class="fusio-detail">
+      <div *ngIf="needsAuthorization()">
+        <ngb-alert [dismissible]="false">
+          <strong>Note:</strong> This connection needs authorization before you can use it. Click on the Authorize button to grant this connection access.
+        </ngb-alert>
+      </div>
       <div class="row">
         <div class="col-lg-2 fw-bold">Name</div>
         <div class="col-lg-10">{{selected.name}}</div>
