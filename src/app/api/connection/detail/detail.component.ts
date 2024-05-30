@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Detail} from "ngx-fusio-sdk";
 import {BackendConnection} from "fusio-sdk/dist/BackendConnection";
 import {ApiService} from "../../../api.service";
@@ -8,10 +8,17 @@ import {ApiService} from "../../../api.service";
   templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.css']
 })
-export class DetailComponent extends Detail<BackendConnection> {
+export class DetailComponent extends Detail<BackendConnection> implements OnInit {
+
+  public baseUrl?: string;
 
   constructor(private fusio: ApiService) {
     super();
+  }
+
+  public override ngOnInit(): Promise<void> {
+    this.baseUrl = this.fusio.getBaseUrl();
+    return super.ngOnInit();
   }
 
   async doAuthorizeClick() {

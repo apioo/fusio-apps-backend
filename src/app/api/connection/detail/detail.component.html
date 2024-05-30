@@ -10,7 +10,10 @@
     <div class="fusio-detail">
       <div *ngIf="needsAuthorization()">
         <ngb-alert [dismissible]="false">
-          <strong>Note:</strong> This connection needs authorization before you can use it. Click on the Authorize button to grant this connection access.
+          <p><strong>Note:</strong> This connection needs authorization before you can use it. At first you need to configure
+          the client id / secret at the connection settings, then you can use the Authorize button to start the OAuth2 flow
+          and grant this connection access. At the remote provider you need to configure the following redirect uri:</p>
+          <code>{{ baseUrl }}/system/connection/{{ selected.id }}/callback</code>
         </ngb-alert>
       </div>
       <div class="row">
