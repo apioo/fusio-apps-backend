@@ -15,7 +15,32 @@
         <label [for]="column.name" class="col-sm-2 col-form-label fw-bold">{{ column.name }}</label>
         <div class="col-sm-10">
           <div class="input-group">
-            <input type="text" [name]="column.name" [(ngModel)]="entity[column.name]" [disabled]="mode === 3" [placeholder]="entity[column.name] === null ? 'NULL' : ''" [required]="column.notNull || false" class="form-control">
+            <ng-container [ngSwitch]="column.type">
+              <ng-container *ngSwitchCase="'smallint'">
+                <input type="number" [name]="column.name" [(ngModel)]="entity[column.name]" [disabled]="mode === 3" [placeholder]="entity[column.name] === null ? 'NULL' : ''" [required]="column.notNull || false" class="form-control">
+              </ng-container>
+              <ng-container *ngSwitchCase="'integer'">
+                <input type="number" [name]="column.name" [(ngModel)]="entity[column.name]" [disabled]="mode === 3" [placeholder]="entity[column.name] === null ? 'NULL' : ''" [required]="column.notNull || false" class="form-control">
+              </ng-container>
+              <ng-container *ngSwitchCase="'text'">
+                <textarea [name]="column.name" [(ngModel)]="entity[column.name]" [disabled]="mode === 3" [placeholder]="entity[column.name] === null ? 'NULL' : ''" [required]="column.notNull || false" class="form-control"></textarea>
+              </ng-container>
+              <ng-container *ngSwitchCase="'json'">
+                <textarea [name]="column.name" [(ngModel)]="entity[column.name]" [disabled]="mode === 3" [placeholder]="entity[column.name] === null ? 'NULL' : ''" [required]="column.notNull || false" class="form-control"></textarea>
+              </ng-container>
+              <ng-container *ngSwitchCase="'date'">
+                <input type="date" [name]="column.name" [(ngModel)]="entity[column.name]" [disabled]="mode === 3" [placeholder]="entity[column.name] === null ? 'NULL' : ''" [required]="column.notNull || false" class="form-control">
+              </ng-container>
+              <ng-container *ngSwitchCase="'datetime'">
+                <input type="datetime-local" [name]="column.name" [(ngModel)]="entity[column.name]" [disabled]="mode === 3" [placeholder]="entity[column.name] === null ? 'NULL' : ''" [required]="column.notNull || false" class="form-control">
+              </ng-container>
+              <ng-container *ngSwitchCase="'time'">
+                <input type="time" [name]="column.name" [(ngModel)]="entity[column.name]" [disabled]="mode === 3" [placeholder]="entity[column.name] === null ? 'NULL' : ''" [required]="column.notNull || false" class="form-control">
+              </ng-container>
+              <ng-container *ngSwitchDefault>
+                <input type="text" [name]="column.name" [(ngModel)]="entity[column.name]" [disabled]="mode === 3" [placeholder]="entity[column.name] === null ? 'NULL' : ''" [required]="column.notNull || false" class="form-control">
+              </ng-container>
+            </ng-container>
             <button (click)="entity[column.name] = null" class="btn btn-secondary"><i class="bi bi-x"></i></button>
           </div>
         </div>
