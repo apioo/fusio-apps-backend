@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {BackendOperationParameters} from "fusio-sdk/dist/BackendOperationParameters";
 
 @Component({
@@ -6,7 +6,7 @@ import {BackendOperationParameters} from "fusio-sdk/dist/BackendOperationParamet
   templateUrl: './operation-parameters.component.html',
   styleUrls: ['./operation-parameters.component.css']
 })
-export class OperationParametersComponent {
+export class OperationParametersComponent implements OnInit {
 
   @Input() name: string = 'operation-parameters';
   @Input() disabled: boolean = false;
