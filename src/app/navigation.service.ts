@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {ApiService} from "./api.service";
 
 @Injectable({
@@ -80,12 +80,36 @@ export class NavigationService {
               "icon": "bi-alarm",
               "path": "/cronjob",
               "scope": "backend.cronjob"
+            }
+          ]
+        },
+        {
+          "title": "Development",
+          "visible": false,
+          "children": [
+            {
+              "title": "Database",
+              "icon": "bi-database",
+              "path": "/database",
+              "scope": "backend.database"
+            },
+            {
+              "title": "SDK",
+              "icon": "bi-download",
+              "path": "/sdk",
+              "scope": "backend.sdk"
             },
             {
               "title": "Generator",
               "icon": "bi-cpu",
               "path": "/generator",
               "scope": "backend.generator"
+            },
+            {
+              "title": "Marketplace",
+              "icon": "bi-shop-window",
+              "path": "/marketplace",
+              "scope": "backend.marketplace"
             }
           ]
         },
@@ -122,12 +146,6 @@ export class NavigationService {
               "icon": "bi-file-earmark-code",
               "path": "/page",
               "scope": "backend.page"
-            },
-            {
-              "title": "SDK",
-              "icon": "bi-download",
-              "path": "/sdk",
-              "scope": "backend.sdk"
             },
             {
               "title": "Webhook",
@@ -206,12 +224,6 @@ export class NavigationService {
               "icon": "bi-file-person",
               "path": "/identity",
               "scope": "backend.identity"
-            },
-            {
-              "title": "Marketplace",
-              "icon": "bi-shop-window",
-              "path": "/marketplace",
-              "scope": "backend.marketplace"
             },
             {
               "title": "Settings",

@@ -33,6 +33,9 @@ import {ModalComponent as EventModal} from "./api/event/modal/modal.component";
 import {ListComponent as CronjobList} from "./api/cronjob/list/list.component";
 import {DetailComponent as CronjobDetail} from "./api/cronjob/detail/detail.component";
 import {ModalComponent as CronjobModal} from "./api/cronjob/modal/modal.component";
+import {ListComponent as DatabaseList} from './development/database/list/list.component';
+import {RowComponent as DatabaseRow} from './development/database/row/row.component';
+import {TableComponent as DatabaseTable} from './development/database/table/table.component';
 import {ListComponent as AppList} from "./consumer/app/list/list.component";
 import {DetailComponent as AppDetail} from "./consumer/app/detail/detail.component";
 import {ModalComponent as AppModal} from "./consumer/app/modal/modal.component";
@@ -48,7 +51,7 @@ import {ModalComponent as RateModal} from "./consumer/rate/modal/modal.component
 import {ListComponent as PageList} from "./consumer/page/list/list.component";
 import {DetailComponent as PageDetail} from "./consumer/page/detail/detail.component";
 import {ModalComponent as PageModal} from "./consumer/page/modal/modal.component";
-import {ListComponent as SdkList} from "./consumer/sdk/list/list.component";
+import {ListComponent as SdkList} from "./development/sdk/list/list.component";
 import {ListComponent as WebhookList} from "./consumer/webhook/list/list.component";
 import {DetailComponent as WebhookDetail} from "./consumer/webhook/detail/detail.component";
 import {ModalComponent as WebhookModal} from "./consumer/webhook/modal/modal.component";
@@ -91,7 +94,7 @@ import {CsvPipe} from "./shared/tag-editor/csv.pipe";
 import {TypeschemaEditorModule} from "ngx-typeschema-editor";
 import {MapComponent} from './shared/map/map.component';
 import {CollectionComponent} from './shared/collection/collection.component';
-import {GeneratorComponent} from './api/generator/generator.component';
+import {GeneratorComponent} from './development/generator/generator.component';
 import {ApiService} from "./api.service";
 import {ConfigBuilder} from "./config-builder";
 import {AccountComponent} from './account/account.component';
@@ -103,6 +106,7 @@ import {UserSelectorComponent} from './shared/user-selector/user-selector.compon
 import {SchemaLinkComponent} from './shared/schema-link/schema-link.component';
 import {ActionLinkComponent} from './shared/action-link/action-link.component';
 import {AppSelectorComponent} from './shared/app-selector/app-selector.component';
+import { ColumnComponent } from './development/database/column/column.component';
 
 @NgModule({
   declarations: [
@@ -131,7 +135,11 @@ import {AppSelectorComponent} from './shared/app-selector/app-selector.component
     CronjobList,
     CronjobDetail,
     CronjobModal,
+    DatabaseList,
+    DatabaseRow,
+    DatabaseTable,
     GeneratorComponent,
+    SdkList,
     AppList,
     AppDetail,
     AppModal,
@@ -147,7 +155,6 @@ import {AppSelectorComponent} from './shared/app-selector/app-selector.component
     PageList,
     PageDetail,
     PageModal,
-    SdkList,
     WebhookList,
     WebhookDetail,
     WebhookModal,
@@ -197,7 +204,8 @@ import {AppSelectorComponent} from './shared/app-selector/app-selector.component
     SchemaLinkComponent,
     ActionLinkComponent,
     AccountComponent,
-    AppSelectorComponent
+    AppSelectorComponent,
+    ColumnComponent,
   ],
   imports: [
     BrowserModule,

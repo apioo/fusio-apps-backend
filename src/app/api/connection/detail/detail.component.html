@@ -3,7 +3,7 @@
   <div class="card-body">
     <div class="btn-group" role="group">
       <button type="button" (click)="doUpdateClick()" class="btn btn-primary fusio-btn-update">Update</button>
-      <button type="button" routerLink="/connection/introspection/{{selected.id}}" class="btn btn-secondary fusio-btn-introspection">Introspection</button>
+      <button *ngIf="selected.class === 'Fusio.Impl.Connection.System' || selected.class === 'Fusio.Adapter.Sql.Connection.Sql' || selected.class === 'Fusio.Adapter.Sql.Connection.SqlAdvanced'" type="button" routerLink="/database/{{selected.name}}" class="btn btn-secondary fusio-btn-introspection">Database</button>
       <button *ngIf="selected.oauth2" type="button" (click)="doAuthorizeClick()" class="btn btn-secondary fusio-btn-authorize">Authorize</button>
       <button type="button" (click)="doDeleteClick()" class="btn btn-danger fusio-btn-delete">Delete</button>
     </div>

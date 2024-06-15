@@ -1,0 +1,31 @@
+
+<div class="modal-header">
+  <h4 class="modal-title">
+    <ng-container *ngIf="mode === 1">Create</ng-container>
+    <ng-container *ngIf="mode === 2">Update</ng-container>
+    <ng-container *ngIf="mode === 3">Delete</ng-container>
+  </h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+</div>
+<div class="modal-body">
+  <fusio-message [response]="response"></fusio-message>
+  <form>
+    <div class="mb-3 row" *ngFor="let column of columns">
+      <ng-container *ngIf="column.name">
+        <label [for]="column.name" class="col-sm-2 col-form-label fw-bold">{{ column.name }}</label>
+        <div class="col-sm-10">
+          <div class="input-group">
+            <input type="text" [name]="column.name" [(ngModel)]="entity[column.name]" [disabled]="mode === 3" [placeholder]="entity[column.name] === null ? 'NULL' : ''" [required]="column.notNull || false" class="form-control">
+            <button (click)="entity[column.name] = null" class="btn btn-secondary"><i class="bi bi-x"></i></button>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <ng-container *ngIf="mode === 1"><button type="button" class="btn btn-primary" (click)="submit()">Create</button></ng-container>
+  <ng-container *ngIf="mode === 2"><button type="button" class="btn btn-primary" (click)="submit()">Update</button></ng-container>
+  <ng-container *ngIf="mode === 3"><button type="button" class="btn btn-danger" (click)="submit()">Delete</button></ng-container>
+  <button type="button" class="btn btn-light" (click)="modal.close()">Close</button>
+</div>

@@ -10,13 +10,13 @@ import {ListComponent as ConnectionList} from "./api/connection/list/list.compon
 import {IntrospectionComponent} from "./api/connection/introspection/introspection.component";
 import {ListComponent as EventList} from "./api/event/list/list.component";
 import {ListComponent as CronjobList} from "./api/cronjob/list/list.component";
-import {GeneratorComponent} from "./api/generator/generator.component";
+import {GeneratorComponent} from "./development/generator/generator.component";
 import {ListComponent as AppList} from "./consumer/app/list/list.component";
 import {ListComponent as ScopeList} from "./consumer/scope/list/list.component";
 import {ListComponent as UserList} from "./consumer/user/list/list.component";
 import {ListComponent as RateList} from "./consumer/rate/list/list.component";
 import {ListComponent as PageList} from "./consumer/page/list/list.component";
-import {ListComponent as SdkList} from "./consumer/sdk/list/list.component";
+import {ListComponent as SdkList} from "./development/sdk/list/list.component";
 import {ListComponent as WebhookList} from "./consumer/webhook/list/list.component";
 import {ListComponent as LogList} from "./analytics/log/list/list.component";
 import {ListComponent as StatisticList} from "./analytics/statistic/list/list.component";
@@ -32,6 +32,7 @@ import {ListComponent as ConfigList} from "./system/config/list/list.component";
 import {ListComponent as BackupList} from "./system/backup/list/list.component";
 import {ListComponent as AuditList} from "./system/audit/list/list.component";
 import {ListComponent as TrashList} from "./system/trash/list/list.component";
+import {ListComponent as DatabaseList} from "./development/database/list/list.component";
 import {AccountComponent} from "./account/account.component";
 import {
   AccountRoute,
@@ -69,7 +70,13 @@ const routes: Routes = [
   { path: 'event/:id', component: EventList, canActivate: [isAuthenticated] },
   { path: 'cronjob', component: CronjobList, canActivate: [isAuthenticated] },
   { path: 'cronjob/:id', component: CronjobList, canActivate: [isAuthenticated] },
+
+  { path: 'database', component: DatabaseList, canActivate: [isAuthenticated] },
+  { path: 'database/:connection', component: DatabaseList, canActivate: [isAuthenticated] },
+  { path: 'database/:connection/:table', component: DatabaseList, canActivate: [isAuthenticated] },
+  { path: 'sdk', component: SdkList, canActivate: [isAuthenticated] },
   { path: 'generator', component: GeneratorComponent, canActivate: [isAuthenticated] },
+  { path: 'marketplace', component: MarketplaceList, canActivate: [isAuthenticated] },
 
   { path: 'app', component: AppList, canActivate: [isAuthenticated] },
   { path: 'app/:id', component: AppList, canActivate: [isAuthenticated] },
@@ -81,7 +88,6 @@ const routes: Routes = [
   { path: 'rate/:id', component: RateList, canActivate: [isAuthenticated] },
   { path: 'page', component: PageList, canActivate: [isAuthenticated] },
   { path: 'page/:id', component: PageList, canActivate: [isAuthenticated] },
-  { path: 'sdk', component: SdkList, canActivate: [isAuthenticated] },
   { path: 'webhook', component: WebhookList, canActivate: [isAuthenticated] },
   { path: 'webhook/:id', component: WebhookList, canActivate: [isAuthenticated] },
 
@@ -105,7 +111,6 @@ const routes: Routes = [
   { path: 'role/:id', component: RoleList, canActivate: [isAuthenticated] },
   { path: 'identity', component: IdentityList, canActivate: [isAuthenticated] },
   { path: 'identity/:id', component: IdentityList, canActivate: [isAuthenticated] },
-  { path: 'marketplace', component: MarketplaceList, canActivate: [isAuthenticated] },
   { path: 'config', component: ConfigList, canActivate: [isAuthenticated] },
   { path: 'config/:id', component: ConfigList, canActivate: [isAuthenticated] },
   { path: 'audit', component: AuditList, canActivate: [isAuthenticated] },
