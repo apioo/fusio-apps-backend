@@ -17,6 +17,8 @@ export class ColumnComponent implements OnInit {
   newLength?: number;
   newNotNull?: boolean = false;
 
+  result: Array<BackendDatabaseTableColumn> = [];
+
   types = [
     {key: 'smallint', value: 'SmallInt'},
     {key: 'integer', value: 'Integer'},
@@ -35,6 +37,7 @@ export class ColumnComponent implements OnInit {
   ]
 
   ngOnInit(): void {
+    this.result = this.filter(this.data);
   }
 
   add() {
@@ -42,7 +45,7 @@ export class ColumnComponent implements OnInit {
       return;
     }
 
-    this.data.push({
+    this.result.push({
       name: this.newName,
       type: this.newType,
       length: this.newLength,
@@ -60,7 +63,7 @@ export class ColumnComponent implements OnInit {
       return;
     }
 
-    this.data = this.data.filter((row) => {
+    this.result = this.result.filter((row) => {
       return row.name !== name;
     });
   }
@@ -70,7 +73,41 @@ export class ColumnComponent implements OnInit {
       return;
     }
 
-    this.dataChange.emit(this.data);
+    this.dataChange.emit(this.filter(this.result));
+  }
+
+  private filter(result: Array<BackendDatabaseTableColumn>) {
+    return result.map((column) => {
+      if (column.length === null) {
+        delete column.length;
+      }
+      if (column.precision === null) {
+        delete column.precision;
+      }
+      if (column.scale === null) {
+        delete column.scale;
+      }
+      if (column.unsigned === null) {
+        delete column.unsigned;
+      }
+      if (column.fixed === null) {
+        delete column.fixed;
+      }
+      if (column.notNull === null) {
+        delete column.notNull;
+      }
+      if (column.autoIncrement === null) {
+        delete column.autoIncrement;
+      }
+      if (column.default === null) {
+        delete column.default;
+      }
+      if (column.comment === null) {
+        delete column.comment;
+      }
+
+      return column;
+    });
   }
 
 }

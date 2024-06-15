@@ -36,6 +36,9 @@ import {ModalComponent as CronjobModal} from "./api/cronjob/modal/modal.componen
 import {ListComponent as DatabaseList} from './development/database/list/list.component';
 import {RowComponent as DatabaseRow} from './development/database/row/row.component';
 import {TableComponent as DatabaseTable} from './development/database/table/table.component';
+import {ColumnComponent as DatabaseColumn} from './development/database/column/column.component';
+import {IndexComponent as DatabaseIndex} from './development/database/index/index.component';
+import {ForeignKeyComponent as DatabaseForeignKey} from './development/database/foreign-key/foreign-key.component';
 import {ListComponent as AppList} from "./consumer/app/list/list.component";
 import {DetailComponent as AppDetail} from "./consumer/app/detail/detail.component";
 import {ModalComponent as AppModal} from "./consumer/app/modal/modal.component";
@@ -106,7 +109,6 @@ import {UserSelectorComponent} from './shared/user-selector/user-selector.compon
 import {SchemaLinkComponent} from './shared/schema-link/schema-link.component';
 import {ActionLinkComponent} from './shared/action-link/action-link.component';
 import {AppSelectorComponent} from './shared/app-selector/app-selector.component';
-import { ColumnComponent } from './development/database/column/column.component';
 
 @NgModule({
   declarations: [
@@ -138,6 +140,9 @@ import { ColumnComponent } from './development/database/column/column.component'
     DatabaseList,
     DatabaseRow,
     DatabaseTable,
+    DatabaseColumn,
+    DatabaseIndex,
+    DatabaseForeignKey,
     GeneratorComponent,
     SdkList,
     AppList,
@@ -205,7 +210,6 @@ import { ColumnComponent } from './development/database/column/column.component'
     ActionLinkComponent,
     AccountComponent,
     AppSelectorComponent,
-    ColumnComponent,
   ],
   imports: [
     BrowserModule,

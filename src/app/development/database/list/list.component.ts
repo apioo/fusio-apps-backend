@@ -121,6 +121,15 @@ export class ListComponent implements OnInit {
     this.columns = this.table.columns || [];
   }
 
+  async reloadSchema(): Promise<void> {
+    if (!this.selectedConnection || !this.selectedTable) {
+      return;
+    }
+
+    this.table = await this.fusio.getClient().backend().database().getTable(this.selectedConnection, this.selectedTable);
+    this.columns = this.table.columns || [];
+  }
+
   async doSearchSchema() {
     if (this.searchSchema) {
       this.columns = this.columns.filter((column) => {
@@ -160,10 +169,6 @@ export class ListComponent implements OnInit {
     query.push(this.filterOp || '');
     query.push(this.filterValue || '');
 
-    // filterBy
-    // filterOp
-    // filterValue
-
     // sortBy
     // sortOrder
 
@@ -172,7 +177,7 @@ export class ListComponent implements OnInit {
 
   openTableCreateDialog() {
     const modalRef = this.modalService.open(TableComponent, {
-      size: 'lg'
+      size: 'xl'
     });
 
     modalRef.componentInstance.mode = Mode.Create;
@@ -180,14 +185,14 @@ export class ListComponent implements OnInit {
     modalRef.closed.subscribe(async (result: Result<BackendDatabaseTable>) => {
       this.response = result.response;
       if (result.response.success) {
-        await this.loadData();
+        await this.reloadSchema();
       }
     });
   }
 
   openTableUpdateDialog(table: BackendDatabaseTable) {
     const modalRef = this.modalService.open(TableComponent, {
-      size: 'lg'
+      size: 'xl'
     });
     modalRef.componentInstance.mode = Mode.Update;
     modalRef.componentInstance.connection = this.selectedConnection;
@@ -195,14 +200,14 @@ export class ListComponent implements OnInit {
     modalRef.closed.subscribe(async (result: Result<BackendDatabaseTable>) => {
       this.response = result.response;
       if (result.response.success) {
-        await this.loadData();
+        await this.reloadSchema();
       }
     });
   }
 
   openTableDeleteDialog(table: BackendDatabaseTable) {
     const modalRef = this.modalService.open(TableComponent, {
-      size: 'lg'
+      size: 'xl'
     });
     modalRef.componentInstance.mode = Mode.Delete;
     modalRef.componentInstance.connection = this.selectedConnection;
@@ -210,7 +215,7 @@ export class ListComponent implements OnInit {
     modalRef.closed.subscribe(async (result: Result<BackendDatabaseTable>) => {
       this.response = result.response;
       if (result.response.success) {
-        await this.loadData();
+        await this.reloadSchema();
       }
     });
   }
