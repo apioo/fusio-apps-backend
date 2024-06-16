@@ -49,7 +49,11 @@ export class GeneratorComponent implements OnInit {
         config: new URLSearchParams(config).toString(),
       });
 
-      this.response = response;
+      if (response.success === true && response.link) {
+        window.location.href = response.link;
+      } else {
+        this.response = response;
+      }
     } catch (error) {
       this.response = this.error.convert(error);
     }
