@@ -74,7 +74,7 @@ import {ListComponent as DatabaseList} from './development/database/list/list.co
 import {RowComponent as DatabaseRow} from './development/database/row/row.component';
 import {TableComponent as DatabaseTable} from './development/database/table/table.component';
 import {GeneratorComponent} from './development/generator/generator.component';
-import {GenerateComponent as SdkGenerate} from './development/sdk/generate/generate.component';
+import {GeneratorComponent as SdkGenerate} from './development/sdk/generator/generator.component';
 import {ListComponent as SdkList} from "./development/sdk/list/list.component";
 
 import {DetailComponent as PlanDetail} from "./monetization/plan/detail/detail.component";

@@ -32,6 +32,7 @@ import {ListComponent as WebhookList} from "./consumer/webhook/list/list.compone
 import {ListComponent as DatabaseList} from './development/database/list/list.component';
 import {GeneratorComponent} from './development/generator/generator.component';
 import {ListComponent as SdkList} from "./development/sdk/list/list.component";
+import {GeneratorComponent as SdkGenerator} from "./development/sdk/generator/generator.component";
 import {ListComponent as PlanList} from "./monetization/plan/list/list.component";
 import {ListComponent as TransactionList} from "./monetization/transaction/list/list.component";
 import {ListComponent as AuditList} from "./system/audit/list/list.component";
@@ -74,6 +75,7 @@ const routes: Routes = [
   { path: 'database/:connection', component: DatabaseList, canActivate: [isAuthenticated] },
   { path: 'database/:connection/:table', component: DatabaseList, canActivate: [isAuthenticated] },
   { path: 'sdk', component: SdkList, canActivate: [isAuthenticated] },
+  { path: 'sdk/generator/:type', component: SdkGenerator, canActivate: [isAuthenticated] },
   { path: 'generator', component: GeneratorComponent, canActivate: [isAuthenticated] },
   { path: 'marketplace', component: MarketplaceList, canActivate: [isAuthenticated] },
 
