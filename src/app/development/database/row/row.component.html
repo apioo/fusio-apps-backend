@@ -22,6 +22,12 @@
               <ng-container *ngSwitchCase="'integer'">
                 <input type="number" [name]="column.name" [(ngModel)]="entity[column.name]" [disabled]="mode === 3" [placeholder]="entity[column.name] === null ? 'NULL' : ''" [required]="column.notNull || false" class="form-control">
               </ng-container>
+              <ng-container *ngSwitchCase="'boolean'">
+                <select [name]="column.name" [(ngModel)]="entity[column.name]" [disabled]="mode === 3" [required]="column.notNull || false" class="form-select">
+                  <option [ngValue]="1">True</option>
+                  <option [ngValue]="0">False</option>
+                </select>
+              </ng-container>
               <ng-container *ngSwitchCase="'text'">
                 <textarea [name]="column.name" [(ngModel)]="entity[column.name]" [disabled]="mode === 3" [placeholder]="entity[column.name] === null ? 'NULL' : ''" [required]="column.notNull || false" class="form-control"></textarea>
               </ng-container>
