@@ -5,7 +5,7 @@ import {BackendDatabaseTable} from "fusio-sdk/dist/BackendDatabaseTable";
 import {CommonMessage} from "fusio-sdk/dist/CommonMessage";
 
 @Component({
-  selector: 'app-table',
+  selector: 'app-database-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css']
 })

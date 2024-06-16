@@ -12,7 +12,7 @@ import {TableComponent} from "../table/table.component";
 import {BackendDatabaseTableColumn} from "fusio-sdk/dist/BackendDatabaseTableColumn";
 
 @Component({
-  selector: 'app-list',
+  selector: 'app-database-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
