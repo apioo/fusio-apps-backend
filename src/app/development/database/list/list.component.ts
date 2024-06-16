@@ -128,6 +128,11 @@ export class ListComponent implements OnInit {
 
     this.table = await this.fusio.getClient().backend().database().getTable(this.selectedConnection, this.selectedTable);
     this.columns = this.table.columns || [];
+
+    const response = await this.fusio.getClient().backend().database().getTables(this.selectedConnection);
+    if (response.tables) {
+      this.tables = response.tables;
+    }
   }
 
   async doSearchSchema() {
