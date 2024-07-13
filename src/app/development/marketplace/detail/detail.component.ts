@@ -6,7 +6,7 @@ import {CommonMessage} from "fusio-sdk/dist/CommonMessage";
 import {MarketplaceObject} from "fusio-sdk/dist/MarketplaceObject";
 
 @Component({
-  selector: 'app-detail',
+  selector: 'app-marketplace-detail',
   templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.css']
 })
