@@ -31,6 +31,8 @@ import {ListComponent as UserList} from "./consumer/user/list/list.component";
 import {ListComponent as WebhookList} from "./consumer/webhook/list/list.component";
 import {ListComponent as DatabaseList} from './development/database/list/list.component';
 import {GeneratorComponent} from './development/generator/generator.component';
+import {ListComponent as MarketplaceList} from "./development/marketplace/list/list.component";
+import {DetailComponent as MarketplaceDetail} from "./development/marketplace/detail/detail.component";
 import {ListComponent as SdkList} from "./development/sdk/list/list.component";
 import {GeneratorComponent as SdkGenerator} from "./development/sdk/generator/generator.component";
 import {ListComponent as PlanList} from "./monetization/plan/list/list.component";
@@ -40,7 +42,6 @@ import {ListComponent as BackupList} from './system/backup/list/list.component';
 import {ListComponent as CategoryList} from "./system/category/list/list.component";
 import {ListComponent as ConfigList} from "./system/config/list/list.component";
 import {ListComponent as IdentityList} from './system/identity/list/list.component';
-import {ListComponent as MarketplaceList} from "./system/marketplace/list/list.component";
 import {ListComponent as RoleList} from "./system/role/list/list.component";
 import {ListComponent as TrashList} from "./system/trash/list/list.component";
 
@@ -74,10 +75,12 @@ const routes: Routes = [
   { path: 'database', component: DatabaseList, canActivate: [isAuthenticated] },
   { path: 'database/:connection', component: DatabaseList, canActivate: [isAuthenticated] },
   { path: 'database/:connection/:table', component: DatabaseList, canActivate: [isAuthenticated] },
-  { path: 'sdk', component: SdkList, canActivate: [isAuthenticated] },
-  { path: 'sdk/generator/:type', component: SdkGenerator, canActivate: [isAuthenticated] },
   { path: 'generator', component: GeneratorComponent, canActivate: [isAuthenticated] },
   { path: 'marketplace', component: MarketplaceList, canActivate: [isAuthenticated] },
+  { path: 'marketplace/:type', component: MarketplaceList, canActivate: [isAuthenticated] },
+  { path: 'marketplace/:type/:user/:name', component: MarketplaceDetail, canActivate: [isAuthenticated] },
+  { path: 'sdk', component: SdkList, canActivate: [isAuthenticated] },
+  { path: 'sdk/generator/:type', component: SdkGenerator, canActivate: [isAuthenticated] },
 
   { path: 'app', component: AppList, canActivate: [isAuthenticated] },
   { path: 'app/:id', component: AppList, canActivate: [isAuthenticated] },

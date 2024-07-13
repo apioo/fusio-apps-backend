@@ -1,0 +1,65 @@
+
+<h1>Marketplace</h1>
+
+<fusio-message [response]="response"></fusio-message>
+
+<ul ngbNav #nav="ngbNav" [(activeId)]="selectedType" (activeIdChange)="changeTab()" class="nav-tabs">
+  <li [ngbNavItem]="'action'">
+    <button ngbNavLink>Actions</button>
+    <ng-template ngbNavContent>
+      <fusio-search [searchTerm]="actionSearch" (search)="doSearch($event)" placeholder="action"></fusio-search>
+      <div class="d-flex flex-wrap">
+        <div class="card me-2 mb-2 overflow-hidden float-start" style="width:400px;height:112px;" *ngFor="let action of actions">
+          <div class="row g-0">
+            <div class="col-2">
+              <div style="font-size:2em;width:64px;height:64px;" class="text-center ms-2 mt-4 pt-2 rounded-circle bg-dark text-info"><i class="bi bi-{{ action.icon }}"></i></div>
+            </div>
+            <div class="col-10">
+              <div class="card-body">
+                <h5 class="card-title fw-bold text-nowrap overflow-hidden"><a [routerLink]="['/marketplace/', selectedType, action.author?.name, action.name]">{{ action.author?.name }} / {{ action.name }}</a><span *ngIf="action.author?.verified" class="ms-2 text-primary" ngbTooltip="Verified user"><i class="bi bi-patch-check-fill"></i></span></h5>
+                <p class="card-text" style="font-size:0.8em;">{{ action.summary }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ngb-pagination
+        [(page)]="actionPage"
+        [pageSize]="actionPageSize"
+        [collectionSize]="actionTotalResults"
+        [maxSize]="8"
+        [ellipses]="true"
+        (pageChange)="doPageChange($event)"></ngb-pagination>
+    </ng-template>
+  </li>
+  <li [ngbNavItem]="'app'">
+    <button ngbNavLink>Apps</button>
+    <ng-template ngbNavContent>
+      <fusio-search [searchTerm]="appSearch" (search)="doSearch($event)" placeholder="app"></fusio-search>
+      <div class="d-flex flex-wrap">
+        <div class="card me-2 mb-2 overflow-hidden float-start" style="width:400px;height:112px;" *ngFor="let action of apps">
+          <div class="row g-0">
+            <div class="col-2">
+              <div style="font-size:2em;width:64px;height:64px;" class="text-center ms-2 mt-4 pt-2 rounded-circle bg-dark text-info"><i class="bi bi-{{ action.icon }}"></i></div>
+            </div>
+            <div class="col-10">
+              <div class="card-body">
+                <h5 class="card-title fw-bold text-nowrap overflow-hidden"><a [routerLink]="['/marketplace/', selectedType, action.author?.name, action.name]">{{ action.author?.name }} / {{ action.name }}</a><span *ngIf="action.author?.verified" class="ms-2 text-primary" ngbTooltip="Verified user"><i class="bi bi-patch-check-fill"></i></span></h5>
+                <p class="card-text" style="font-size:0.8em;">{{ action.summary }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ngb-pagination
+        [(page)]="appPage"
+        [pageSize]="appPageSize"
+        [collectionSize]="appTotalResults"
+        [maxSize]="8"
+        [ellipses]="true"
+        (pageChange)="doPageChange($event)"></ngb-pagination>
+    </ng-template>
+  </li>
+</ul>
+
+<div [ngbNavOutlet]="nav" class="mt-2"></div>

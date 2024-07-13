@@ -1,0 +1,46 @@
+
+<h1>Marketplace / Detail</h1>
+
+<fusio-message [response]="response"></fusio-message>
+
+<div class="card" *ngIf="entity">
+  <div class="card-header">Action</div>
+  <div class="card-body">
+    <div class="btn-group" role="group">
+      <button type="button" (click)="doInstall()" class="btn btn-primary fusio-btn-install">Install</button>
+      <button type="button" (click)="doUpgrade()" class="btn btn-secondary fusio-btn-upgrade">Upgrade</button>
+    </div>
+    <div class="fusio-detail">
+      <div class="row">
+        <div class="col-2 fw-bold">Name</div>
+        <div class="col-10">{{entity.name}}</div>
+      </div>
+      <div class="row">
+        <div class="col-2 fw-bold">Author</div>
+        <div class="col-10">{{entity.author?.name}} <i class="bi bi-patch-check-fill text-primary" *ngIf="entity.author?.verified"></i></div>
+      </div>
+      <div class="row">
+        <div class="col-2 fw-bold">Version</div>
+        <div class="col-10">{{entity.version}}</div>
+      </div>
+      <div class="row">
+        <div class="col-2 fw-bold">Icon</div>
+        <div class="col-10"><i class="bi bi-{{entity.icon}}"></i></div>
+      </div>
+      <div class="row">
+        <div class="col-2 fw-bold">Summary</div>
+        <div class="col-10">{{entity.summary}}</div>
+      </div>
+      <div class="row">
+        <div class="col-2 fw-bold">Description</div>
+        <div class="col-10">
+          <markdown [data]="entity.description"></markdown>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-2 fw-bold">Costs</div>
+        <div class="col-10">{{entity.cost}}</div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -75,6 +75,8 @@ import {RowComponent as DatabaseRow} from './development/database/row/row.compon
 import {TableComponent as DatabaseTable} from './development/database/table/table.component';
 import {GeneratorComponent} from './development/generator/generator.component';
 import {GeneratorComponent as SdkGenerate} from './development/sdk/generator/generator.component';
+import {ListComponent as MarketplaceList} from "./development/marketplace/list/list.component";
+import {DetailComponent as MarketplaceDetail} from './development/marketplace/detail/detail.component';
 import {ListComponent as SdkList} from "./development/sdk/list/list.component";
 
 import {DetailComponent as PlanDetail} from "./monetization/plan/detail/detail.component";
@@ -96,7 +98,6 @@ import {ModalComponent as ConfigModal} from "./system/config/modal/modal.compone
 import {ModalComponent as IdentityDetail} from './system/identity/modal/modal.component';
 import {ListComponent as IdentityList} from './system/identity/list/list.component';
 import {DetailComponent as IdentityModal} from './system/identity/detail/detail.component';
-import {ListComponent as MarketplaceList} from "./system/marketplace/list/list.component";
 import {DetailComponent as RoleDetail} from "./system/role/detail/detail.component";
 import {ListComponent as RoleList} from "./system/role/list/list.component";
 import {ModalComponent as RoleModal} from "./system/role/modal/modal.component";
@@ -182,6 +183,8 @@ import {UserSelectorComponent} from './shared/user-selector/user-selector.compon
     DatabaseRow,
     DatabaseTable,
     GeneratorComponent,
+    MarketplaceList,
+    MarketplaceDetail,
     SdkGenerate,
     SdkList,
 
@@ -204,7 +207,6 @@ import {UserSelectorComponent} from './shared/user-selector/user-selector.compon
     IdentityDetail,
     IdentityList,
     IdentityModal,
-    MarketplaceList,
     RoleDetail,
     RoleList,
     RoleModal,
