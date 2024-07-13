@@ -1,13 +1,15 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {UserService} from "ngx-fusio-sdk";
 import {BackendUser} from "fusio-sdk/dist/BackendUser";
+import {ApiService} from "./api.service";
+import {Config} from "./editor/config";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'fusio';
 
   user?: BackendUser;
@@ -19,10 +21,12 @@ export class AppComponent {
     path: '/logout'
   }];
 
-  constructor(private userMeta: UserService) { }
+  constructor(private userMeta: UserService, private fusio: ApiService) { }
 
   ngOnInit(): void {
     this.user = this.userMeta.get();
+
+    Config.fusio = this.fusio;
   }
 
 }

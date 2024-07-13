@@ -14,6 +14,7 @@ import {ApiService} from "./api.service";
 import {AccountComponent} from './account/account.component';
 import {ConfigBuilder} from "./config-builder";
 import {NavigationComponent} from './navigation/navigation.component';
+import {Config as EditorConfig} from './editor/config';
 
 import {DetailComponent as ErrorDetail} from "./analytics/error/detail/detail.component";
 import {ListComponent as ErrorList} from "./analytics/error/list/list.component";
@@ -236,7 +237,7 @@ import {UserSelectorComponent} from './shared/user-selector/user-selector.compon
     ReactiveFormsModule,
     NgbTypeaheadModule,
     NgxApexchartsModule,
-    MonacoEditorModule.forRoot(),
+    MonacoEditorModule.forRoot(EditorConfig.getConfig()),
     MarkdownModule.forRoot(),
     TypeschemaEditorModule,
     FusioSdkModule.forRoot(ConfigBuilder.build())
