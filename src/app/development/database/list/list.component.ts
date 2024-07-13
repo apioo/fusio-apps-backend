@@ -54,9 +54,13 @@ export class ListComponent implements OnInit {
       }
     });
 
-    const response = await this.fusio.getClient().backend().database().getConnections();
-    if (response.connections) {
-      this.connections = response.connections;
+    try {
+      const response = await this.fusio.getClient().backend().database().getConnections();
+      if (response.connections) {
+        this.connections = response.connections;
+      }
+    } catch (error) {
+      this.response = this.error.convert(error);
     }
   }
 
@@ -117,8 +121,12 @@ export class ListComponent implements OnInit {
       return;
     }
 
-    this.table = await this.fusio.getClient().backend().database().getTable(this.selectedConnection, this.selectedTable);
-    this.columns = this.table.columns || [];
+    try {
+      this.table = await this.fusio.getClient().backend().database().getTable(this.selectedConnection, this.selectedTable);
+      this.columns = this.table.columns || [];
+    } catch (error) {
+      this.response = this.error.convert(error);
+    }
   }
 
   async reloadSchema(): Promise<void> {
@@ -126,12 +134,16 @@ export class ListComponent implements OnInit {
       return;
     }
 
-    this.table = await this.fusio.getClient().backend().database().getTable(this.selectedConnection, this.selectedTable);
-    this.columns = this.table.columns || [];
+    try {
+      this.table = await this.fusio.getClient().backend().database().getTable(this.selectedConnection, this.selectedTable);
+      this.columns = this.table.columns || [];
 
-    const response = await this.fusio.getClient().backend().database().getTables(this.selectedConnection);
-    if (response.tables) {
-      this.tables = response.tables;
+      const response = await this.fusio.getClient().backend().database().getTables(this.selectedConnection);
+      if (response.tables) {
+        this.tables = response.tables;
+      }
+    } catch (error) {
+      this.response = this.error.convert(error);
     }
   }
 
@@ -157,8 +169,12 @@ export class ListComponent implements OnInit {
       return;
     }
 
-    this.rows = await this.fusio.getClient().backend().database().getRows(this.selectedConnection, this.selectedTable, ...this.getCollectionQuery());
-    this.totalResults = this.rows.totalResults || 0;
+    try {
+      this.rows = await this.fusio.getClient().backend().database().getRows(this.selectedConnection, this.selectedTable, ...this.getCollectionQuery());
+      this.totalResults = this.rows.totalResults || 0;
+    } catch (error) {
+      this.response = this.error.convert(error);
+    }
   }
 
   doPageChange(page?: number) {
