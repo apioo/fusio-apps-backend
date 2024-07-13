@@ -18,9 +18,14 @@ export class ModalComponent extends Modal<Client, BackendConnection> {
   entityClass?: string;
   custom: boolean = false;
 
+  basicConnections: Array<BackendConnectionIndexEntry> = [];
+  sdkConnections: Array<BackendConnectionIndexEntry> = [];
+
   override async ngOnInit(): Promise<void> {
     const response = await this.fusio.getClient().backend().connection().getClasses();
     this.connections = response.connections;
+    this.basicConnections = this.getBasicConnections(this.connections || []);
+    this.sdkConnections = this.getSDKConnections(this.connections || []);
 
     if (this.entity.class) {
       this.loadConfig(this.entity.class);
@@ -60,6 +65,21 @@ export class ModalComponent extends Modal<Client, BackendConnection> {
     if (hasChanged) {
       this.entity.config = {};
     }
+  }
+
+  getBasicConnections(connections: Array<BackendConnectionIndexEntry>): Array<BackendConnectionIndexEntry> {
+    return connections.filter((connection) => {
+      return !connection.name?.startsWith('SDK-');
+    });
+  }
+
+  getSDKConnections(connections: Array<BackendConnectionIndexEntry>): Array<BackendConnectionIndexEntry> {
+    return connections.filter((connection) => {
+      return connection.name?.startsWith('SDK-');
+    }).map((connection) => {
+      connection.name = connection.name?.substring(4);
+      return connection;
+    });
   }
 
   showHelp() {

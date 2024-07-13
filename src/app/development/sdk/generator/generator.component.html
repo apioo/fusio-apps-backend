@@ -1,0 +1,54 @@
+
+<h1>SDK / Generator</h1>
+
+<fusio-message [response]="response"></fusio-message>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">Generator</div>
+      <div class="card-body">
+        <form>
+          <div class="mb-3 row">
+            <label for="class" class="col-sm-2 col-form-label fw-bold">Format</label>
+            <div class="col-sm-10">
+              <div class="input-group">
+                <select id="class" name="class" [(ngModel)]="type" class="form-select">
+                  <option *ngFor="let type of types|keyvalue" [ngValue]="type.key">{{type.key}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="namespace" class="col-sm-2 col-form-label fw-bold">Namespace</label>
+            <div class="col-sm-10">
+              <div class="input-group">
+                <input type="text" id="namespace" name="namespace" [(ngModel)]="namespace" class="form-control">
+              </div>
+            </div>
+          </div>
+          <div class="btn-group">
+            <button type="button" class="btn btn-primary" (click)="generate()">Generate</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">Help</div>
+      <div class="card-body">
+        <div class="alert alert-primary">
+          <p>Our SDK generator helps to automatically generate a complete ready to use SDK for your API.
+            You can use this SDK either to integrate your API internally or you can also provide this SDK to your
+            customers to help them work with your API.</p>
+          <p>
+          <p>We provide additional SDK languages like CSharp, Go, Java and Python through our <a href="https://sdkgen.app/">SDKgen</a>
+            service, please register there to enable these languages. You then need to provide your credentials at the
+            <code>SDKGEN_CLIENT_ID</code> and <code>SDKGEN_CLIENT_SECRET</code> environment variable.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
