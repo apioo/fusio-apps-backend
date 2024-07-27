@@ -35,6 +35,7 @@ import {ListComponent as MarketplaceList} from "./development/marketplace/list/l
 import {DetailComponent as MarketplaceDetail} from "./development/marketplace/detail/detail.component";
 import {ListComponent as SdkList} from "./development/sdk/list/list.component";
 import {GeneratorComponent as SdkGenerator} from "./development/sdk/generator/generator.component";
+import {ListComponent as TestList} from "./development/test/list/list.component";
 import {ListComponent as PlanList} from "./monetization/plan/list/list.component";
 import {ListComponent as TransactionList} from "./monetization/transaction/list/list.component";
 import {ListComponent as AuditList} from "./system/audit/list/list.component";
@@ -81,6 +82,7 @@ const routes: Routes = [
   { path: 'marketplace/:type/:user/:name', component: MarketplaceDetail, canActivate: [isAuthenticated] },
   { path: 'sdk', component: SdkList, canActivate: [isAuthenticated] },
   { path: 'sdk/generator/:type', component: SdkGenerator, canActivate: [isAuthenticated] },
+  { path: 'test', component: TestList, canActivate: [isAuthenticated] },
 
   { path: 'app', component: AppList, canActivate: [isAuthenticated] },
   { path: 'app/:id', component: AppList, canActivate: [isAuthenticated] },

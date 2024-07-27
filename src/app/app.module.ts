@@ -79,6 +79,8 @@ import {GeneratorComponent as SdkGenerate} from './development/sdk/generator/gen
 import {ListComponent as MarketplaceList} from "./development/marketplace/list/list.component";
 import {DetailComponent as MarketplaceDetail} from './development/marketplace/detail/detail.component';
 import {ListComponent as SdkList} from "./development/sdk/list/list.component";
+import {ListComponent as TestList} from "./development/test/list/list.component";
+import {ModalComponent as TestModal} from './development/test/modal/modal.component';
 
 import {DetailComponent as PlanDetail} from "./monetization/plan/detail/detail.component";
 import {ListComponent as PlanList} from "./monetization/plan/list/list.component";
@@ -188,6 +190,8 @@ import {UserSelectorComponent} from './shared/user-selector/user-selector.compon
     MarketplaceDetail,
     SdkGenerate,
     SdkList,
+    TestList,
+    TestModal,
 
     PlanDetail,
     PlanList,

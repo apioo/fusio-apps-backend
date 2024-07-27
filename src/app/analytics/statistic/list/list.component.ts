@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {ChartOptions, Converter} from "../converter";
+import {ChartOptions, Converter, PieChartOptions} from "../converter";
 import {FilterComponent} from "../../log/filter/filter.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {HelpService} from "ngx-fusio-sdk";
@@ -15,6 +15,7 @@ export class ListComponent implements OnInit {
 
   filter: Array<any> = [0, 16];
   chart?: ChartOptions;
+  pieChart?: PieChartOptions;
   statistic = 'incoming_requests';
   search: string = '';
 
@@ -45,6 +46,9 @@ export class ListComponent implements OnInit {
   }, {
     name: 'Used points',
     value: StatisticType.used_points
+  }, {
+    name: 'Test coverage',
+    value: StatisticType.test_coverage
   }];
 
   constructor(private fusio: ApiService, private help: HelpService, private route: ActivatedRoute, private router: Router, private modalService: NgbModal) { }
@@ -62,7 +66,6 @@ export class ListComponent implements OnInit {
   }
 
   async doFilter() {
-    console.log('filter', this.filter);
     if (this.statistic === StatisticType.errors_per_operation) {
       const response = await this.fusio.getClient().backend().statistic().getErrorsPerOperation(...this.filter);
       this.chart = Converter.convertChart(response);
@@ -90,6 +93,9 @@ export class ListComponent implements OnInit {
     } else if (this.statistic === StatisticType.used_points) {
       const response = await this.fusio.getClient().backend().statistic().getUsedPoints(...this.filter);
       this.chart = Converter.convertChart(response);
+    } else if (this.statistic === StatisticType.test_coverage) {
+      const response = await this.fusio.getClient().backend().statistic().getTestCoverage();
+      this.pieChart = Converter.convertPieChart(response);
     }
   }
 
@@ -143,4 +149,5 @@ enum StatisticType {
   time_average = 'time_average',
   time_per_operation = 'time_per_operation',
   used_points = 'used_points',
+  test_coverage = 'test_coverage',
 }

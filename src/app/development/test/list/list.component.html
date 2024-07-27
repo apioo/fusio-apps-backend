@@ -1,0 +1,51 @@
+
+<h1>Test</h1>
+
+<fusio-message [response]="response"></fusio-message>
+
+<div class="btn-group" role="group">
+  <button (click)="doRun()" class="btn btn-primary">Run</button>
+  <button (click)="doRefresh()" class="btn btn-secondary">Refresh</button>
+</div>
+
+<br>
+<br>
+
+<table class="table table-striped">
+  <colgroup>
+    <col style="width:100px;">
+    <col style="width:400px;">
+    <col>
+    <col style="width:50px;">
+  </colgroup>
+  <thead>
+  <tr>
+    <th></th>
+    <th>Operation</th>
+    <th>Message</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let test of tests">
+    <td>
+      <ng-container [ngSwitch]="test.status">
+        <span *ngSwitchCase="1" class="badge text-bg-secondary">Pending</span>
+        <span *ngSwitchCase="2" class="badge text-bg-success">Success</span>
+        <span *ngSwitchCase="3" class="badge text-bg-warning">Warning</span>
+        <span *ngSwitchCase="4" class="badge text-bg-danger">Error</span>
+        <span *ngSwitchCase="5" class="badge text-bg-secondary">Skipped</span>
+        <span *ngSwitchCase="6" class="badge text-bg-secondary">Disabled</span>
+      </ng-container>
+    </td>
+    <td><code>{{test.operationName}}</code></td>
+    <td>{{test.message}}</td>
+    <td>
+      <div class="btn-group">
+        <button class="btn btn-primary" (click)="openUpdateDialog(test)"><i class="bi bi-gear"></i></button>
+        <button class="btn btn-secondary" [routerLink]="['/operation/', '~' + test.operationName]"><i class="bi bi-router"></i></button>
+      </div>
+    </td>
+  </tr>
+  </tbody>
+</table>

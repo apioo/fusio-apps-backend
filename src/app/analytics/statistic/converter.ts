@@ -46,9 +46,26 @@ export class Converter {
 
     return dataSets;
   }
+
+  public static convertPieChart(data: BackendStatisticChart): PieChartOptions {
+    let series = [];
+    if (data.data && data.data[0] && Array.isArray(data.data[0])) {
+      series = data.data[0];
+    }
+
+    return {
+      series: series,
+      labels: data.labels || [],
+    };
+  }
 }
 
 export type ChartOptions = {
   series: ApexAxisChartSeries
   xaxis: ApexXAxis
+};
+
+export type PieChartOptions = {
+  series: Array<number>
+  labels: Array<string>
 };

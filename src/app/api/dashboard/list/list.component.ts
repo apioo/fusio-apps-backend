@@ -1,10 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {ChartOptions, Converter} from "../../../analytics/statistic/converter";
+import {ChartOptions, Converter, PieChartOptions} from "../../../analytics/statistic/converter";
 import {ApiService} from "../../../api.service";
 import {BackendDashboardApps} from "fusio-sdk/dist/BackendDashboardApps";
 import {BackendDashboardRequests} from "fusio-sdk/dist/BackendDashboardRequests";
 import {BackendDashboardUsers} from "fusio-sdk/dist/BackendDashboardUsers";
-import {BackendDashboardTransactions} from "fusio-sdk/dist/BackendDashboardTransactions";
 
 @Component({
   selector: 'app-list',
@@ -18,10 +17,10 @@ export class ListComponent implements OnInit {
   incomingTransactions?: ChartOptions;
   mostUsedOperations?: ChartOptions;
   timePerOperation?: ChartOptions;
+  testCoverage?: PieChartOptions;
   latestApps?: BackendDashboardApps;
   latestRequests?: BackendDashboardRequests;
   latestUsers?: BackendDashboardUsers;
-  latestTransactions?: BackendDashboardTransactions;
 
   constructor(private fusio: ApiService) {
   }
@@ -49,10 +48,13 @@ export class ListComponent implements OnInit {
       this.timePerOperation = Converter.convertChart(response.timePerOperation, 10);
     }
 
+    if (response.testCoverage) {
+      this.testCoverage = Converter.convertPieChart(response.testCoverage);
+    }
+
     this.latestApps = response.latestApps;
     this.latestRequests = response.latestRequests;
     this.latestUsers = response.latestUsers;
-    this.latestTransactions = response.latestTransactions;
   }
 
 }

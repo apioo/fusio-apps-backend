@@ -23,7 +23,12 @@
 <div class="card">
   <div class="card-header">{{statisticName}}</div>
   <div class="card-body">
-    <apx-chart *ngIf="chart" [series]="chart.series" [chart]="{type: 'line', height: 500}" [xaxis]="chart.xaxis" [stroke]="{curve: 'smooth'}"></apx-chart>
+    <ng-container *ngIf="statistic === 'test_coverage' && pieChart">
+      <apx-chart [series]="pieChart.series" [labels]="pieChart.labels" [chart]="{type: 'donut', height: 500}" [stroke]="{curve: 'smooth'}"></apx-chart>
+    </ng-container>
+    <ng-container *ngIf="statistic !== 'test_coverage' && chart">
+      <apx-chart [series]="chart.series" [chart]="{type: 'line', height: 500}" [xaxis]="chart.xaxis" [stroke]="{curve: 'smooth'}"></apx-chart>
+    </ng-container>
   </div>
 </div>
 

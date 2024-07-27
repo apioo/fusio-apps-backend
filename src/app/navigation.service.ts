@@ -110,6 +110,12 @@ export class NavigationService {
               "icon": "bi-shop-window",
               "path": "/marketplace",
               "scope": "backend.marketplace"
+            },
+            {
+              "title": "Test",
+              "icon": "bi-bug",
+              "path": "/test",
+              "scope": "backend.test"
             }
           ]
         },

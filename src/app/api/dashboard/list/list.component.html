@@ -27,15 +27,9 @@
   </div>
   <div class="col-lg-6 col-xl-4">
     <div class="card fusio-panel">
-      <div class="card-header">Latest users</div>
+      <div class="card-header">Test coverage</div>
       <div class="card-body">
-        <table class="table">
-          <tbody>
-          <tr *ngFor="let user of latestUsers?.entry">
-            <td><a routerLink="/user/{{user.id}}">{{ user.name }}</a></td>
-          </tr>
-          </tbody>
-        </table>
+        <apx-chart *ngIf="testCoverage" [series]="testCoverage.series" [labels]="testCoverage.labels" [chart]="{type: 'donut', height: 240}" [stroke]="{curve: 'smooth'}"></apx-chart>
       </div>
     </div>
   </div>
@@ -52,6 +46,20 @@
       <div class="card-header">Incoming transactions</div>
       <div class="card-body">
         <apx-chart *ngIf="incomingTransactions" [series]="incomingTransactions.series" [chart]="{type: 'line', height: 240}" [xaxis]="incomingTransactions.xaxis" [stroke]="{curve: 'smooth'}"></apx-chart>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6 col-xl-4">
+    <div class="card fusio-panel">
+      <div class="card-header">Latest users</div>
+      <div class="card-body">
+        <table class="table">
+          <tbody>
+          <tr *ngFor="let user of latestUsers?.entry">
+            <td><a routerLink="/user/{{user.id}}">{{ user.name }}</a></td>
+          </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -77,21 +85,6 @@
           <tbody>
           <tr *ngFor="let app of latestApps?.entry">
             <td><a routerLink="/app/{{app.id}}">{{ app.name }}</a></td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-  <div class="col-lg-6 col-xl-4">
-    <div class="card fusio-panel">
-      <div class="card-header">Latest transactions</div>
-      <div class="card-body">
-        <table class="table">
-          <tbody>
-          <tr *ngFor="let transaction of latestTransactions?.entry">
-            <td><a routerLink="/transaction/{{transaction.id}}">{{ transaction.transactionId }}</a></td>
-            <td>{{ transaction.amount|currency }}</td>
           </tr>
           </tbody>
         </table>
