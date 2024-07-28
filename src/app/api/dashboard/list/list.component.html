@@ -51,43 +51,25 @@
   </div>
   <div class="col-lg-6 col-xl-4">
     <div class="card fusio-panel">
-      <div class="card-header">Latest users</div>
+      <div class="card-header">Most used activities</div>
       <div class="card-body">
-        <table class="table">
-          <tbody>
-          <tr *ngFor="let user of latestUsers?.entry">
-            <td><a routerLink="/user/{{user.id}}">{{ user.name }}</a></td>
-          </tr>
-          </tbody>
-        </table>
+        <apx-chart *ngIf="mostUsedActivities" [series]="mostUsedActivities.series" [chart]="{type: 'line', height: 240}" [xaxis]="mostUsedActivities.xaxis" [stroke]="{curve: 'smooth'}"></apx-chart>
       </div>
     </div>
   </div>
   <div class="col-lg-6 col-xl-4">
     <div class="card fusio-panel">
-      <div class="card-header">Latest requests</div>
+      <div class="card-header">Activities per user</div>
       <div class="card-body">
-        <table class="table">
-          <tbody>
-          <tr *ngFor="let request of latestRequests?.entry">
-            <td><a routerLink="/log/{{request.id}}">{{ request.path }}</a></td>
-          </tr>
-          </tbody>
-        </table>
+        <apx-chart *ngIf="activitiesPerUser" [series]="activitiesPerUser.series" [chart]="{type: 'line', height: 240}" [xaxis]="activitiesPerUser.xaxis" [stroke]="{curve: 'smooth'}"></apx-chart>
       </div>
     </div>
   </div>
   <div class="col-lg-6 col-xl-4">
     <div class="card fusio-panel">
-      <div class="card-header">Latest apps</div>
+      <div class="card-header">User registrations</div>
       <div class="card-body">
-        <table class="table">
-          <tbody>
-          <tr *ngFor="let app of latestApps?.entry">
-            <td><a routerLink="/app/{{app.id}}">{{ app.name }}</a></td>
-          </tr>
-          </tbody>
-        </table>
+        <apx-chart *ngIf="userRegistrations" [series]="userRegistrations.series" [chart]="{type: 'bar', height: 240}" [xaxis]="userRegistrations.xaxis" [stroke]="{curve: 'smooth'}"></apx-chart>
       </div>
     </div>
   </div>

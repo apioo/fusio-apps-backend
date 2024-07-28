@@ -1,9 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ChartOptions, Converter, PieChartOptions} from "../../../analytics/statistic/converter";
 import {ApiService} from "../../../api.service";
-import {BackendDashboardApps} from "fusio-sdk/dist/BackendDashboardApps";
-import {BackendDashboardRequests} from "fusio-sdk/dist/BackendDashboardRequests";
-import {BackendDashboardUsers} from "fusio-sdk/dist/BackendDashboardUsers";
 
 @Component({
   selector: 'app-list',
@@ -18,9 +15,9 @@ export class ListComponent implements OnInit {
   mostUsedOperations?: ChartOptions;
   timePerOperation?: ChartOptions;
   testCoverage?: PieChartOptions;
-  latestApps?: BackendDashboardApps;
-  latestRequests?: BackendDashboardRequests;
-  latestUsers?: BackendDashboardUsers;
+  mostUsedActivities?: ChartOptions;
+  activitiesPerUser?: ChartOptions;
+  userRegistrations?: ChartOptions;
 
   constructor(private fusio: ApiService) {
   }
@@ -52,9 +49,17 @@ export class ListComponent implements OnInit {
       this.testCoverage = Converter.convertPieChart(response.testCoverage);
     }
 
-    this.latestApps = response.latestApps;
-    this.latestRequests = response.latestRequests;
-    this.latestUsers = response.latestUsers;
+    if (response.mostUsedActivities) {
+      this.mostUsedActivities = Converter.convertChart(response.mostUsedActivities, 10);
+    }
+
+    if (response.activitiesPerUser) {
+      this.activitiesPerUser = Converter.convertChart(response.activitiesPerUser, 10);
+    }
+
+    if (response.userRegistrations) {
+      this.userRegistrations = Converter.convertChart(response.userRegistrations, 10);
+    }
   }
 
 }
