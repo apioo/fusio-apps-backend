@@ -232,7 +232,7 @@ export class NavigationService {
               "scope": "backend.identity"
             },
             {
-              "title": "Settings",
+              "title": "Config",
               "icon": "bi-gear",
               "path": "/config",
               "scope": "backend.config"
