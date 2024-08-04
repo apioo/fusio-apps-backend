@@ -13,10 +13,12 @@ import {config} from "rxjs";
 export class ModalComponent extends Modal<Client, BackendTest> {
 
   body: string = '';
+  disabled: boolean = false;
 
   override ngOnInit() {
     super.ngOnInit();
 
+    this.disabled = this.entity.status === 6;
     if (this.entity.config?.body) {
       this.body = JSON.stringify(this.entity.config?.body, null, 2);
     }
@@ -26,12 +28,18 @@ export class ModalComponent extends Modal<Client, BackendTest> {
   }
 
   protected async update(entity: BackendTest): Promise<CommonMessage> {
-    const config = Object.assign({}, entity.config);
+    const data = Object.assign({}, entity);
+    data.status = this.disabled ? 6 : 1;
     if (this.body) {
-      config.body = JSON.parse(this.body);
+      if (!data.config) {
+        data.config = {
+          method: "GET"
+        };
+      }
+      data.config.body = JSON.parse(this.body);
     }
 
-    return this.fusio.getClient().backend().test().update('' + entity.id, config);
+    return this.fusio.getClient().backend().test().update('' + entity.id, data);
   }
 
   protected async delete(entity: BackendTest): Promise<void> {
