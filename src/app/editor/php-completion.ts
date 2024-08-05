@@ -1,4 +1,4 @@
-import {CancellationToken, editor, languages, Position} from "monaco-editor";
+import {CancellationToken, editor, IRange, languages, Position} from "monaco-editor";
 import {ApiService} from "../api.service";
 
 export class PhpCompletion implements languages.CompletionItemProvider {
@@ -13,22 +13,45 @@ export class PhpCompletion implements languages.CompletionItemProvider {
   provideCompletionItems(model: editor.ITextModel, position: Position, context: languages.CompletionContext, token: CancellationToken): languages.ProviderResult<languages.CompletionList> {
     let suggestions: languages.CompletionItem[] = [];
 
-    const textUntilPosition = model.getLineContent(position.lineNumber).substring(0, position.column - 1).trim();
+    const textUntilPosition = model.getValueInRange({
+      startLineNumber: 1,
+      startColumn: 1,
+      endLineNumber: position.lineNumber,
+      endColumn: position.column,
+    });
+
+    const word = model.getWordUntilPosition(position);
+    const range = {
+      startLineNumber: position.lineNumber,
+      endLineNumber: position.lineNumber,
+      startColumn: word.startColumn,
+      endColumn: word.endColumn,
+    };
 
     if (textUntilPosition.endsWith("$request->")) {
-      suggestions = this.getRequestMethods(position);
+      suggestions = this.getRequestMethods(range);
+    } else if (textUntilPosition.endsWith("$request->getArguments()->")) {
+      suggestions = this.getRequestArgumentsMethods(range);
     } else if (textUntilPosition.endsWith("$context->")) {
-      suggestions = this.getContextMethods(position);
+      suggestions = this.getContextMethods(range);
+    } else if (textUntilPosition.endsWith("$context->getApp()->")) {
+      suggestions = this.getContextAppMethods(range);
+    } else if (textUntilPosition.endsWith("$context->getUser()->")) {
+      suggestions = this.getContextUserMethods(range);
     } else if (textUntilPosition.endsWith("$connector->")) {
-      suggestions = this.getConnectorMethods(position);
+      suggestions = this.getConnectorMethods(range);
     } else if (textUntilPosition.endsWith("$response->")) {
-      suggestions = this.getResponseMethods(position);
+      suggestions = this.getResponseMethods(range);
     } else if (textUntilPosition.endsWith("$dispatcher->")) {
-      suggestions = this.getDispatcherMethods(position);
+      suggestions = this.getDispatcherMethods(range);
     } else if (textUntilPosition.endsWith("$logger->")) {
-      suggestions = this.getLoggerMethods(position);
+      suggestions = this.getLoggerMethods(range);
     } else if (textUntilPosition.endsWith("$connector->getConnection('") || textUntilPosition.endsWith("$connector->getConnection(\"")) {
-      return this.getAvailableConnections(position);
+      return this.getAvailableConnections(range);
+    } else if (textUntilPosition.endsWith("$connection->")) {
+      suggestions = this.getConnectionMethods(range);
+    } else if (textUntilPosition.endsWith("$httpClient->")) {
+      suggestions = this.getHttpClientMethods(range);
     }
 
     return {
@@ -36,238 +59,306 @@ export class PhpCompletion implements languages.CompletionItemProvider {
     };
   }
 
-  getRequestMethods(position: Position): languages.CompletionItem[] {
+  getRequestMethods(range: IRange): languages.CompletionItem[] {
     return [{
       label: "getPayload(): mixed",
       kind: 0,
       insertText: "getPayload()",
-      range: {
-        startLineNumber: position.lineNumber,
-        endLineNumber: position.lineNumber,
-        startColumn: position.column,
-        endColumn: position.column,
-      },
+      range: range,
     }, {
       label: "getArguments(): RecordInterface",
       kind: 0,
       insertText: "getArguments()",
-      range: {
-        startLineNumber: position.lineNumber,
-        endLineNumber: position.lineNumber,
-        startColumn: position.column,
-        endColumn: position.column,
-      },
-    }, {
-      label: "getContext(): ExecuteRequestContext",
-      kind: 0,
-      insertText: "getContext()",
-      range: {
-        startLineNumber: position.lineNumber,
-        endLineNumber: position.lineNumber,
-        startColumn: position.column,
-        endColumn: position.column,
-      },
+      range: range,
     }];
   }
 
-  getContextMethods(position: Position): languages.CompletionItem[] {
+  getRequestArgumentsMethods(range: IRange): languages.CompletionItem[] {
+    return [{
+      label: "containsKey(key: string): bool",
+      kind: 0,
+      insertText: "containsKey()",
+      range: range,
+    }, {
+      label: "containsValue(value: mixed): bool",
+      kind: 0,
+      insertText: "containsValue()",
+      range: range,
+    }, {
+      label: "get(key: string): mixed",
+      kind: 0,
+      insertText: "get()",
+      range: range,
+    }, {
+      label: "getAll(): array",
+      kind: 0,
+      insertText: "getAll()",
+      range: range,
+    }, {
+      label: "getOrDefault(key: string, default: mixed): mixed",
+      kind: 0,
+      insertText: "getOrDefault()",
+      range: range,
+    }, {
+      label: "keySet(): array",
+      kind: 0,
+      insertText: "keySet()",
+      range: range,
+    }, {
+      label: "values(): array",
+      kind: 0,
+      insertText: "values()",
+      range: range,
+    }];
+  }
+
+  getContextMethods(range: IRange): languages.CompletionItem[] {
     return [{
       label: "getOperationId(): int",
       kind: 0,
       documentation: '',
       insertText: "getOperationId()",
-      range: {
-        startLineNumber: position.lineNumber,
-        endLineNumber: position.lineNumber,
-        startColumn: position.column,
-        endColumn: position.column,
-      },
+      range: range,
     }, {
       label: "getBaseUrl(): string",
       kind: 0,
       documentation: '',
       insertText: "getBaseUrl()",
-      range: {
-        startLineNumber: position.lineNumber,
-        endLineNumber: position.lineNumber,
-        startColumn: position.column,
-        endColumn: position.column,
-      },
+      range: range,
     }, {
       label: "getTenantId(): string",
       kind: 0,
       documentation: '',
       insertText: "getTenantId()",
-      range: {
-        startLineNumber: position.lineNumber,
-        endLineNumber: position.lineNumber,
-        startColumn: position.column,
-        endColumn: position.column,
-      },
+      range: range,
     }, {
       label: "getAction(): string",
       kind: 0,
       documentation: '',
       insertText: "getAction()",
-      range: {
-        startLineNumber: position.lineNumber,
-        endLineNumber: position.lineNumber,
-        startColumn: position.column,
-        endColumn: position.column,
-      },
+      range: range,
     }, {
       label: "getApp(): ExecuteContextApp",
       kind: 0,
       documentation: '',
       insertText: "getApp()",
-      range: {
-        startLineNumber: position.lineNumber,
-        endLineNumber: position.lineNumber,
-        startColumn: position.column,
-        endColumn: position.column,
-      },
+      range: range,
     }, {
       label: "getUser(): ExecuteContextUser",
       kind: 0,
       documentation: '',
       insertText: "getUser()",
-      range: {
-        startLineNumber: position.lineNumber,
-        endLineNumber: position.lineNumber,
-        startColumn: position.column,
-        endColumn: position.column,
-      },
+      range: range,
     }];
   }
 
-  getConnectorMethods(position: Position): languages.CompletionItem[] {
+  getContextAppMethods(range: IRange): languages.CompletionItem[] {
+    return [{
+      label: "isAnonymous(): bool",
+      kind: 0,
+      documentation: '',
+      insertText: "isAnonymous()",
+      range: range,
+    }, {
+      label: "getId(): int",
+      kind: 0,
+      documentation: '',
+      insertText: "getId()",
+      range: range,
+    }, {
+      label: "getUserId(): int",
+      kind: 0,
+      documentation: '',
+      insertText: "getUserId()",
+      range: range,
+    }, {
+      label: "getStatus(): int",
+      kind: 0,
+      documentation: '',
+      insertText: "getStatus()",
+      range: range,
+    }, {
+      label: "getName(): string",
+      kind: 0,
+      documentation: '',
+      insertText: "getName()",
+      range: range,
+    }, {
+      label: "getUrl(): string",
+      kind: 0,
+      documentation: '',
+      insertText: "getUrl()",
+      range: range,
+    }, {
+      label: "getAppKey(): string",
+      kind: 0,
+      documentation: '',
+      insertText: "getAppKey()",
+      range: range,
+    }, {
+      label: "getScopes(): array",
+      kind: 0,
+      documentation: '',
+      insertText: "getScopes()",
+      range: range,
+    }, {
+      label: "getParameter(name: string): mixed",
+      kind: 0,
+      documentation: '',
+      insertText: "getParameter()",
+      range: range,
+    }, {
+      label: "getMetadata(key: string): mixed",
+      kind: 0,
+      documentation: '',
+      insertText: "getMetadata()",
+      range: range,
+    }];
+  }
+
+  getContextUserMethods(range: IRange): languages.CompletionItem[] {
+    return [{
+      label: "isAnonymous(): bool",
+      kind: 0,
+      documentation: '',
+      insertText: "isAnonymous()",
+      range: range,
+    }, {
+      label: "getId(): int",
+      kind: 0,
+      documentation: '',
+      insertText: "getId()",
+      range: range,
+    }, {
+      label: "getRoleId(): int",
+      kind: 0,
+      documentation: '',
+      insertText: "getRoleId()",
+      range: range,
+    }, {
+      label: "getCategoryId(): int",
+      kind: 0,
+      documentation: '',
+      insertText: "getCategoryId()",
+      range: range,
+    }, {
+      label: "getStatus(): int",
+      kind: 0,
+      documentation: '',
+      insertText: "getStatus()",
+      range: range,
+    }, {
+      label: "getName(): string",
+      kind: 0,
+      documentation: '',
+      insertText: "getName()",
+      range: range,
+    }, {
+      label: "getEmail(): string",
+      kind: 0,
+      documentation: '',
+      insertText: "getEmail()",
+      range: range,
+    }, {
+      label: "getPoints(): int",
+      kind: 0,
+      documentation: '',
+      insertText: "getPoints()",
+      range: range,
+    }, {
+      label: "getExternalId(): string",
+      kind: 0,
+      documentation: '',
+      insertText: "getExternalId()",
+      range: range,
+    }, {
+      label: "getPlanId(): string",
+      kind: 0,
+      documentation: '',
+      insertText: "getPlanId()",
+      range: range,
+    }, {
+      label: "getMetadata(key: string): mixed",
+      kind: 0,
+      documentation: '',
+      insertText: "getMetadata()",
+      range: range,
+    }];
+  }
+
+  getConnectorMethods(range: IRange): languages.CompletionItem[] {
     return [{
       label: "getConnection(name: string)",
       kind: 0,
       documentation: '',
       insertText: "getConnection('')",
-      range: {
-        startLineNumber: position.lineNumber,
-        endLineNumber: position.lineNumber,
-        startColumn: position.column,
-        endColumn: position.column,
-      },
+      range: range,
     }];
   }
 
-  getResponseMethods(position: Position): languages.CompletionItem[] {
+  getResponseMethods(range: IRange): languages.CompletionItem[] {
     return [{
       label: "build(statusCode: int, headers: array, body: mixed)",
       kind: 0,
       insertText: "build()",
-      range: {
-        startLineNumber: position.lineNumber,
-        endLineNumber: position.lineNumber,
-        startColumn: position.column,
-        endColumn: position.column,
-      },
+      range: range,
     }];
   }
 
-  getDispatcherMethods(position: Position): languages.CompletionItem[] {
+  getDispatcherMethods(range: IRange): languages.CompletionItem[] {
     return [{
       label: "dispatch(eventName: string, payload: mixed)",
       kind: 0,
       insertText: "dispatch()",
-      range: {
-        startLineNumber: position.lineNumber,
-        endLineNumber: position.lineNumber,
-        startColumn: position.column,
-        endColumn: position.column,
-      },
+      range: range,
     }];
   }
 
-  getLoggerMethods(position: Position): languages.CompletionItem[] {
+  getLoggerMethods(range: IRange): languages.CompletionItem[] {
     return [{
       label: "emergency(message: string)",
       kind: 0,
       insertText: "emergency('')",
-      range: {
-        startLineNumber: position.lineNumber,
-        endLineNumber: position.lineNumber,
-        startColumn: position.column,
-        endColumn: position.column,
-      },
+      range: range,
     }, {
       label: "alert(message: string)",
       kind: 0,
       insertText: "alert('')",
-      range: {
-        startLineNumber: position.lineNumber,
-        endLineNumber: position.lineNumber,
-        startColumn: position.column,
-        endColumn: position.column,
-      },
+      range: range,
     }, {
       label: "critical(message: string)",
       kind: 0,
       insertText: "critical('')",
-      range: {
-        startLineNumber: position.lineNumber,
-        endLineNumber: position.lineNumber,
-        startColumn: position.column,
-        endColumn: position.column,
-      },
+      range: range,
     }, {
       label: "error(message: string)",
       kind: 0,
       insertText: "error('')",
-      range: {
-        startLineNumber: position.lineNumber,
-        endLineNumber: position.lineNumber,
-        startColumn: position.column,
-        endColumn: position.column,
-      },
+      range: range,
     }, {
       label: "warning(message: string)",
       kind: 0,
       insertText: "warning('')",
-      range: {
-        startLineNumber: position.lineNumber,
-        endLineNumber: position.lineNumber,
-        startColumn: position.column,
-        endColumn: position.column,
-      },
+      range: range,
     }, {
       label: "notice(message: string)",
       kind: 0,
       insertText: "notice('')",
-      range: {
-        startLineNumber: position.lineNumber,
-        endLineNumber: position.lineNumber,
-        startColumn: position.column,
-        endColumn: position.column,
-      },
+      range: range,
     }, {
       label: "info(message: string)",
       kind: 0,
       insertText: "info('')",
-      range: {
-        startLineNumber: position.lineNumber,
-        endLineNumber: position.lineNumber,
-        startColumn: position.column,
-        endColumn: position.column,
-      },
+      range: range,
     }, {
       label: "debug(message: string)",
       kind: 0,
       insertText: "debug('')",
-      range: {
-        startLineNumber: position.lineNumber,
-        endLineNumber: position.lineNumber,
-        startColumn: position.column,
-        endColumn: position.column,
-      },
+      range: range,
     }];
   }
 
-  async getAvailableConnections(position: Position): Promise<languages.CompletionList> {
+  async getAvailableConnections(range: IRange): Promise<languages.CompletionList> {
     if (!this.fusio) {
       return {
         suggestions: [],
@@ -282,18 +373,66 @@ export class PhpCompletion implements languages.CompletionItemProvider {
         label: connection.name || '',
         kind: 0,
         insertText: connection.name || '',
-        range: {
-          startLineNumber: position.lineNumber,
-          endLineNumber: position.lineNumber,
-          startColumn: position.column,
-          endColumn: position.column,
-        },
+        range: range,
       })
     });
 
     return {
       suggestions: suggestions,
     };
+  }
+
+  getConnectionMethods(range: IRange): languages.CompletionItem[] {
+    return [{
+      label: "fetchAllAssociative(query: string, params: array)",
+      kind: 0,
+      insertText: "fetchAllAssociative('')",
+      range: range,
+    }, {
+      label: "fetchAssociative(query: string, params: array)",
+      kind: 0,
+      insertText: "fetchAssociative('')",
+      range: range,
+    }, {
+      label: "fetchFirstColumn(query: string, params: array)",
+      kind: 0,
+      insertText: "fetchFirstColumn('')",
+      range: range,
+    }, {
+      label: "fetchOne(query: string, params: array)",
+      kind: 0,
+      insertText: "fetchOne('')",
+      range: range,
+    }, {
+      label: "insert(table: string, data: array)",
+      kind: 0,
+      insertText: "insert('')",
+      range: range,
+    }, {
+      label: "update(table: string, data: array, criteria: array)",
+      kind: 0,
+      insertText: "update('')",
+      range: range,
+    }, {
+      label: "delete(table: string, criteria: array)",
+      kind: 0,
+      insertText: "delete('')",
+      range: range,
+    }, {
+      label: "executeStatement(query: string, params: array)",
+      kind: 0,
+      insertText: "executeStatement('')",
+      range: range,
+    }];
+  }
+
+  getHttpClientMethods(range: IRange): languages.CompletionItem[] {
+    return [{
+      label: "request(method: string, path: string, options: array)",
+      kind: 0,
+      insertText: "request('')",
+      range: range,
+    }];
   }
 
 }
