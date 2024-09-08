@@ -1,30 +1,15 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {
-  catchError,
-  debounceTime,
-  distinctUntilChanged,
-  filter, from,
-  map,
-  Observable, of,
-  OperatorFunction,
-  switchMap,
-  tap
-} from "rxjs";
-import {fromPromise} from "rxjs/internal/observable/innerFrom";
+import {Component} from '@angular/core';
 import {ApiService} from "../../api.service";
 import {BackendSchema} from "fusio-sdk/dist/BackendSchema";
+import {ObjectSelector} from "ngx-fusio-sdk";
+import {BackendSchemaCollection} from "fusio-sdk/dist/BackendSchemaCollection";
 
 @Component({
   selector: 'app-schema-selector',
   templateUrl: './schema-selector.component.html',
   styleUrls: ['./schema-selector.component.css']
 })
-export class SchemaSelectorComponent implements OnInit {
-
-  @Input() name: string = 'schema-selector';
-  @Input() disabled: boolean = false;
-  @Input() data?: string = '';
-  @Output() dataChange = new EventEmitter<string>();
+export class SchemaSelectorComponent extends ObjectSelector<BackendSchema, string> {
 
   schemes = [{
     key: 'schema',
@@ -49,37 +34,11 @@ export class SchemaSelectorComponent implements OnInit {
   scheme: string = '';
   value: string = '';
 
-  searching = false;
-  searchFailed = false;
-
-  schema?: BackendSchema
-  type?: any
-
-  schemaFormatter = (schema: BackendSchema) => schema.name ? schema.name : '-';
-  schemaSearch: OperatorFunction<string, Array<BackendSchema>> = (text$: Observable<string>) =>
-    text$.pipe(
-      debounceTime(200),
-      distinctUntilChanged(),
-      tap(() => (this.searching = true)),
-      switchMap((term) =>
-        fromPromise(this.fusio.getClient().backend().schema().getAll(0, 16, term)).pipe(
-          map((response) => {
-            return response.entry ? response.entry : [];
-          }),
-          tap(() => (this.searchFailed = false)),
-          catchError(() => {
-            this.searchFailed = true;
-            return of([]);
-          }),
-        ),
-      ),
-      tap(() => (this.searching = false)),
-    );
-
   constructor(private fusio: ApiService) {
+    super();
   }
 
-  async ngOnInit(): Promise<void> {
+  override async ngOnInit(): Promise<void> {
     if (this.data) {
       const pos = this.data.indexOf('://');
       if (pos > 0) {
@@ -87,7 +46,7 @@ export class SchemaSelectorComponent implements OnInit {
         this.value = this.data.substring(pos + 3);
 
         if (this.scheme === 'schema') {
-          this.schema = await this.fusio.getClient().backend().schema().get('~' + this.value);
+          this.selected = await this.fusio.getClient().backend().schema().get('~' + this.value);
         }
       }
     }
@@ -104,16 +63,24 @@ export class SchemaSelectorComponent implements OnInit {
     this.dataChange.emit(this.scheme + '://' + this.value);
   }
 
-  changeValue() {
+  override changeValue() {
     if (this.disabled) {
       return;
     }
 
-    if (this.scheme === 'schema' && this.schema?.name) {
-      this.value = this.schema?.name;
+    if (this.scheme === 'schema' && this.selected?.name) {
+      this.value = this.selected?.name;
     }
 
     this.dataChange.emit(this.scheme + '://' + this.value);
+  }
+
+  protected async getAll(parameters: Array<any>): Promise<BackendSchemaCollection> {
+    return this.fusio.getClient().backend().schema().getAll(...parameters);
+  }
+
+  protected async get(id: string): Promise<BackendSchema> {
+    return this.fusio.getClient().backend().schema().get(id);
   }
 
 }

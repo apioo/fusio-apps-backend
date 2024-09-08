@@ -14,14 +14,19 @@
             [id]="name + '_value'"
             [name]="name + '_value'"
             class="form-control"
-            [(ngModel)]="schema"
-            [ngbTypeahead]="schemaSearch"
-            [inputFormatter]="schemaFormatter"
-            [resultFormatter]="schemaFormatter"
+            [(ngModel)]="selected"
+            [ngbTypeahead]="objectSearch"
+            (focus)="focus$.next($any($event).target.value)"
+            [inputFormatter]="objectFormatter"
+            [resultFormatter]="objectFormatter"
             [editable]="false"
             (ngModelChange)="changeValue()"
             [disabled]="disabled"
           />
+          <button class="btn btn-outline-secondary" type="button" disabled *ngIf="searching">
+            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+            <span class="visually-hidden" role="status">Loading...</span>
+          </button>
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="schemeHelp"><i class="bi bi-question"></i></button>
           <ng-template #schemeHelp>Loads a schema from the internal schema store. Type a name to select a fitting schema. If you can not find a fitting schema you can also create a new schema at the schema panel.</ng-template>
         </ng-container>

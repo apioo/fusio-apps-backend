@@ -1,30 +1,15 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {
-  catchError,
-  debounceTime,
-  distinctUntilChanged,
-  map,
-  Observable,
-  of,
-  OperatorFunction,
-  switchMap,
-  tap
-} from "rxjs";
-import {fromPromise} from "rxjs/internal/observable/innerFrom";
+import {Component} from '@angular/core';
 import {ApiService} from "../../api.service";
 import {BackendAction} from "fusio-sdk/dist/BackendAction";
+import {ObjectSelector} from "ngx-fusio-sdk";
+import {BackendActionCollection} from "fusio-sdk/dist/BackendActionCollection";
 
 @Component({
   selector: 'app-action-selector',
   templateUrl: './action-selector.component.html',
   styleUrls: ['./action-selector.component.css']
 })
-export class ActionSelectorComponent {
-
-  @Input() name: string = 'action-selector';
-  @Input() disabled: boolean = false;
-  @Input() data?: string = '';
-  @Output() dataChange = new EventEmitter<string>();
+export class ActionSelectorComponent extends ObjectSelector<BackendAction, string> {
 
   schemes = [{
     key: 'action',
@@ -46,37 +31,11 @@ export class ActionSelectorComponent {
   scheme: string = '';
   value: string = '';
 
-  searching = false;
-  searchFailed = false;
-
-  action?: BackendAction
-  type?: any
-
-  actionFormatter = (action: BackendAction) => action.name ? action.name : '-';
-  actionSearch: OperatorFunction<string, Array<BackendAction>> = (text$: Observable<string>) =>
-    text$.pipe(
-      debounceTime(200),
-      distinctUntilChanged(),
-      tap(() => (this.searching = true)),
-      switchMap((term) =>
-        fromPromise(this.fusio.getClient().backend().action().getAll(0, 16, term)).pipe(
-          map((response) => {
-            return response.entry ? response.entry : [];
-          }),
-          tap(() => (this.searchFailed = false)),
-          catchError(() => {
-            this.searchFailed = true;
-            return of([]);
-          }),
-        ),
-      ),
-      tap(() => (this.searching = false)),
-    );
-
   constructor(private fusio: ApiService) {
+    super();
   }
 
-  async ngOnInit(): Promise<void> {
+  override async ngOnInit(): Promise<void> {
     if (this.data) {
       const pos = this.data.indexOf('://');
       if (pos > 0) {
@@ -84,7 +43,7 @@ export class ActionSelectorComponent {
         this.value = this.data.substring(pos + 3);
 
         if (this.scheme === 'action') {
-          this.action = await this.fusio.getClient().backend().action().get('~' + this.value);
+          this.selected = await this.fusio.getClient().backend().action().get('~' + this.value);
         }
       }
     }
@@ -101,16 +60,24 @@ export class ActionSelectorComponent {
     this.dataChange.emit(this.scheme + '://' + this.value);
   }
 
-  changeValue() {
+  override changeValue() {
     if (this.disabled) {
       return;
     }
 
-    if (this.scheme === 'action' && this.action?.name) {
-      this.value = this.action?.name;
+    if (this.scheme === 'action' && this.selected?.name) {
+      this.value = this.selected?.name;
     }
 
     this.dataChange.emit(this.scheme + '://' + this.value);
+  }
+
+  protected async getAll(parameters: Array<any>): Promise<BackendActionCollection> {
+    return this.fusio.getClient().backend().action().getAll(...parameters);
+  }
+
+  protected async get(id: string): Promise<BackendAction> {
+    return this.fusio.getClient().backend().action().get(id);
   }
 
 }
