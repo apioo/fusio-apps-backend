@@ -14,11 +14,9 @@ import {CommonMessage} from "fusio-sdk/dist/CommonMessage";
 export class ModalComponent extends Modal<Client, BackendWebhook> {
 
   events?: Array<BackendEvent>;
-  users?: Array<BackendUser>;
 
   override async ngOnInit(): Promise<void> {
     this.loadEvents();
-    this.loadUsers();
   }
 
   protected async create(entity: BackendWebhook): Promise<CommonMessage> {
@@ -42,11 +40,6 @@ export class ModalComponent extends Modal<Client, BackendWebhook> {
   private async loadEvents() {
     const response = await this.fusio.getClient().backend().event().getAll(0, 1024);
     this.events = response.entry;
-  }
-
-  private async loadUsers() {
-    const response = await this.fusio.getClient().backend().user().getAll(0, 1024);
-    this.users = response.entry;
   }
 
 }
