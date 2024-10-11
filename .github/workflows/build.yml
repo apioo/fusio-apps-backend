@@ -16,4 +16,5 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: fusio
+          include-hidden-files: true
           path: dist/fusio
