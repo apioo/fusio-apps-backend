@@ -33,7 +33,7 @@
     "ngx-captcha": "^13.0.0",
     "ngx-clipboard": "^16.0.0",
     "ngx-gravatar": "^13.0.0",
-    "ngx-markdown": "^16.0.0",
+    "ngx-markdown": "^18.1.0",
     "ngx-monaco-editor-v2": "^16.0.1",
     "ngx-typeschema-editor": "^2.2.6",
     "rxjs": "~7.8.0",
