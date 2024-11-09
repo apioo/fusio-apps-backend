@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {BackendDatabaseTableIndex} from "fusio-sdk/dist/BackendDatabaseTableIndex";
+import {BackendDatabaseTableIndex} from "fusio-sdk";
 
 @Component({
   selector: 'app-database-index',

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from "ngx-fusio-sdk";
-import {BackendUser} from "fusio-sdk/dist/BackendUser";
+import {BackendUser} from "fusio-sdk";
 import {ApiService} from "./api.service";
 import {Config} from "./editor/config";
 

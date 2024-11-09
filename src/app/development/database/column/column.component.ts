@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {BackendDatabaseTableColumn} from "fusio-sdk/dist/BackendDatabaseTableColumn";
+import {BackendDatabaseTableColumn} from "fusio-sdk";
 
 @Component({
   selector: 'app-database-column',

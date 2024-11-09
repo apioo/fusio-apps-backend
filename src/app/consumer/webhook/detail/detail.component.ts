@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Detail} from "ngx-fusio-sdk";
-import {BackendWebhook} from "fusio-sdk/dist/BackendWebhook";
+import {BackendWebhook} from "fusio-sdk";
 
 @Component({
   selector: 'app-webhook-detail',

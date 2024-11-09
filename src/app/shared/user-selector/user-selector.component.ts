@@ -1,8 +1,7 @@
 import {Component} from '@angular/core';
-import {ApiService} from "../../api.service";
-import {BackendUser} from "fusio-sdk/dist/BackendUser";
-import {BackendUserCollection} from "fusio-sdk/dist/BackendUserCollection";
+import {BackendUser, BackendUserCollection} from "fusio-sdk";
 import {ObjectSelector} from "ngx-fusio-sdk";
+import {ApiService} from "../../api.service";
 
 @Component({
   selector: 'app-user-selector',

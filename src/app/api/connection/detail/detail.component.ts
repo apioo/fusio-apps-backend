@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Detail} from "ngx-fusio-sdk";
-import {BackendConnection} from "fusio-sdk/dist/BackendConnection";
+import {BackendConnection} from "fusio-sdk";
 import {ApiService} from "../../../api.service";
 
 @Component({

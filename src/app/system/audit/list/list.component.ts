@@ -1,9 +1,7 @@
 import {Component} from '@angular/core';
 import {List} from "ngx-fusio-sdk";
+import {BackendAudit, BackendAuditCollection, Client} from "fusio-sdk";
 import {FilterComponent} from "../filter/filter.component";
-import {Client} from "fusio-sdk/dist/Client";
-import {BackendAudit} from "fusio-sdk/dist/BackendAudit";
-import {BackendAuditCollection} from "fusio-sdk/dist/BackendAuditCollection";
 
 @Component({
   selector: 'app-audit-list',

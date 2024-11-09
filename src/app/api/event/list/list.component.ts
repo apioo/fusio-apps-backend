@@ -1,9 +1,7 @@
 import {Component} from '@angular/core';
 import {List} from "ngx-fusio-sdk";
+import {BackendEvent, BackendEventCollection, Client} from "fusio-sdk";
 import {ModalComponent} from "../modal/modal.component";
-import {Client} from "fusio-sdk/dist/Client";
-import {BackendEvent} from "fusio-sdk/dist/BackendEvent";
-import {BackendEventCollection} from "fusio-sdk/dist/BackendEventCollection";
 
 @Component({
   selector: 'app-event-list',

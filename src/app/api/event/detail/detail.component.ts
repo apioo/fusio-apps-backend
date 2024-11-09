@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Detail} from "ngx-fusio-sdk";
-import {BackendEvent} from "fusio-sdk/dist/BackendEvent";
+import {BackendEvent} from "fusio-sdk";
 
 @Component({
   selector: 'app-event-detail',

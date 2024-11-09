@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component} from '@angular/core';
 import {Detail} from "ngx-fusio-sdk";
-import {BackendToken} from "fusio-sdk/dist/BackendToken";
+import {BackendToken} from "fusio-sdk";
 
 @Component({
   selector: 'app-token-detail',

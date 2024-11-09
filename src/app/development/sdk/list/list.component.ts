@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ErrorService} from "ngx-fusio-sdk";
+import {BackendSdkTypes, CommonMessage} from "fusio-sdk";
 import {ApiService} from "../../../api.service";
-import {BackendSdkTypes} from "fusio-sdk/dist/BackendSdkTypes";
-import {CommonMessage} from "fusio-sdk/dist/CommonMessage";
 
 @Component({
   selector: 'app-sdk-list',

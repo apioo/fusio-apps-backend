@@ -1,9 +1,7 @@
 import {Component} from '@angular/core';
 import {List} from "ngx-fusio-sdk";
+import {BackendToken, BackendTokenCollection, Client} from "fusio-sdk";
 import {FilterComponent} from "../filter/filter.component";
-import {Client} from "fusio-sdk/dist/Client";
-import {BackendToken} from "fusio-sdk/dist/BackendToken";
-import {BackendTokenCollection} from "fusio-sdk/dist/BackendTokenCollection";
 
 @Component({
   selector: 'app-token-list',

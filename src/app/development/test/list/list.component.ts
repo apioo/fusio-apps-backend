@@ -1,11 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {ErrorService, Mode, Result} from "ngx-fusio-sdk";
-import {ApiService} from "../../../api.service";
-import {CommonMessage} from "fusio-sdk/dist/CommonMessage";
-import {BackendTest} from "fusio-sdk/dist/BackendTest";
+import {BackendTest, CommonMessage} from "fusio-sdk";
 import {Router} from "@angular/router";
 import {ModalComponent} from "../modal/modal.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {ApiService} from "../../../api.service";
 
 @Component({
   selector: 'app-test-list',

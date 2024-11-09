@@ -1,7 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {BackendScopeCategory, BackendScopeCategoryScope} from "fusio-sdk";
 import {ApiService} from "../../api.service";
-import {BackendScopeCategory} from "fusio-sdk/dist/BackendScopeCategory";
-import {BackendScopeCategoryScope} from "fusio-sdk/dist/BackendScopeCategoryScope";
 
 @Component({
   selector: 'app-scope-categories',

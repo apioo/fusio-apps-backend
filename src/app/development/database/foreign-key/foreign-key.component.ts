@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {BackendDatabaseTableForeignKeyConstraint} from "fusio-sdk/dist/BackendDatabaseTableForeignKeyConstraint";
+import {BackendDatabaseTableForeignKeyConstraint} from "fusio-sdk";
 
 @Component({
   selector: 'app-database-foreign-key',

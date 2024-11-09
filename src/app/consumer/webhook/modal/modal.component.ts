@@ -1,10 +1,6 @@
 import {Component} from '@angular/core';
 import {Modal} from "ngx-fusio-sdk";
-import {Client} from "fusio-sdk/dist/Client";
-import {BackendWebhook} from "fusio-sdk/dist/BackendWebhook";
-import {BackendEvent} from "fusio-sdk/dist/BackendEvent";
-import {BackendUser} from "fusio-sdk/dist/BackendUser";
-import {CommonMessage} from "fusio-sdk/dist/CommonMessage";
+import {BackendEvent, BackendWebhook, Client, CommonMessage} from "fusio-sdk";
 
 @Component({
   selector: 'app-webhook-modal',

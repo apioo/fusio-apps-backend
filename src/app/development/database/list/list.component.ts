@@ -1,15 +1,17 @@
 import {Component, OnInit} from '@angular/core';
-import {ApiService} from "../../../api.service";
 import {ErrorService, Mode, Result} from "ngx-fusio-sdk";
-import {ActivatedRoute} from "@angular/router";
-import {BackendDatabaseTable} from "fusio-sdk/dist/BackendDatabaseTable";
-import {BackendDatabaseRows} from "fusio-sdk/dist/BackendDatabaseRows";
-import {RowComponent} from "../row/row.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {BackendDatabaseRow} from "fusio-sdk/dist/BackendDatabaseRow";
-import {CommonMessage} from "fusio-sdk/dist/CommonMessage";
+import {ActivatedRoute} from "@angular/router";
+import {
+  BackendDatabaseRow,
+  BackendDatabaseRows,
+  BackendDatabaseTable,
+  BackendDatabaseTableColumn,
+  CommonMessage
+} from "fusio-sdk";
+import {ApiService} from "../../../api.service";
+import {RowComponent} from "../row/row.component";
 import {TableComponent} from "../table/table.component";
-import {BackendDatabaseTableColumn} from "fusio-sdk/dist/BackendDatabaseTableColumn";
 
 @Component({
   selector: 'app-database-list',

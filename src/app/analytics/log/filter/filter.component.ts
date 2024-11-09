@@ -1,9 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
+import {BackendApp, BackendOperation, BackendUser} from "fusio-sdk";
 import {ApiService} from "../../../api.service";
-import {BackendOperation} from "fusio-sdk/dist/BackendOperation";
-import {BackendApp} from "fusio-sdk/dist/BackendApp";
-import {BackendUser} from "fusio-sdk/dist/BackendUser";
 
 @Component({
   selector: 'app-log-filter',

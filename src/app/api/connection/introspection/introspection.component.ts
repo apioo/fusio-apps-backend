@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
+import {BackendConnectionIntrospectionEntity, CommonMessage} from "fusio-sdk";
 import {ApiService} from "../../../api.service";
-import {BackendConnectionIntrospectionEntity} from "fusio-sdk/dist/BackendConnectionIntrospectionEntity";
-import {CommonMessage} from "fusio-sdk/dist/CommonMessage";
 
 @Component({
   selector: 'app-connection-introspection',

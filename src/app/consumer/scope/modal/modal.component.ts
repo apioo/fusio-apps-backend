@@ -1,10 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component} from '@angular/core';
 import {Modal} from "ngx-fusio-sdk";
-import {Client} from "fusio-sdk/dist/Client";
-import {BackendScope} from "fusio-sdk/dist/BackendScope";
-import {BackendOperation} from "fusio-sdk/dist/BackendOperation";
-import {CommonMessage} from "fusio-sdk/dist/CommonMessage";
-import {BackendScopeOperation} from "fusio-sdk/dist/BackendScopeOperation";
+import {BackendOperation, BackendScope, BackendScopeOperation, Client, CommonMessage} from "fusio-sdk";
 
 @Component({
   selector: 'app-scope-modal',

@@ -1,11 +1,6 @@
 import {Component} from '@angular/core';
 import {Modal} from "ngx-fusio-sdk";
-import {Client} from "fusio-sdk/dist/Client";
-import {BackendUserCreate} from "fusio-sdk/dist/BackendUserCreate";
-import {BackendRole} from "fusio-sdk/dist/BackendRole";
-import {CommonMessage} from "fusio-sdk/dist/CommonMessage";
-import {BackendUserUpdate} from "fusio-sdk/dist/BackendUserUpdate";
-import {BackendUser} from "fusio-sdk/dist/BackendUser";
+import {BackendRole, BackendUser, BackendUserCreate, BackendUserUpdate, Client, CommonMessage} from "fusio-sdk";
 
 @Component({
   selector: 'app-user-modal',

@@ -1,8 +1,6 @@
 import {Component} from '@angular/core';
 import {Modal} from "ngx-fusio-sdk";
-import {Client} from "fusio-sdk/dist/Client";
-import {BackendConfig} from "fusio-sdk/dist/BackendConfig";
-import {CommonMessage} from "fusio-sdk/dist/CommonMessage";
+import {BackendConfig, Client, CommonMessage} from "fusio-sdk";
 
 @Component({
   selector: 'app-modal',

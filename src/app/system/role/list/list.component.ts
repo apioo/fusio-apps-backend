@@ -1,9 +1,7 @@
 import {Component} from '@angular/core';
 import {List} from "ngx-fusio-sdk";
+import {BackendRole, BackendRoleCollection, Client} from "fusio-sdk";
 import {ModalComponent} from "../modal/modal.component";
-import {Client} from "fusio-sdk/dist/Client";
-import {BackendRole} from "fusio-sdk/dist/BackendRole";
-import {BackendRoleCollection} from "fusio-sdk/dist/BackendRoleCollection";
 
 @Component({
   selector: 'app-role-list',

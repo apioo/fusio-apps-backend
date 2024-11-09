@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {BackendOperationThrows} from "fusio-sdk/dist/BackendOperationThrows";
+import {BackendOperationThrows} from "fusio-sdk";
 
 @Component({
   selector: 'app-operation-throws',

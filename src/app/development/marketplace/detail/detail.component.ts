@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {ApiService} from "../../../api.service";
 import {ActivatedRoute} from "@angular/router";
 import {ErrorService} from "ngx-fusio-sdk";
-import {CommonMessage} from "fusio-sdk/dist/CommonMessage";
-import {MarketplaceObject} from "fusio-sdk/dist/MarketplaceObject";
+import {CommonMessage, MarketplaceObject} from "fusio-sdk";
+import {ApiService} from "../../../api.service";
 
 @Component({
   selector: 'app-marketplace-detail',

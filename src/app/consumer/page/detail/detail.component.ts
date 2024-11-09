@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Detail} from "ngx-fusio-sdk";
-import {BackendPage} from "fusio-sdk/dist/BackendPage";
+import {BackendPage} from "fusio-sdk";
 
 @Component({
   selector: 'app-page-detail',

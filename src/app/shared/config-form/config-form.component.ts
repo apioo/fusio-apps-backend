@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {Specification} from "ngx-typeschema-editor/lib/model/Specification";
-import {CommonFormContainer} from "fusio-sdk/dist/CommonFormContainer";
+import {CommonFormContainer} from "fusio-sdk";
 
 @Component({
   selector: 'app-config-form',

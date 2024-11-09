@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Detail} from "ngx-fusio-sdk";
-import {BackendAudit} from "fusio-sdk/dist/BackendAudit";
+import {BackendAudit} from "fusio-sdk";
 
 @Component({
   selector: 'app-audit-detail',

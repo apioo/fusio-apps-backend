@@ -1,16 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {
-  ExportService,
-  Specification,
-  ImportService
-} from "ngx-typeschema-editor";
+import {ExportService, ImportService, Specification} from "ngx-typeschema-editor";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ErrorService, Mode, Result} from "ngx-fusio-sdk";
+import {BackendSchema, CommonMessage} from "fusio-sdk";
 import {ModalComponent} from "../modal/modal.component";
 import {ApiService} from "../../../api.service";
-import {BackendSchema} from "fusio-sdk/dist/BackendSchema";
-import {CommonMessage} from "fusio-sdk/dist/CommonMessage";
 
 @Component({
   selector: 'app-designer',

@@ -1,9 +1,7 @@
 import {Component} from '@angular/core';
 import {List} from "ngx-fusio-sdk";
+import {BackendRate, BackendRateCollection, Client} from "fusio-sdk";
 import {ModalComponent} from "../modal/modal.component";
-import {Client} from "fusio-sdk/dist/Client";
-import {BackendRate} from "fusio-sdk/dist/BackendRate";
-import {BackendRateCollection} from "fusio-sdk/dist/BackendRateCollection";
 
 @Component({
   selector: 'app-rate-list',

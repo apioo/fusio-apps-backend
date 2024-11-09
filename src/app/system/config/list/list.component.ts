@@ -1,9 +1,7 @@
 import {Component} from '@angular/core';
 import {List} from "ngx-fusio-sdk";
+import {BackendConfig, BackendConfigCollection, Client} from "fusio-sdk";
 import {ModalComponent} from "../modal/modal.component";
-import {Client} from "fusio-sdk/dist/Client";
-import {BackendConfig} from "fusio-sdk/dist/BackendConfig";
-import {BackendConfigCollection} from "fusio-sdk/dist/BackendConfigCollection";
 
 @Component({
   selector: 'app-config-list',

@@ -1,9 +1,7 @@
 import {Component} from '@angular/core';
 import {List} from "ngx-fusio-sdk";
+import {BackendIdentity, BackendIdentityCollection, Client} from "fusio-sdk";
 import {ModalComponent} from "../modal/modal.component";
-import {Client} from "fusio-sdk/dist/Client";
-import {BackendIdentity} from "fusio-sdk/dist/BackendIdentity";
-import {BackendIdentityCollection} from "fusio-sdk/dist/BackendIdentityCollection";
 
 @Component({
   selector: 'app-identity-list',

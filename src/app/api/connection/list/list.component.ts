@@ -1,9 +1,7 @@
 import {Component} from '@angular/core';
 import {List} from "ngx-fusio-sdk";
+import {BackendConnection, BackendConnectionCollection, Client} from "fusio-sdk";
 import {ModalComponent} from "../modal/modal.component";
-import {Client} from "fusio-sdk/dist/Client";
-import {BackendConnection} from "fusio-sdk/dist/BackendConnection";
-import {BackendConnectionCollection} from "fusio-sdk/dist/BackendConnectionCollection";
 
 @Component({
   selector: 'app-connection-list',

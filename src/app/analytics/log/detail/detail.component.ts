@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Detail} from "ngx-fusio-sdk";
-import {BackendLog} from "fusio-sdk/dist/BackendLog";
+import {BackendLog} from "fusio-sdk";
 
 @Component({
   selector: 'app-log-detail',

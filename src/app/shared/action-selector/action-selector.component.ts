@@ -1,8 +1,7 @@
 import {Component} from '@angular/core';
-import {ApiService} from "../../api.service";
-import {BackendAction} from "fusio-sdk/dist/BackendAction";
+import {BackendAction, BackendActionCollection} from "fusio-sdk";
 import {ObjectSelector} from "ngx-fusio-sdk";
-import {BackendActionCollection} from "fusio-sdk/dist/BackendActionCollection";
+import {ApiService} from "../../api.service";
 
 @Component({
   selector: 'app-action-selector',

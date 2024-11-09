@@ -1,7 +1,7 @@
 import {Component, OnChanges, SimpleChanges} from '@angular/core';
 import {Detail} from "ngx-fusio-sdk";
+import {BackendSchema} from "fusio-sdk";
 import {ApiService} from "../../../api.service";
-import {BackendSchema} from "fusio-sdk/dist/BackendSchema";
 
 @Component({
   selector: 'app-schema-detail',

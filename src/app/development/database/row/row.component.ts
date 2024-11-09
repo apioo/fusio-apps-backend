@@ -1,9 +1,6 @@
 import {Component} from '@angular/core';
 import {Modal} from "ngx-fusio-sdk";
-import {Client} from "fusio-sdk/dist/Client";
-import {BackendDatabaseRow} from "fusio-sdk/dist/BackendDatabaseRow";
-import {CommonMessage} from "fusio-sdk/dist/CommonMessage";
-import {BackendDatabaseTableColumn} from "fusio-sdk/dist/BackendDatabaseTableColumn";
+import {BackendDatabaseRow, BackendDatabaseTableColumn, Client, CommonMessage} from "fusio-sdk";
 
 @Component({
   selector: 'app-database-row',

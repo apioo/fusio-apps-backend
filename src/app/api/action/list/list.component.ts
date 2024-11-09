@@ -1,9 +1,7 @@
 import {Component} from '@angular/core';
-import {ModalComponent} from "../modal/modal.component";
 import {List} from "ngx-fusio-sdk";
-import {Client} from "fusio-sdk/dist/Client";
-import {BackendAction} from "fusio-sdk/dist/BackendAction";
-import {BackendActionCollection} from "fusio-sdk/dist/BackendActionCollection";
+import {BackendAction, BackendActionCollection, Client} from "fusio-sdk";
+import {ModalComponent} from "../modal/modal.component";
 
 @Component({
   selector: 'app-action-list',

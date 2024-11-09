@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {HelpService} from "ngx-fusio-sdk";
+import {BackendTrashData, CommonMessage} from "fusio-sdk";
 import {ApiService} from "../../../api.service";
-import {BackendTrashData} from "fusio-sdk/dist/BackendTrashData";
-import {CommonMessage} from "fusio-sdk/dist/CommonMessage";
 
 @Component({
   selector: 'app-list',

@@ -1,6 +1,5 @@
 import {ApexAxisChartSeries, ApexXAxis} from "ngx-apexcharts";
-import {BackendStatisticChart} from "fusio-sdk/dist/BackendStatisticChart";
-import {BackendStatisticChartData} from "fusio-sdk/dist/BackendStatisticChartData";
+import {BackendStatisticChart, BackendStatisticChartData} from "fusio-sdk";
 
 export class Converter {
 

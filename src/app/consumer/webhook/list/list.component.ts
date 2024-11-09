@@ -1,9 +1,7 @@
 import {Component} from '@angular/core';
 import {List} from "ngx-fusio-sdk";
+import {BackendWebhook, BackendWebhookCollection, Client} from "fusio-sdk";
 import {ModalComponent} from "../modal/modal.component";
-import {BackendWebhook} from "fusio-sdk/dist/BackendWebhook";
-import {Client} from "fusio-sdk/dist/Client";
-import {BackendWebhookCollection} from "fusio-sdk/dist/BackendWebhookCollection";
 
 @Component({
   selector: 'app-webhook-list',

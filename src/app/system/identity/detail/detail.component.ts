@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {Detail} from "ngx-fusio-sdk";
+import {BackendIdentity} from "fusio-sdk";
 import {ApiService} from "../../../api.service";
-import {BackendIdentity} from "fusio-sdk/dist/BackendIdentity";
 
 @Component({
   selector: 'app-identity-detail',

@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
-import {ApiService} from "../../api.service";
-import {BackendSchema} from "fusio-sdk/dist/BackendSchema";
+import {BackendSchema} from "fusio-sdk";
 import {ObjectSelector} from "ngx-fusio-sdk";
-import {BackendSchemaCollection} from "fusio-sdk/dist/BackendSchemaCollection";
+import {BackendSchemaCollection} from "fusio-sdk";
+import {ApiService} from "../../api.service";
 
 @Component({
   selector: 'app-schema-selector',

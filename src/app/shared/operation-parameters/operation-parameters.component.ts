@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {BackendOperationParameters} from "fusio-sdk/dist/BackendOperationParameters";
+import {BackendOperationParameters} from "fusio-sdk";
 
 @Component({
   selector: 'app-operation-parameters',

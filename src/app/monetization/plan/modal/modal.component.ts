@@ -1,8 +1,6 @@
 import {Component} from '@angular/core';
 import {Modal} from "ngx-fusio-sdk";
-import {Client} from "fusio-sdk/dist/Client";
-import {BackendPlan} from "fusio-sdk/dist/BackendPlan";
-import {CommonMessage} from "fusio-sdk/dist/CommonMessage";
+import {BackendPlan, Client, CommonMessage} from "fusio-sdk";
 
 @Component({
   selector: 'app-plan-modal',

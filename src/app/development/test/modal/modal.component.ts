@@ -1,9 +1,6 @@
 import {Component} from '@angular/core';
 import {Modal} from "ngx-fusio-sdk";
-import {Client} from "fusio-sdk/dist/Client";
-import {CommonMessage} from "fusio-sdk/dist/CommonMessage";
-import {BackendTest} from "fusio-sdk/dist/BackendTest";
-import {config} from "rxjs";
+import {BackendTest, Client, CommonMessage} from "fusio-sdk";
 
 @Component({
   selector: 'app-test-modal',
