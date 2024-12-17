@@ -39,6 +39,7 @@ export class InstanceManager {
     instances.splice(activeIndex, 1);
 
     localStorage.setItem(InstanceManager.INSTANCES_KEY, JSON.stringify(instances));
+    localStorage.removeItem(InstanceManager.ACTIVE_KEY);
   }
 
   public static setActiveIndex(activeIndex: number): Instance|null {

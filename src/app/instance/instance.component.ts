@@ -53,8 +53,11 @@ export class InstanceComponent implements OnInit {
   }
 
   removeActiveInstance() {
+    this.user.logout();
+
     InstanceManager.removeActiveInstance();
-    this.loadInstances();
+
+    location.reload();
   }
 
   newInstanceDialog() {
