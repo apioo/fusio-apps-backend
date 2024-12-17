@@ -14,6 +14,8 @@ import {ApiService} from "./api.service";
 import {AccountComponent} from './account/account.component';
 import {ConfigBuilder} from "./config-builder";
 import {NavigationComponent} from './navigation/navigation.component';
+import {InstanceComponent} from './instance/instance.component';
+import {ModalComponent as InstanceModalComponent} from "./instance/modal/modal.component";
 import {Config as EditorConfig} from './editor/config';
 
 import {DetailComponent as ErrorDetail} from "./analytics/error/detail/detail.component";
@@ -126,6 +128,8 @@ import {UserSelectorComponent} from './shared/user-selector/user-selector.compon
     AppComponent,
     AccountComponent,
     NavigationComponent,
+    InstanceComponent,
+    InstanceModalComponent,
 
     ErrorDetail,
     ErrorList,

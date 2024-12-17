@@ -1,5 +1,5 @@
 
-<div class="fusio-navigation">
+<div class="fusio-navigation" [ngClass]="{'fusio-navigation-instance': hasInstance}">
   <nav>
     <h1>Fusio <span>({{ currentVersion }})</span></h1>
     <div *ngFor="let item of items">

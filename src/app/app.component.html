@@ -1,7 +1,9 @@
 
-<app-navigation></app-navigation>
+<app-instance *ngIf="!hasUrl"></app-instance>
 
-<div class="fusio-container">
+<app-navigation *ngIf="hasActiveInstance || hasUrl" [hasInstance]="!hasUrl"></app-navigation>
+
+<div class="fusio-container" [ngClass]="{'fusio-container-instance': !hasUrl}" *ngIf="hasActiveInstance || hasUrl">
   <div class="container-fluid">
     <div class="row">
       <div class="col">

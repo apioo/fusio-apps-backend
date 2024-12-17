@@ -1,16 +1,34 @@
 import {Config} from "ngx-fusio-sdk/lib/config/config";
+import {InstanceManager} from "./instance-manager";
 
 export class ConfigBuilder {
 
   public static build(): Config {
-    let baseUrl = FUSIO_URL;
-    if (!baseUrl) {
-      throw new Error('No base url configured, please provide a variable "FUSIO_URL" containing the Fusio base url');
+    let baseUrl: string = '';
+    let appKey: string = '';
+    let instanceIndex: number|undefined = undefined;
+
+    if (typeof FUSIO_URL === 'string') {
+      baseUrl = FUSIO_URL;
+      if (typeof FUSIO_APP_KEY === 'string') {
+        appKey = FUSIO_APP_KEY;
+      }
+    } else {
+      const activeIndex = InstanceManager.getActiveIndex();
+      if (activeIndex !== null) {
+        instanceIndex = activeIndex;
+        const instance = InstanceManager.getInstance(activeIndex);
+        if (instance !== null) {
+          baseUrl = instance.url;
+          if (instance.appKey) {
+            appKey = instance.appKey;
+          }
+        }
+      }
     }
 
-    let appKey = FUSIO_APP_KEY;
-
     return {
+      instance: instanceIndex,
       baseUrl: baseUrl,
       logo: 'fusio_64px.png',
       appKey: appKey && appKey !== '${APP_KEY}' ? appKey : undefined,

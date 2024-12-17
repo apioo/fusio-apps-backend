@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {GroupItem, NavigationService} from "../navigation.service";
 import {VersionService} from "../version.service";
 
@@ -11,6 +11,8 @@ export class NavigationComponent implements OnInit {
 
   currentVersion = '';
   items: Array<GroupItem> = [];
+  @Input()
+  hasInstance: boolean = false;
 
   constructor(private navigation: NavigationService, private version: VersionService) {
   }

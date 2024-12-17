@@ -3,6 +3,7 @@ import {UserService} from "ngx-fusio-sdk";
 import {BackendUser} from "fusio-sdk";
 import {ApiService} from "./api.service";
 import {Config} from "./editor/config";
+import {InstanceManager} from "./instance-manager";
 
 @Component({
   selector: 'app-root',
@@ -11,6 +12,8 @@ import {Config} from "./editor/config";
 })
 export class AppComponent implements OnInit {
   title = 'fusio';
+  hasUrl: boolean = true;
+  hasActiveInstance: boolean = false;
 
   user?: BackendUser;
   menu = [{
@@ -25,6 +28,8 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.userMeta.get();
+    this.hasUrl = typeof FUSIO_URL !== 'undefined';
+    this.hasActiveInstance = InstanceManager.getActiveIndex() !== null;
 
     Config.fusio = this.fusio;
   }

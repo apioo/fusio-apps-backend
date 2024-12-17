@@ -1,0 +1,11 @@
+
+<div class="fusio-instance" style="z-index:1001">
+  <div class="alert alert-info" *ngIf="instances.length === 0">Create and select a Fusio instance.</div>
+  <div *ngFor="let instance of instances; index as i" class="list-group">
+    <button class="list-group-item list-group-item-action rounded-0 text-nowrap overflow-hidden" (click)="selectInstance(i)" [ngClass]="{'active': getActiveIndex() === i}">{{ instance.host }}</button>
+  </div>
+  <div class="btn-group mt-2 ms-2" role="group">
+    <button class="btn btn-primary" (click)="newInstanceDialog()"><i class="bi bi-plus"></i></button>
+    <button class="btn btn-danger" (click)="removeActiveInstance()"><i class="bi bi-x"></i></button>
+  </div>
+</div>

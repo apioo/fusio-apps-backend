@@ -29,18 +29,33 @@ pre
   color:#fff;
 }
 
+.fusio-instance
+{
+  background-color:#eee;
+  position:fixed;
+  width:180px;
+  height:100%;
+  overflow-y:auto;
+  border-right:2px solid #222;
+}
+
 .fusio-navigation
 {
   background-color:#021c35;
   position:fixed;
+  left:0;
   height:100%;
   overflow-y:auto;
+}
+
+.fusio-navigation-instance
+{
+  left:180px;
 }
 
 .fusio-navigation > nav
 {
   width:180px;
-  float:left;
   padding:0 15px;
 }
 
@@ -127,11 +142,9 @@ pre
   margin-left:180px;
 }
 
-@media (max-width:767px) {
-  .fusio-container
-  {
-    margin-left:110px;
-  }
+.fusio-container-instance
+{
+  margin-left:360px;
 }
 
 .fusio-content
