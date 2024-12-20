@@ -54,11 +54,6 @@ export class InstanceManager {
   }
 
   public static newInstance(instance: Instance): number|null {
-    if (!URL.canParse(instance.url)) {
-      alert('Provided an invalid url: ' + instance.url);
-      return null;
-    }
-
     const url = new URL(instance.url)
     instance.host = url.host;
 

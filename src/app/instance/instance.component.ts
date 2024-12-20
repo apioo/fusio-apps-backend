@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ApiService} from "../api.service";
-import {ConfigService, ErrorService, Mode, Result, UserService} from "ngx-fusio-sdk";
+import {ConfigService, Mode, UserService} from "ngx-fusio-sdk";
 import {Router} from "@angular/router";
 import {Instance, InstanceManager} from "../instance-manager";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
@@ -16,7 +16,7 @@ export class InstanceComponent implements OnInit {
 
   instances: Array<Instance> = []
 
-  constructor(private fusio: ApiService, private user: UserService, private config: ConfigService, private error: ErrorService, private router: Router, private modalService: NgbModal) {
+  constructor(private fusio: ApiService, private user: UserService, private config: ConfigService, private router: Router, private modalService: NgbModal) {
   }
 
   ngOnInit(): void {

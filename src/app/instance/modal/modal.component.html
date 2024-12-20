@@ -6,6 +6,7 @@
   <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
 </div>
 <div class="modal-body">
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
   <form *ngIf="instance">
     <div class="mb-3 row">
       <label for="url" class="col-sm-2 col-form-label fw-bold">Url</label>
@@ -40,6 +41,6 @@
   </form>
 </div>
 <div class="modal-footer">
-  <ng-container><button type="button" class="btn btn-primary" (click)="submit()">Create</button></ng-container>
+  <button type="button" class="btn btn-primary" (click)="submit()">Create</button>
   <button type="button" class="btn btn-light" (click)="modal.close()">Close</button>
 </div>
