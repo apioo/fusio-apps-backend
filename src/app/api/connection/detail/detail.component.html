@@ -2,20 +2,18 @@
   <div class="card-header">{{selected.name}}</div>
   <div class="card-body">
     <div class="btn-group" role="group">
-      <button type="button" (click)="doUpdateClick()" class="btn btn-primary fusio-btn-update">Update</button>
-      <button *ngIf="selected.class === 'Fusio.Impl.Connection.System' || selected.class === 'Fusio.Adapter.Sql.Connection.Sql' || selected.class === 'Fusio.Adapter.Sql.Connection.SqlAdvanced'" type="button" routerLink="/database/{{selected.name}}" class="btn btn-secondary fusio-btn-introspection">Database</button>
-      <button *ngIf="selected.oauth2" type="button" (click)="doAuthorizeClick()" class="btn btn-secondary fusio-btn-authorize">Authorize</button>
-      <button type="button" (click)="doDeleteClick()" class="btn btn-danger fusio-btn-delete">Delete</button>
-    </div>
-    <div class="float-end">
-      <button type="button" (click)="jsonView = !jsonView" class="btn btn-outline-secondary fusio-btn-json">JSON</button>
+      <a [routerLink]="getListLink()" class="btn btn-secondary fusio-btn-back">Back</a>
+      <a [routerLink]="getEditLink(selected.id)" class="btn btn-primary fusio-btn-update">Update</a>
+      <a *ngIf="selected.class === 'Fusio.Impl.Connection.System' || selected.class === 'Fusio.Adapter.Sql.Connection.Sql' || selected.class === 'Fusio.Adapter.Sql.Connection.SqlAdvanced'" routerLink="/database/{{selected.name}}" class="btn btn-secondary fusio-btn-introspection">Database</a>
+      <a *ngIf="selected.oauth2" type="button" (click)="doAuthorizeClick()" class="btn btn-secondary fusio-btn-authorize">Authorize</a>
+      <a [routerLink]="getDeleteLink(selected.id)" class="btn btn-danger fusio-btn-delete">Delete</a>
     </div>
     <div class="fusio-detail" *ngIf="!jsonView">
       <div *ngIf="needsAuthorization()">
         <ngb-alert [dismissible]="false">
           <p><strong>Note:</strong> This connection needs authorization before you can use it. At first you need to configure
-          the client id / secret at the connection settings, then you can use the Authorize button to start the OAuth2 flow
-          and grant this connection access. At the remote provider you need to configure the following redirect uri:</p>
+            the client id / secret at the connection settings, then you can use the Authorize button to start the OAuth2 flow
+            and grant this connection access. At the remote provider you need to configure the following redirect uri:</p>
           <code>{{ baseUrl }}/system/connection/{{ selected.id }}/callback</code>
         </ngb-alert>
       </div>

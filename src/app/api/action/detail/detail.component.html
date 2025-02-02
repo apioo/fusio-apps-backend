@@ -2,12 +2,10 @@
   <div class="card-header">{{selected.name}}</div>
   <div class="card-body">
     <div class="btn-group" role="group">
-      <button type="button" (click)="doUpdateClick()" class="btn btn-primary fusio-btn-update">Update</button>
-      <button type="button" routerLink="/action/designer/{{selected.id}}" class="btn btn-secondary fusio-btn-designer">Designer</button>
-      <button type="button" (click)="doDeleteClick()" class="btn btn-danger fusio-btn-delete">Delete</button>
-    </div>
-    <div class="float-end">
-      <button type="button" (click)="jsonView = !jsonView" class="btn btn-outline-secondary fusio-btn-json">JSON</button>
+      <a [routerLink]="getListLink()" class="btn btn-secondary fusio-btn-back">Back</a>
+      <a [routerLink]="getEditLink(selected.id)" class="btn btn-primary fusio-btn-update">Update</a>
+      <a routerLink="/action/designer/{{selected.id}}" class="btn btn-secondary fusio-btn-designer">Designer</a>
+      <a [routerLink]="getDeleteLink(selected.id)" class="btn btn-danger fusio-btn-delete">Delete</a>
     </div>
     <div class="fusio-detail" *ngIf="!jsonView">
       <div class="row">

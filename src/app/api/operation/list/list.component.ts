@@ -1,29 +1,23 @@
 import {Component} from '@angular/core';
-import {List} from "ngx-fusio-sdk";
-import {BackendOperation, BackendOperationCollection, Client} from "fusio-sdk";
-import {ModalComponent} from "../modal/modal.component";
+import {ErrorService, List} from "ngx-fusio-sdk";
+import {BackendOperation} from "fusio-sdk";
+import {OperationService} from "../../../services/operation.service";
+import {ActionService} from "../../../services/action.service";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-operation-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent extends List<Client, BackendOperation> {
+export class ListComponent extends List<BackendOperation> {
 
-  protected async getAll(parameters: Array<any>): Promise<BackendOperationCollection> {
-    return this.fusio.getClient().backend().operation().getAll(...parameters);
+  constructor(private service: OperationService, public action: ActionService, route: ActivatedRoute, router: Router, error: ErrorService) {
+    super(route, router, error);
   }
 
-  protected async get(id: string): Promise<BackendOperation> {
-    return this.fusio.getClient().backend().operation().get(id);
-  }
-
-  protected getDetailComponent(): any {
-    return ModalComponent;
-  }
-
-  protected getRoute(): any {
-    return '/operation';
+  protected getService(): OperationService {
+    return this.service;
   }
 
 }

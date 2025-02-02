@@ -5,7 +5,7 @@
     </select>
   </div>
   <div class="col-9">
-    <app-schema-selector [name]="name + '_schema_' + row.code" [data]="row.schema" (dataChange)="row.schema = $event; changeValue()" [disabled]="disabled"></app-schema-selector>
+    <fusio-form-autocomplete [name]="name + '_schema_' + row.code" [service]="schema" [data]="row.schema" (dataChange)="row.schema = $event; changeValue()" [disabled]="disabled"></fusio-form-autocomplete>
   </div>
 </div>
 <div class="row">

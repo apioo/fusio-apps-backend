@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {
   AccountRoute,
-  ConfirmComponent,
+  ConfirmComponent, EntityRoute,
   isAuthenticated,
   LoginComponent,
   LogoutComponent,
@@ -16,13 +16,25 @@ import {ListComponent as StatisticList} from "./analytics/statistic/list/list.co
 import {ListComponent as TokenList} from "./analytics/token/list/list.component";
 import {DesignerComponent as ActionDesigner} from './api/action/designer/designer.component';
 import {ListComponent as ActionList} from "./api/action/list/list.component";
+import {DetailComponent as ActionDetail} from "./api/action/detail/detail.component";
+import {FormComponent as ActionForm} from "./api/action/form/form.component";
 import {ListComponent as ConnectionList} from "./api/connection/list/list.component";
+import {DetailComponent as ConnectionDetail} from "./api/connection/detail/detail.component";
+import {FormComponent as ConnectionForm} from "./api/connection/form/form.component";
 import {ListComponent as CronjobList} from "./api/cronjob/list/list.component";
+import {DetailComponent as CronjobDetail} from "./api/cronjob/detail/detail.component";
+import {FormComponent as CronjobForm} from "./api/cronjob/form/form.component";
 import {ListComponent as DashboardList} from "./api/dashboard/list/list.component";
 import {ListComponent as EventList} from "./api/event/list/list.component";
+import {DetailComponent as EventDetail} from "./api/event/detail/detail.component";
+import {FormComponent as EventForm} from "./api/event/form/form.component";
 import {ListComponent as OperationList} from "./api/operation/list/list.component";
+import {DetailComponent as OperationDetail} from "./api/operation/detail/detail.component";
+import {FormComponent as OperationForm} from "./api/operation/form/form.component";
 import {DesignerComponent as SchemaDesigner} from './api/schema/designer/designer.component';
 import {ListComponent as SchemaList} from "./api/schema/list/list.component";
+import {DetailComponent as SchemaDetail} from "./api/schema/detail/detail.component";
+import {FormComponent as SchemaForm} from "./api/schema/form/form.component";
 import {ListComponent as AppList} from "./consumer/app/list/list.component";
 import {ListComponent as PageList} from "./consumer/page/list/list.component";
 import {ListComponent as RateList} from "./consumer/rate/list/list.component";
@@ -56,22 +68,17 @@ const routes: Routes = [
 
   { path: 'account', component: AccountComponent, canActivate: [isAuthenticated], children: AccountRoute.getAll()},
 
+
   { path: 'dashboard', component: DashboardList, canActivate: [isAuthenticated] },
-  { path: 'operation', component: OperationList, canActivate: [isAuthenticated] },
-  { path: 'operation/:id', component: OperationList, canActivate: [isAuthenticated] },
-  { path: 'action', component: ActionList, canActivate: [isAuthenticated] },
-  { path: 'action/:id', component: ActionList, canActivate: [isAuthenticated] },
+  { path: 'operation', canActivate: [isAuthenticated], children: EntityRoute.getAll(OperationList, OperationDetail, OperationForm) },
+  { path: 'action', canActivate: [isAuthenticated], children: EntityRoute.getAll(ActionList, ActionDetail, ActionForm) },
   { path: 'action/designer/:id', component: ActionDesigner, canActivate: [isAuthenticated] },
-  { path: 'schema', component: SchemaList, canActivate: [isAuthenticated] },
+  { path: 'schema', canActivate: [isAuthenticated], children: EntityRoute.getAll(SchemaList, SchemaDetail, SchemaForm) },
   { path: 'schema/designer', component: SchemaDesigner, canActivate: [isAuthenticated] },
   { path: 'schema/designer/:id', component: SchemaDesigner, canActivate: [isAuthenticated] },
-  { path: 'schema/:id', component: SchemaList, canActivate: [isAuthenticated] },
-  { path: 'connection', component: ConnectionList, canActivate: [isAuthenticated] },
-  { path: 'connection/:id', component: ConnectionList, canActivate: [isAuthenticated] },
-  { path: 'event', component: EventList, canActivate: [isAuthenticated] },
-  { path: 'event/:id', component: EventList, canActivate: [isAuthenticated] },
-  { path: 'cronjob', component: CronjobList, canActivate: [isAuthenticated] },
-  { path: 'cronjob/:id', component: CronjobList, canActivate: [isAuthenticated] },
+  { path: 'connection', canActivate: [isAuthenticated], children: EntityRoute.getAll(ConnectionList, ConnectionDetail, ConnectionForm) },
+  { path: 'event', canActivate: [isAuthenticated], children: EntityRoute.getAll(EventList, EventDetail, EventForm) },
+  { path: 'cronjob', canActivate: [isAuthenticated], children: EntityRoute.getAll(CronjobList, CronjobDetail, CronjobForm) },
 
   { path: 'database', component: DatabaseList, canActivate: [isAuthenticated] },
   { path: 'database/:connection', component: DatabaseList, canActivate: [isAuthenticated] },

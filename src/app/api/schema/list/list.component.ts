@@ -1,29 +1,22 @@
 import {Component} from '@angular/core';
-import {List} from "ngx-fusio-sdk";
-import {BackendSchema, BackendSchemaCollection, Client} from "fusio-sdk";
-import {ModalComponent} from "../modal/modal.component";
+import {ErrorService, List} from "ngx-fusio-sdk";
+import {BackendSchema} from "fusio-sdk";
+import {SchemaService} from "../../../services/schema.service";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-schema-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent extends List<Client, BackendSchema> {
+export class ListComponent extends List<BackendSchema> {
 
-  protected async getAll(parameters: Array<any>): Promise<BackendSchemaCollection> {
-    return this.fusio.getClient().backend().schema().getAll(...parameters);
+  constructor(private service: SchemaService, route: ActivatedRoute, router: Router, error: ErrorService) {
+    super(route, router, error);
   }
 
-  protected async get(id: string): Promise<BackendSchema> {
-    return this.fusio.getClient().backend().schema().get(id);
-  }
-
-  protected getDetailComponent(): any {
-    return ModalComponent;
-  }
-
-  protected getRoute(): any {
-    return '/schema';
+  protected getService(): SchemaService {
+    return this.service;
   }
 
 }

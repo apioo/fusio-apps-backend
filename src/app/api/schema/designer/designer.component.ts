@@ -4,7 +4,7 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ErrorService, Mode, Result} from "ngx-fusio-sdk";
 import {BackendSchema, CommonMessage} from "fusio-sdk";
-import {ModalComponent} from "../modal/modal.component";
+import {FormComponent} from "../form/form.component";
 import {ApiService} from "../../../api.service";
 
 @Component({
@@ -37,7 +37,7 @@ export class DesignerComponent implements OnInit {
   submit(spec: Specification) {
     const typeSchema = this.exportService.transform(spec);
 
-    const modalRef = this.modalService.open(ModalComponent, {
+    const modalRef = this.modalService.open(FormComponent, {
       size: 'lg'
     });
 

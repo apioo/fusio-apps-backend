@@ -1,29 +1,24 @@
 import {Component} from '@angular/core';
-import {List} from "ngx-fusio-sdk";
+import {ErrorService, List} from "ngx-fusio-sdk";
 import {BackendEvent, BackendEventCollection, Client} from "fusio-sdk";
-import {ModalComponent} from "../modal/modal.component";
+import {FormComponent} from "../form/form.component";
+import {EventService} from "../../../services/event.service";
+import {ActionService} from "../../../services/action.service";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-event-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent extends List<Client, BackendEvent> {
+export class ListComponent extends List<BackendEvent> {
 
-  protected async getAll(parameters: Array<any>): Promise<BackendEventCollection> {
-    return this.fusio.getClient().backend().event().getAll(...parameters);
+  constructor(private service: EventService, public action: ActionService, route: ActivatedRoute, router: Router, error: ErrorService) {
+    super(route, router, error);
   }
 
-  protected async get(id: string): Promise<BackendEvent> {
-    return this.fusio.getClient().backend().event().get(id);
-  }
-
-  protected getDetailComponent(): any {
-    return ModalComponent;
-  }
-
-  protected getRoute(): any {
-    return '/event';
+  protected getService(): EventService {
+    return this.service;
   }
 
 }

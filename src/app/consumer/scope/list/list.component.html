@@ -1,36 +1,41 @@
-
-<h1>Scope</h1>
-
-<fusio-message [response]="response"></fusio-message>
-
-<fusio-search
-  [searchTerm]="search"
-  (search)="doSearch(1, $event)"
-  (newClick)="openCreateDialog()"
-  placeholder="scope"
-  helpPath="consumer/scope/">
-</fusio-search>
-
-<div class="row">
-  <div class="col-lg-2 mb-3">
-    <fusio-sidebar
-      name="scope"
-      nameKey="name"
-      [entries]="entries"
-      [totalResults]="totalResults"
-      [selected]="selected"
-      [page]="page"
+<div class="card">
+  <div class="card-header">Scope</div>
+  <div class="card-body">
+    <fusio-search
+      [searchTerm]="search"
+      (search)="doSearch(1, $event)"
+      (newClick)="router.navigate(getNewLink())"
+      placeholder="scope"
+      helpPath="consumer/scope/">
+    </fusio-search>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th style="width:50%">Name</th>
+        <th style="width:50%">Description</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let entry of entries">
+        <td>{{entry.name}}</td>
+        <td>{{entry.description}}</td>
+        <td>
+          <div class="btn-group" role="group">
+            <a [routerLink]="getDetailLink(entry.id)" class="btn btn-primary"><i class="bi bi-search"></i></a>
+            <a [routerLink]="getEditLink(entry.id)" class="btn btn-secondary"><i class="bi bi-pen"></i></a>
+            <a [routerLink]="getDeleteLink(entry.id)" class="btn btn-secondary"><i class="bi bi-x"></i></a>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <ngb-pagination
+      [(page)]="page"
       [pageSize]="pageSize"
-      (pageChange)="doSearch($event, search)"
-      (entrySelect)="doSelect($event)">
-    </fusio-sidebar>
-  </div>
-  <div class="col-lg-10 mb-3">
-    <fusio-empty *ngIf="!selected" [loading]="loading" (newClick)="openCreateDialog()"></fusio-empty>
-    <app-scope-detail *ngIf="selected"
-      [selected]="selected"
-      (updateClick)="openUpdateDialog(selected)"
-      (deleteClick)="openDeleteDialog(selected)">
-    </app-scope-detail>
+      [collectionSize]="totalResults"
+      [maxSize]="4"
+      [ellipses]="false"
+      (pageChange)="doSearch($event)"></ngb-pagination>
   </div>
 </div>

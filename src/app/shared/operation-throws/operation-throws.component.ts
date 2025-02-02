@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {BackendOperationThrows} from "fusio-sdk";
+import {SchemaService} from "../../services/schema.service";
 
 @Component({
   selector: 'app-operation-throws',
@@ -41,6 +42,9 @@ export class OperationThrowsComponent implements OnInit {
     {key: 507, value: 'Insufficient Storage'},
     {key: 508, value: 'Loop Detected'},
   ]
+
+  constructor(public schema: SchemaService) {
+  }
 
   ngOnInit() {
     if (this.data) {

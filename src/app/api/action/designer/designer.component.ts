@@ -29,7 +29,7 @@ export class DesignerComponent implements OnInit {
   body: string = '';
   response?: BackendActionExecuteResponse;
 
-  constructor(private fusio: ApiService, private help: HelpService, private route: ActivatedRoute, private router: Router, private error: ErrorService) {
+  constructor(private fusio: ApiService, private route: ActivatedRoute, private error: ErrorService) {
   }
 
   async ngOnInit(): Promise<void> {
