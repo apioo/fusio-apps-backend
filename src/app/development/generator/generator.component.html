@@ -45,7 +45,7 @@
               </div>
             </div>
           </div>
-          <app-config-form *ngIf="form" [container]="form" [data]="provider.config" (dataChange)="provider.config = $event"></app-config-form>
+          <app-config *ngIf="form" [container]="form" [data]="provider.config" (dataChange)="provider.config = $event"></app-config>
           <div class="btn-group">
           <button type="button" class="btn btn-primary" (click)="submit()" [disabled]="response?.success === true">Execute</button>
           <button type="button" class="btn btn-secondary" (click)="loadChangelog()" [disabled]="response?.success === true">Changelog</button>

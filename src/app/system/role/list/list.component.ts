@@ -1,29 +1,22 @@
 import {Component} from '@angular/core';
-import {List} from "ngx-fusio-sdk";
-import {BackendRole, BackendRoleCollection, Client} from "fusio-sdk";
-import {ModalComponent} from "../modal/modal.component";
+import {ErrorService, List} from "ngx-fusio-sdk";
+import {BackendRole} from "fusio-sdk";
+import {RoleService} from "../../../services/role.service";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-role-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent extends List<Client, BackendRole> {
+export class ListComponent extends List<BackendRole> {
 
-  protected async getAll(parameters: Array<any>): Promise<BackendRoleCollection> {
-    return this.fusio.getClient().backend().role().getAll(...parameters);
+  constructor(private service: RoleService, route: ActivatedRoute, router: Router, error: ErrorService) {
+    super(route, router, error);
   }
 
-  protected async get(id: string): Promise<BackendRole> {
-    return this.fusio.getClient().backend().role().get(id);
-  }
-
-  protected getDetailComponent(): any {
-    return ModalComponent;
-  }
-
-  protected getRoute(): any {
-    return '/role';
+  protected getService(): RoleService {
+    return this.service;
   }
 
 }

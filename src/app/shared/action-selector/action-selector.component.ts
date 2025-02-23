@@ -1,14 +1,13 @@
 import {Component} from '@angular/core';
-import {BackendAction, BackendActionCollection} from "fusio-sdk";
-import {ObjectSelector} from "ngx-fusio-sdk";
-import {ApiService} from "../../api.service";
+import {FormAutocompleteComponent} from "ngx-fusio-sdk";
+import {ActionService} from "../../services/action.service";
 
 @Component({
   selector: 'app-action-selector',
   templateUrl: './action-selector.component.html',
   styleUrls: ['./action-selector.component.css']
 })
-export class ActionSelectorComponent extends ObjectSelector<BackendAction, string> {
+export class ActionSelectorComponent extends FormAutocompleteComponent {
 
   schemes = [{
     key: 'action',
@@ -30,7 +29,7 @@ export class ActionSelectorComponent extends ObjectSelector<BackendAction, strin
   scheme: string = '';
   value: string = '';
 
-  constructor(private fusio: ApiService) {
+  constructor(private action: ActionService) {
     super();
   }
 
@@ -42,7 +41,7 @@ export class ActionSelectorComponent extends ObjectSelector<BackendAction, strin
         this.value = this.data.substring(pos + 3);
 
         if (this.scheme === 'action') {
-          this.selected = await this.fusio.getClient().backend().action().get('~' + this.value);
+          this.selected = await this.action.getWithIdAndName('~' + this.value);
         }
       }
     }
@@ -69,14 +68,6 @@ export class ActionSelectorComponent extends ObjectSelector<BackendAction, strin
     }
 
     this.dataChange.emit(this.scheme + '://' + this.value);
-  }
-
-  protected async getAll(parameters: Array<any>): Promise<BackendActionCollection> {
-    return this.fusio.getClient().backend().action().getAll(...parameters);
-  }
-
-  protected async get(id: string): Promise<BackendAction> {
-    return this.fusio.getClient().backend().action().get(id);
   }
 
 }

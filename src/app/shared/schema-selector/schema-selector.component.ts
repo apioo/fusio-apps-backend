@@ -1,15 +1,13 @@
 import {Component} from '@angular/core';
-import {BackendSchema} from "fusio-sdk";
-import {ObjectSelector} from "ngx-fusio-sdk";
-import {BackendSchemaCollection} from "fusio-sdk";
-import {ApiService} from "../../api.service";
+import {FormAutocompleteComponent} from "ngx-fusio-sdk";
+import {SchemaService} from "../../services/schema.service";
 
 @Component({
   selector: 'app-schema-selector',
   templateUrl: './schema-selector.component.html',
   styleUrls: ['./schema-selector.component.css']
 })
-export class SchemaSelectorComponent extends ObjectSelector<BackendSchema, string> {
+export class SchemaSelectorComponent extends FormAutocompleteComponent {
 
   schemes = [{
     key: 'schema',
@@ -34,7 +32,7 @@ export class SchemaSelectorComponent extends ObjectSelector<BackendSchema, strin
   scheme: string = '';
   value: string = '';
 
-  constructor(private fusio: ApiService) {
+  constructor(private schema: SchemaService) {
     super();
   }
 
@@ -46,7 +44,7 @@ export class SchemaSelectorComponent extends ObjectSelector<BackendSchema, strin
         this.value = this.data.substring(pos + 3);
 
         if (this.scheme === 'schema') {
-          this.selected = await this.fusio.getClient().backend().schema().get('~' + this.value);
+          this.selected = await this.schema.getWithIdAndName('~' + this.value);
         }
       }
     }
@@ -73,14 +71,6 @@ export class SchemaSelectorComponent extends ObjectSelector<BackendSchema, strin
     }
 
     this.dataChange.emit(this.scheme + '://' + this.value);
-  }
-
-  protected async getAll(parameters: Array<any>): Promise<BackendSchemaCollection> {
-    return this.fusio.getClient().backend().schema().getAll(...parameters);
-  }
-
-  protected async get(id: string): Promise<BackendSchema> {
-    return this.fusio.getClient().backend().schema().get(id);
   }
 
 }

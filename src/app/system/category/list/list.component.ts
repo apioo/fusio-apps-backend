@@ -1,29 +1,22 @@
 import {Component} from '@angular/core';
-import {List} from "ngx-fusio-sdk";
-import {BackendCategory, BackendCategoryCollection, Client} from "fusio-sdk";
-import {ModalComponent} from "../modal/modal.component";
+import {ErrorService, List} from "ngx-fusio-sdk";
+import {BackendCategory} from "fusio-sdk";
+import {CategoryService} from "../../../services/category.service";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-category-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent extends List<Client, BackendCategory> {
+export class ListComponent extends List<BackendCategory> {
 
-  protected async getAll(parameters: Array<any>): Promise<BackendCategoryCollection> {
-    return this.fusio.getClient().backend().category().getAll(...parameters);
+  constructor(private service: CategoryService, route: ActivatedRoute, router: Router, error: ErrorService) {
+    super(route, router, error);
   }
 
-  protected async get(id: string): Promise<BackendCategory> {
-    return this.fusio.getClient().backend().category().get(id);
-  }
-
-  protected getDetailComponent(): any {
-    return ModalComponent;
-  }
-
-  protected getRoute(): any {
-    return '/category';
+  protected getService(): CategoryService {
+    return this.service;
   }
 
 }

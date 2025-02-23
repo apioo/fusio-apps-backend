@@ -1,29 +1,23 @@
 import {Component} from '@angular/core';
-import {List} from "ngx-fusio-sdk";
-import {BackendWebhook, BackendWebhookCollection, Client} from "fusio-sdk";
-import {ModalComponent} from "../modal/modal.component";
+import {ErrorService, List} from "ngx-fusio-sdk";
+import {BackendWebhook} from "fusio-sdk";
+import {WebhookService} from "../../../services/webhook.service";
+import {RoleService} from "../../../services/role.service";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-webhook-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent extends List<Client, BackendWebhook> {
+export class ListComponent extends List<BackendWebhook> {
 
-  protected async getAll(parameters: Array<any>): Promise<BackendWebhookCollection> {
-    return this.fusio.getClient().backend().webhook().getAll(...parameters);
+  constructor(private service: WebhookService, public role: RoleService, route: ActivatedRoute, router: Router, error: ErrorService) {
+    super(route, router, error);
   }
 
-  protected async get(id: string): Promise<BackendWebhook> {
-    return this.fusio.getClient().backend().webhook().get(id);
-  }
-
-  protected getDetailComponent(): any {
-    return ModalComponent;
-  }
-
-  protected getRoute(): any {
-    return '/webhook';
+  protected getService(): WebhookService {
+    return this.service;
   }
 
 }

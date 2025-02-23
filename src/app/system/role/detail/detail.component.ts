@@ -1,6 +1,8 @@
 import {Component} from '@angular/core';
-import {Detail} from "ngx-fusio-sdk";
+import {Detail, ErrorService} from "ngx-fusio-sdk";
 import {BackendRole} from "fusio-sdk";
+import {ActivatedRoute, Router} from "@angular/router";
+import {RoleService} from "../../../services/role.service";
 
 @Component({
   selector: 'app-role-detail',
@@ -8,5 +10,13 @@ import {BackendRole} from "fusio-sdk";
   styleUrls: ['./detail.component.css']
 })
 export class DetailComponent extends Detail<BackendRole> {
+
+  constructor(private service: RoleService, route: ActivatedRoute, router: Router, error: ErrorService) {
+    super(route, router, error);
+  }
+
+  protected getService(): RoleService {
+    return this.service;
+  }
 
 }

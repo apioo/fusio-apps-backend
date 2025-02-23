@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {ErrorService, Mode, Result} from "ngx-fusio-sdk";
+import {ErrorService, Mode} from "ngx-fusio-sdk";
 import {BackendTest, CommonMessage} from "fusio-sdk";
-import {Router} from "@angular/router";
-import {ModalComponent} from "../modal/modal.component";
+import {FormComponent} from "../form/form.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {ApiService} from "../../../api.service";
 
@@ -13,10 +12,10 @@ import {ApiService} from "../../../api.service";
 })
 export class ListComponent implements OnInit {
 
-  constructor(private fusio: ApiService, private error: ErrorService, private router: Router, private modalService: NgbModal) { }
-
   public tests: Array<BackendTest> = [];
   public response?: CommonMessage;
+
+  constructor(private fusio: ApiService, private error: ErrorService, private modalService: NgbModal) { }
 
   async ngOnInit(): Promise<void> {
     await this.doLoad();
@@ -58,14 +57,14 @@ export class ListComponent implements OnInit {
       return;
     }
 
-    const modalRef = this.modalService.open(ModalComponent, {
+    const modalRef = this.modalService.open(FormComponent, {
       size: 'lg'
     });
     modalRef.componentInstance.mode = Mode.Update;
     modalRef.componentInstance.entity = entity;
-    modalRef.closed.subscribe(async (result: Result<BackendTest>) => {
-      this.response = result.response;
-      if (result.response.success) {
+    modalRef.closed.subscribe(async (result: CommonMessage) => {
+      this.response = result;
+      if (this.response.success) {
         await this.doLoad();
       }
     });

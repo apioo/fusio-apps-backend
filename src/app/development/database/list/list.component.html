@@ -1,212 +1,37 @@
 
 <h1>Database</h1>
 
-<fusio-message [response]="response"></fusio-message>
-
-<div class="row">
-  <div class="col-lg-2 mb-3">
-    <div class="card" *ngIf="!selectedConnection">
-      <div class="card-header">Connections</div>
-      <div class="card-body">
-        <div class="fusio-sidebar">
-          <ul>
-            <li *ngFor="let connection of connections">
-              <a [routerLink]="['/database', connection]" class="link-primary">
-                <span>{{ connection }}</span>
-              </a>
-            </li>
-          </ul>
-        </div>
+<fusio-search
+  [searchTerm]="search"
+  (search)="doSearch(1, $event)"
+  (newClick)="router.navigate(getNewLink())"
+  placeholder="action"
+  helpPath="development/database/">
+</fusio-search>
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th style="width:50%">Name</th>
+    <th style="width:50%">Class</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let entry of entries">
+    <td>{{entry.name}}</td>
+    <td>{{entry.class}}</td>
+    <td>
+      <div class="btn-group" role="group">
+        <a [routerLink]="['/', 'database', entry.id]" class="btn btn-primary"><i class="bi bi-search"></i></a>
       </div>
-    </div>
-    <div class="card" *ngIf="selectedConnection">
-      <div class="card-header">Tables <span class="float-end"><a routerLink="/database"><i class="bi bi-arrow-left-short"></i></a></span></div>
-      <div class="card-body">
-        <div class="fusio-sidebar">
-          <ul>
-            <li *ngFor="let tableName of tables">
-              <a [routerLink]="['/database', selectedConnection, tableName]" class="link-primary">
-                <b *ngIf="selectedTable === tableName">{{ tableName }}</b>
-                <span *ngIf="selectedTable !== tableName">{{ tableName }}</span>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-lg-10 mb-3">
-    <div class="card" *ngIf="!selectedConnection">
-      <div class="card-header">No connection selected</div>
-      <div class="card-body">
-        <h4 class="text-center font-monospace text-muted fw-bold mt-5 mb-5">Please select a connection at the left sidebar.</h4>
-      </div>
-    </div>
-    <div *ngIf="selectedConnection">
-      <ul ngbNav #nav="ngbNav" [(activeId)]="activeTab" (activeIdChange)="changeTab()" class="nav-tabs">
-        <li [ngbNavItem]="1">
-          <button ngbNavLink>Schema</button>
-          <ng-template ngbNavContent>
-            <div class="fusio-search mt-3">
-              <form (submit)="doSearchSchema()">
-                <div class="input-group">
-                  <input type="text" class="form-control" name="search" [(ngModel)]="searchSchema" placeholder="Search i.e. columns" />
-                  <button type="button" (click)="openTableCreateDialog()" class="btn btn-primary fusio-btn-create"><i class="bi bi-plus"></i></button>
-                </div>
-              </form>
-            </div>
-            <div class="card mt-3" *ngIf="table">
-              <div class="card-header">{{table.name}}</div>
-              <div class="card-body">
-                <div class="btn-group" role="group">
-                  <button type="button" (click)="openTableUpdateDialog(table)" class="btn btn-primary fusio-btn-update">Update</button>
-                  <button type="button" (click)="openTableDeleteDialog(table)" class="btn btn-danger fusio-btn-delete">Delete</button>
-                </div>
-                <table class="table font-monospace">
-                  <colgroup>
-                    <col>
-                    <col style="width:20%">
-                    <col style="width:15%">
-                    <col style="width:15%">
-                  </colgroup>
-                  <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Length</th>
-                    <th>Not-Null</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr *ngFor="let column of columns">
-                    <td>
-                      <ng-container *ngIf="column.name === table.primaryKey"><span class="fw-bold">{{column.name}}</span></ng-container>
-                      <ng-container *ngIf="column.name !== table.primaryKey">{{column.name}}</ng-container>
-                    </td>
-                    <td>{{column.type}}</td>
-                    <td>{{column.length}}</td>
-                    <td>{{column.notNull}}</td>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <div class="card mt-3" *ngIf="table && table.indexes && table.indexes.length > 0">
-              <div class="card-header">Indexes</div>
-              <div class="card-body">
-                <table class="table font-monospace">
-                  <colgroup>
-                    <col>
-                    <col style="width:35%">
-                    <col style="width:15%">
-                  </colgroup>
-                  <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Columns</th>
-                    <th>Unique</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr *ngFor="let index of table.indexes">
-                    <td>{{index.name}}</td>
-                    <td>{{index.columns}}</td>
-                    <td>{{index.unique}}</td>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <div class="card mt-3" *ngIf="table && table.foreignKeys && table.foreignKeys.length > 0">
-              <div class="card-header">Foreign Keys</div>
-              <div class="card-body">
-                <table class="table font-monospace">
-                  <colgroup>
-                    <col>
-                    <col style="width:20%">
-                    <col style="width:20%">
-                    <col style="width:20%">
-                  </colgroup>
-                  <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Foreign Table</th>
-                    <th>Local Column Names</th>
-                    <th>Foreign Column Names</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr *ngFor="let foreignKey of table.foreignKeys">
-                    <td>{{foreignKey.name}}</td>
-                    <td><a [routerLink]="['/database', selectedConnection, foreignKey.foreignTable]">{{foreignKey.foreignTable}}</a></td>
-                    <td>{{foreignKey.localColumnNames}}</td>
-                    <td>{{foreignKey.foreignColumnNames}}</td>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </ng-template>
-        </li>
-        <li [ngbNavItem]="2">
-          <button ngbNavLink>Data</button>
-          <ng-template ngbNavContent>
-            <div class="fusio-search mt-3">
-              <form (submit)="loadData()">
-                <div class="input-group">
-                  <select [(ngModel)]="filterBy" name="filterBy" class="form-select">
-                    <option *ngFor="let column of columns">{{column.name}}</option>
-                  </select>
-                  <select [(ngModel)]="filterOp" name="filterOp" class="form-select">
-                    <option ngValue="equals">Equals</option>
-                    <option ngValue="contains">Contains</option>
-                    <option ngValue="startsWith">Starts with</option>
-                    <option ngValue="present">Not null</option>
-                  </select>
-                  <input type="text" class="form-control" name="filterValue" [(ngModel)]="filterValue" placeholder="Search i.e. data" />
-                  <button type="button" (click)="openRowCreateDialog()" class="btn btn-primary fusio-btn-create"><i class="bi bi-plus"></i></button>
-                </div>
-              </form>
-            </div>
-            <div class="card mt-3" *ngIf="rows">
-              <div class="card-header">Rows {{rows.startIndex}} / {{rows.itemsPerPage}} of {{rows.totalResults}}</div>
-              <div class="card-body overflow-scroll">
-                <div class="d-flex flex-nowrap flex-row fw-bold">
-                  <div class="p-2 flex-fill">
-                    <div class="text-nowrap font-monospace overflow-hidden" style="width:100px"></div>
-                  </div>
-                  <div class="p-2 flex-fill" *ngFor="let column of columns">
-                    <div class="text-nowrap font-monospace overflow-hidden" style="width:100px">{{column.name}}</div>
-                  </div>
-                </div>
-                <div class="d-flex flex-nowrap flex-row" *ngFor="let row of rows?.entry">
-                  <div class="p-2 flex-fill">
-                    <div class="text-nowrap font-monospace overflow-hidden" style="width:100px">
-                      <div class="btn-group" role="group">
-                        <button class="btn btn-secondary" (click)="openRowUpdateDialog(row)"><i class="bi bi-pen"></i></button>
-                        <button class="btn btn-danger" (click)="openRowDeleteDialog(row)"><i class="bi bi-x"></i></button>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="p-2 flex-fill" *ngFor="let column of columns">
-                    <div class="text-nowrap font-monospace overflow-hidden" style="width:100px">{{row[column.name || '']}}</div>
-                  </div>
-                </div>
-                <hr>
-                <ngb-pagination
-                  [(page)]="page"
-                  [pageSize]="pageSize"
-                  [collectionSize]="totalResults"
-                  [maxSize]="8"
-                  [ellipses]="true"
-                  (pageChange)="doPageChange($event)"></ngb-pagination>
-              </div>
-            </div>
-          </ng-template>
-        </li>
-      </ul>
-      <div [ngbNavOutlet]="nav" class="mt-2"></div>
-    </div>
-  </div>
-</div>
-
+    </td>
+  </tr>
+  </tbody>
+</table>
+<ngb-pagination
+  [(page)]="page"
+  [pageSize]="pageSize"
+  [collectionSize]="totalResults"
+  [maxSize]="4"
+  [ellipses]="false"
+  (pageChange)="doSearch($event)"></ngb-pagination>

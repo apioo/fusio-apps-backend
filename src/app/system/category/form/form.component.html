@@ -1,0 +1,25 @@
+
+<form *ngIf="entity">
+  <h1>
+    <ng-container *ngIf="mode === 1">Create</ng-container>
+    <ng-container *ngIf="mode === 2">Update</ng-container>
+    <ng-container *ngIf="mode === 3">Delete</ng-container>
+  </h1>
+  <fusio-message [response]="response"></fusio-message>
+  <div class="mb-3 row">
+    <label for="name" class="col-sm-2 col-form-label fw-bold">Name</label>
+    <div class="col-sm-10">
+      <div class="input-group">
+        <input type="text" id="name" name="name" [(ngModel)]="entity.name" class="form-control">
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
+        <ng-template #nameHelp>Unique name of the category</ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="btn-group" role="group">
+    <ng-container *ngIf="mode === 1"><button type="button" class="btn btn-primary" (click)="doCreate(entity)">Create</button></ng-container>
+    <ng-container *ngIf="mode === 2"><button type="button" class="btn btn-primary" (click)="doUpdate(entity)">Update</button></ng-container>
+    <ng-container *ngIf="mode === 3"><button type="button" class="btn btn-danger" (click)="doDelete(entity)">Delete</button></ng-container>
+    <button type="button" (click)="router.navigate(getListLink())" class="btn btn-light fusio-btn-back">Back</button>
+  </div>
+</form>

@@ -1,0 +1,78 @@
+
+<form *ngIf="entity">
+  <h1>
+    <ng-container *ngIf="mode === 1">Create</ng-container>
+    <ng-container *ngIf="mode === 2">Update</ng-container>
+    <ng-container *ngIf="mode === 3">Delete</ng-container>
+  </h1>
+  <fusio-message [response]="response"></fusio-message>
+  <div class="mb-3 row">
+    <label for="name" class="col-sm-2 col-form-label fw-bold">Name</label>
+    <div class="col-sm-10">
+      <div class="input-group">
+        <input type="text" id="name" name="name" [(ngModel)]="entity.name" class="form-control">
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
+        <ng-template #nameHelp>Unique name of the plan</ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="description" class="col-sm-2 col-form-label fw-bold">Description</label>
+    <div class="col-sm-10">
+      <div class="input-group">
+        <textarea id="description" name="description" [(ngModel)]="entity.description" class="form-control"></textarea>
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="descriptionHelp"><i class="bi bi-question"></i></button>
+        <ng-template #descriptionHelp>A short description of this plan</ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="price" class="col-sm-2 col-form-label fw-bold">Price</label>
+    <div class="col-sm-10">
+      <div class="input-group">
+        <input type="number" id="price" name="price" [(ngModel)]="entity.price" class="form-control">
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="priceHelp"><i class="bi bi-question"></i></button>
+        <ng-template #priceHelp>The price how much this plan costs</ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="points" class="col-sm-2 col-form-label fw-bold">Points</label>
+    <div class="col-sm-10">
+      <div class="input-group">
+        <input type="number" id="points" name="points" [(ngModel)]="entity.points" class="form-control">
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="pointsHelp"><i class="bi bi-question"></i></button>
+        <ng-template #pointsHelp>The amount of points a user receives if he buys this plan</ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="period" class="col-sm-2 col-form-label fw-bold">Period</label>
+    <div class="col-sm-10">
+      <div class="input-group">
+        <select id="period" name="period" [(ngModel)]="entity.period" class="form-select">
+          <option *ngFor="let period of periods" [ngValue]="period.id">{{period.name}}</option>
+        </select>
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="periodHelp"><i class="bi bi-question"></i></button>
+        <ng-template #periodHelp>Indicates whether this plan is one-time or a subscription</ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="externalId" class="col-sm-2 col-form-label fw-bold">External-Id</label>
+    <div class="col-sm-10">
+      <div class="input-group">
+        <input type="text" id="externalId" name="externalId" [(ngModel)]="entity.externalId" class="form-control">
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="externalIdHelp"><i class="bi bi-question"></i></button>
+        <ng-template #externalIdHelp>Optional an external id which can be configured at the payment provider i.e. for Stripe this would be a price id</ng-template>
+      </div>
+    </div>
+  </div>
+  <app-scope-categories [scopes]="entity.scopes" (dataChange)="entity.scopes = $event"></app-scope-categories>
+  <div class="btn-group" role="group">
+    <ng-container *ngIf="mode === 1"><button type="button" class="btn btn-primary" (click)="doCreate(entity)">Create</button></ng-container>
+    <ng-container *ngIf="mode === 2"><button type="button" class="btn btn-primary" (click)="doUpdate(entity)">Update</button></ng-container>
+    <ng-container *ngIf="mode === 3"><button type="button" class="btn btn-danger" (click)="doDelete(entity)">Delete</button></ng-container>
+    <button type="button" (click)="router.navigate(getListLink())" class="btn btn-light fusio-btn-back">Back</button>
+  </div>
+</form>

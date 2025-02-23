@@ -8,7 +8,7 @@
     <div class="card">
       <div class="card-header">Action</div>
       <div class="card-body" *ngIf="form && action">
-        <app-config-form [container]="form" [data]="action.config" (dataChange)="action.config = $event"></app-config-form>
+        <app-config [container]="form" [data]="action.config" (dataChange)="action.config = $event"></app-config>
         <button (click)="submit()" class="btn btn-primary" type="button">Execute</button>
       </div>
     </div>

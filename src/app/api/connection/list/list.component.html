@@ -1,41 +1,39 @@
-<div class="card">
-  <div class="card-header">Connection</div>
-  <div class="card-body">
-    <fusio-search
-      [searchTerm]="search"
-      (search)="doSearch(1, $event)"
-      (newClick)="router.navigate(getNewLink())"
-      placeholder="connection"
-      helpPath="api/connection/">
-    </fusio-search>
-    <table class="table table-striped">
-      <thead>
-      <tr>
-        <th style="width:50%">Name</th>
-        <th style="width:50%">Class</th>
-        <th></th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let entry of entries">
-        <td>{{entry.name}}</td>
-        <td>{{entry.class}}</td>
-        <td>
-          <div class="btn-group" role="group">
-            <a [routerLink]="getDetailLink(entry.id)" class="btn btn-primary"><i class="bi bi-search"></i></a>
-            <a [routerLink]="getEditLink(entry.id)" class="btn btn-secondary"><i class="bi bi-pen"></i></a>
-            <a [routerLink]="getDeleteLink(entry.id)" class="btn btn-secondary"><i class="bi bi-x"></i></a>
-          </div>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-    <ngb-pagination
-      [(page)]="page"
-      [pageSize]="pageSize"
-      [collectionSize]="totalResults"
-      [maxSize]="4"
-      [ellipses]="false"
-      (pageChange)="doSearch($event)"></ngb-pagination>
-  </div>
-</div>
+
+<h1>Connection</h1>
+
+<fusio-search
+  [searchTerm]="search"
+  (search)="doSearch(1, $event)"
+  (newClick)="router.navigate(getNewLink())"
+  placeholder="connection"
+  helpPath="api/connection/">
+</fusio-search>
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th style="width:50%">Name</th>
+    <th style="width:50%">Class</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let entry of entries">
+    <td>{{entry.name}}</td>
+    <td>{{entry.class}}</td>
+    <td>
+      <div class="btn-group" role="group">
+        <a [routerLink]="getDetailLink(entry.id)" class="btn btn-primary"><i class="bi bi-search"></i></a>
+        <a [routerLink]="getEditLink(entry.id)" class="btn btn-secondary"><i class="bi bi-pen"></i></a>
+        <a [routerLink]="getDeleteLink(entry.id)" class="btn btn-secondary"><i class="bi bi-x"></i></a>
+      </div>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<ngb-pagination
+  [(page)]="page"
+  [pageSize]="pageSize"
+  [collectionSize]="totalResults"
+  [maxSize]="4"
+  [ellipses]="false"
+  (pageChange)="doSearch($event)"></ngb-pagination>

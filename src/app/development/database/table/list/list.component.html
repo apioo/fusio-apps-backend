@@ -1,0 +1,38 @@
+
+<h1>Database</h1>
+
+<fusio-search
+  [searchTerm]="search"
+  (search)="doSearch(1, $event)"
+  (newClick)="router.navigate(getNewLink())"
+  placeholder="table"
+  helpPath="development/database/">
+</fusio-search>
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th style="width:50%">Name</th>
+    <th style="width:50%">Class</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let entry of entries">
+    <td>{{entry.name}}</td>
+    <td>
+      <div class="btn-group" role="group">
+        <a [routerLink]="getDetailLink(entry.name)" class="btn btn-primary"><i class="bi bi-search"></i></a>
+        <a [routerLink]="getEditLink(entry.name)" class="btn btn-secondary"><i class="bi bi-pen"></i></a>
+        <a [routerLink]="getDeleteLink(entry.name)" class="btn btn-secondary"><i class="bi bi-x"></i></a>
+      </div>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<ngb-pagination
+  [(page)]="page"
+  [pageSize]="pageSize"
+  [collectionSize]="totalResults"
+  [maxSize]="4"
+  [ellipses]="false"
+  (pageChange)="doSearch($event)"></ngb-pagination>

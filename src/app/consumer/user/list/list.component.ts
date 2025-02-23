@@ -1,29 +1,22 @@
 import {Component} from '@angular/core';
-import {List} from "ngx-fusio-sdk";
-import {BackendUser, BackendUserCollection, Client} from "fusio-sdk";
-import {ModalComponent} from "../modal/modal.component";
+import {ErrorService, List} from "ngx-fusio-sdk";
+import {BackendUser} from "fusio-sdk";
+import {UserService} from "../../../services/user.service";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-user-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent extends List<Client, BackendUser> {
+export class ListComponent extends List<BackendUser> {
 
-  protected async getAll(parameters: Array<any>): Promise<BackendUserCollection> {
-    return this.fusio.getClient().backend().user().getAll(...parameters);
+  constructor(private service: UserService, route: ActivatedRoute, router: Router, error: ErrorService) {
+    super(route, router, error);
   }
 
-  protected async get(id: string): Promise<BackendUser> {
-    return this.fusio.getClient().backend().user().get(id);
-  }
-
-  protected getDetailComponent(): any {
-    return ModalComponent;
-  }
-
-  protected getRoute(): any {
-    return '/user';
+  protected getService(): UserService {
+    return this.service;
   }
 
 }
