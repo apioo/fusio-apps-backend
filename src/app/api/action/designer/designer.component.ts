@@ -11,7 +11,7 @@ import {
 import {ApiService} from "../../../api.service";
 
 @Component({
-  selector: 'app-designer',
+  selector: 'app-action-designer',
   templateUrl: './designer.component.html',
   styleUrls: ['./designer.component.css']
 })
