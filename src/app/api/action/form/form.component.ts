@@ -26,10 +26,14 @@ export class FormComponent extends Form<BackendAction> {
     return this.service;
   }
 
-  protected override async onLoad() {
+  override async ngOnInit(): Promise<void> {
+    super.ngOnInit();
+
     const response = await this.fusio.getClient().backend().action().getClasses();
     this.actions = response.actions;
+  }
 
+  protected override async onLoad() {
     if (this.entity && this.entity.class) {
       this.loadConfig(this.entity.class);
     }

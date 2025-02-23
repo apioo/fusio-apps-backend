@@ -1,5 +1,9 @@
 
-<h1>Action / Designer</h1>
+<h1>
+  <a [routerLink]="['/', 'action']">Action</a> /
+  <a [routerLink]="['/', 'action', '~' + action?.name]">{{ action?.name }}</a> /
+  Designer
+</h1>
 
 <fusio-message [response]="message"></fusio-message>
 
