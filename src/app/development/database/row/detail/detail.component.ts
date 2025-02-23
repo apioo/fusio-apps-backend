@@ -36,4 +36,8 @@ export class DetailComponent extends Detail<BackendDatabaseRow> {
     });
   }
 
+  get primaryKey(): string {
+    return this.table?.primaryKey || '';
+  }
+
 }

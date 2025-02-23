@@ -1,10 +1,10 @@
 
 <div *ngIf="selected">
-  <h1>Row / {{selected[table?.primaryKey]}}</h1>
+  <h1>Row / {{selected[primaryKey]}}</h1>
   <div class="btn-group" role="group">
     <a [routerLink]="getListLink()" class="btn btn-secondary fusio-btn-back">Back</a>
-    <a [routerLink]="getEditLink(selected.id)" class="btn btn-primary fusio-btn-update">Update</a>
-    <a [routerLink]="getDeleteLink(selected.id)" class="btn btn-danger fusio-btn-delete">Delete</a>
+    <a [routerLink]="getEditLink(selected[primaryKey])" class="btn btn-primary fusio-btn-update">Update</a>
+    <a [routerLink]="getDeleteLink(selected[primaryKey])" class="btn btn-danger fusio-btn-delete">Delete</a>
   </div>
   <div class="fusio-detail" *ngIf="!jsonView">
     <div class="row" *ngFor="let kv of selected|keyvalue">

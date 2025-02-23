@@ -34,6 +34,7 @@ export class OperationThrowsComponent implements OnInit {
     {key: 423, value: 'Locked'},
     {key: 424, value: 'Failed Dependency'},
     {key: 429, value: 'Too Many Requests'},
+    {key: 499, value: '4xx'},
     {key: 500, value: 'Internal Server Error'},
     {key: 501, value: 'Not Implemented'},
     {key: 502, value: 'Bad Gateway'},
@@ -41,6 +42,8 @@ export class OperationThrowsComponent implements OnInit {
     {key: 504, value: 'Gateway Timeout'},
     {key: 507, value: 'Insufficient Storage'},
     {key: 508, value: 'Loop Detected'},
+    {key: 599, value: '5xx'},
+    {key: 999, value: 'All errors'},
   ]
 
   constructor(public schema: SchemaService) {

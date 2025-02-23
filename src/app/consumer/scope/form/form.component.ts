@@ -39,13 +39,13 @@ export class FormComponent extends Form<BackendScope> {
     });
   }
 
-  protected beforeCreate(entity: BackendScope): BackendScope {
+  protected override beforeCreate(entity: BackendScope): BackendScope {
     entity.operations = this.getConfiguredScopes();
 
     return entity;
   }
 
-  protected beforeUpdate(entity: BackendScope): BackendScope {
+  protected override beforeUpdate(entity: BackendScope): BackendScope {
     entity.operations = this.getConfiguredScopes();
 
     return entity;

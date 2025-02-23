@@ -4,6 +4,8 @@ import {BackendWebhook} from "fusio-sdk";
 import {RoleService} from "../../../services/role.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {WebhookService} from "../../../services/webhook.service";
+import {UserService} from "../../../services/user.service";
+import {EventService} from "../../../services/event.service";
 
 @Component({
   selector: 'app-webhook-form',
@@ -12,7 +14,7 @@ import {WebhookService} from "../../../services/webhook.service";
 })
 export class FormComponent extends Form<BackendWebhook> {
 
-  constructor(private service: WebhookService, public role: RoleService, route: ActivatedRoute, router: Router, error: ErrorService) {
+  constructor(private service: WebhookService, public event: EventService, public user: UserService, public role: RoleService, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);
   }
 
@@ -20,4 +22,5 @@ export class FormComponent extends Form<BackendWebhook> {
     return this.service;
   }
 
+  protected readonly parseInt = parseInt;
 }

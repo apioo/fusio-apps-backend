@@ -61,13 +61,13 @@ export class FormComponent extends Form<BackendRate> {
     return this.service;
   }
 
-  protected beforeCreate(entity: BackendRate): BackendRate {
+  protected override beforeCreate(entity: BackendRate): BackendRate {
     entity.timespan = this.getTimespan();
 
     return entity;
   }
 
-  protected beforeUpdate(entity: BackendRate): BackendRate {
+  protected override beforeUpdate(entity: BackendRate): BackendRate {
     entity.timespan = this.getTimespan();
 
     return entity;

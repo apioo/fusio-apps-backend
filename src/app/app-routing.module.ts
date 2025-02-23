@@ -106,7 +106,7 @@ const routes: Routes = [
   { path: 'action', canActivate: [isAuthenticated], children: EntityRoute.getAll(ActionList, ActionDetail, ActionForm) },
   { path: 'action/designer/:id', component: ActionDesigner, canActivate: [isAuthenticated] },
   { path: 'schema', canActivate: [isAuthenticated], children: EntityRoute.getAll(SchemaList, SchemaDetail, SchemaForm) },
-  { path: 'schema/designer', component: SchemaDesigner, canActivate: [isAuthenticated] },
+  { path: 'schema/designer/-/new', component: SchemaDesigner, canActivate: [isAuthenticated] },
   { path: 'schema/designer/:id', component: SchemaDesigner, canActivate: [isAuthenticated] },
   { path: 'connection', canActivate: [isAuthenticated], children: EntityRoute.getAll(ConnectionList, ConnectionDetail, ConnectionForm) },
   { path: 'event', canActivate: [isAuthenticated], children: EntityRoute.getAll(EventList, EventDetail, EventForm) },

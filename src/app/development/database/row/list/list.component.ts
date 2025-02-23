@@ -51,4 +51,8 @@ export class ListComponent extends List<BackendDatabaseRow> {
     return columns;
   }
 
+  get primaryKey(): string {
+    return this.table?.primaryKey || '';
+  }
+
 }
