@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {ErrorService, Form} from "ngx-fusio-sdk";
 import {BackendSchema} from "fusio-sdk";
-import {ActionService} from "../../../services/action.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {SchemaService} from "../../../services/schema.service";
 
@@ -28,7 +27,7 @@ export class FormComponent extends Form<BackendSchema> {
     }
   }
 
-  protected beforeCreate(entity: BackendSchema): BackendSchema {
+  protected override beforeCreate(entity: BackendSchema): BackendSchema {
     if (this.schema) {
       entity.source = JSON.parse(this.schema);
     }
@@ -36,7 +35,7 @@ export class FormComponent extends Form<BackendSchema> {
     return entity;
   }
 
-  protected beforeUpdate(entity: BackendSchema): BackendSchema {
+  protected override beforeUpdate(entity: BackendSchema): BackendSchema {
     if (this.schema) {
       entity.source = JSON.parse(this.schema);
     }
