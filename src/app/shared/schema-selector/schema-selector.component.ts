@@ -1,5 +1,4 @@
-import {Component} from '@angular/core';
-import {FormAutocompleteComponent} from "ngx-fusio-sdk";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {SchemaService} from "../../services/schema.service";
 
 @Component({
@@ -7,7 +6,12 @@ import {SchemaService} from "../../services/schema.service";
   templateUrl: './schema-selector.component.html',
   styleUrls: ['./schema-selector.component.css']
 })
-export class SchemaSelectorComponent extends FormAutocompleteComponent {
+export class SchemaSelectorComponent implements OnInit {
+
+  @Input() name!: string;
+  @Input() disabled: boolean = false;
+  @Input() data?: string = undefined;
+  @Output() dataChange = new EventEmitter<string>();
 
   schemes = [{
     key: 'schema',
@@ -32,20 +36,15 @@ export class SchemaSelectorComponent extends FormAutocompleteComponent {
   scheme: string = '';
   value: string = '';
 
-  constructor(private schema: SchemaService) {
-    super();
+  constructor(public schema: SchemaService) {
   }
 
-  override async ngOnInit(): Promise<void> {
+  async ngOnInit(): Promise<void> {
     if (this.data) {
       const pos = this.data.indexOf('://');
       if (pos > 0) {
         this.scheme = this.data.substring(0, pos);
         this.value = this.data.substring(pos + 3);
-
-        if (this.scheme === 'schema') {
-          this.selected = await this.schema.getWithIdAndName('~' + this.value);
-        }
       }
     }
     if (!this.scheme) {
@@ -61,13 +60,9 @@ export class SchemaSelectorComponent extends FormAutocompleteComponent {
     this.dataChange.emit(this.scheme + '://' + this.value);
   }
 
-  override changeValue() {
+  changeValue() {
     if (this.disabled) {
       return;
-    }
-
-    if (this.scheme === 'schema' && this.selected?.name) {
-      this.value = this.selected?.name;
     }
 
     this.dataChange.emit(this.scheme + '://' + this.value);

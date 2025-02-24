@@ -1,7 +1,7 @@
 
 <h1>
   <a [routerLink]="['/', 'schema']">Schema</a> /
-  <ng-container *ngIf="entity"><a [routerLink]="['/', 'schema', '~' + entity?.name]">{{ entity?.name }}</a> /</ng-container>
+  <ng-container *ngIf="entity"><a [routerLink]="['/', 'schema', '~' + entity.name]">{{ entity.name }}</a> /</ng-container>
   Designer
 </h1>
 

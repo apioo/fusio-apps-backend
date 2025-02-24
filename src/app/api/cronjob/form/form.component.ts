@@ -12,7 +12,7 @@ import {ActionService} from "../../../services/action.service";
 })
 export class FormComponent extends Form<BackendCronjob> {
 
-  constructor(private service: CronjobService, public action: ActionService, route: ActivatedRoute, router: Router, error: ErrorService) {
+  constructor(private service: CronjobService, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);
   }
 

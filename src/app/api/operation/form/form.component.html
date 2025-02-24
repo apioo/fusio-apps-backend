@@ -106,25 +106,25 @@
   <div class="mb-3 row" *ngIf="entity.httpMethod !== 'GET' && entity.httpMethod !== 'DELETE'">
     <label for="incoming" class="col-sm-2 col-form-label fw-bold">Incoming</label>
     <div class="col-sm-10">
-      <fusio-form-autocomplete name="incoming" [service]="schema" [useName]="true" [data]="entity.incoming" [disabled]="isDisabled()" (dataChange)="entity.incoming = $event"></fusio-form-autocomplete>
+      <app-schema-selector name="incoming" [data]="entity.incoming" (dataChange)="entity.incoming = $event" [disabled]="isDisabled()"></app-schema-selector>
     </div>
   </div>
   <div class="mb-3 row">
     <label for="outgoing" class="col-sm-2 col-form-label fw-bold">Outgoing</label>
     <div class="col-sm-10">
-      <fusio-form-autocomplete name="outgoing" [service]="schema" [useName]="true" [data]="entity.outgoing" [disabled]="isDisabled()" (dataChange)="entity.outgoing = $event"></fusio-form-autocomplete>
+      <app-schema-selector name="outgoing" [data]="entity.outgoing" (dataChange)="entity.outgoing = $event" [disabled]="isDisabled()"></app-schema-selector>
     </div>
   </div>
   <div class="mb-3 row">
     <label class="col-sm-2 col-form-label fw-bold">Throws</label>
     <div class="col-sm-10">
-      <app-operation-throws [data]="entity.throws" [disabled]="isDisabled()" (dataChange)="entity.throws = $event"></app-operation-throws>
+      <app-operation-throws [data]="entity.throws" (dataChange)="entity.throws = $event" [disabled]="isDisabled()"></app-operation-throws>
     </div>
   </div>
   <div class="mb-3 row">
     <label for="action" class="col-sm-2 col-form-label fw-bold">Action</label>
     <div class="col-sm-10">
-      <fusio-form-autocomplete name="action" [service]="action" [useName]="true" [data]="entity.action" [disabled]="isDisabled()" (dataChange)="entity.action = $event"></fusio-form-autocomplete>
+      <app-action-selector name="action" [data]="entity.action" (dataChange)="entity.action = $event" [disabled]="isDisabled()"></app-action-selector>
     </div>
   </div>
   <div class="mb-3 row">

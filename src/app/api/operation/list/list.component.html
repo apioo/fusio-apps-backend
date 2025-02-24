@@ -11,17 +11,24 @@
 <table class="table table-striped">
   <thead>
   <tr>
-    <th style="width:33%">Name</th>
-    <th style="width:33%">Path</th>
-    <th style="width:33%">Description</th>
+    <th style="width:10%">Status</th>
+    <th style="width:30%">Name</th>
+    <th style="width:30%">Path</th>
+    <th style="width:30%">Action</th>
     <th></th>
   </tr>
   </thead>
   <tbody>
   <tr *ngFor="let entry of entries">
-    <td>{{entry.name}}</td>
-    <td><span class="badge text-bg-primary">{{entry.httpMethod}}</span> {{entry.httpPath}}</td>
-    <td>{{entry.description}}</td>
+    <td>
+      <span *ngIf="entry.active === true" class="badge bg-success fusio-operation-active me-1">Active</span>
+      <span *ngIf="entry.active !== true" class="badge bg-secondary fusio-operation-active me-1">Inactive</span>
+      <span *ngIf="entry.public === true" class="badge bg-primary fusio-operation-public">Public</span>
+      <span *ngIf="entry.public !== true" class="badge bg-info fusio-operation-public">Private</span>
+    </td>
+    <td><code>{{entry.name}}</code></td>
+    <td><span class="badge text-bg-dark fusio-operation-http-method me-1">{{entry.httpMethod}}</span><code class="fusio-operation-http-path">{{entry.httpPath}}</code></td>
+    <td><app-action-link [data]="entry.action"></app-action-link></td>
     <td>
       <div class="btn-group" role="group">
         <a [routerLink]="getDetailLink(entry.id)" class="btn btn-primary"><i class="bi bi-search"></i></a>
