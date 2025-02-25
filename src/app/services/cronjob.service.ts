@@ -16,19 +16,19 @@ export class CronjobService extends Service<BackendCronjob> {
   }
 
   async get(id: string): Promise<BackendCronjob> {
-    return this.fusio.getClient().backend().connection().get(id);
+    return this.fusio.getClient().backend().cronjob().get(id);
   }
 
   async create(entity: BackendCronjob): Promise<CommonMessage> {
-    return this.fusio.getClient().backend().connection().create(<BackendCronjobCreate> entity);
+    return this.fusio.getClient().backend().cronjob().create(<BackendCronjobCreate> entity);
   }
 
   async update(entity: BackendCronjob): Promise<CommonMessage> {
-    return this.fusio.getClient().backend().connection().update('' + entity.id, <BackendCronjobUpdate> entity);
+    return this.fusio.getClient().backend().cronjob().update('' + entity.id, <BackendCronjobUpdate> entity);
   }
 
   async delete(entity: BackendCronjob): Promise<CommonMessage> {
-    return this.fusio.getClient().backend().connection().delete('' + entity.id);
+    return this.fusio.getClient().backend().cronjob().delete('' + entity.id);
   }
 
   newEntity(): BackendCronjob {
