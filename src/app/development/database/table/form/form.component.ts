@@ -20,13 +20,13 @@ export class FormComponent extends Form<BackendDatabaseTable> implements OnInit 
   }
 
   override async ngOnInit(): Promise<void> {
-    super.ngOnInit();
-
     this.route.params.subscribe(async (params) => {
       if (params['connection']) {
         this.service.setConnection(params['connection']);
       }
     });
+
+    super.ngOnInit();
   }
 
 }

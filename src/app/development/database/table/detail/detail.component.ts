@@ -22,14 +22,14 @@ export class DetailComponent extends Detail<BackendDatabaseTable> {
   }
 
   override async ngOnInit(): Promise<void> {
-    super.ngOnInit();
-
     this.route.params.subscribe(async (params) => {
       if (params['connection']) {
         this.selectedConnection = params['connection'];
         this.service.setConnection(params['connection']);
       }
     });
+
+    super.ngOnInit();
   }
 
 }

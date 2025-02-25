@@ -12,6 +12,7 @@ import {TableService} from "../../../../services/database/table.service";
 })
 export class DetailComponent extends Detail<BackendDatabaseRow> {
 
+  selectedConnection?: string;
   table?: BackendDatabaseTable;
 
   constructor(private service: RowService, private tableService: TableService, route: ActivatedRoute, router: Router, error: ErrorService) {
@@ -23,10 +24,9 @@ export class DetailComponent extends Detail<BackendDatabaseRow> {
   }
 
   override async ngOnInit(): Promise<void> {
-    super.ngOnInit();
-
     this.route.params.subscribe(async (params) => {
       if (params['connection']) {
+        this.selectedConnection = params['connection'];
         this.service.setConnection(params['connection']);
       }
       if (params['table']) {
@@ -34,6 +34,8 @@ export class DetailComponent extends Detail<BackendDatabaseRow> {
         this.service.setTable(this.table);
       }
     });
+
+    super.ngOnInit();
   }
 
   get primaryKey(): string {

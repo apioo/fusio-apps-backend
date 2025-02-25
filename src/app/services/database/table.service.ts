@@ -71,7 +71,7 @@ export class TableService extends Service<BackendDatabaseTable> {
   }
 
   getLink(): Array<string> {
-    return ['/', 'database', this.getConnection(), 'table'];
+    return ['/', 'database', this.getConnection()];
   }
 
 }

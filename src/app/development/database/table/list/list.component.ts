@@ -11,6 +11,8 @@ import {TableService} from "../../../../services/database/table.service";
 })
 export class ListComponent extends List<BackendDatabaseTable> {
 
+  selectedConnection?: string;
+
   constructor(private service: TableService, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);
   }
@@ -20,13 +22,14 @@ export class ListComponent extends List<BackendDatabaseTable> {
   }
 
   override async ngOnInit(): Promise<void> {
-    super.ngOnInit();
-
     this.route.params.subscribe(async (params) => {
       if (params['connection']) {
+        this.selectedConnection = params['connection'];
         this.service.setConnection(params['connection']);
       }
     });
+
+    super.ngOnInit();
   }
 
 }

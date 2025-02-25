@@ -72,7 +72,7 @@ export class RowService extends Service<BackendDatabaseRow> {
   }
 
   getLink(): Array<string> {
-    return ['/', 'database', this.getConnection(), this.table?.name || ''];
+    return ['/', 'database', this.getConnection(), this.table?.name || '', 'data'];
   }
 
 }

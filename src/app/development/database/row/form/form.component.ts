@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {ErrorService, Form} from "ngx-fusio-sdk";
-import {BackendDatabaseRow, BackendDatabaseTable, BackendDatabaseTableColumn, Client, CommonMessage} from "fusio-sdk";
+import {BackendDatabaseRow, BackendDatabaseTable} from "fusio-sdk";
 import {ActivatedRoute, Router} from "@angular/router";
 import {RowService} from "../../../../services/database/row.service";
 import {TableService} from "../../../../services/database/table.service";
@@ -12,6 +12,7 @@ import {TableService} from "../../../../services/database/table.service";
 })
 export class FormComponent extends Form<BackendDatabaseRow> {
 
+  selectedConnection?: string;
   table?: BackendDatabaseTable;
 
   constructor(private service: RowService, private tableService: TableService, route: ActivatedRoute, router: Router, error: ErrorService) {
@@ -23,10 +24,9 @@ export class FormComponent extends Form<BackendDatabaseRow> {
   }
 
   override async ngOnInit(): Promise<void> {
-    super.ngOnInit();
-
     this.route.params.subscribe(async (params) => {
       if (params['connection']) {
+        this.selectedConnection = params['connection'];
         this.service.setConnection(params['connection']);
       }
       if (params['table']) {
@@ -34,6 +34,12 @@ export class FormComponent extends Form<BackendDatabaseRow> {
         this.service.setTable(this.table);
       }
     });
+
+    super.ngOnInit();
+  }
+
+  get primaryKey(): string {
+    return this.table?.primaryKey || '';
   }
 
 }

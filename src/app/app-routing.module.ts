@@ -113,9 +113,8 @@ const routes: Routes = [
   { path: 'cronjob', canActivate: [isAuthenticated], children: EntityRoute.getAll(CronjobList, CronjobDetail, CronjobForm) },
 
   { path: 'database', component: DatabaseList, canActivate: [isAuthenticated] },
-  { path: 'database/:connection', component: DatabaseList, canActivate: [isAuthenticated] },
-  { path: 'database/:connection/table', canActivate: [isAuthenticated], children: EntityRoute.getAll(TableList, TableDetail, TableForm) },
-  { path: 'database/:connection/table/:table/row', canActivate: [isAuthenticated], children: EntityRoute.getAll(RowList, RowDetail, RowForm) },
+  { path: 'database/:connection', canActivate: [isAuthenticated], children: EntityRoute.getAll(TableList, TableDetail, TableForm) },
+  { path: 'database/:connection/:table/data', canActivate: [isAuthenticated], children: EntityRoute.getAll(RowList, RowDetail, RowForm) },
   { path: 'generator', component: GeneratorComponent, canActivate: [isAuthenticated] },
   { path: 'marketplace', component: MarketplaceList, canActivate: [isAuthenticated] },
   { path: 'marketplace/:type', component: MarketplaceList, canActivate: [isAuthenticated] },

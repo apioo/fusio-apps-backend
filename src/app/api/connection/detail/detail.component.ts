@@ -2,8 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {Detail, ErrorService} from "ngx-fusio-sdk";
 import {BackendConnection} from "fusio-sdk";
 import {ApiService} from "../../../api.service";
-import {ActionService} from "../../../services/action.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {ConnectionService} from "../../../services/connection.service";
 
 @Component({
   selector: 'app-connection-detail',
@@ -14,11 +14,11 @@ export class DetailComponent extends Detail<BackendConnection> implements OnInit
 
   baseUrl?: string;
 
-  constructor(private service: ActionService, private fusio: ApiService, route: ActivatedRoute, router: Router, error: ErrorService) {
+  constructor(private service: ConnectionService, private fusio: ApiService, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);
   }
 
-  protected getService(): ActionService {
+  protected getService(): ConnectionService {
     return this.service;
   }
 

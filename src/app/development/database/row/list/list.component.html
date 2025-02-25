@@ -1,5 +1,9 @@
 
-<h1>Database</h1>
+<h1>
+  <a [routerLink]="['/', 'database', selectedConnection]">Database</a> /
+  <a [routerLink]="['/', 'database', selectedConnection, table?.name]">{{ table?.name }}</a> /
+  Data
+</h1>
 
 <fusio-search
   [searchTerm]="search"
@@ -12,7 +16,7 @@
   <thead>
   <tr>
     <ng-container *ngFor="let column of columns">
-      <td>{{column.name}}</td>
+      <th>{{column.name}}</th>
     </ng-container>
     <th></th>
   </tr>
