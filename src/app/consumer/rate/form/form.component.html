@@ -1,10 +1,13 @@
 
+<h1>
+  <a [routerLink]="getListLink()">Rate</a> /
+  <a [routerLink]="getDetailLink('~' + entity?.name)">{{ entity?.name }}</a> /
+  <ng-container *ngIf="mode === 1">Create</ng-container>
+  <ng-container *ngIf="mode === 2">Update</ng-container>
+  <ng-container *ngIf="mode === 3">Delete</ng-container>
+</h1>
+
 <form *ngIf="entity">
-  <h1>
-    <ng-container *ngIf="mode === 1">Create</ng-container>
-    <ng-container *ngIf="mode === 2">Update</ng-container>
-    <ng-container *ngIf="mode === 3">Delete</ng-container>
-  </h1>
   <fusio-message [response]="response"></fusio-message>
   <div class="mb-3 row">
     <label for="name" class="col-sm-2 col-form-label fw-bold">Name</label>
@@ -72,28 +75,16 @@
         <tbody>
         <tr *ngFor="let allocation of entity.allocation; let key = index">
           <td>
-            <select [name]="'operation_' + key" [(ngModel)]="allocation.operationId" class="form-select">
-              <option [value]="undefined">Any operation</option>
-              <option *ngFor="let operation of operations" [ngValue]="operation.id">{{operation.name}}</option>
-            </select>
+            <fusio-form-autocomplete [name]="'operation_' + key" [service]="operation" [data]="'' + allocation.operationId" (dataChange)="allocation.operationId = parseInt($event)"></fusio-form-autocomplete>
           </td>
           <td>
-            <select [name]="'user_' + key" [(ngModel)]="allocation.userId" class="form-select">
-              <option [value]="undefined">Any user</option>
-              <option *ngFor="let user of users" [ngValue]="user.id">{{user.name}}</option>
-            </select>
+            <fusio-form-autocomplete [name]="'user_' + key" [service]="user" [data]="'' + allocation.userId" (dataChange)="allocation.userId = parseInt($event)"></fusio-form-autocomplete>
           </td>
           <td>
-            <select [name]="'plan_' + key" [(ngModel)]="allocation.planId" class="form-select">
-              <option [value]="undefined">Any plan</option>
-              <option *ngFor="let plan of plans" [ngValue]="plan.id">{{plan.name}}</option>
-            </select>
+            <fusio-form-autocomplete [name]="'plan_' + key" [service]="plan" [data]="'' + allocation.planId" (dataChange)="allocation.planId = parseInt($event)"></fusio-form-autocomplete>
           </td>
           <td>
-            <select [name]="'app_' + key" [(ngModel)]="allocation.appId" class="form-select">
-              <option [value]="undefined">Any app</option>
-              <option *ngFor="let app of apps" [ngValue]="app.id">{{app.name}}</option>
-            </select>
+            <fusio-form-autocomplete [name]="'app_' + key" [service]="app" [data]="'' + allocation.appId" (dataChange)="allocation.appId = parseInt($event)"></fusio-form-autocomplete>
           </td>
           <td>
             <div class="form-check form-switch">
@@ -113,6 +104,5 @@
     <ng-container *ngIf="mode === 1"><button type="button" class="btn btn-primary" (click)="doCreate(entity)">Create</button></ng-container>
     <ng-container *ngIf="mode === 2"><button type="button" class="btn btn-primary" (click)="doUpdate(entity)">Update</button></ng-container>
     <ng-container *ngIf="mode === 3"><button type="button" class="btn btn-danger" (click)="doDelete(entity)">Delete</button></ng-container>
-    <button type="button" (click)="router.navigate(getListLink())" class="btn btn-light fusio-btn-back">Back</button>
   </div>
 </form>

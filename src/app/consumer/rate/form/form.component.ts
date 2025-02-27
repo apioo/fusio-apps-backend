@@ -110,4 +110,5 @@ export class FormComponent extends Form<BackendRate> {
     }
   }
 
+  protected readonly parseInt = parseInt;
 }

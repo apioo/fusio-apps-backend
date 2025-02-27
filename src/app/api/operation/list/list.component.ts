@@ -4,6 +4,7 @@ import {BackendOperation} from "fusio-sdk";
 import {OperationService} from "../../../services/operation.service";
 import {ActionService} from "../../../services/action.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {ApiService} from "../../../api.service";
 
 @Component({
   selector: 'app-operation-list',
@@ -12,7 +13,9 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class ListComponent extends List<BackendOperation> {
 
-  constructor(private service: OperationService, public action: ActionService, route: ActivatedRoute, router: Router, error: ErrorService) {
+  baseUrl: string = '';
+
+  constructor(private service: OperationService, private fusio: ApiService, public action: ActionService, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);
   }
 
@@ -20,4 +23,9 @@ export class ListComponent extends List<BackendOperation> {
     return this.service;
   }
 
+  override async ngOnInit(): Promise<void> {
+    super.ngOnInit();
+
+    this.baseUrl = this.fusio.getBaseUrl();
+  }
 }

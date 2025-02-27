@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
-import {ErrorService, HelpService} from "ngx-fusio-sdk";
+import {ActivatedRoute} from "@angular/router";
+import {ErrorService} from "ngx-fusio-sdk";
 import {
   BackendAction,
   BackendActionExecuteRequest,
@@ -28,6 +28,7 @@ export class DesignerComponent implements OnInit {
   };
   body: string = '';
   response?: BackendActionExecuteResponse;
+  contentType?: string;
 
   constructor(private fusio: ApiService, private route: ActivatedRoute, private error: ErrorService) {
   }
@@ -55,6 +56,9 @@ export class DesignerComponent implements OnInit {
       await this.fusio.getClient().backend().action().update('' + this.action.id, this.action);
 
       this.response = await this.fusio.getClient().backend().action().execute('' + this.action.id, request);
+
+      console.log(this.response?.headers)
+
     } catch (error) {
       this.message = this.error.convert(error);
     }
