@@ -20,4 +20,16 @@ export class FilterComponent {
     this.modal.close(this.filter);
   }
 
+  doReset() {
+    this.filter = {
+      from: undefined,
+      to: undefined,
+      appId: undefined,
+      userId: undefined,
+      event: undefined,
+      ip: undefined,
+      message: undefined,
+    };
+  }
+
 }

@@ -65,9 +65,9 @@ export class ListComponent extends List<BackendLog> {
 export interface Filter {
   from?: string
   to?: string
-  operationId?: string
-  appId?: string
-  userId?: string
+  operationId?: number
+  appId?: number
+  userId?: number
   ip?: string
   userAgent?: string
   method?: string

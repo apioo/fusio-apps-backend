@@ -61,8 +61,8 @@ export class ListComponent extends List<BackendAudit> {
 export interface Filter {
   from?: string
   to?: string
-  appId?: string
-  userId?: string
+  appId?: number
+  userId?: number
   event?: string
   ip?: string
   message?: string
