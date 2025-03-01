@@ -34,7 +34,7 @@ export class DetailComponent extends Detail<BackendConnection> implements OnInit
 
     const response = await this.fusio.getClient().backend().connection().getRedirect('' + this.selected.id);
     if (response.redirectUri) {
-      window.location.href = response.redirectUri;
+      window.open(response.redirectUri, "_blank");
     }
   }
 
