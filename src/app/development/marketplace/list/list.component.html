@@ -7,7 +7,7 @@
   <li [ngbNavItem]="'action'">
     <button ngbNavLink>Actions</button>
     <ng-template ngbNavContent>
-      <fusio-search [searchTerm]="actionSearch" (search)="doSearch($event)" placeholder="action"></fusio-search>
+      <fusio-search [searchTerm]="actionSearch" (search)="doSearch($event)" placeholder="action" helpPath="development/marketplace/"></fusio-search>
       <div class="d-flex flex-wrap">
         <div class="card me-2 mb-2 overflow-hidden float-start" style="width:400px;height:112px;" *ngFor="let action of actions">
           <div class="row g-0">
@@ -35,7 +35,7 @@
   <li [ngbNavItem]="'app'">
     <button ngbNavLink>Apps</button>
     <ng-template ngbNavContent>
-      <fusio-search [searchTerm]="appSearch" (search)="doSearch($event)" placeholder="app"></fusio-search>
+      <fusio-search [searchTerm]="appSearch" (search)="doSearch($event)" placeholder="app" helpPath="development/marketplace/"></fusio-search>
       <div class="d-flex flex-wrap">
         <div class="card me-2 mb-2 overflow-hidden float-start" style="width:400px;height:112px;" *ngFor="let action of apps">
           <div class="row g-0">
