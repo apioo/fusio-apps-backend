@@ -1,8 +1,9 @@
 
 <h1>
-  <a [routerLink]="getListLink()">Database</a> /
-  <a [routerLink]="['/', 'database', selectedConnection, table?.name, 'data']">{{ table?.name }}</a> /
-  <a [routerLink]="getDetailLink(entity?.[primaryKey])">{{ entity?.[primaryKey] }}</a> /
+  <a [routerLink]="['/', 'database', selectedConnection]">Database</a> /
+  <a [routerLink]="['/', 'database', selectedConnection, table?.name]">{{ table?.name }}</a> /
+  <a [routerLink]="getListLink()">Data</a> /
+  {{ entity?.[primaryKey] }} /
   <ng-container *ngIf="mode === 1">Create</ng-container>
   <ng-container *ngIf="mode === 2">Update</ng-container>
   <ng-container *ngIf="mode === 3">Delete</ng-container>

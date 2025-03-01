@@ -12,6 +12,7 @@ import {TableService} from "../../../../services/database/table.service";
 })
 export class DetailComponent extends Detail<BackendDatabaseRow> {
 
+  id: string|null = null;
   selectedConnection?: string;
   table?: BackendDatabaseTable;
 
@@ -28,18 +29,46 @@ export class DetailComponent extends Detail<BackendDatabaseRow> {
       if (params['connection']) {
         this.selectedConnection = params['connection'];
         this.service.setConnection(params['connection']);
+        this.tableService.setConnection(params['connection']);
       }
       if (params['table']) {
         this.table = await this.tableService.get(params['table']);
         this.service.setTable(this.table);
+
+        if (this.id) {
+          await this.doGet(this.id);
+        }
       }
     });
 
-    super.ngOnInit();
+    this.route.paramMap.subscribe(async params => {
+      this.id = params.get('id');
+    });
   }
 
   get primaryKey(): string {
     return this.table?.primaryKey || '';
   }
 
+  get keyValues(): Array<KeyValue> {
+    if (!this.selected) {
+      return [];
+    }
+
+    const result = [];
+    for (const [key, value] of Object.entries(this.selected)) {
+      result.push({
+        key: key,
+        value: value,
+      })
+    }
+
+    return result;
+  }
+
+}
+
+interface KeyValue {
+  key: string
+  value: string
 }

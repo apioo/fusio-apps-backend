@@ -1,6 +1,8 @@
 
 <h1>
-  <a [routerLink]="getListLink()">Database</a> /
+  <a [routerLink]="['/', 'database', selectedConnection]">Database</a> /
+  <a [routerLink]="['/', 'database', selectedConnection, table?.name]">{{ table?.name }}</a> /
+  <a [routerLink]="getListLink()">Data</a> /
   {{ selected?.[primaryKey] }}
 </h1>
 
@@ -13,7 +15,7 @@
     <button type="button" (click)="jsonView = !jsonView" class="btn btn-outline-secondary fusio-btn-json ms-2">JSON</button>
   </div>
   <div class="fusio-detail" *ngIf="!jsonView">
-    <div class="row" *ngFor="let kv of selected|keyvalue">
+    <div class="row" *ngFor="let kv of keyValues">
       <div class="col-lg-2 fw-bold">{{ kv.key }}</div>
       <div class="col-lg-10">{{ kv.value }}</div>
     </div>

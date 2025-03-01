@@ -28,14 +28,32 @@ export class ListComponent extends List<BackendDatabaseRow> {
       if (params['connection']) {
         this.selectedConnection = params['connection'];
         this.service.setConnection(params['connection']);
+        this.tableService.setConnection(params['connection']);
       }
       if (params['table']) {
         this.table = await this.tableService.get(params['table']);
         this.service.setTable(this.table);
+
+        await this.doList();
       }
     });
 
-    super.ngOnInit();
+    this.route.queryParams.subscribe(async params => {
+      let page, search;
+      if (params['page']) {
+        page = parseInt(params['page']);
+      }
+      if (params['search']) {
+        search = params['search'];
+      }
+
+      if (!this.hasQueryParamsChange(page, search)) {
+        return;
+      }
+
+      this.page = page || 1;
+      this.search = search || '';
+    });
   }
 
   get columns(): Array<BackendDatabaseTableColumn> {

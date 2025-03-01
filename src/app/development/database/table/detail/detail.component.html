@@ -7,6 +7,7 @@
 <div *ngIf="selected">
   <div class="btn-group" role="group">
     <a [routerLink]="getEditLink(selected.name)" class="btn btn-primary fusio-btn-update">Update</a>
+    <a [routerLink]="['/', 'database', selectedConnection, selected.name, 'data']" class="btn btn-secondary">Data</a>
     <a [routerLink]="getDeleteLink(selected.name)" class="btn btn-danger fusio-btn-delete">Delete</a>
   </div>
   <div class="float-end">

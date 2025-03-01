@@ -3,6 +3,7 @@ import {Detail, ErrorService} from "ngx-fusio-sdk";
 import {ActivatedRoute, Router} from "@angular/router";
 import {BackendDatabaseTable} from "fusio-sdk";
 import {TableService} from "../../../../services/database/table.service";
+import {config} from "rxjs";
 
 @Component({
   selector: 'app-database-table-detail',
@@ -32,4 +33,5 @@ export class DetailComponent extends Detail<BackendDatabaseTable> {
     super.ngOnInit();
   }
 
+    protected readonly config = config;
 }
