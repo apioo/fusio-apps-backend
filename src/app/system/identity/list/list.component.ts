@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {ErrorService, List} from "ngx-fusio-sdk";
-import {BackendIdentity, BackendIdentityCollection, Client} from "fusio-sdk";
-import {FormComponent} from "../form/form.component";
+import {BackendIdentity} from "fusio-sdk";
 import {IdentityService} from "../../../services/identity.service";
 import {ActivatedRoute, Router} from "@angular/router";
 

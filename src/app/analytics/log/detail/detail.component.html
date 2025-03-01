@@ -1,6 +1,10 @@
 
+<h1>
+  <a [routerLink]="getListLink()">Log</a> /
+  {{selected?.id}}
+</h1>
+
 <div *ngIf="selected">
-  <h1>{{selected.path}}</h1>
   <div class="btn-group" role="group">
     <a [routerLink]="getListLink()" class="btn btn-secondary fusio-btn-back">Back</a>
   </div>
@@ -41,9 +45,27 @@
     <div class="card" style="margin-top:1rem" *ngIf="selected.errors">
       <div class="card-header">Errors</div>
       <div class="card-body">
-        <ul>
-          <li *ngFor="let error of selected.errors">{{error.message}}</li>
-        </ul>
+
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th style="width:50%">Message</th>
+            <th style="width:50%">File</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let error of selected.errors">
+            <td>{{error.message}}</td>
+            <td>{{error.file}}</td>
+            <td>
+              <div class="btn-group" role="group">
+                <a [routerLink]="['/', 'error', error.id]" class="btn btn-primary"><i class="bi bi-search"></i></a>
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>

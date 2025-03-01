@@ -36,7 +36,7 @@ export class TokenService extends Service<BackendToken> {
   }
 
   getLink(): Array<string> {
-    return ['/', 'log'];
+    return ['/', 'token'];
   }
 
 }

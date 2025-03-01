@@ -1,8 +1,12 @@
 
+<h1>
+  <a [routerLink]="getListLink()">Error</a> /
+  {{selected?.message}}
+</h1>
+
 <div *ngIf="selected">
-  <h1>{{selected.message}}</h1>
   <div class="btn-group" role="group">
-    <a [routerLink]="getListLink()" class="btn btn-secondary fusio-btn-back">Back</a>
+    <a [routerLink]="['/', 'log', selected.logId]" class="btn btn-secondary fusio-btn-back">Log</a>
   </div>
   <div class="float-end">
     <button type="button" (click)="jsonView = !jsonView" class="btn btn-outline-secondary fusio-btn-json">JSON</button>

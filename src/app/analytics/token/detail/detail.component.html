@@ -1,6 +1,10 @@
 
+<h1>
+  <a [routerLink]="getListLink()">Token</a> /
+  {{selected?.name}}
+</h1>
+
 <div *ngIf="selected">
-  <h1>{{selected.name}}</h1>
   <div class="btn-group" role="group">
     <a [routerLink]="getListLink()" class="btn btn-secondary fusio-btn-back">Back</a>
   </div>

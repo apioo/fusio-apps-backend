@@ -10,19 +10,17 @@
 <table class="table table-striped">
   <thead>
   <tr>
-    <th style="width:25%">Method</th>
-    <th style="width:25%">Path</th>
-    <th style="width:25%">IP</th>
-    <th style="width:25%">Date</th>
+    <th style="width:50px">Method</th>
+    <th style="width:70%">Path</th>
+    <th style="width:30%">IP</th>
     <th></th>
   </tr>
   </thead>
   <tbody>
   <tr *ngFor="let entry of entries">
-    <td>{{entry.method}}</td>
-    <td>{{entry.path}}</td>
+    <td><span class="badge text-bg-dark fusio-operation-http-method">{{entry.method}}</span></td>
+    <td><code class="fusio-operation-http-path">{{entry.path}}</code></td>
     <td>{{entry.ip}}</td>
-    <td>{{entry.date}}</td>
     <td>
       <div class="btn-group" role="group">
         <a [routerLink]="getDetailLink(entry.id)" class="btn btn-primary"><i class="bi bi-search"></i></a>

@@ -10,19 +10,15 @@
 <table class="table table-striped">
   <thead>
   <tr>
-    <th style="width:25%">Name</th>
-    <th style="width:25%">Scopes</th>
-    <th style="width:25%">Expires</th>
-    <th style="width:25%">Insert-Date</th>
+    <th style="width:90%">Name</th>
+    <th style="width:10%">IP</th>
     <th></th>
   </tr>
   </thead>
   <tbody>
   <tr *ngFor="let entry of entries">
     <td>{{entry.name}}</td>
-    <td>{{entry.scopes}}</td>
-    <td>{{entry.expire}}</td>
-    <td>{{entry.date}}</td>
+    <td>{{entry.ip}}</td>
     <td>
       <div class="btn-group" role="group">
         <a [routerLink]="getDetailLink(entry.id)" class="btn btn-primary"><i class="bi bi-search"></i></a>
