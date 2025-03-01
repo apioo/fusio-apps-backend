@@ -1,6 +1,8 @@
 
 <h1>Operation</h1>
 
+<fusio-message [response]="response"></fusio-message>
+
 <fusio-search
   [searchTerm]="search"
   (search)="doSearch(1, $event)"

@@ -1,8 +1,13 @@
 
+<h1>
+  <a [routerLink]="getListLink()">Webhook</a> /
+  {{selected?.name}}
+</h1>
+
+<fusio-message [response]="response"></fusio-message>
+
 <div *ngIf="selected">
-  <h1>{{selected.name}}</h1>
   <div class="btn-group" role="group">
-    <a [routerLink]="getListLink()" class="btn btn-secondary fusio-btn-back">Back</a>
     <a [routerLink]="getEditLink(selected.id)" class="btn btn-primary fusio-btn-update">Update</a>
     <a [routerLink]="getDeleteLink(selected.id)" class="btn btn-danger fusio-btn-delete">Delete</a>
   </div>

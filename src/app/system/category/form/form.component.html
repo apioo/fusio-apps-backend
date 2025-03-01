@@ -7,8 +7,9 @@
   <ng-container *ngIf="mode === 3">Delete</ng-container>
 </h1>
 
+<fusio-message [response]="response"></fusio-message>
+
 <form *ngIf="entity">
-  <fusio-message [response]="response"></fusio-message>
   <div class="mb-3 row">
     <label for="name" class="col-sm-2 col-form-label fw-bold">Name</label>
     <div class="col-sm-10">

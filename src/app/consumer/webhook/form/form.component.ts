@@ -22,5 +22,4 @@ export class FormComponent extends Form<BackendWebhook> {
     return this.service;
   }
 
-  protected readonly parseInt = parseInt;
 }

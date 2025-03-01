@@ -4,6 +4,8 @@
   {{selected?.title}}
 </h1>
 
+<fusio-message [response]="response"></fusio-message>
+
 <div *ngIf="selected">
   <div class="btn-group" role="group">
     <a [routerLink]="getEditLink(selected.id)" class="btn btn-primary fusio-btn-update">Update</a>

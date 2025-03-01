@@ -1,9 +1,12 @@
 
 <h1>Log</h1>
 
+<fusio-message [response]="response"></fusio-message>
+
 <fusio-search
   [searchTerm]="search"
   (search)="doSearch(1, $event)"
+  (newClick)="openFilterDialog()"
   placeholder="log"
   helpPath="analytics/log/">
 </fusio-search>

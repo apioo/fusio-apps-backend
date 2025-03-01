@@ -1,11 +1,15 @@
 
+<h1>
+  <a [routerLink]="getListLink()">Config</a> /
+  <a [routerLink]="getDetailLink('~' + entity?.name)">{{ entity?.name }}</a> /
+  <ng-container *ngIf="mode === 1">Create</ng-container>
+  <ng-container *ngIf="mode === 2">Update</ng-container>
+  <ng-container *ngIf="mode === 3">Delete</ng-container>
+</h1>
+
+<fusio-message [response]="response"></fusio-message>
+
 <form *ngIf="entity">
-  <h1>
-    <ng-container *ngIf="mode === 1">Create</ng-container>
-    <ng-container *ngIf="mode === 2">Update</ng-container>
-    <ng-container *ngIf="mode === 3">Delete</ng-container>
-  </h1>
-  <fusio-message [response]="response"></fusio-message>
   <div class="mb-3 row">
     <label for="value" class="col-sm-2 col-form-label fw-bold">Value</label>
     <div class="col-sm-12">
@@ -38,6 +42,5 @@
     <ng-container *ngIf="mode === 1"><button type="button" class="btn btn-primary" (click)="doCreate(entity)">Create</button></ng-container>
     <ng-container *ngIf="mode === 2"><button type="button" class="btn btn-primary" (click)="doUpdate(entity)">Update</button></ng-container>
     <ng-container *ngIf="mode === 3"><button type="button" class="btn btn-danger" (click)="doDelete(entity)">Delete</button></ng-container>
-    <button type="button" (click)="router.navigate(getListLink())" class="btn btn-light fusio-btn-back">Back</button>
   </div>
 </form>

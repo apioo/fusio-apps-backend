@@ -1,40 +1,23 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
-import {BackendApp, BackendUser} from "fusio-sdk";
-import {ApiService} from "../../../api.service";
+import {AppService} from "../../../services/app.service";
+import {UserService} from "../../../services/user.service";
+import {Filter} from "../list/list.component";
 
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.css']
 })
-export class FilterComponent implements OnInit {
+export class FilterComponent {
 
   @Input()
-  filter!: any;
+  filter!: Filter;
 
-  constructor(private fusio: ApiService, public modal: NgbActiveModal) { }
-
-  apps?: Array<BackendApp>;
-  users?: Array<BackendUser>;
-
-  async ngOnInit(): Promise<void> {
-    this.loadApps();
-    this.loadUsers();
-  }
+  constructor(public app: AppService, public user: UserService, public modal: NgbActiveModal) { }
 
   async doSubmit() {
     this.modal.close(this.filter);
-  }
-
-  private async loadApps(): Promise<void> {
-    const response = await this.fusio.getClient().backend().app().getAll(0, 1024);
-    this.apps = response.entry;
-  }
-
-  private async loadUsers(): Promise<void> {
-    const response = await this.fusio.getClient().backend().user().getAll(0, 1024);
-    this.users = response.entry;
   }
 
 }

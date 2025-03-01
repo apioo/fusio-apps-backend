@@ -8,7 +8,7 @@
   <div class="col-9">
     <ng-container [ngSwitch]="scheme">
       <ng-container *ngSwitchCase="'schema'">
-        <fusio-form-autocomplete name="outgoing" [service]="schema" [useName]="true" [data]="value" (dataChange)="value = $event; changeValue()" [disabled]="disabled">
+        <fusio-form-autocomplete name="outgoing" [service]="schema" [useTilde]="true" [data]="value" (dataChange)="value = $event; changeValue()" [disabled]="disabled">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="schemeHelp"><i class="bi bi-question"></i></button>
           <ng-template #schemeHelp>Loads a schema from the internal schema store. Type a name to select a fitting schema. If you can not find a fitting schema you can also create a new schema at the schema panel.</ng-template>
         </fusio-form-autocomplete>

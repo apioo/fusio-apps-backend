@@ -4,6 +4,8 @@
   {{selected?.message}}
 </h1>
 
+<fusio-message [response]="response"></fusio-message>
+
 <div *ngIf="selected">
   <div class="btn-group" role="group">
     <a [routerLink]="['/', 'log', selected.logId]" class="btn btn-secondary fusio-btn-back">Log</a>

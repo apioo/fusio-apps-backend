@@ -1,6 +1,12 @@
 
+<h1>
+  <a [routerLink]="getListLink()">Audit</a> /
+  {{selected?.message}}
+</h1>
+
+<fusio-message [response]="response"></fusio-message>
+
 <div *ngIf="selected">
-  <h1>{{selected.message}}</h1>
   <div class="btn-group" role="group">
     <a [routerLink]="getListLink()" class="btn btn-secondary fusio-btn-back">Back</a>
   </div>

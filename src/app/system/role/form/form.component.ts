@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {ErrorService, Form} from "ngx-fusio-sdk";
-import {BackendCategory, BackendRole} from "fusio-sdk";
+import {BackendRole} from "fusio-sdk";
 import {RoleService} from "../../../services/role.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CategoryService} from "../../../services/category.service";
@@ -20,5 +20,4 @@ export class FormComponent extends Form<BackendRole> {
     return this.service;
   }
 
-  protected readonly parseInt = parseInt;
 }

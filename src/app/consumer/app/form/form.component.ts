@@ -31,5 +31,4 @@ export class FormComponent extends Form<BackendApp> {
     return this.service;
   }
 
-  protected readonly parseInt = parseInt;
 }

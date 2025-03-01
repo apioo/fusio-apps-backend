@@ -8,7 +8,7 @@
   <div class="col-9">
     <ng-container [ngSwitch]="scheme">
       <ng-container *ngSwitchCase="'action'">
-        <fusio-form-autocomplete [name]="name + '_value'" [service]="action" [useName]="true" [data]="value" (dataChange)="value = $event; changeValue()" [disabled]="disabled">
+        <fusio-form-autocomplete [name]="name + '_value'" [service]="action" [useTilde]="true" [data]="value" (dataChange)="value = $event; changeValue()" [disabled]="disabled">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="actionHelp"><i class="bi bi-question"></i></button>
           <ng-template #actionHelp>Select a configured action which is executed on invocation of this operation. Type a name to select a fitting action. If you can not find a fitting action you can also create a new action at the action panel.</ng-template>
         </fusio-form-autocomplete>

@@ -51,5 +51,4 @@ export class FormComponent extends Form<BackendIdentity> {
     }
   }
 
-  protected readonly parseInt = parseInt;
 }

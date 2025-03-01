@@ -1,18 +1,20 @@
 
 <h1>Audit</h1>
 
+<fusio-message [response]="response"></fusio-message>
+
 <fusio-search
   [searchTerm]="search"
   (search)="doSearch(1, $event)"
+  (newClick)="openFilterDialog()"
   placeholder="audit"
   helpPath="system/audit/">
 </fusio-search>
 <table class="table table-striped">
   <thead>
   <tr>
-    <th style="width:33%">Name</th>
-    <th style="width:33%">Event</th>
-    <th style="width:33%">Insert-Date</th>
+    <th style="width:50%">Name</th>
+    <th style="width:50%">Event</th>
     <th></th>
   </tr>
   </thead>
@@ -20,7 +22,6 @@
   <tr *ngFor="let entry of entries">
     <td>{{entry.message}}</td>
     <td>{{entry.event}}</td>
-    <td>{{entry.date}}</td>
     <td>
       <div class="btn-group" role="group">
         <a [routerLink]="getDetailLink(entry.id)" class="btn btn-primary"><i class="bi bi-search"></i></a>

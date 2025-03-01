@@ -7,8 +7,9 @@
   <ng-container *ngIf="mode === 3">Delete</ng-container>
 </h1>
 
+<fusio-message [response]="response"></fusio-message>
+
 <form *ngIf="entity">
-  <fusio-message [response]="response"></fusio-message>
   <div class="mb-3 row">
     <label for="name" class="col-sm-2 col-form-label fw-bold">Name</label>
     <div class="col-sm-10">
@@ -75,16 +76,16 @@
         <tbody>
         <tr *ngFor="let allocation of entity.allocation; let key = index">
           <td>
-            <fusio-form-autocomplete [name]="'operation_' + key" [service]="operation" [data]="'' + allocation.operationId" (dataChange)="allocation.operationId = parseInt($event)"></fusio-form-autocomplete>
+            <fusio-form-autocomplete [name]="'operation_' + key" [service]="operation" [data]="allocation.operationId" (dataChangeId)="allocation.operationId = $event"></fusio-form-autocomplete>
           </td>
           <td>
-            <fusio-form-autocomplete [name]="'user_' + key" [service]="user" [data]="'' + allocation.userId" (dataChange)="allocation.userId = parseInt($event)"></fusio-form-autocomplete>
+            <fusio-form-autocomplete [name]="'user_' + key" [service]="user" [data]="allocation.userId" (dataChangeId)="allocation.userId = $event"></fusio-form-autocomplete>
           </td>
           <td>
-            <fusio-form-autocomplete [name]="'plan_' + key" [service]="plan" [data]="'' + allocation.planId" (dataChange)="allocation.planId = parseInt($event)"></fusio-form-autocomplete>
+            <fusio-form-autocomplete [name]="'plan_' + key" [service]="plan" [data]="allocation.planId" (dataChangeId)="allocation.planId = $event"></fusio-form-autocomplete>
           </td>
           <td>
-            <fusio-form-autocomplete [name]="'app_' + key" [service]="app" [data]="'' + allocation.appId" (dataChange)="allocation.appId = parseInt($event)"></fusio-form-autocomplete>
+            <fusio-form-autocomplete [name]="'app_' + key" [service]="app" [data]="allocation.appId" (dataChangeId)="allocation.appId = $event"></fusio-form-autocomplete>
           </td>
           <td>
             <div class="form-check form-switch">

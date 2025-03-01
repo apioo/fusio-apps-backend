@@ -21,9 +21,6 @@ export class ListComponent extends List<BackendConnection> {
 
   protected override getCollectionQuery(): Array<any> {
     let query = super.getCollectionQuery();
-    if (!this.search) {
-      query.push('');
-    }
     query.push('Fusio.Adapter.Sql.Connection.Sql,Fusio.Adapter.Sql.Connection.SqlAdvanced,Fusio.Impl.Connection.System');
     return query;
   }

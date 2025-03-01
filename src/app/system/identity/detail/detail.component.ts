@@ -19,6 +19,8 @@ export class DetailComponent extends Detail<BackendIdentity> {
   }
 
   override async ngOnInit(): Promise<void> {
+    super.ngOnInit();
+
     this.baseUrl = this.fusio.getBaseUrl();
   }
 
