@@ -42,7 +42,7 @@
       </div>
     </div>
   </div>
-  <app-config *ngIf="form" [container]="form" [data]="entity.config" (dataChange)="entity.config = $event"></app-config>
+  <app-config *ngIf="form" [container]="form" [data]="entity.config" (dataChange)="entity.config = $event" [disabled]="mode === 3"></app-config>
   <div class="btn-group" role="group">
     <ng-container *ngIf="mode === 1"><button type="button" class="btn btn-primary" (click)="doCreate(entity)">Create</button></ng-container>
     <ng-container *ngIf="mode === 2"><button type="button" class="btn btn-primary" (click)="doUpdate(entity)">Update</button></ng-container>

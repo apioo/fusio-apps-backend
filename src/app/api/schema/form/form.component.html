@@ -24,7 +24,7 @@
     <label class="col-sm-2 col-form-label fw-bold">Schema</label>
     <div class="col-sm-10">
       <div style="height:500px;border:1px solid #ced4da">
-        <ngx-monaco-editor style="height:100%" name="schema" [options]="{theme: 'vs-light', language: 'json'}" [(ngModel)]="schema" [disabled]="mode === 3"></ngx-monaco-editor>
+        <ngx-monaco-editor style="height:100%" name="schema" [options]="{theme: 'vs-light', language: 'json', readOnly: mode === 3}" [(ngModel)]="schema" [disabled]="mode === 3"></ngx-monaco-editor>
       </div>
     </div>
   </div>

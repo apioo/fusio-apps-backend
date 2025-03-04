@@ -11,6 +11,7 @@ export class ConfigComponent implements OnInit, OnChanges {
 
   @Input() container?: CommonFormContainer;
   @Input() data?: Record<string, any> = {};
+  @Input() disabled: boolean = false;
   @Output() dataChange = new EventEmitter<Record<string, any>>();
 
   elements: Array<any> = [];

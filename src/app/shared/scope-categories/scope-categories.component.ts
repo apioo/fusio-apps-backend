@@ -10,6 +10,7 @@ import {ApiService} from "../../api.service";
 export class ScopeCategoriesComponent implements OnInit {
 
   @Input() scopes?: Array<string>;
+  @Input() disabled: boolean = false;
   @Output() dataChange = new EventEmitter<any>();
 
   categories?: Array<BackendScopeCategory>;

@@ -101,7 +101,7 @@
   <div class="mb-3 row">
     <label for="parameters" class="col-sm-2 col-form-label fw-bold">Parameters</label>
     <div class="col-sm-10">
-      <app-operation-parameters [data]="entity.parameters" [disabled]="isDisabled()" (dataChange)="entity.parameters = $event"></app-operation-parameters>
+      <app-operation-parameters [data]="entity.parameters" (dataChange)="entity.parameters = $event" [disabled]="isDisabled()"></app-operation-parameters>
     </div>
   </div>
   <div class="mb-3 row" *ngIf="entity.httpMethod !== 'GET' && entity.httpMethod !== 'DELETE'">

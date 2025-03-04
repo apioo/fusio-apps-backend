@@ -14,7 +14,7 @@
     <label for="endpoint" class="col-sm-2 col-form-label fw-bold">Name</label>
     <div class="col-sm-10">
       <div class="input-group">
-        <input type="url" id="name" name="name" [(ngModel)]="entity.name" class="form-control">
+        <input type="url" id="name" name="name" [(ngModel)]="entity.name" [disabled]="mode === 3" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
         <ng-template #nameHelp>The name of the webhook</ng-template>
       </div>
@@ -23,7 +23,7 @@
   <div class="mb-3 row">
     <label for="event" class="col-sm-2 col-form-label fw-bold">Event</label>
     <div class="col-sm-10">
-      <fusio-form-autocomplete name="event" [service]="event" [data]="entity.eventId" (dataChangeId)="entity.eventId = $event">
+      <fusio-form-autocomplete name="event" [service]="event" [data]="entity.eventId" (dataChangeId)="entity.eventId = $event" [disabled]="mode === 3">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="eventHelp"><i class="bi bi-question"></i></button>
         <ng-template #eventHelp>Target event for this subscription</ng-template>
       </fusio-form-autocomplete>
@@ -32,14 +32,14 @@
   <div class="mb-3 row">
     <label for="user" class="col-sm-2 col-form-label fw-bold">User</label>
     <div class="col-sm-10">
-      <fusio-form-autocomplete name="user" [service]="user" [data]="entity.userId" (dataChangeId)="entity.userId = $event"></fusio-form-autocomplete>
+      <fusio-form-autocomplete name="user" [service]="user" [data]="entity.userId" (dataChangeId)="entity.userId = $event" [disabled]="mode === 3"></fusio-form-autocomplete>
     </div>
   </div>
   <div class="mb-3 row">
     <label for="endpoint" class="col-sm-2 col-form-label fw-bold">Endpoint</label>
     <div class="col-sm-10">
       <div class="input-group">
-        <input type="url" id="endpoint" name="endpoint" [(ngModel)]="entity.endpoint" class="form-control">
+        <input type="url" id="endpoint" name="endpoint" [(ngModel)]="entity.endpoint" [disabled]="mode === 3" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="endpointHelp"><i class="bi bi-question"></i></button>
         <ng-template #endpointHelp>The endpoint which receives the webhook</ng-template>
       </div>
