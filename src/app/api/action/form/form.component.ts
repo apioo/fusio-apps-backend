@@ -34,13 +34,11 @@ export class FormComponent extends Form<BackendAction> {
   }
 
   protected override async onLoad() {
-    if (this.entity && this.entity.class) {
-      this.loadConfig(this.entity.class);
-    }
+    this.loadConfig(this.entity?.class);
   }
 
   async changeClass(classString?: string) {
-    if (!this.entity) {
+    if (!classString || !this.entity) {
       return;
     }
 
