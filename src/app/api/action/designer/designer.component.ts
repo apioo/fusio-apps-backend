@@ -56,9 +56,6 @@ export class DesignerComponent implements OnInit {
       await this.fusio.getClient().backend().action().update('' + this.action.id, this.action);
 
       this.response = await this.fusio.getClient().backend().action().execute('' + this.action.id, request);
-
-      console.log(this.response?.headers)
-
     } catch (error) {
       this.message = this.error.convert(error);
     }
