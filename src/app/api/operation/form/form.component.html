@@ -1,0 +1,146 @@
+
+<h1>
+  <a [routerLink]="getListLink()">Operation</a> /
+  <a [routerLink]="getDetailLink('~' + entity?.name)">{{ entity?.name }}</a> /
+  <ng-container *ngIf="mode === 1">Create</ng-container>
+  <ng-container *ngIf="mode === 2">Update</ng-container>
+  <ng-container *ngIf="mode === 3">Delete</ng-container>
+</h1>
+
+<fusio-message [response]="response"></fusio-message>
+
+<form *ngIf="entity">
+  <div class="mb-3 row">
+    <label for="name" class="col-sm-2 col-form-label fw-bold">Name</label>
+    <div class="col-sm-10">
+      <div class="input-group">
+        <input type="text" id="name" name="name" [(ngModel)]="entity.name" [disabled]="isDisabled()" class="form-control">
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
+        <ng-template #nameHelp>Unique name of the operation i.e. <code>My.Awesome.Operation.execute</code></ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="scope" class="col-sm-2 col-form-label fw-bold">Scopes</label>
+    <div class="col-sm-10">
+      <app-tag-editor name="scope" [data]="entity.scopes" (dataChange)="entity.scopes = $event" [disabled]="isDisabled()"></app-tag-editor>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="active" class="col-sm-2 col-form-label fw-bold">Active</label>
+    <div class="col-sm-10">
+      <div class="form-check form-switch">
+        <input type="checkbox" id="active" name="active" [(ngModel)]="entity.active" [disabled]="isDisabled()" class="form-check-input">
+      </div>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="public" class="col-sm-2 col-form-label fw-bold">Public</label>
+    <div class="col-sm-10">
+      <div class="form-check form-switch">
+        <input type="checkbox" id="public" name="public" [(ngModel)]="entity.public" [disabled]="isDisabled()" class="form-check-input">
+      </div>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="stability" class="col-sm-2 col-form-label fw-bold">Stability</label>
+    <div class="col-sm-10">
+      <div class="input-group">
+        <select id="stability" name="stability" [(ngModel)]="entity.stability" class="form-select">
+          <option *ngFor="let stability of stabilities" [ngValue]="stability.key">{{stability.value}}</option>
+        </select>
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="stabilityHelp"><i class="bi bi-question"></i></button>
+        <ng-template #stabilityHelp>Indicates the stability of the operation. If an operation is marked as stable it is not longer possible to change any values</ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="description" class="col-sm-2 col-form-label fw-bold">Description</label>
+    <div class="col-sm-10">
+      <div class="input-group">
+        <input type="text" id="description" name="description" [(ngModel)]="entity.description" [disabled]="isDisabled()" class="form-control">
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="descriptionHelp"><i class="bi bi-question"></i></button>
+        <ng-template #descriptionHelp>A short description of the operation</ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="httpMethod" class="col-sm-2 col-form-label fw-bold">HTTP-Method</label>
+    <div class="col-sm-10">
+      <div class="input-group">
+        <select id="httpMethod" name="httpMethod" [(ngModel)]="entity.httpMethod" (ngModelChange)="changeHttpMethod()" [disabled]="isDisabled()" class="form-select">
+          <option *ngFor="let method of methods" [ngValue]="method.key">{{method.value}}</option>
+        </select>
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="httpMethodHelp"><i class="bi bi-question"></i></button>
+        <ng-template #httpMethodHelp>The assigned HTTP request method for this operation</ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="httpPath" class="col-sm-2 col-form-label fw-bold">HTTP-Path</label>
+    <div class="col-sm-10">
+      <div class="input-group">
+        <input type="text" id="httpPath" name="httpPath" [(ngModel)]="entity.httpPath" [disabled]="isDisabled()" class="form-control">
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="httpPathHelp"><i class="bi bi-question"></i></button>
+        <ng-template #httpPathHelp>The assigned HTTP path for this operation i.e. <code>/acme/news</code>. It is possible to use variable path fragments i.e. <code>/acme/:news</code>. Click <a href="https://docs.fusio-project.org/docs/backend/api/operation/#httpPath">here</a> for more information</ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="httpCode" class="col-sm-2 col-form-label fw-bold">HTTP-Code</label>
+    <div class="col-sm-10">
+      <div class="input-group">
+        <select id="httpCode" name="httpCode" [(ngModel)]="entity.httpCode" [disabled]="isDisabled()" class="form-select">
+          <option *ngFor="let code of successStatusCodes" [ngValue]="code.key">{{code.value}}</option>
+        </select>
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="httpCodeHelp"><i class="bi bi-question"></i></button>
+        <ng-template #httpCodeHelp>The assigned HTTP request method for this operation</ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="parameters" class="col-sm-2 col-form-label fw-bold">Parameters</label>
+    <div class="col-sm-10">
+      <app-operation-parameters [data]="entity.parameters" (dataChange)="entity.parameters = $event" [disabled]="isDisabled()"></app-operation-parameters>
+    </div>
+  </div>
+  <div class="mb-3 row" *ngIf="entity.httpMethod !== 'GET' && entity.httpMethod !== 'DELETE'">
+    <label for="incoming" class="col-sm-2 col-form-label fw-bold">Incoming</label>
+    <div class="col-sm-10">
+      <app-schema-selector name="incoming" [data]="entity.incoming" (dataChange)="entity.incoming = $event" [disabled]="isDisabled()"></app-schema-selector>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="outgoing" class="col-sm-2 col-form-label fw-bold">Outgoing</label>
+    <div class="col-sm-10">
+      <app-schema-selector name="outgoing" [data]="entity.outgoing" (dataChange)="entity.outgoing = $event" [disabled]="isDisabled()"></app-schema-selector>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label class="col-sm-2 col-form-label fw-bold">Throws</label>
+    <div class="col-sm-10">
+      <app-operation-throws [data]="entity.throws" (dataChange)="entity.throws = $event" [disabled]="isDisabled()"></app-operation-throws>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="action" class="col-sm-2 col-form-label fw-bold">Action</label>
+    <div class="col-sm-10">
+      <app-action-selector name="action" [data]="entity.action" (dataChange)="entity.action = $event" [disabled]="isDisabled()"></app-action-selector>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="costs" class="col-sm-2 col-form-label fw-bold">Costs</label>
+    <div class="col-sm-10">
+      <div class="input-group">
+        <input type="number" id="costs" name="costs" [(ngModel)]="entity.costs" [disabled]="isDisabled()" class="form-control">
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="costsHelp"><i class="bi bi-question"></i></button>
+        <ng-template #costsHelp>The amount of points a user needs to pay to invoke this operation</ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="btn-group" role="group">
+    <ng-container *ngIf="mode === 1"><button type="button" class="btn btn-primary" (click)="doCreate(entity)">Create</button></ng-container>
+    <ng-container *ngIf="mode === 2"><button type="button" class="btn btn-primary" (click)="doUpdate(entity)">Update</button></ng-container>
+    <ng-container *ngIf="mode === 3"><button type="button" class="btn btn-danger" (click)="doDelete(entity)">Delete</button></ng-container>
+  </div>
+</form>

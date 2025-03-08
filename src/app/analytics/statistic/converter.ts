@@ -1,5 +1,5 @@
 import {ApexAxisChartSeries, ApexXAxis} from "ngx-apexcharts";
-import {BackendStatisticChart, BackendStatisticChartData} from "fusio-sdk";
+import {BackendStatisticChart, BackendStatisticChartSeries} from "fusio-sdk";
 
 export class Converter {
 
@@ -13,15 +13,15 @@ export class Converter {
     }
 
     return {
-      series: Converter.convertChartData(data.data, data.series, maxElements),
+      series: Converter.convertChartData(data.series, maxElements),
       xaxis: {
         categories: labels || []
       },
     };
   }
 
-  public static convertChartData(data?: Array<BackendStatisticChartData>, series?: Array<string>, maxElements?: number): ApexAxisChartSeries {
-    if (!data || !series) {
+  public static convertChartData(series?: Array<BackendStatisticChartSeries>, maxElements?: number): ApexAxisChartSeries {
+    if (!series) {
       return [];
     }
 
@@ -29,16 +29,16 @@ export class Converter {
 
     for (let i = 0; i < series.length; i++) {
       let values: Array<number> = [];
-      if (Array.isArray(data[i])) {
+      if (Array.isArray(series[i].data)) {
         if (maxElements) {
-          values = (data[i] as Array<number>).slice(maxElements * -1);
+          values = series[i].data?.slice(maxElements * -1) || [];
         } else {
-          values = data[i] as Array<number>;
+          values = series[i].data || [];
         }
       }
 
       dataSets.push({
-        name: series[i],
+        name: series[i].name || '',
         data: values,
       })
     }
@@ -47,9 +47,9 @@ export class Converter {
   }
 
   public static convertPieChart(data: BackendStatisticChart): PieChartOptions {
-    let series = [];
-    if (data.data && data.data[0] && Array.isArray(data.data[0])) {
-      series = data.data[0];
+    let series: Array<number> = [];
+    if (data.series && Array.isArray(data.series[0].data)) {
+      series = data.series[0].data;
     }
 
     return {

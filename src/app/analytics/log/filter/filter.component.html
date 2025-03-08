@@ -7,77 +7,69 @@
   <div class="mb-3 row">
     <label for="from" class="col-sm-2 col-form-label fw-bold">From/To</label>
     <div class="col-sm-5">
-      <input type="date" id="from" name="from" [(ngModel)]="filter[0]" class="form-control">
+      <input type="date" id="from" name="from" [(ngModel)]="filter.from" class="form-control">
     </div>
     <div class="col-sm-5">
-      <input type="date" id="to" name="to" [(ngModel)]="filter[1]" class="form-control">
+      <input type="date" id="to" name="to" [(ngModel)]="filter.to" class="form-control">
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="route" class="col-sm-2 col-form-label fw-bold">Operation</label>
+    <label for="operation" class="col-sm-2 col-form-label fw-bold">Operation</label>
     <div class="col-sm-10">
-      <select id="route" name="route" [(ngModel)]="filter[2]" class="form-select">
-        <option [ngValue]="undefined">Every operation</option>
-        <option *ngFor="let operation of operations" [ngValue]="operation.id">{{operation.name}}</option>
-      </select>
+      <fusio-form-autocomplete name="operation" [service]="operation" [data]="filter.operationId" (dataChangeId)="filter.operationId = $event"></fusio-form-autocomplete>
     </div>
   </div>
   <div class="mb-3 row">
     <label for="app" class="col-sm-2 col-form-label fw-bold">App</label>
     <div class="col-sm-10">
-      <select id="app" name="app" [(ngModel)]="filter[3]" class="form-select">
-        <option [ngValue]="undefined">Every app</option>
-        <option *ngFor="let app of apps" [ngValue]="app.id">{{app.name}}</option>
-      </select>
+      <fusio-form-autocomplete name="app" [service]="app" [data]="filter.appId" (dataChangeId)="filter.appId = $event"></fusio-form-autocomplete>
     </div>
   </div>
   <div class="mb-3 row">
     <label for="user" class="col-sm-2 col-form-label fw-bold">User</label>
     <div class="col-sm-10">
-      <select id="user" name="user" [(ngModel)]="filter[4]" class="form-select">
-        <option [ngValue]="undefined">Every user</option>
-        <option *ngFor="let user of users" [ngValue]="user.id">{{user.name}}</option>
-      </select>
+      <fusio-form-autocomplete name="user" [service]="user" [data]="filter.userId" (dataChangeId)="filter.userId = $event"></fusio-form-autocomplete>
     </div>
   </div>
   <div class="mb-3 row">
     <label for="ip" class="col-sm-2 col-form-label fw-bold">IP</label>
     <div class="col-sm-10">
-      <input type="text" id="ip" name="ip" [(ngModel)]="filter[5]" class="form-control">
+      <input type="text" id="ip" name="ip" [(ngModel)]="filter.ip" class="form-control">
     </div>
   </div>
   <div class="mb-3 row">
     <label for="userAgent" class="col-sm-2 col-form-label fw-bold">User-Agent</label>
     <div class="col-sm-10">
-      <input type="text" id="userAgent" name="userAgent" [(ngModel)]="filter[6]" class="form-control">
+      <input type="text" id="userAgent" name="userAgent" [(ngModel)]="filter.userAgent" class="form-control">
     </div>
   </div>
   <div class="mb-3 row">
     <label for="method" class="col-sm-2 col-form-label fw-bold">Method</label>
     <div class="col-sm-10">
-      <input type="text" id="method" name="method" [(ngModel)]="filter[7]" class="form-control">
+      <input type="text" id="method" name="method" [(ngModel)]="filter.method" class="form-control">
     </div>
   </div>
   <div class="mb-3 row">
     <label for="path" class="col-sm-2 col-form-label fw-bold">Path</label>
     <div class="col-sm-10">
-      <input type="text" id="path" name="path" [(ngModel)]="filter[8]" class="form-control">
+      <input type="text" id="path" name="path" [(ngModel)]="filter.path" class="form-control">
     </div>
   </div>
   <div class="mb-3 row">
     <label for="header" class="col-sm-2 col-form-label fw-bold">Header</label>
     <div class="col-sm-10">
-      <input type="text" id="header" name="header" [(ngModel)]="filter[9]" class="form-control">
+      <input type="text" id="header" name="header" [(ngModel)]="filter.header" class="form-control">
     </div>
   </div>
   <div class="mb-3 row">
     <label for="body" class="col-sm-2 col-form-label fw-bold">Body</label>
     <div class="col-sm-10">
-      <input type="text" id="body" name="body" [(ngModel)]="filter[10]" class="form-control">
+      <input type="text" id="body" name="body" [(ngModel)]="filter.body" class="form-control">
     </div>
   </div>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-primary" (click)="doSubmit()">Filter</button>
+  <button type="button" class="btn btn-light" (click)="doReset()">Reset</button>
   <button type="button" class="btn btn-light" (click)="modal.close()">Close</button>
 </div>

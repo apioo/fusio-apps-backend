@@ -6,31 +6,34 @@
 <fusio-search
   [searchTerm]="search"
   (search)="doSearch(1, $event)"
-  (newClick)="openCreateDialog()"
+  (newClick)="openFilterDialog()"
   placeholder="audit"
   helpPath="system/audit/">
 </fusio-search>
-
-<div class="row">
-  <div class="col-lg-2 mb-3">
-    <fusio-sidebar
-      name="audit"
-      nameKey="event"
-      [entries]="entries"
-      [totalResults]="totalResults"
-      [selected]="selected"
-      [page]="page"
-      [pageSize]="pageSize"
-      (pageChange)="doSearch($event, search)"
-      (entrySelect)="doSelect($event)">
-    </fusio-sidebar>
-  </div>
-  <div class="col-lg-10 mb-3">
-    <fusio-empty *ngIf="!selected" [loading]="loading"></fusio-empty>
-    <app-audit-detail *ngIf="selected"
-      [selected]="selected"
-      (updateClick)="openUpdateDialog(selected)"
-      (deleteClick)="openDeleteDialog(selected)">
-    </app-audit-detail>
-  </div>
-</div>
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th style="width:50%">Name</th>
+    <th style="width:50%">Event</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let entry of entries">
+    <td>{{entry.message}}</td>
+    <td>{{entry.event}}</td>
+    <td>
+      <div class="btn-group" role="group">
+        <a [routerLink]="getDetailLink(entry.id)" class="btn btn-primary"><i class="bi bi-search"></i></a>
+      </div>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<ngb-pagination
+  [(page)]="page"
+  [pageSize]="pageSize"
+  [collectionSize]="totalResults"
+  [maxSize]="4"
+  [ellipses]="false"
+  (pageChange)="doSearch($event)"></ngb-pagination>

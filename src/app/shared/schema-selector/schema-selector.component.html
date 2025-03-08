@@ -6,54 +6,44 @@
     </select>
   </div>
   <div class="col-9">
-    <div class="input-group">
-      <ng-container [ngSwitch]="scheme">
-        <ng-container *ngSwitchCase="'schema'">
-          <input
-            type="text"
-            [id]="name + '_value'"
-            [name]="name + '_value'"
-            class="form-control"
-            [(ngModel)]="selected"
-            [ngbTypeahead]="objectSearch"
-            (focus)="focus$.next($any($event).target.value)"
-            [inputFormatter]="objectFormatter"
-            [resultFormatter]="objectFormatter"
-            [editable]="false"
-            (ngModelChange)="changeValue()"
-            [disabled]="disabled"
-          />
-          <button class="btn btn-outline-secondary" type="button" disabled *ngIf="searching">
-            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-            <span class="visually-hidden" role="status">Loading...</span>
-          </button>
+    <ng-container [ngSwitch]="scheme">
+      <ng-container *ngSwitchCase="'schema'">
+        <fusio-form-autocomplete name="outgoing" [service]="schema" [useTilde]="true" [data]="value" (dataChange)="value = $event; changeValue()" [disabled]="disabled">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="schemeHelp"><i class="bi bi-question"></i></button>
           <ng-template #schemeHelp>Loads a schema from the internal schema store. Type a name to select a fitting schema. If you can not find a fitting schema you can also create a new schema at the schema panel.</ng-template>
-        </ng-container>
-        <ng-container *ngSwitchCase="'php+class'">
+        </fusio-form-autocomplete>
+      </ng-container>
+      <ng-container *ngSwitchCase="'php+class'">
+        <div class="input-group">
           <input type="text" [id]="name + '_value'" [name]="name + '_value'" [(ngModel)]="value" (ngModelChange)="changeValue()" [disabled]="disabled" class="form-control">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="schemeHelp"><i class="bi bi-question"></i></button>
           <ng-template #schemeHelp>Loads a schema from a PHP class i.e. <code>App.Model.MyModel</code>.</ng-template>
-        </ng-container>
-        <ng-container *ngSwitchCase="'http'">
+        </div>
+      </ng-container>
+      <ng-container *ngSwitchCase="'http'">
+        <div class="input-group">
           <input type="text" [id]="name + '_value'" [name]="name + '_value'" [(ngModel)]="value" (ngModelChange)="changeValue()" [disabled]="disabled" class="form-control">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="schemeHelp"><i class="bi bi-question"></i></button>
           <ng-template #schemeHelp>Loads a schema from a HTTP url.</ng-template>
-        </ng-container>
-        <ng-container *ngSwitchCase="'https'">
+        </div>
+      </ng-container>
+      <ng-container *ngSwitchCase="'https'">
+        <div class="input-group">
           <input type="text" [id]="name + '_value'" [name]="name + '_value'" [(ngModel)]="value" (ngModelChange)="changeValue()" [disabled]="disabled" class="form-control">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="schemeHelp"><i class="bi bi-question"></i></button>
           <ng-template #schemeHelp>Loads a schema from a HTTPS url.</ng-template>
-        </ng-container>
-        <ng-container *ngSwitchCase="'file'">
+        </div>
+      </ng-container>
+      <ng-container *ngSwitchCase="'file'">
+        <div class="input-group">
           <input type="text" [id]="name + '_value'" [name]="name + '_value'" [(ngModel)]="value" (ngModelChange)="changeValue()" [disabled]="disabled" class="form-control">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="schemeHelp"><i class="bi bi-question"></i></button>
           <ng-template #schemeHelp>Loads a schema from a local file.</ng-template>
-        </ng-container>
-        <ng-container *ngSwitchCase="'typehub'">
-        </ng-container>
+        </div>
       </ng-container>
-    </div>
+      <ng-container *ngSwitchCase="'typehub'">
+      </ng-container>
+    </ng-container>
   </div>
 </div>
 

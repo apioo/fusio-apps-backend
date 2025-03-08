@@ -1,7 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {Detail} from "ngx-fusio-sdk";
+import {Detail, ErrorService} from "ngx-fusio-sdk";
 import {BackendConnection} from "fusio-sdk";
 import {ApiService} from "../../../api.service";
+import {ActivatedRoute, Router} from "@angular/router";
+import {ConnectionService} from "../../../services/connection.service";
 
 @Component({
   selector: 'app-connection-detail',
@@ -10,10 +12,14 @@ import {ApiService} from "../../../api.service";
 })
 export class DetailComponent extends Detail<BackendConnection> implements OnInit {
 
-  public baseUrl?: string;
+  baseUrl?: string;
 
-  constructor(private fusio: ApiService) {
-    super();
+  constructor(private service: ConnectionService, private fusio: ApiService, route: ActivatedRoute, router: Router, error: ErrorService) {
+    super(route, router, error);
+  }
+
+  protected getService(): ConnectionService {
+    return this.service;
   }
 
   public override ngOnInit(): Promise<void> {
@@ -22,13 +28,21 @@ export class DetailComponent extends Detail<BackendConnection> implements OnInit
   }
 
   async doAuthorizeClick() {
+    if (!this.selected) {
+      return;
+    }
+
     const response = await this.fusio.getClient().backend().connection().getRedirect('' + this.selected.id);
     if (response.redirectUri) {
-      window.location.href = response.redirectUri;
+      window.open(response.redirectUri, "_blank");
     }
   }
 
   needsAuthorization(): boolean {
+    if (!this.selected) {
+      return false;
+    }
+
     if (this.selected.oauth2 !== true) {
       // in case the connection needs oauth2 authorization
       return false;

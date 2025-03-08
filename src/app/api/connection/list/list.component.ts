@@ -1,29 +1,22 @@
 import {Component} from '@angular/core';
-import {List} from "ngx-fusio-sdk";
-import {BackendConnection, BackendConnectionCollection, Client} from "fusio-sdk";
-import {ModalComponent} from "../modal/modal.component";
+import {ErrorService, List} from "ngx-fusio-sdk";
+import {BackendConnection} from "fusio-sdk";
+import {ActivatedRoute, Router} from "@angular/router";
+import {ConnectionService} from "../../../services/connection.service";
 
 @Component({
   selector: 'app-connection-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent extends List<Client, BackendConnection> {
+export class ListComponent extends List<BackendConnection> {
 
-  protected async getAll(parameters: Array<any>): Promise<BackendConnectionCollection> {
-    return this.fusio.getClient().backend().connection().getAll(...parameters);
+  constructor(private service: ConnectionService, route: ActivatedRoute, router: Router, error: ErrorService) {
+    super(route, router, error);
   }
 
-  protected async get(id: string): Promise<BackendConnection> {
-    return this.fusio.getClient().backend().connection().get(id);
-  }
-
-  protected getDetailComponent(): any {
-    return ModalComponent;
-  }
-
-  protected getRoute(): any {
-    return '/connection';
+  protected getService(): ConnectionService {
+    return this.service;
   }
 
 }

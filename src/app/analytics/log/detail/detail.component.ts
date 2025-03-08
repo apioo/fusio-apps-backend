@@ -1,6 +1,8 @@
 import {Component} from '@angular/core';
-import {Detail} from "ngx-fusio-sdk";
+import {Detail, ErrorService} from "ngx-fusio-sdk";
 import {BackendLog} from "fusio-sdk";
+import {LogService} from "../../../services/log.service";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-log-detail',
@@ -8,5 +10,13 @@ import {BackendLog} from "fusio-sdk";
   styleUrls: ['./detail.component.css']
 })
 export class DetailComponent extends Detail<BackendLog> {
+
+  constructor(private service: LogService, route: ActivatedRoute, router: Router, error: ErrorService) {
+    super(route, router, error);
+  }
+
+  protected getService(): LogService {
+    return this.service;
+  }
 
 }

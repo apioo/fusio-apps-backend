@@ -7,19 +7,15 @@
   <table class="table table-striped">
     <thead>
     <tr>
-      <th>Method</th>
-      <th>User-Agent</th>
-      <th>IP</th>
-      <th>Date</th>
+      <th style="width:50px;">Method</th>
+      <th style="width:100%;">User-Agent</th>
       <th></th>
     </tr>
     </thead>
     <tbody>
     <tr *ngFor="let log of logs?.entry">
-      <th>{{log.method}}</th>
-      <td><div style="width:600px;" class="text-truncate">{{log.userAgent}}</div></td>
-      <td>{{log.ip}}</td>
-      <td>{{log.date | date: 'short'}}</td>
+      <td><span class="badge text-bg-dark">{{log.method}}</span></td>
+      <td>{{log.userAgent}}</td>
       <td><a (click)="detail(log)" class="btn btn-light"><i class="bi bi-search"></i></a></td>
     </tr>
     </tbody>

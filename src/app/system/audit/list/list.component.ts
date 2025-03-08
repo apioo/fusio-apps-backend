@@ -1,6 +1,9 @@
 import {Component} from '@angular/core';
-import {List} from "ngx-fusio-sdk";
-import {BackendAudit, BackendAuditCollection, Client} from "fusio-sdk";
+import {ErrorService, List} from "ngx-fusio-sdk";
+import {BackendAudit} from "fusio-sdk";
+import {ActivatedRoute, Router} from "@angular/router";
+import {AuditService} from "../../../services/audit.service";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {FilterComponent} from "../filter/filter.component";
 
 @Component({
@@ -8,32 +11,32 @@ import {FilterComponent} from "../filter/filter.component";
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent extends List<Client, BackendAudit> {
+export class ListComponent extends List<BackendAudit> {
 
-  filter: any = {};
+  filter: Filter = {
+    from: undefined,
+    to: undefined,
+    appId: undefined,
+    userId: undefined,
+    event: undefined,
+    ip: undefined,
+    message: undefined,
+  };
 
-  protected async getAll(parameters: Array<any>): Promise<BackendAuditCollection> {
-    return this.fusio.getClient().backend().audit().getAll(...parameters);
+  constructor(private service: AuditService, private modalService: NgbModal, route: ActivatedRoute, router: Router, error: ErrorService) {
+    super(route, router, error);
   }
 
-  protected async get(id: string): Promise<BackendAudit> {
-    return this.fusio.getClient().backend().audit().get(id);
+  protected getService(): AuditService {
+    return this.service;
   }
 
-  protected getDetailComponent(): any {
-    return null;
-  }
-
-  protected getRoute(): any {
-    return '/audit';
-  }
-
-  override openCreateDialog() {
+  openFilterDialog() {
     const modalRef = this.modalService.open(FilterComponent, {
       size: 'lg'
     });
     modalRef.componentInstance.filter = this.filter;
-    modalRef.closed.subscribe(async (filter) => {
+    modalRef.closed.subscribe(async (filter: Filter) => {
       this.filter = filter;
       await this.doList();
     });
@@ -42,11 +45,25 @@ export class ListComponent extends List<Client, BackendAudit> {
   protected override getCollectionQuery(): Array<any> {
     let query = super.getCollectionQuery();
 
-    if (this.filter) {
-      query.push(this.filter);
+    for (const [key, value] of Object.entries(this.filter)) {
+      if (value !== undefined && value !== null) {
+        query.push(value);
+      } else {
+        query.push('');
+      }
     }
 
     return query;
   }
 
+}
+
+export interface Filter {
+  from?: string
+  to?: string
+  appId?: number
+  userId?: number
+  event?: string
+  ip?: string
+  message?: string
 }

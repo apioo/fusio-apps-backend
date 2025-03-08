@@ -5,33 +5,37 @@
 
 <fusio-search
   [searchTerm]="search"
-  [buttons]="[{routerLink: '/schema/designer', icon: 'bi-bag-plus'}]"
+  [buttons]="[{routerLink: '/schema/designer/-/new', icon: 'bi-bag-plus'}]"
   (search)="doSearch(1, $event)"
-  (newClick)="openCreateDialog()"
+  (newClick)="router.navigate(getNewLink())"
   placeholder="schema"
   helpPath="api/schema/">
 </fusio-search>
-
-<div class="row">
-  <div class="col-lg-2 mb-3">
-    <fusio-sidebar
-      name="schema"
-      nameKey="name"
-      [entries]="entries"
-      [totalResults]="totalResults"
-      [selected]="selected"
-      [page]="page"
-      [pageSize]="pageSize"
-      (pageChange)="doSearch($event, search)"
-      (entrySelect)="doSelect($event)">
-    </fusio-sidebar>
-  </div>
-  <div class="col-lg-10 mb-3">
-    <fusio-empty *ngIf="!selected" [loading]="loading" (newClick)="openCreateDialog()"></fusio-empty>
-    <app-schema-detail *ngIf="selected"
-      [selected]="selected"
-      (updateClick)="openUpdateDialog(selected)"
-      (deleteClick)="openDeleteDialog(selected)">
-    </app-schema-detail>
-  </div>
-</div>
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th style="width:100%">Name</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let entry of entries">
+    <td>{{entry.name}}</td>
+    <td>
+      <div class="btn-group" role="group">
+        <a [routerLink]="getDetailLink(entry.id)" class="btn btn-primary"><i class="bi bi-search"></i></a>
+        <a [routerLink]="getEditLink(entry.id)" class="btn btn-secondary"><i class="bi bi-pen"></i></a>
+        <a [routerLink]="['/', 'schema', 'designer', entry.id]" class="btn btn-secondary"><i class="bi bi-terminal"></i></a>
+        <a [routerLink]="getDeleteLink(entry.id)" class="btn btn-danger"><i class="bi bi-x"></i></a>
+      </div>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<ngb-pagination
+  [(page)]="page"
+  [pageSize]="pageSize"
+  [collectionSize]="totalResults"
+  [maxSize]="4"
+  [ellipses]="false"
+  (pageChange)="doSearch($event)"></ngb-pagination>

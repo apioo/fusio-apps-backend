@@ -1,31 +1,34 @@
-import {Component, OnChanges, SimpleChanges} from '@angular/core';
-import {Detail} from "ngx-fusio-sdk";
+import {Component} from '@angular/core';
+import {Detail, ErrorService} from "ngx-fusio-sdk";
 import {BackendSchema} from "fusio-sdk";
 import {ApiService} from "../../../api.service";
+import {SchemaService} from "../../../services/schema.service";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-schema-detail',
   templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.css']
 })
-export class DetailComponent extends Detail<BackendSchema> implements OnChanges {
+export class DetailComponent extends Detail<BackendSchema> {
 
   renderedId?: number;
   preview?: string;
   loading: boolean = false;
 
-  constructor(private fusio: ApiService) {
-    super();
+  constructor(private service: SchemaService, private fusio: ApiService, route: ActivatedRoute, router: Router, error: ErrorService) {
+    super(route, router, error);
   }
 
-  async ngOnChanges(changes: SimpleChanges): Promise<void> {
-    if (changes['selected']) {
-      if (this.renderedId !== changes['selected'].currentValue.id) {
-        this.renderedId = changes['selected'].currentValue.id;
-        this.loading = true;
-        this.renderPreview('' + this.renderedId);
-      }
-    }
+  protected getService(): SchemaService {
+    return this.service;
+  }
+
+  protected override onLoad() {
+    super.onLoad();
+
+    this.loading = true;
+    this.renderPreview('' + this.selected?.id);
   }
 
   private async renderPreview(id: string) {

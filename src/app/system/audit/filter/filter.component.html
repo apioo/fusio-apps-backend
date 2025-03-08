@@ -16,19 +16,13 @@
   <div class="mb-3 row">
     <label for="app" class="col-sm-2 col-form-label fw-bold">App</label>
     <div class="col-sm-10">
-      <select id="app" name="app" [(ngModel)]="filter.appId" class="form-select">
-        <option [ngValue]="undefined">Every app</option>
-        <option *ngFor="let app of apps" [ngValue]="app.id">{{app.name}}</option>
-      </select>
+      <fusio-form-autocomplete name="app" [service]="app" [data]="filter.appId" (dataChangeId)="filter.appId = $event"></fusio-form-autocomplete>
     </div>
   </div>
   <div class="mb-3 row">
     <label for="user" class="col-sm-2 col-form-label fw-bold">User</label>
     <div class="col-sm-10">
-      <select id="user" name="user" [(ngModel)]="filter.userId" class="form-select">
-        <option [ngValue]="undefined">Every user</option>
-        <option *ngFor="let user of users" [ngValue]="user.id">{{user.name}}</option>
-      </select>
+      <fusio-form-autocomplete name="user" [service]="user" [data]="filter.userId" (dataChangeId)="filter.userId = $event"></fusio-form-autocomplete>
     </div>
   </div>
   <div class="mb-3 row">
@@ -52,5 +46,6 @@
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-primary" (click)="doSubmit()">Filter</button>
+  <button type="button" class="btn btn-light" (click)="doReset()">Reset</button>
   <button type="button" class="btn btn-light" (click)="modal.close()">Close</button>
 </div>

@@ -59,13 +59,6 @@ pre
   padding:0 15px;
 }
 
-@media (max-width:767px) {
-  .fusio-navigation > nav
-  {
-    width:110px;
-  }
-}
-
 .fusio-navigation > nav > h1
 {
   color:#eee;
@@ -168,9 +161,14 @@ pre
   background-image: linear-gradient(to bottom,#444 0,#222 100%);
 }
 
-.fusio-content > div > h1 > a
+.fusio-content > * > h1 > a
 {
   color:#eee;
+}
+
+.fusio-content > * > form
+{
+  margin-bottom:64px;
 }
 
 .fusio-search

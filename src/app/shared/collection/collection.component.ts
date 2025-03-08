@@ -10,6 +10,7 @@ export class CollectionComponent implements OnInit {
   @Input() name: string = 'collection';
   @Input() type: string = 'text';
   @Input() data: Array<any> = [];
+  @Input() disabled: boolean = false;
   @Output() dataChange = new EventEmitter<Array<any>>();
 
   local: Array<any> = [];

@@ -6,31 +6,42 @@
 <fusio-search
   [searchTerm]="search"
   (search)="doSearch(1, $event)"
-  (newClick)="openCreateDialog()"
+  (newClick)="router.navigate(getNewLink())"
   placeholder="page"
   helpPath="consumer/page/">
 </fusio-search>
-
-<div class="row">
-  <div class="col-lg-2 mb-3">
-    <fusio-sidebar
-      name="page"
-      nameKey="title"
-      [entries]="entries"
-      [totalResults]="totalResults"
-      [selected]="selected"
-      [page]="page"
-      [pageSize]="pageSize"
-      (pageChange)="doSearch($event, search)"
-      (entrySelect)="doSelect($event)">
-    </fusio-sidebar>
-  </div>
-  <div class="col-lg-10 mb-3">
-    <fusio-empty *ngIf="!selected" [loading]="loading" (newClick)="openCreateDialog()"></fusio-empty>
-    <app-page-detail *ngIf="selected"
-      [selected]="selected"
-      (updateClick)="openUpdateDialog(selected)"
-      (deleteClick)="openDeleteDialog(selected)">
-    </app-page-detail>
-  </div>
-</div>
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th style="width:100px">Status</th>
+    <th style="width:50%">Title</th>
+    <th style="width:50%">Slug</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let entry of entries">
+    <td>
+      <span *ngIf="entry.status === 0" class="badge bg-danger">Deleted</span>
+      <span *ngIf="entry.status === 1" class="badge bg-primary">Visible</span>
+      <span *ngIf="entry.status === 2" class="badge bg-secondary">Invisible</span>
+    </td>
+    <td>{{entry.title}}</td>
+    <td>{{entry.slug}}</td>
+    <td>
+      <div class="btn-group" role="group">
+        <a [routerLink]="getDetailLink(entry.id)" class="btn btn-primary"><i class="bi bi-search"></i></a>
+        <a [routerLink]="getEditLink(entry.id)" class="btn btn-secondary"><i class="bi bi-pen"></i></a>
+        <a [routerLink]="getDeleteLink(entry.id)" class="btn btn-danger"><i class="bi bi-x"></i></a>
+      </div>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<ngb-pagination
+  [(page)]="page"
+  [pageSize]="pageSize"
+  [collectionSize]="totalResults"
+  [maxSize]="4"
+  [ellipses]="false"
+  (pageChange)="doSearch($event)"></ngb-pagination>

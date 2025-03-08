@@ -9,25 +9,30 @@
   placeholder="error"
   helpPath="analytics/error/">
 </fusio-search>
-
-<div class="row">
-  <div class="col-lg-2 mb-3">
-    <fusio-sidebar
-      name="error"
-      nameKey="message"
-      [entries]="entries"
-      [totalResults]="totalResults"
-      [selected]="selected"
-      [page]="page"
-      [pageSize]="pageSize"
-      (pageChange)="doSearch($event, search)"
-      (entrySelect)="doSelect($event)">
-    </fusio-sidebar>
-  </div>
-  <div class="col-lg-10 mb-3">
-    <fusio-empty *ngIf="!selected" [loading]="loading"></fusio-empty>
-    <app-error-detail *ngIf="selected"
-      [selected]="selected">
-    </app-error-detail>
-  </div>
-</div>
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th style="width:50%">Message</th>
+    <th style="width:50%">File</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let entry of entries">
+    <td>{{entry.message}}</td>
+    <td>{{entry.file}}</td>
+    <td>
+      <div class="btn-group" role="group">
+        <a [routerLink]="getDetailLink(entry.id)" class="btn btn-primary"><i class="bi bi-search"></i></a>
+      </div>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<ngb-pagination
+  [(page)]="page"
+  [pageSize]="pageSize"
+  [collectionSize]="totalResults"
+  [maxSize]="4"
+  [ellipses]="false"
+  (pageChange)="doSearch($event)"></ngb-pagination>

@@ -1,6 +1,8 @@
 import {Component} from '@angular/core';
-import {Detail} from "ngx-fusio-sdk";
+import {Detail, ErrorService} from "ngx-fusio-sdk";
 import {BackendConfig} from "fusio-sdk";
+import {ActivatedRoute, Router} from "@angular/router";
+import {ConfigService} from "../../../services/config.service";
 
 @Component({
   selector: 'app-config-detail',
@@ -8,5 +10,13 @@ import {BackendConfig} from "fusio-sdk";
   styleUrls: ['./detail.component.css']
 })
 export class DetailComponent extends Detail<BackendConfig> {
+
+  constructor(private service: ConfigService, route: ActivatedRoute, router: Router, error: ErrorService) {
+    super(route, router, error);
+  }
+
+  protected getService(): ConfigService {
+    return this.service;
+  }
 
 }

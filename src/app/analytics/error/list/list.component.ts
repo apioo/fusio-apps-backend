@@ -1,28 +1,22 @@
 import {Component} from '@angular/core';
-import {List} from "ngx-fusio-sdk";
-import {BackendLogError, BackendLogErrorCollection, Client} from "fusio-sdk";
+import {ErrorService, List} from "ngx-fusio-sdk";
+import {BackendLogError} from "fusio-sdk";
+import {LogErrorService} from "../../../services/log-error.service";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-error-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent extends List<Client, BackendLogError> {
+export class ListComponent extends List<BackendLogError> {
 
-  protected async getAll(parameters: Array<any>): Promise<BackendLogErrorCollection> {
-    return this.fusio.getClient().backend().log().getAllErrors(...parameters);
+  constructor(private service: LogErrorService, route: ActivatedRoute, router: Router, error: ErrorService) {
+    super(route, router, error);
   }
 
-  protected async get(id: string): Promise<BackendLogError> {
-    return this.fusio.getClient().backend().log().getError(id);
-  }
-
-  protected getDetailComponent(): any {
-    return null;
-  }
-
-  protected getRoute(): any {
-    return '/error';
+  protected getService(): LogErrorService {
+    return this.service;
   }
 
 }

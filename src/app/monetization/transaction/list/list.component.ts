@@ -1,28 +1,23 @@
 import {Component} from '@angular/core';
-import {List} from "ngx-fusio-sdk";
+import {ErrorService, List} from "ngx-fusio-sdk";
 import {BackendTransaction, BackendTransactionCollection, Client} from "fusio-sdk";
+import {PlanService} from "../../../services/plan.service";
+import {ActivatedRoute, Router} from "@angular/router";
+import {TransactionService} from "../../../services/transaction.service";
 
 @Component({
   selector: 'app-transaction-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent extends List<Client, BackendTransaction> {
+export class ListComponent extends List<BackendTransaction> {
 
-  protected async getAll(parameters: Array<any>): Promise<BackendTransactionCollection> {
-    return this.fusio.getClient().backend().transaction().getAll(...parameters);
+  constructor(private service: TransactionService, route: ActivatedRoute, router: Router, error: ErrorService) {
+    super(route, router, error);
   }
 
-  protected async get(id: string): Promise<BackendTransaction> {
-    return this.fusio.getClient().backend().transaction().get(id);
-  }
-
-  protected getDetailComponent(): any {
-    return null;
-  }
-
-  protected getRoute(): any {
-    return '/transaction';
+  protected getService(): TransactionService {
+    return this.service;
   }
 
 }

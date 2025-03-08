@@ -10,6 +10,7 @@ export class MapComponent implements OnInit {
   @Input() name: string = 'map';
   @Input() type: string = 'text';
   @Input() data: Record<string, any> = {};
+  @Input() disabled: boolean = false;
   @Output() dataChange = new EventEmitter<Record<string, any>>();
 
   local: Array<Entry> = [];

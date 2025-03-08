@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {BackendOperationThrows} from "fusio-sdk";
+import {SchemaService} from "../../services/schema.service";
 
 @Component({
   selector: 'app-operation-throws',
@@ -33,6 +34,7 @@ export class OperationThrowsComponent implements OnInit {
     {key: 423, value: 'Locked'},
     {key: 424, value: 'Failed Dependency'},
     {key: 429, value: 'Too Many Requests'},
+    {key: 499, value: '4xx'},
     {key: 500, value: 'Internal Server Error'},
     {key: 501, value: 'Not Implemented'},
     {key: 502, value: 'Bad Gateway'},
@@ -40,7 +42,12 @@ export class OperationThrowsComponent implements OnInit {
     {key: 504, value: 'Gateway Timeout'},
     {key: 507, value: 'Insufficient Storage'},
     {key: 508, value: 'Loop Detected'},
+    {key: 599, value: '5xx'},
+    {key: 999, value: 'All errors'},
   ]
+
+  constructor(public schema: SchemaService) {
+  }
 
   ngOnInit() {
     if (this.data) {

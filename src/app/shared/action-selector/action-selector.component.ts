@@ -1,14 +1,17 @@
-import {Component} from '@angular/core';
-import {BackendAction, BackendActionCollection} from "fusio-sdk";
-import {ObjectSelector} from "ngx-fusio-sdk";
-import {ApiService} from "../../api.service";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ActionService} from "../../services/action.service";
 
 @Component({
   selector: 'app-action-selector',
   templateUrl: './action-selector.component.html',
   styleUrls: ['./action-selector.component.css']
 })
-export class ActionSelectorComponent extends ObjectSelector<BackendAction, string> {
+export class ActionSelectorComponent implements OnInit {
+
+  @Input() name!: string;
+  @Input() disabled: boolean = false;
+  @Input() data?: string = undefined;
+  @Output() dataChange = new EventEmitter<string>();
 
   schemes = [{
     key: 'action',
@@ -30,20 +33,15 @@ export class ActionSelectorComponent extends ObjectSelector<BackendAction, strin
   scheme: string = '';
   value: string = '';
 
-  constructor(private fusio: ApiService) {
-    super();
+  constructor(public action: ActionService) {
   }
 
-  override async ngOnInit(): Promise<void> {
+  async ngOnInit(): Promise<void> {
     if (this.data) {
       const pos = this.data.indexOf('://');
       if (pos > 0) {
         this.scheme = this.data.substring(0, pos);
         this.value = this.data.substring(pos + 3);
-
-        if (this.scheme === 'action') {
-          this.selected = await this.fusio.getClient().backend().action().get('~' + this.value);
-        }
       }
     }
     if (!this.scheme) {
@@ -59,24 +57,12 @@ export class ActionSelectorComponent extends ObjectSelector<BackendAction, strin
     this.dataChange.emit(this.scheme + '://' + this.value);
   }
 
-  override changeValue() {
+  changeValue() {
     if (this.disabled) {
       return;
     }
 
-    if (this.scheme === 'action' && this.selected?.name) {
-      this.value = this.selected?.name;
-    }
-
     this.dataChange.emit(this.scheme + '://' + this.value);
-  }
-
-  protected async getAll(parameters: Array<any>): Promise<BackendActionCollection> {
-    return this.fusio.getClient().backend().action().getAll(...parameters);
-  }
-
-  protected async get(id: string): Promise<BackendAction> {
-    return this.fusio.getClient().backend().action().get(id);
   }
 
 }

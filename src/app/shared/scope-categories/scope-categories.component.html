@@ -4,9 +4,9 @@
     <a ngbNavLink>{{category.name}}</a>
     <ng-template ngbNavContent>
       <div style="margin-top:1rem;">
-        <a (click)="toggleScopes(category.scopes)" class="btn btn-outline-secondary float-end"><i class="bi bi-arrow-clockwise"></i></a>
+        <button (click)="toggleScopes(category.scopes)" [disabled]="disabled" class="btn btn-outline-secondary float-end"><i class="bi bi-arrow-clockwise"></i></button>
         <div class="form-check" *ngFor="let scope of category.scopes">
-          <input class="form-check-input" type="checkbox" [value]="scope.id" (change)="scopeSelect($event, scope.name)" [checked]="scope.name && selected.includes(scope.name)" [id]="scope.name">
+          <input class="form-check-input" type="checkbox" [value]="scope.id" (change)="scopeSelect($event, scope.name)" [checked]="scope.name && selected.includes(scope.name)" [id]="scope.name" [disabled]="disabled">
           <label class="form-check-label" [for]="scope.name">{{scope.name}}</label>
         </div>
       </div>
