@@ -25,13 +25,10 @@
   <div class="mb-3 row">
     <label for="role" class="col-sm-2 col-form-label fw-bold">Role</label>
     <div class="col-sm-10">
-      <div class="input-group">
-        <select id="role" name="role" [(ngModel)]="entity.roleId" [disabled]="mode === 3" class="form-select">
-          <option *ngFor="let role of roles" [ngValue]="role.id">{{role.name}}</option>
-        </select>
+      <fusio-form-autocomplete name="role" [service]="role" [data]="entity.roleId" (dataChangeId)="entity.roleId = $event" [disabled]="mode === 3">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="roleHelp"><i class="bi bi-question"></i></button>
         <ng-template #roleHelp>Role for this user</ng-template>
-      </div>
+      </fusio-form-autocomplete>
     </div>
   </div>
   <div class="mb-3 row">
