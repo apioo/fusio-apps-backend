@@ -20,8 +20,6 @@ export class FormComponent extends Form<BackendUserCreate> {
     value: 'Disabled'
   }];
 
-  roles?: Array<BackendRole>;
-
   constructor(private service: UserService, public role: RoleService, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);
   }
