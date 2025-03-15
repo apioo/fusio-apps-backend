@@ -28,7 +28,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.userMeta.get();
-    this.hasUrl = typeof FUSIO_URL !== 'undefined';
+    this.hasUrl = typeof FUSIO_URL !== 'undefined' && FUSIO_URL !== null && FUSIO_URL !== '';
     this.hasActiveInstance = InstanceManager.getActiveIndex() !== null;
 
     Config.fusio = this.fusio;
