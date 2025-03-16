@@ -8,21 +8,28 @@
     <button ngbNavLink>Actions</button>
     <ng-template ngbNavContent>
       <fusio-search [searchTerm]="actionSearch" (search)="doSearch($event)" placeholder="action" helpPath="development/marketplace/"></fusio-search>
-      <div class="d-flex flex-wrap">
-        <div class="card me-2 mb-2 overflow-hidden float-start" style="width:400px;height:112px;" *ngFor="let action of actions">
-          <div class="row g-0">
-            <div class="col-2">
-              <div style="font-size:2em;width:64px;height:64px;" class="text-center ms-2 mt-4 pt-2 rounded-circle bg-dark text-info"><i class="bi bi-{{ action.icon }}"></i></div>
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th style="width:50px"></th>
+          <th style="width:90%">Name</th>
+          <th style="width:150px">Version</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let action of actions">
+          <td><i class="bi bi-{{ action.icon }}"></i></td>
+          <td><i class="bi bi-patch-check-fill text-primary me-1" *ngIf="action.author?.verified"></i><b>{{action.author?.name}}/{{action.name}}</b><br><small>{{action.summary}}</small></td>
+          <td>{{action.version}}</td>
+          <td>
+            <div class="btn-group" role="group">
+              <a [routerLink]="['/marketplace/', selectedType, action.author?.name, action.name]" class="btn btn-primary"><i class="bi bi-search"></i></a>
             </div>
-            <div class="col-10">
-              <div class="card-body">
-                <h5 class="card-title fw-bold text-nowrap overflow-hidden"><a [routerLink]="['/marketplace/', selectedType, action.author?.name, action.name]">{{ action.author?.name }} / {{ action.name }}</a><span *ngIf="action.author?.verified" class="ms-2 text-primary" ngbTooltip="Verified user"><i class="bi bi-patch-check-fill"></i></span></h5>
-                <p class="card-text" style="font-size:0.8em;">{{ action.summary }}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
       <ngb-pagination
         [(page)]="actionPage"
         [pageSize]="actionPageSize"
@@ -36,21 +43,28 @@
     <button ngbNavLink>Apps</button>
     <ng-template ngbNavContent>
       <fusio-search [searchTerm]="appSearch" (search)="doSearch($event)" placeholder="app" helpPath="development/marketplace/"></fusio-search>
-      <div class="d-flex flex-wrap">
-        <div class="card me-2 mb-2 overflow-hidden float-start" style="width:400px;height:112px;" *ngFor="let action of apps">
-          <div class="row g-0">
-            <div class="col-2">
-              <div style="font-size:2em;width:64px;height:64px;" class="text-center ms-2 mt-4 pt-2 rounded-circle bg-dark text-info"><i class="bi bi-{{ action.icon }}"></i></div>
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th style="width:50px"></th>
+          <th style="width:90%">Name</th>
+          <th style="width:150px">Version</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let app of apps">
+          <td><i class="bi bi-{{ app.icon }}"></i></td>
+          <td><i class="bi bi-patch-check-fill text-primary me-1" *ngIf="app.author?.verified"></i><b>{{app.author?.name}}/{{app.name}}</b><br><small>{{app.summary}}</small></td>
+          <td>{{app.version}}</td>
+          <td>
+            <div class="btn-group" role="group">
+              <a [routerLink]="['/marketplace/', selectedType, app.author?.name, app.name]" class="btn btn-primary"><i class="bi bi-search"></i></a>
             </div>
-            <div class="col-10">
-              <div class="card-body">
-                <h5 class="card-title fw-bold text-nowrap overflow-hidden"><a [routerLink]="['/marketplace/', selectedType, action.author?.name, action.name]">{{ action.author?.name }} / {{ action.name }}</a><span *ngIf="action.author?.verified" class="ms-2 text-primary" ngbTooltip="Verified user"><i class="bi bi-patch-check-fill"></i></span></h5>
-                <p class="card-text" style="font-size:0.8em;">{{ action.summary }}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
       <ngb-pagination
         [(page)]="appPage"
         [pageSize]="appPageSize"
