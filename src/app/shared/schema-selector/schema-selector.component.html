@@ -41,6 +41,20 @@
           <ng-template #schemeHelp>Loads a schema from a local file.</ng-template>
         </div>
       </ng-container>
+      <ng-container *ngSwitchCase="'mime'">
+        <div class="input-group">
+          <select [id]="name + '_value'" [name]="name + '_value'" [(ngModel)]="value" (ngModelChange)="changeValue()" [disabled]="disabled" class="form-select">
+            <option value="application/octet-stream">application/octet-stream</option>
+            <option value="application/x-www-form-urlencoded">application/x-www-form-urlencoded</option>
+            <option value="application/json">application/json</option>
+            <option value="multipart/form-data">multipart/form-data</option>
+            <option value="text/plain">text/plain</option>
+            <option value="application/xml">application/xml</option>
+          </select>
+          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="schemeHelp"><i class="bi bi-question"></i></button>
+          <ng-template #schemeHelp>Describes the schema by content type.</ng-template>
+        </div>
+      </ng-container>
       <ng-container *ngSwitchCase="'typehub'">
       </ng-container>
     </ng-container>

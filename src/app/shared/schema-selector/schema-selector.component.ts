@@ -28,6 +28,9 @@ export class SchemaSelectorComponent implements OnInit {
   }, {
     key: 'file',
     value: 'File'
+  }, {
+    key: 'mime',
+    value: 'Content-Type'
   }/*, {
     key: 'typehub',
     value: 'TypeHub'
