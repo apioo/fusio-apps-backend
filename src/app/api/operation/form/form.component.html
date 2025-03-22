@@ -82,7 +82,7 @@
       <div class="input-group">
         <input type="text" id="httpPath" name="httpPath" [(ngModel)]="entity.httpPath" [disabled]="isDisabled()" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="httpPathHelp"><i class="bi bi-question"></i></button>
-        <ng-template #httpPathHelp>The assigned HTTP path for this operation i.e. <code>/acme/news</code>. It is possible to use variable path fragments i.e. <code>/acme/:news</code>. Click <a href="https://docs.fusio-project.org/docs/backend/api/operation/#httpPath">here</a> for more information</ng-template>
+        <ng-template #httpPathHelp>The assigned HTTP path for this operation i.e. <code>/acme/news</code>. It is possible to use variable path fragments i.e. <code>/acme/:news</code>. Click <a href="https://docs.fusio-project.org/docs/backend/api/operation/#http-path">here</a> for more information</ng-template>
       </div>
     </div>
   </div>
@@ -94,7 +94,7 @@
           <option *ngFor="let code of successStatusCodes" [ngValue]="code.key">{{code.value}}</option>
         </select>
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="httpCodeHelp"><i class="bi bi-question"></i></button>
-        <ng-template #httpCodeHelp>The assigned HTTP request method for this operation</ng-template>
+        <ng-template #httpCodeHelp>The success HTTP response code for this operation</ng-template>
       </div>
     </div>
   </div>
