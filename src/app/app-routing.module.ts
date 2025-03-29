@@ -44,6 +44,9 @@ import {FormComponent as AppForm} from "./consumer/app/form/form.component";
 import {ListComponent as PageList} from "./consumer/page/list/list.component";
 import {DetailComponent as PageDetail} from "./consumer/page/detail/detail.component";
 import {FormComponent as PageForm} from "./consumer/page/form/form.component";
+import {ListComponent as FormList} from "./consumer/form/list/list.component";
+import {DetailComponent as FormDetail} from "./consumer/form/detail/detail.component";
+import {FormComponent as FormForm} from "./consumer/form/form/form.component";
 import {ListComponent as RateList} from "./consumer/rate/list/list.component";
 import {DetailComponent as RateDetail} from "./consumer/rate/detail/detail.component";
 import {FormComponent as RateForm} from "./consumer/rate/form/form.component";
@@ -128,6 +131,7 @@ const routes: Routes = [
   { path: 'user', canActivate: [isAuthenticated], children: EntityRoute.getAll(UserList, UserDetail, UserForm) },
   { path: 'rate', canActivate: [isAuthenticated], children: EntityRoute.getAll(RateList, RateDetail, RateForm) },
   { path: 'page', canActivate: [isAuthenticated], children: EntityRoute.getAll(PageList, PageDetail, PageForm) },
+  { path: 'form', canActivate: [isAuthenticated], children: EntityRoute.getAll(FormList, FormDetail, FormForm) },
   { path: 'webhook', canActivate: [isAuthenticated], children: EntityRoute.getAll(WebhookList, WebhookDetail, WebhookForm) },
 
   { path: 'log', canActivate: [isAuthenticated], children: EntityRoute.getAll(LogList, LogDetail) },

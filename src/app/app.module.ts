@@ -31,44 +31,47 @@ import {ListComponent as TokenList} from "./analytics/token/list/list.component"
 import {DesignerComponent as ActionDesigner} from './api/action/designer/designer.component';
 import {DetailComponent as ActionDetail} from "./api/action/detail/detail.component";
 import {ListComponent as ActionList} from "./api/action/list/list.component";
-import {FormComponent as ActionModal} from "./api/action/form/form.component";
+import {FormComponent as ActionForm} from "./api/action/form/form.component";
 import {DetailComponent as ConnectionDetail} from "./api/connection/detail/detail.component";
 import {ListComponent as ConnectionList} from "./api/connection/list/list.component";
-import {FormComponent as ConnectionModal} from "./api/connection/form/form.component";
+import {FormComponent as ConnectionForm} from "./api/connection/form/form.component";
 import {DetailComponent as CronjobDetail} from "./api/cronjob/detail/detail.component";
 import {ListComponent as CronjobList} from "./api/cronjob/list/list.component";
-import {FormComponent as CronjobModal} from "./api/cronjob/form/form.component";
+import {FormComponent as CronjobForm} from "./api/cronjob/form/form.component";
 import {ListComponent as DashboardList} from "./api/dashboard/list/list.component";
 import {DetailComponent as EventDetail} from "./api/event/detail/detail.component";
 import {ListComponent as EventList} from "./api/event/list/list.component";
-import {FormComponent as EventModal} from "./api/event/form/form.component";
+import {FormComponent as EventForm} from "./api/event/form/form.component";
 import {DetailComponent as OperationDetail} from "./api/operation/detail/detail.component";
 import {ListComponent as OperationList} from "./api/operation/list/list.component";
 import {LogComponent as OperationLog} from './api/operation/log/log.component';
-import {FormComponent as OperationModal} from "./api/operation/form/form.component";
+import {FormComponent as OperationForm} from "./api/operation/form/form.component";
 import {DesignerComponent as SchemaDesigner} from './api/schema/designer/designer.component';
 import {DetailComponent as SchemaDetail} from "./api/schema/detail/detail.component";
 import {ListComponent as SchemaList} from "./api/schema/list/list.component";
-import {FormComponent as SchemaModal} from "./api/schema/form/form.component";
+import {FormComponent as SchemaForm} from "./api/schema/form/form.component";
 
 import {DetailComponent as AppDetail} from "./consumer/app/detail/detail.component";
 import {ListComponent as AppList} from "./consumer/app/list/list.component";
-import {FormComponent as AppModal} from "./consumer/app/form/form.component";
+import {FormComponent as AppForm} from "./consumer/app/form/form.component";
 import {DetailComponent as PageDetail} from "./consumer/page/detail/detail.component";
 import {ListComponent as PageList} from "./consumer/page/list/list.component";
-import {FormComponent as PageModal} from "./consumer/page/form/form.component";
+import {FormComponent as PageForm} from "./consumer/page/form/form.component";
+import {DetailComponent as FormDetail} from "./consumer/form/detail/detail.component";
+import {ListComponent as FormList} from "./consumer/form/list/list.component";
+import {FormComponent as FormForm} from "./consumer/form/form/form.component";
 import {DetailComponent as RateDetail} from "./consumer/rate/detail/detail.component";
 import {ListComponent as RateList} from "./consumer/rate/list/list.component";
-import {FormComponent as RateModal} from "./consumer/rate/form/form.component";
+import {FormComponent as RateForm} from "./consumer/rate/form/form.component";
 import {DetailComponent as ScopeDetail} from "./consumer/scope/detail/detail.component";
 import {ListComponent as ScopeList} from "./consumer/scope/list/list.component";
-import {FormComponent as ScopeModal} from "./consumer/scope/form/form.component";
+import {FormComponent as ScopeForm} from "./consumer/scope/form/form.component";
 import {DetailComponent as UserDetail} from "./consumer/user/detail/detail.component";
 import {ListComponent as UserList} from "./consumer/user/list/list.component";
-import {FormComponent as UserModal} from "./consumer/user/form/form.component";
+import {FormComponent as UserForm} from "./consumer/user/form/form.component";
 import {DetailComponent as WebhookDetail} from "./consumer/webhook/detail/detail.component";
 import {ListComponent as WebhookList} from "./consumer/webhook/list/list.component";
-import {FormComponent as WebhookModal} from "./consumer/webhook/form/form.component";
+import {FormComponent as WebhookForm} from "./consumer/webhook/form/form.component";
 
 import {ListComponent as DatabaseList} from './development/database/list/list.component';
 import {ListComponent as DatabaseTableList} from './development/database/table/list/list.component';
@@ -86,11 +89,11 @@ import {ListComponent as MarketplaceList} from "./development/marketplace/list/l
 import {DetailComponent as MarketplaceDetail} from './development/marketplace/detail/detail.component';
 import {ListComponent as SdkList} from "./development/sdk/list/list.component";
 import {ListComponent as TestList} from "./development/test/list/list.component";
-import {FormComponent as TestModal} from './development/test/form/form.component';
+import {FormComponent as TestForm} from './development/test/form/form.component';
 
 import {DetailComponent as PlanDetail} from "./monetization/plan/detail/detail.component";
 import {ListComponent as PlanList} from "./monetization/plan/list/list.component";
-import {FormComponent as PlanModal} from "./monetization/plan/form/form.component";
+import {FormComponent as PlanForm} from "./monetization/plan/form/form.component";
 import {DetailComponent as TransactionDetail} from "./monetization/transaction/detail/detail.component";
 import {ListComponent as TransactionList} from "./monetization/transaction/list/list.component";
 
@@ -100,16 +103,16 @@ import {ListComponent as AuditList} from "./system/audit/list/list.component";
 import {ListComponent as BackupList} from './system/backup/list/list.component';
 import {DetailComponent as CategoryDetail} from "./system/category/detail/detail.component";
 import {ListComponent as CategoryList} from "./system/category/list/list.component";
-import {FormComponent as CategoryModal} from "./system/category/form/form.component";
+import {FormComponent as CategoryForm} from "./system/category/form/form.component";
 import {DetailComponent as ConfigDetail} from "./system/config/detail/detail.component";
 import {ListComponent as ConfigList} from "./system/config/list/list.component";
-import {FormComponent as ConfigModal} from "./system/config/form/form.component";
-import {FormComponent as IdentityDetail} from './system/identity/form/form.component';
+import {FormComponent as ConfigForm} from "./system/config/form/form.component";
+import {DetailComponent as IdentityDetail} from './system/identity/detail/detail.component';
 import {ListComponent as IdentityList} from './system/identity/list/list.component';
-import {DetailComponent as IdentityModal} from './system/identity/detail/detail.component';
+import {FormComponent as IdentityForm} from './system/identity/form/form.component';
 import {DetailComponent as RoleDetail} from "./system/role/detail/detail.component";
 import {ListComponent as RoleList} from "./system/role/list/list.component";
-import {FormComponent as RoleModal} from "./system/role/form/form.component";
+import {FormComponent as RoleForm} from "./system/role/form/form.component";
 import {ListComponent as TrashList} from "./system/trash/list/list.component";
 
 import {ActionLinkComponent} from './shared/action-link/action-link.component';
@@ -146,44 +149,47 @@ import {CsvPipe} from "./shared/tag-editor/csv.pipe";
     ActionDesigner,
     ActionDetail,
     ActionList,
-    ActionModal,
+    ActionForm,
     ConnectionDetail,
     ConnectionList,
-    ConnectionModal,
+    ConnectionForm,
     CronjobDetail,
     CronjobList,
-    CronjobModal,
+    CronjobForm,
     DashboardList,
     EventDetail,
     EventList,
-    EventModal,
+    EventForm,
     OperationDetail,
     OperationList,
     OperationLog,
-    OperationModal,
+    OperationForm,
     SchemaDesigner,
     SchemaDetail,
     SchemaList,
-    SchemaModal,
+    SchemaForm,
 
     AppDetail,
     AppList,
-    AppModal,
+    AppForm,
     PageDetail,
     PageList,
-    PageModal,
+    PageForm,
+    FormDetail,
+    FormList,
+    FormForm,
     RateDetail,
     RateList,
-    RateModal,
+    RateForm,
     ScopeDetail,
     ScopeList,
-    ScopeModal,
+    ScopeForm,
     UserDetail,
     UserList,
-    UserModal,
+    UserForm,
     WebhookDetail,
     WebhookList,
-    WebhookModal,
+    WebhookForm,
 
     DatabaseList,
     DatabaseTableList,
@@ -201,11 +207,11 @@ import {CsvPipe} from "./shared/tag-editor/csv.pipe";
     SdkGenerate,
     SdkList,
     TestList,
-    TestModal,
+    TestForm,
 
     PlanDetail,
     PlanList,
-    PlanModal,
+    PlanForm,
     TransactionDetail,
     TransactionList,
 
@@ -215,16 +221,16 @@ import {CsvPipe} from "./shared/tag-editor/csv.pipe";
     BackupList,
     CategoryDetail,
     CategoryList,
-    CategoryModal,
+    CategoryForm,
     ConfigDetail,
     ConfigList,
-    ConfigModal,
-    IdentityDetail,
+    ConfigForm,
+    IdentityForm,
     IdentityList,
-    IdentityModal,
+    IdentityDetail,
     RoleDetail,
     RoleList,
-    RoleModal,
+    RoleForm,
     TrashList,
 
     ActionLinkComponent,

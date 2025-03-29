@@ -154,6 +154,12 @@ export class NavigationService {
               "scope": "backend.page"
             },
             {
+              "title": "Form",
+              "icon": "bi-textarea-resize",
+              "path": "/form",
+              "scope": "backend.form"
+            },
+            {
               "title": "Webhook",
               "icon": "bi-calendar-plus",
               "path": "/webhook",
