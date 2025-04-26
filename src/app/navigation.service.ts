@@ -238,6 +238,12 @@ export class NavigationService {
               "scope": "backend.identity"
             },
             {
+              "title": "Firewall",
+              "icon": "bi-bricks",
+              "path": "/firewall",
+              "scope": "backend.firewall"
+            },
+            {
               "title": "Config",
               "icon": "bi-gear",
               "path": "/config",

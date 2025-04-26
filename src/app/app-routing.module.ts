@@ -89,6 +89,9 @@ import {FormComponent as ConfigForm} from "./system/config/form/form.component";
 import {ListComponent as IdentityList} from './system/identity/list/list.component';
 import {DetailComponent as IdentityDetail} from './system/identity/detail/detail.component';
 import {FormComponent as IdentityForm} from './system/identity/form/form.component';
+import {ListComponent as FirewallList} from './system/firewall/list/list.component';
+import {DetailComponent as FirewallDetail} from './system/firewall/detail/detail.component';
+import {FormComponent as FirewallForm} from './system/firewall/form/form.component';
 import {ListComponent as RoleList} from "./system/role/list/list.component";
 import {DetailComponent as RoleDetail} from "./system/role/detail/detail.component";
 import {FormComponent as RoleForm} from "./system/role/form/form.component";
@@ -146,6 +149,7 @@ const routes: Routes = [
   { path: 'category', canActivate: [isAuthenticated], children: EntityRoute.getAll(CategoryList, CategoryDetail, CategoryForm) },
   { path: 'role', canActivate: [isAuthenticated], children: EntityRoute.getAll(RoleList, RoleDetail, RoleForm) },
   { path: 'identity', canActivate: [isAuthenticated], children: EntityRoute.getAll(IdentityList, IdentityDetail, IdentityForm) },
+  { path: 'firewall', canActivate: [isAuthenticated], children: EntityRoute.getAll(FirewallList, FirewallDetail, FirewallForm) },
   { path: 'config', canActivate: [isAuthenticated], children: EntityRoute.getAll(ConfigList, ConfigDetail, ConfigForm) },
   { path: 'audit', canActivate: [isAuthenticated], children: EntityRoute.getAll(AuditList, AuditDetail) },
   { path: 'backup', component: BackupList, canActivate: [isAuthenticated] },

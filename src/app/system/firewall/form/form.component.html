@@ -1,0 +1,57 @@
+
+<h1>
+  <a [routerLink]="getListLink()">Firewall</a> /
+  <a [routerLink]="getDetailLink('~' + entity?.name)">{{ entity?.name }}</a> /
+  <ng-container *ngIf="mode === 1">Create</ng-container>
+  <ng-container *ngIf="mode === 2">Update</ng-container>
+  <ng-container *ngIf="mode === 3">Delete</ng-container>
+</h1>
+
+<fusio-message [response]="response"></fusio-message>
+
+<form *ngIf="entity">
+  <div class="mb-3 row">
+    <label for="name" class="col-sm-2 col-form-label fw-bold">Name</label>
+    <div class="col-sm-10">
+      <div class="input-group">
+        <input type="text" id="name" name="name" [(ngModel)]="entity.name" [disabled]="mode === 3" class="form-control">
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
+        <ng-template #nameHelp>Unique name of the firewall rule</ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="type" class="col-sm-2 col-form-label fw-bold">Type</label>
+    <div class="col-sm-10">
+      <select id="type" name="type" [(ngModel)]="entity.type" [disabled]="mode === 3" class="form-select">
+        <option [ngValue]="0">Deny</option>
+        <option [ngValue]="1">Allow</option>
+      </select>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="ip" class="col-sm-2 col-form-label fw-bold">IP</label>
+    <div class="col-sm-10">
+      <div class="input-group">
+        <input type="text" id="ip" name="ip" [(ngModel)]="entity.ip" [disabled]="mode === 3" class="form-control">
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="ipHelp"><i class="bi bi-question"></i></button>
+        <ng-template #ipHelp>IPv4 or IPv6 for this rule</ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="expire" class="col-sm-2 col-form-label fw-bold">Expire</label>
+    <div class="col-sm-10">
+      <div class="input-group">
+        <input type="datetime-local" id="expire" name="expire" [(ngModel)]="entity.expire" [disabled]="mode === 3" class="form-control">
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="expireHelp"><i class="bi bi-question"></i></button>
+        <ng-template #expireHelp>Optional a date when the rule expires</ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="btn-group" role="group">
+    <ng-container *ngIf="mode === 1"><button type="button" class="btn btn-primary" (click)="doCreate(entity)">Create</button></ng-container>
+    <ng-container *ngIf="mode === 2"><button type="button" class="btn btn-primary" (click)="doUpdate(entity)">Update</button></ng-container>
+    <ng-container *ngIf="mode === 3"><button type="button" class="btn btn-danger" (click)="doDelete(entity)">Delete</button></ng-container>
+  </div>
+</form>
