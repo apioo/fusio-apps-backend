@@ -11,6 +11,9 @@
     <a [routerLink]="getEditLink(selected.id)" class="btn btn-primary fusio-btn-update">Update</a>
     <a [routerLink]="getDeleteLink(selected.id)" class="btn btn-danger fusio-btn-delete">Delete</a>
   </div>
+  <div class="float-end">
+    <button type="button" (click)="jsonView = !jsonView" class="btn btn-outline-secondary fusio-btn-json ms-2">JSON</button>
+  </div>
   <div class="fusio-detail" *ngIf="!jsonView">
     <div *ngIf="selected.content" [innerHtml]="selected.content" style="margin-top:1rem"></div>
   </div>
