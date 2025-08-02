@@ -10,8 +10,8 @@
       <div class="card-body">
         <form>
           <div class="mb-3 row">
-            <label for="class" class="col-sm-2 col-form-label fw-bold">Format</label>
-            <div class="col-sm-10">
+            <label for="class" class="col-lg-2 col-form-label fw-bold">Format</label>
+            <div class="col-lg-10">
               <div class="input-group">
                 <select id="class" name="class" [(ngModel)]="type" class="form-select">
                   <option *ngFor="let type of types|keyvalue" [ngValue]="type.key">{{type.key}}</option>
@@ -20,8 +20,8 @@
             </div>
           </div>
           <div class="mb-3 row">
-            <label for="namespace" class="col-sm-2 col-form-label fw-bold">Namespace</label>
-            <div class="col-sm-10">
+            <label for="namespace" class="col-lg-2 col-form-label fw-bold">Namespace</label>
+            <div class="col-lg-10">
               <div class="input-group">
                 <input type="text" id="namespace" name="namespace" [(ngModel)]="namespace" class="form-control">
               </div>

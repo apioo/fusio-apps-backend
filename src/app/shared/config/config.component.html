@@ -1,7 +1,7 @@
 
 <div class="mb-3 row" *ngFor="let element of elements">
-  <label [for]="element.name" class="col-sm-2 col-form-label fw-bold">{{element.title}}</label>
-  <div class="col-sm-10" *ngIf="element.name">
+  <label [for]="element.name" class="col-lg-2 col-form-label fw-bold">{{element.title}}</label>
+  <div class="col-lg-10" *ngIf="element.name">
     <ng-container [ngSwitch]="element.element">
       <ng-container *ngSwitchCase="'input'">
         <input [ngModel]="data![element.name]" (ngModelChange)="doChange(element.name, $event)" [name]="element.name" [type]="element.type" [disabled]="disabled" class="form-control">

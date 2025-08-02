@@ -9,8 +9,8 @@
   <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
   <form *ngIf="instance">
     <div class="mb-3 row">
-      <label for="url" class="col-sm-2 col-form-label fw-bold">Url</label>
-      <div class="col-sm-10">
+      <label for="url" class="col-lg-2 col-form-label fw-bold">Url</label>
+      <div class="col-lg-10">
         <div class="input-group">
           <input type="url" id="url" name="url" [(ngModel)]="instance.url" class="form-control">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="urlHelp"><i class="bi bi-question"></i></button>
@@ -19,8 +19,8 @@
       </div>
     </div>
     <div class="mb-3 row">
-      <label for="username" class="col-sm-2 col-form-label fw-bold">Username</label>
-      <div class="col-sm-10">
+      <label for="username" class="col-lg-2 col-form-label fw-bold">Username</label>
+      <div class="col-lg-10">
         <div class="input-group">
           <input type="text" id="username" name="username" [(ngModel)]="instance.username" class="form-control">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="usernameHelp"><i class="bi bi-question"></i></button>
@@ -29,8 +29,8 @@
       </div>
     </div>
     <div class="mb-3 row">
-      <label for="password" class="col-sm-2 col-form-label fw-bold">Password</label>
-      <div class="col-sm-10">
+      <label for="password" class="col-lg-2 col-form-label fw-bold">Password</label>
+      <div class="col-lg-10">
         <div class="input-group">
           <input type="password" id="password" name="password" [(ngModel)]="instance.password" class="form-control">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="passwordHelp"><i class="bi bi-question"></i></button>

@@ -5,41 +5,41 @@
 </div>
 <div class="modal-body">
   <div class="mb-3 row">
-    <label for="from" class="col-sm-2 col-form-label fw-bold">From/To</label>
-    <div class="col-sm-5">
+    <label for="from" class="col-lg-2 col-form-label fw-bold">From/To</label>
+    <div class="col-lg-5">
       <input type="date" id="from" name="from" [(ngModel)]="filter.from" class="form-control">
     </div>
-    <div class="col-sm-5">
+    <div class="col-lg-5">
       <input type="date" id="to" name="to" [(ngModel)]="filter.to" class="form-control">
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="app" class="col-sm-2 col-form-label fw-bold">App</label>
-    <div class="col-sm-10">
+    <label for="app" class="col-lg-2 col-form-label fw-bold">App</label>
+    <div class="col-lg-10">
       <fusio-form-autocomplete name="app" [service]="app" [data]="filter.appId" (dataChangeId)="filter.appId = $event"></fusio-form-autocomplete>
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="user" class="col-sm-2 col-form-label fw-bold">User</label>
-    <div class="col-sm-10">
+    <label for="user" class="col-lg-2 col-form-label fw-bold">User</label>
+    <div class="col-lg-10">
       <fusio-form-autocomplete name="user" [service]="user" [data]="filter.userId" (dataChangeId)="filter.userId = $event"></fusio-form-autocomplete>
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="event" class="col-sm-2 col-form-label fw-bold">Event</label>
-    <div class="col-sm-10">
+    <label for="event" class="col-lg-2 col-form-label fw-bold">Event</label>
+    <div class="col-lg-10">
       <input type="text" id="event" name="event" [(ngModel)]="filter.event" class="form-control">
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="ip" class="col-sm-2 col-form-label fw-bold">IP</label>
-    <div class="col-sm-10">
+    <label for="ip" class="col-lg-2 col-form-label fw-bold">IP</label>
+    <div class="col-lg-10">
       <input type="text" id="ip" name="ip" [(ngModel)]="filter.ip" class="form-control">
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="message" class="col-sm-2 col-form-label fw-bold">Message</label>
-    <div class="col-sm-10">
+    <label for="message" class="col-lg-2 col-form-label fw-bold">Message</label>
+    <div class="col-lg-10">
       <input type="text" id="message" name="message" [(ngModel)]="filter.message" class="form-control">
     </div>
   </div>

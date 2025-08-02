@@ -12,36 +12,36 @@
 <form *ngIf="entity">
   <fusio-message [response]="response"></fusio-message>
   <div class="mb-3 row">
-    <label for="name" class="col-sm-2 col-form-label fw-bold">Name</label>
-    <div class="col-sm-10">
+    <label for="name" class="col-lg-2 col-form-label fw-bold">Name</label>
+    <div class="col-lg-10">
       <div class="input-group">
         <input type="text" id="name" name="name" [(ngModel)]="entity.name" [disabled]="mode === 3" class="form-control">
       </div>
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="name" class="col-sm-2 col-form-label fw-bold">Columns</label>
-    <div class="col-sm-10">
+    <label for="name" class="col-lg-2 col-form-label fw-bold">Columns</label>
+    <div class="col-lg-10">
       <app-connection-database-table-column [data]="entity.columns || []" [disabled]="mode === 3" (dataChange)="entity.columns = $event"></app-connection-database-table-column>
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="primaryKey" class="col-sm-2 col-form-label fw-bold">Primary-Key</label>
-    <div class="col-sm-10">
+    <label for="primaryKey" class="col-lg-2 col-form-label fw-bold">Primary-Key</label>
+    <div class="col-lg-10">
       <select id="primaryKey" name="primaryKey" [(ngModel)]="entity.primaryKey" [disabled]="mode === 3" class="form-select">
         <option *ngFor="let column of entity.columns" [ngValue]="column.name">{{column.name}}</option>
       </select>
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="name" class="col-sm-2 col-form-label fw-bold">Indexes</label>
-    <div class="col-sm-10">
+    <label for="name" class="col-lg-2 col-form-label fw-bold">Indexes</label>
+    <div class="col-lg-10">
       <app-connection-database-table-index [data]="entity.indexes || []" [disabled]="mode === 3" (dataChange)="entity.indexes = $event"></app-connection-database-table-index>
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="name" class="col-sm-2 col-form-label fw-bold">Foreign Keys</label>
-    <div class="col-sm-10">
+    <label for="name" class="col-lg-2 col-form-label fw-bold">Foreign Keys</label>
+    <div class="col-lg-10">
       <app-connection-database-table-foreign-key [data]="entity.foreignKeys || []" [disabled]="mode === 3" (dataChange)="entity.foreignKeys = $event"></app-connection-database-table-foreign-key>
     </div>
   </div>

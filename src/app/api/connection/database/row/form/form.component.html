@@ -15,8 +15,8 @@
   <fusio-message [response]="response"></fusio-message>
   <div class="mb-3 row" *ngFor="let column of table?.columns">
     <ng-container *ngIf="column.name">
-      <label [for]="column.name" class="col-sm-2 col-form-label fw-bold">{{ column.name }}</label>
-      <div class="col-sm-10">
+      <label [for]="column.name" class="col-lg-2 col-form-label fw-bold">{{ column.name }}</label>
+      <div class="col-lg-10">
         <div class="input-group">
           <ng-container [ngSwitch]="column.type">
             <ng-container *ngSwitchCase="'smallint'">

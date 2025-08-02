@@ -8,7 +8,7 @@
 <fusio-message [response]="message"></fusio-message>
 
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-xl-6">
     <div class="card">
       <div class="card-header">Action</div>
       <div class="card-body" *ngIf="form && action">
@@ -17,13 +17,13 @@
       </div>
     </div>
   </div>
-  <div class="col-md-6">
+  <div class="col-xl-6 mt-3 mt-xl-0">
     <div class="card">
       <div class="card-header">Request</div>
       <div class="card-body">
         <div class="mb-3 row">
-          <label for="method" class="col-sm-2 col-form-label fw-bold">Method</label>
-          <div class="col-sm-10">
+          <label for="method" class="col-xl-2 col-form-label fw-bold">Method</label>
+          <div class="col-xl-10">
             <div class="input-group">
               <select id="method" name="method" [(ngModel)]="request.method" class="form-select">
                 <option ngValue="GET">GET</option>
@@ -38,8 +38,8 @@
           </div>
         </div>
         <div class="mb-3 row">
-          <label for="uriFragments" class="col-sm-2 col-form-label fw-bold">URI Fragments</label>
-          <div class="col-sm-10">
+          <label for="uriFragments" class="col-xl-2 col-form-label fw-bold">URI Fragments</label>
+          <div class="col-xl-10">
             <div class="input-group">
               <input type="text" id="uriFragments" name="uriFragments" [(ngModel)]="request.uriFragments" class="form-control">
               <button class="btn btn-outline-secondary" type="button" [ngbPopover]="uriFragmentsHelp"><i class="bi bi-question"></i></button>
@@ -48,8 +48,8 @@
           </div>
         </div>
         <div class="mb-3 row">
-          <label for="parameters" class="col-sm-2 col-form-label fw-bold">Parameters</label>
-          <div class="col-sm-10">
+          <label for="parameters" class="col-xl-2 col-form-label fw-bold">Parameters</label>
+          <div class="col-xl-10">
             <div class="input-group">
               <input type="text" id="parameters" name="parameters" [(ngModel)]="request.parameters" class="form-control">
               <button class="btn btn-outline-secondary" type="button" [ngbPopover]="parametersHelp"><i class="bi bi-question"></i></button>
@@ -58,8 +58,8 @@
           </div>
         </div>
         <div class="mb-3 row">
-          <label for="headers" class="col-sm-2 col-form-label fw-bold">Headers</label>
-          <div class="col-sm-10">
+          <label for="headers" class="col-xl-2 col-form-label fw-bold">Headers</label>
+          <div class="col-xl-10">
             <div class="input-group">
               <input type="text" id="headers" name="headers" [(ngModel)]="request.headers" class="form-control">
               <button class="btn btn-outline-secondary" type="button" [ngbPopover]="headersHelp"><i class="bi bi-question"></i></button>
@@ -68,8 +68,8 @@
           </div>
         </div>
         <div class="mb-3 row">
-          <label for="headers" class="col-sm-2 col-form-label fw-bold">Body</label>
-          <div class="col-sm-10">
+          <label for="headers" class="col-xl-2 col-form-label fw-bold">Body</label>
+          <div class="col-xl-10">
             <div class="input-group">
               <div style="width:100%;height:300px;border:1px solid #ced4da">
                 <ngx-monaco-editor style="height:100%" name="body" [options]="{theme: 'vs-light', language: 'json'}" [(ngModel)]="body"></ngx-monaco-editor>
