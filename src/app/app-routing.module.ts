@@ -59,13 +59,15 @@ import {FormComponent as UserForm} from "./consumer/user/form/form.component";
 import {ListComponent as WebhookList} from "./consumer/webhook/list/list.component";
 import {DetailComponent as WebhookDetail} from "./consumer/webhook/detail/detail.component";
 import {FormComponent as WebhookForm} from "./consumer/webhook/form/form.component";
-import {ListComponent as DatabaseList} from './development/database/list/list.component';
-import {ListComponent as TableList} from './development/database/table/list/list.component';
-import {DetailComponent as TableDetail} from './development/database/table/detail/detail.component';
-import {FormComponent as TableForm} from './development/database/table/form/form.component';
-import {ListComponent as RowList} from './development/database/row/list/list.component';
-import {DetailComponent as RowDetail} from './development/database/row/detail/detail.component';
-import {FormComponent as RowForm} from './development/database/row/form/form.component';
+import {ListComponent as TableList} from './api/connection/database/table/list/list.component';
+import {DetailComponent as TableDetail} from './api/connection/database/table/detail/detail.component';
+import {FormComponent as TableForm} from './api/connection/database/table/form/form.component';
+import {ListComponent as RowList} from './api/connection/database/row/list/list.component';
+import {DetailComponent as RowDetail} from './api/connection/database/row/detail/detail.component';
+import {FormComponent as RowForm} from './api/connection/database/row/form/form.component';
+import {FilesystemComponent} from './api/connection/filesystem/filesystem.component';
+import {HttpComponent} from './api/connection/http/http.component';
+import {SdkComponent} from './api/connection/sdk/sdk.component';
 import {GeneratorComponent} from './development/generator/generator.component';
 import {ListComponent as MarketplaceList} from "./development/marketplace/list/list.component";
 import {DetailComponent as MarketplaceDetail} from "./development/marketplace/detail/detail.component";
@@ -114,13 +116,17 @@ const routes: Routes = [
   { path: 'schema', canActivate: [isAuthenticated], children: EntityRoute.getAll(SchemaList, SchemaDetail, SchemaForm) },
   { path: 'schema/designer/-/new', component: SchemaDesigner, canActivate: [isAuthenticated] },
   { path: 'schema/designer/:id', component: SchemaDesigner, canActivate: [isAuthenticated] },
-  { path: 'connection', canActivate: [isAuthenticated], children: EntityRoute.getAll(ConnectionList, ConnectionDetail, ConnectionForm) },
+  { path: 'connection', canActivate: [isAuthenticated], children: [
+      ...EntityRoute.getAll(ConnectionList, ConnectionDetail, ConnectionForm),
+      { path: ':connection/database', canActivate: [isAuthenticated], children: EntityRoute.getAll(TableList, TableDetail, TableForm) },
+      { path: ':connection/database/:table/data', canActivate: [isAuthenticated], children: EntityRoute.getAll(RowList, RowDetail, RowForm) },
+      { path: ':connection/filesystem', component: FilesystemComponent, canActivate: [isAuthenticated] },
+      { path: ':connection/http', component: HttpComponent, canActivate: [isAuthenticated] },
+      { path: ':connection/sdk', component: SdkComponent, canActivate: [isAuthenticated] },
+    ] },
   { path: 'event', canActivate: [isAuthenticated], children: EntityRoute.getAll(EventList, EventDetail, EventForm) },
   { path: 'cronjob', canActivate: [isAuthenticated], children: EntityRoute.getAll(CronjobList, CronjobDetail, CronjobForm) },
 
-  { path: 'database', component: DatabaseList, canActivate: [isAuthenticated] },
-  { path: 'database/:connection', canActivate: [isAuthenticated], children: EntityRoute.getAll(TableList, TableDetail, TableForm) },
-  { path: 'database/:connection/:table/data', canActivate: [isAuthenticated], children: EntityRoute.getAll(RowList, RowDetail, RowForm) },
   { path: 'generator', component: GeneratorComponent, canActivate: [isAuthenticated] },
   { path: 'marketplace', component: MarketplaceList, canActivate: [isAuthenticated] },
   { path: 'marketplace/:type', component: MarketplaceList, canActivate: [isAuthenticated] },

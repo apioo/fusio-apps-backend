@@ -4,6 +4,7 @@ import {BackendConnection} from "fusio-sdk";
 import {ApiService} from "../../../api.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ConnectionService} from "../../../services/connection.service";
+import {LinkService} from "../../../services/connection/link.service";
 
 @Component({
   selector: 'app-connection-detail',
@@ -14,7 +15,7 @@ export class DetailComponent extends Detail<BackendConnection> implements OnInit
 
   baseUrl?: string;
 
-  constructor(private service: ConnectionService, private fusio: ApiService, route: ActivatedRoute, router: Router, error: ErrorService) {
+  constructor(private service: ConnectionService, private link: LinkService, private fusio: ApiService, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);
   }
 
@@ -25,6 +26,14 @@ export class DetailComponent extends Detail<BackendConnection> implements OnInit
   public override ngOnInit(): Promise<void> {
     this.baseUrl = this.fusio.getBaseUrl();
     return super.ngOnInit();
+  }
+
+  hasDesignerLink(connection: BackendConnection): boolean {
+    return this.link.hasDesignerLink(connection);
+  }
+
+  getDesignerLink(connection: BackendConnection): Array<string> {
+    return this.link.getDesignerLink(connection);
   }
 
   async doAuthorizeClick() {

@@ -88,12 +88,6 @@ export class NavigationService {
           "visible": false,
           "children": [
             {
-              "title": "Database",
-              "icon": "bi-database",
-              "path": "/database",
-              "scope": "backend.database"
-            },
-            {
               "title": "SDK",
               "icon": "bi-download",
               "path": "/sdk",

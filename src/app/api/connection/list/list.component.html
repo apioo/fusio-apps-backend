@@ -26,6 +26,7 @@
       <div class="btn-group" role="group">
         <a [routerLink]="getDetailLink(entry.id)" class="btn btn-primary"><i class="bi bi-search"></i></a>
         <a [routerLink]="getEditLink(entry.id)" class="btn btn-secondary"><i class="bi bi-pen"></i></a>
+        <a *ngIf="hasDesignerLink(entry)" [routerLink]="getDesignerLink(entry)" class="btn btn-secondary"><i class="bi bi-terminal"></i></a>
         <a [routerLink]="getDeleteLink(entry.id)" class="btn btn-danger"><i class="bi bi-x"></i></a>
       </div>
     </td>

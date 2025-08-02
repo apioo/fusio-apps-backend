@@ -35,6 +35,20 @@ import {FormComponent as ActionForm} from "./api/action/form/form.component";
 import {DetailComponent as ConnectionDetail} from "./api/connection/detail/detail.component";
 import {ListComponent as ConnectionList} from "./api/connection/list/list.component";
 import {FormComponent as ConnectionForm} from "./api/connection/form/form.component";
+
+import {ListComponent as DatabaseTableList} from './api/connection/database/table/list/list.component';
+import {DetailComponent as DatabaseTableDetail} from './api/connection/database/table/detail/detail.component';
+import {FormComponent as DatabaseTableForm} from './api/connection/database/table/form/form.component';
+import {ColumnComponent as DatabaseTableColumn} from './api/connection/database/table/column/column.component';
+import {ForeignKeyComponent as DatabaseTableForeignKey} from './api/connection/database/table/foreign-key/foreign-key.component';
+import {IndexComponent as DatabaseTableIndex} from './api/connection/database/table/index/index.component';
+import {ListComponent as DatabaseRowList} from './api/connection/database/row/list/list.component';
+import {DetailComponent as DatabaseRowDetail} from './api/connection/database/row/detail/detail.component';
+import {FormComponent as DatabaseRowForm} from './api/connection/database/row/form/form.component';
+import {FilesystemComponent} from './api/connection/filesystem/filesystem.component';
+import {HttpComponent} from './api/connection/http/http.component';
+import {SdkComponent} from './api/connection/sdk/sdk.component';
+
 import {DetailComponent as CronjobDetail} from "./api/cronjob/detail/detail.component";
 import {ListComponent as CronjobList} from "./api/cronjob/list/list.component";
 import {FormComponent as CronjobForm} from "./api/cronjob/form/form.component";
@@ -73,16 +87,6 @@ import {DetailComponent as WebhookDetail} from "./consumer/webhook/detail/detail
 import {ListComponent as WebhookList} from "./consumer/webhook/list/list.component";
 import {FormComponent as WebhookForm} from "./consumer/webhook/form/form.component";
 
-import {ListComponent as DatabaseList} from './development/database/list/list.component';
-import {ListComponent as DatabaseTableList} from './development/database/table/list/list.component';
-import {DetailComponent as DatabaseTableDetail} from './development/database/table/detail/detail.component';
-import {FormComponent as DatabaseTableForm} from './development/database/table/form/form.component';
-import {ColumnComponent as DatabaseTableColumn} from './development/database/table/column/column.component';
-import {ForeignKeyComponent as DatabaseTableForeignKey} from './development/database/table/foreign-key/foreign-key.component';
-import {IndexComponent as DatabaseTableIndex} from './development/database/table/index/index.component';
-import {ListComponent as DatabaseRowList} from './development/database/row/list/list.component';
-import {DetailComponent as DatabaseRowDetail} from './development/database/row/detail/detail.component';
-import {FormComponent as DatabaseRowForm} from './development/database/row/form/form.component';
 import {GeneratorComponent} from './development/generator/generator.component';
 import {GeneratorComponent as SdkGenerate} from './development/sdk/generator/generator.component';
 import {ListComponent as MarketplaceList} from "./development/marketplace/list/list.component";
@@ -156,6 +160,20 @@ import {CsvPipe} from "./shared/tag-editor/csv.pipe";
     ConnectionDetail,
     ConnectionList,
     ConnectionForm,
+
+    DatabaseTableList,
+    DatabaseTableDetail,
+    DatabaseTableForm,
+    DatabaseTableColumn,
+    DatabaseTableForeignKey,
+    DatabaseTableIndex,
+    DatabaseRowList,
+    DatabaseRowDetail,
+    DatabaseRowForm,
+    FilesystemComponent,
+    HttpComponent,
+    SdkComponent,
+
     CronjobDetail,
     CronjobList,
     CronjobForm,
@@ -194,16 +212,6 @@ import {CsvPipe} from "./shared/tag-editor/csv.pipe";
     WebhookList,
     WebhookForm,
 
-    DatabaseList,
-    DatabaseTableList,
-    DatabaseTableDetail,
-    DatabaseTableForm,
-    DatabaseTableColumn,
-    DatabaseTableForeignKey,
-    DatabaseTableIndex,
-    DatabaseRowList,
-    DatabaseRowDetail,
-    DatabaseRowForm,
     GeneratorComponent,
     MarketplaceList,
     MarketplaceDetail,

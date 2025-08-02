@@ -9,7 +9,7 @@
 <div *ngIf="selected">
   <div class="btn-group" role="group">
     <a [routerLink]="getEditLink(selected.id)" class="btn btn-primary fusio-btn-update">Update</a>
-    <a *ngIf="selected.class === 'Fusio.Impl.Connection.System' || selected.class === 'Fusio.Adapter.Sql.Connection.Sql' || selected.class === 'Fusio.Adapter.Sql.Connection.SqlAdvanced'" routerLink="/database/{{selected.name}}" class="btn btn-secondary fusio-btn-introspection">Database</a>
+    <a *ngIf="hasDesignerLink(selected)" [routerLink]="getDesignerLink(selected)" class="btn btn-secondary fusio-btn-designer">Designer</a>
     <a *ngIf="selected.oauth2" type="button" (click)="doAuthorizeClick()" class="btn btn-secondary fusio-btn-authorize">Authorize</a>
     <a [routerLink]="getDeleteLink(selected.id)" class="btn btn-danger fusio-btn-delete">Delete</a>
   </div>
