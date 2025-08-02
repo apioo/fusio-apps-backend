@@ -11,8 +11,8 @@
 
 <form *ngIf="entity">
   <div class="mb-3 row">
-    <label for="name" class="col-sm-2 col-form-label fw-bold">Name</label>
-    <div class="col-sm-10">
+    <label for="name" class="col-lg-2 col-form-label fw-bold">Name</label>
+    <div class="col-lg-10">
       <div class="input-group">
         <input type="text" id="name" name="name" [(ngModel)]="entity.name" [disabled]="mode === 3" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
@@ -21,8 +21,8 @@
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="name" class="col-sm-2 col-form-label fw-bold">Description</label>
-    <div class="col-sm-10">
+    <label for="name" class="col-lg-2 col-form-label fw-bold">Description</label>
+    <div class="col-lg-10">
       <div class="input-group">
         <input type="text" id="description" name="description" [(ngModel)]="entity.description" [disabled]="mode === 3" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="descriptionHelp"><i class="bi bi-question"></i></button>
@@ -31,8 +31,8 @@
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="schema" class="col-sm-2 col-form-label fw-bold">Schema</label>
-    <div class="col-sm-10">
+    <label for="schema" class="col-lg-2 col-form-label fw-bold">Schema</label>
+    <div class="col-lg-10">
       <app-schema-selector name="schema" [data]="entity.schema" (dataChange)="entity.schema = $event" [disabled]="mode === 3"></app-schema-selector>
     </div>
   </div>

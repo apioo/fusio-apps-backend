@@ -11,8 +11,8 @@
 
 <form *ngIf="entity">
   <div class="mb-3 row">
-    <label for="name" class="col-sm-2 col-form-label fw-bold">Name</label>
-    <div class="col-sm-10">
+    <label for="name" class="col-lg-2 col-form-label fw-bold">Name</label>
+    <div class="col-lg-10">
       <div class="input-group">
         <input type="text" id="name" name="name" [(ngModel)]="entity.name" [disabled]="mode === 3" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
@@ -21,8 +21,8 @@
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="priority" class="col-sm-2 col-form-label fw-bold">Priority</label>
-    <div class="col-sm-10">
+    <label for="priority" class="col-lg-2 col-form-label fw-bold">Priority</label>
+    <div class="col-lg-10">
       <div class="input-group">
         <input type="number" id="priority" name="priority" [(ngModel)]="entity.priority" [disabled]="mode === 3" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="priorityHelp"><i class="bi bi-question"></i></button>
@@ -31,20 +31,16 @@
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="rateLimit" class="col-sm-2 col-form-label fw-bold">Throughput</label>
-    <div class="col-sm-3">
+    <label for="rateLimit" class="col-lg-2 col-form-label fw-bold">Throughput</label>
+    <div class="col-lg-3">
       <div class="input-group">
         <input type="number" min="1" id="rateLimit" name="rateLimit" [(ngModel)]="entity.rateLimit" [disabled]="mode === 3" class="form-control">
       </div>
     </div>
-    <label for="timespanValue" class="col-form-label col-sm-2 fw-bold">request/s per</label>
-    <div class="col-sm-3">
+    <label for="timespanValue" class="col-form-label col-lg-2 fw-bold">requests per</label>
+    <div class="col-lg-5">
       <div class="input-group">
         <input type="number" id="timespanValue" name="timespanValue" [(ngModel)]="timespan.value" [disabled]="mode === 3" class="form-control">
-      </div>
-    </div>
-    <div class="col-sm-2">
-      <div class="input-group">
         <select name="timespanUnit" [(ngModel)]="timespan.unit" class="form-select">
           <option *ngFor="let interval of intervals" [ngValue]="interval.key" [disabled]="mode === 3">{{interval.value}}</option>
         </select>
@@ -52,8 +48,8 @@
     </div>
   </div>
   <div class="mb-3 row">
-    <label class="col-sm-2 col-form-label fw-bold">Allocations</label>
-    <div class="col-sm-10">
+    <label class="col-lg-2 col-form-label fw-bold">Allocations</label>
+    <div class="col-lg-10">
       <table class="table">
         <colgroup>
           <col style="width:20%;">

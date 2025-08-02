@@ -11,8 +11,8 @@
 
 <form *ngIf="entity">
   <div class="mb-3 row">
-    <label for="name" class="col-sm-2 col-form-label fw-bold">Name</label>
-    <div class="col-sm-10">
+    <label for="name" class="col-lg-2 col-form-label fw-bold">Name</label>
+    <div class="col-lg-10">
       <div class="input-group">
         <input type="text" id="name" name="name" [(ngModel)]="entity.name" [disabled]="mode === 3" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
@@ -21,8 +21,8 @@
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="description" class="col-sm-2 col-form-label fw-bold">Description</label>
-    <div class="col-sm-10">
+    <label for="description" class="col-lg-2 col-form-label fw-bold">Description</label>
+    <div class="col-lg-10">
       <div class="input-group">
         <textarea id="description" name="description" [(ngModel)]="entity.description" [disabled]="mode === 3" class="form-control"></textarea>
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="descriptionHelp"><i class="bi bi-question"></i></button>
@@ -31,8 +31,8 @@
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="price" class="col-sm-2 col-form-label fw-bold">Price</label>
-    <div class="col-sm-10">
+    <label for="price" class="col-lg-2 col-form-label fw-bold">Price</label>
+    <div class="col-lg-10">
       <div class="input-group">
         <input type="number" id="price" name="price" [(ngModel)]="entity.price" [disabled]="mode === 3" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="priceHelp"><i class="bi bi-question"></i></button>
@@ -41,8 +41,8 @@
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="points" class="col-sm-2 col-form-label fw-bold">Points</label>
-    <div class="col-sm-10">
+    <label for="points" class="col-lg-2 col-form-label fw-bold">Points</label>
+    <div class="col-lg-10">
       <div class="input-group">
         <input type="number" id="points" name="points" [(ngModel)]="entity.points" [disabled]="mode === 3" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="pointsHelp"><i class="bi bi-question"></i></button>
@@ -51,8 +51,8 @@
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="period" class="col-sm-2 col-form-label fw-bold">Period</label>
-    <div class="col-sm-10">
+    <label for="period" class="col-lg-2 col-form-label fw-bold">Period</label>
+    <div class="col-lg-10">
       <div class="input-group">
         <select id="period" name="period" [(ngModel)]="entity.period" [disabled]="mode === 3" class="form-select">
           <option *ngFor="let period of periods" [ngValue]="period.id">{{period.name}}</option>
@@ -63,8 +63,8 @@
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="externalId" class="col-sm-2 col-form-label fw-bold">External-Id</label>
-    <div class="col-sm-10">
+    <label for="externalId" class="col-lg-2 col-form-label fw-bold">External-Id</label>
+    <div class="col-lg-10">
       <div class="input-group">
         <input type="text" id="externalId" name="externalId" [(ngModel)]="entity.externalId" [disabled]="mode === 3" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="externalIdHelp"><i class="bi bi-question"></i></button>

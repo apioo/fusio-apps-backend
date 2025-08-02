@@ -11,8 +11,8 @@
 
 <form *ngIf="entity">
   <div class="mb-3 row">
-    <label for="value" class="col-sm-2 col-form-label fw-bold">Value</label>
-    <div class="col-sm-12">
+    <label for="value" class="col-lg-2 col-form-label fw-bold">Value</label>
+    <div class="col-lg-10">
       <ng-container [ngSwitch]="entity.type">
         <div class="input-group" *ngSwitchCase="1">
           <input type="text" name="value" [(ngModel)]="entity.value" class="form-control">

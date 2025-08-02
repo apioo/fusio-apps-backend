@@ -11,8 +11,8 @@
 
 <form *ngIf="entity">
   <div class="mb-3 row">
-    <label for="name" class="col-sm-2 col-form-label fw-bold">Name</label>
-    <div class="col-sm-10">
+    <label for="name" class="col-lg-2 col-form-label fw-bold">Name</label>
+    <div class="col-lg-10">
       <div class="input-group">
         <input type="text" id="name" name="name" [(ngModel)]="entity.name" [disabled]="mode === 3" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
@@ -21,8 +21,8 @@
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="type" class="col-sm-2 col-form-label fw-bold">Type</label>
-    <div class="col-sm-10">
+    <label for="type" class="col-lg-2 col-form-label fw-bold">Type</label>
+    <div class="col-lg-10">
       <select id="type" name="type" [(ngModel)]="entity.type" [disabled]="mode === 3" class="form-select">
         <option [ngValue]="0">Deny</option>
         <option [ngValue]="1">Allow</option>
@@ -30,8 +30,8 @@
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="ip" class="col-sm-2 col-form-label fw-bold">IP</label>
-    <div class="col-sm-10">
+    <label for="ip" class="col-lg-2 col-form-label fw-bold">IP</label>
+    <div class="col-lg-10">
       <div class="input-group">
         <input type="text" id="ip" name="ip" [(ngModel)]="entity.ip" [disabled]="mode === 3" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="ipHelp"><i class="bi bi-question"></i></button>
@@ -40,8 +40,8 @@
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="expire" class="col-sm-2 col-form-label fw-bold">Expire</label>
-    <div class="col-sm-10">
+    <label for="expire" class="col-lg-2 col-form-label fw-bold">Expire</label>
+    <div class="col-lg-10">
       <div class="input-group">
         <input type="datetime-local" id="expire" name="expire" [(ngModel)]="entity.expire" [disabled]="mode === 3" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="expireHelp"><i class="bi bi-question"></i></button>

@@ -11,8 +11,8 @@
 
 <form *ngIf="entity">
   <div class="mb-3 row">
-    <label for="name" class="col-sm-2 col-form-label fw-bold">Name</label>
-    <div class="col-sm-10">
+    <label for="name" class="col-lg-2 col-form-label fw-bold">Name</label>
+    <div class="col-lg-10">
       <div class="input-group">
         <input type="text" id="name" name="name" [(ngModel)]="entity.name" [disabled]="isDisabled()" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
@@ -21,30 +21,30 @@
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="scope" class="col-sm-2 col-form-label fw-bold">Scopes</label>
-    <div class="col-sm-10">
+    <label for="scope" class="col-lg-2 col-form-label fw-bold">Scopes</label>
+    <div class="col-lg-10">
       <app-tag-editor name="scope" [data]="entity.scopes" (dataChange)="entity.scopes = $event" [disabled]="isDisabled()"></app-tag-editor>
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="active" class="col-sm-2 col-form-label fw-bold">Active</label>
-    <div class="col-sm-10">
+    <label for="active" class="col-lg-2 col-form-label fw-bold">Active</label>
+    <div class="col-lg-10">
       <div class="form-check form-switch">
         <input type="checkbox" id="active" name="active" [(ngModel)]="entity.active" [disabled]="isDisabled()" class="form-check-input">
       </div>
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="public" class="col-sm-2 col-form-label fw-bold">Public</label>
-    <div class="col-sm-10">
+    <label for="public" class="col-lg-2 col-form-label fw-bold">Public</label>
+    <div class="col-lg-10">
       <div class="form-check form-switch">
         <input type="checkbox" id="public" name="public" [(ngModel)]="entity.public" [disabled]="isDisabled()" class="form-check-input">
       </div>
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="stability" class="col-sm-2 col-form-label fw-bold">Stability</label>
-    <div class="col-sm-10">
+    <label for="stability" class="col-lg-2 col-form-label fw-bold">Stability</label>
+    <div class="col-lg-10">
       <div class="input-group">
         <select id="stability" name="stability" [(ngModel)]="entity.stability" class="form-select">
           <option *ngFor="let stability of stabilities" [ngValue]="stability.key">{{stability.value}}</option>
@@ -55,8 +55,8 @@
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="description" class="col-sm-2 col-form-label fw-bold">Description</label>
-    <div class="col-sm-10">
+    <label for="description" class="col-lg-2 col-form-label fw-bold">Description</label>
+    <div class="col-lg-10">
       <div class="input-group">
         <input type="text" id="description" name="description" [(ngModel)]="entity.description" [disabled]="isDisabled()" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="descriptionHelp"><i class="bi bi-question"></i></button>
@@ -65,8 +65,8 @@
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="httpMethod" class="col-sm-2 col-form-label fw-bold">HTTP-Method</label>
-    <div class="col-sm-10">
+    <label for="httpMethod" class="col-lg-2 col-form-label fw-bold">HTTP-Method</label>
+    <div class="col-lg-10">
       <div class="input-group">
         <select id="httpMethod" name="httpMethod" [(ngModel)]="entity.httpMethod" (ngModelChange)="changeHttpMethod()" [disabled]="isDisabled()" class="form-select">
           <option *ngFor="let method of methods" [ngValue]="method.key">{{method.value}}</option>
@@ -77,8 +77,8 @@
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="httpPath" class="col-sm-2 col-form-label fw-bold">HTTP-Path</label>
-    <div class="col-sm-10">
+    <label for="httpPath" class="col-lg-2 col-form-label fw-bold">HTTP-Path</label>
+    <div class="col-lg-10">
       <div class="input-group">
         <input type="text" id="httpPath" name="httpPath" [(ngModel)]="entity.httpPath" [disabled]="isDisabled()" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="httpPathHelp"><i class="bi bi-question"></i></button>
@@ -87,8 +87,8 @@
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="httpCode" class="col-sm-2 col-form-label fw-bold">HTTP-Code</label>
-    <div class="col-sm-10">
+    <label for="httpCode" class="col-lg-2 col-form-label fw-bold">HTTP-Code</label>
+    <div class="col-lg-10">
       <div class="input-group">
         <select id="httpCode" name="httpCode" [(ngModel)]="entity.httpCode" [disabled]="isDisabled()" class="form-select">
           <option *ngFor="let code of successStatusCodes" [ngValue]="code.key">{{code.value}}</option>
@@ -99,38 +99,38 @@
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="parameters" class="col-sm-2 col-form-label fw-bold">Parameters</label>
-    <div class="col-sm-10">
+    <label for="parameters" class="col-lg-2 col-form-label fw-bold">Parameters</label>
+    <div class="col-lg-10">
       <app-operation-parameters [data]="entity.parameters" (dataChange)="entity.parameters = $event" [disabled]="isDisabled()"></app-operation-parameters>
     </div>
   </div>
   <div class="mb-3 row" *ngIf="entity.httpMethod !== 'GET' && entity.httpMethod !== 'DELETE'">
-    <label for="incoming" class="col-sm-2 col-form-label fw-bold">Incoming</label>
-    <div class="col-sm-10">
+    <label for="incoming" class="col-lg-2 col-form-label fw-bold">Incoming</label>
+    <div class="col-lg-10">
       <app-schema-selector name="incoming" [data]="entity.incoming" (dataChange)="entity.incoming = $event" [disabled]="isDisabled()"></app-schema-selector>
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="outgoing" class="col-sm-2 col-form-label fw-bold">Outgoing</label>
-    <div class="col-sm-10">
+    <label for="outgoing" class="col-lg-2 col-form-label fw-bold">Outgoing</label>
+    <div class="col-lg-10">
       <app-schema-selector name="outgoing" [data]="entity.outgoing" (dataChange)="entity.outgoing = $event" [disabled]="isDisabled()"></app-schema-selector>
     </div>
   </div>
   <div class="mb-3 row">
-    <label class="col-sm-2 col-form-label fw-bold">Throws</label>
-    <div class="col-sm-10">
+    <label class="col-lg-2 col-form-label fw-bold">Throws</label>
+    <div class="col-lg-10">
       <app-operation-throws [data]="entity.throws" (dataChange)="entity.throws = $event" [disabled]="isDisabled()"></app-operation-throws>
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="action" class="col-sm-2 col-form-label fw-bold">Action</label>
-    <div class="col-sm-10">
+    <label for="action" class="col-lg-2 col-form-label fw-bold">Action</label>
+    <div class="col-lg-10">
       <app-action-selector name="action" [data]="entity.action" (dataChange)="entity.action = $event" [disabled]="isDisabled()"></app-action-selector>
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="costs" class="col-sm-2 col-form-label fw-bold">Costs</label>
-    <div class="col-sm-10">
+    <label for="costs" class="col-lg-2 col-form-label fw-bold">Costs</label>
+    <div class="col-lg-10">
       <div class="input-group">
         <input type="number" id="costs" name="costs" [(ngModel)]="entity.costs" [disabled]="isDisabled()" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="costsHelp"><i class="bi bi-question"></i></button>

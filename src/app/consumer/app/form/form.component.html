@@ -11,8 +11,8 @@
 
 <form *ngIf="entity">
   <div class="mb-3 row">
-    <label for="status" class="col-sm-2 col-form-label fw-bold">Status</label>
-    <div class="col-sm-10">
+    <label for="status" class="col-lg-2 col-form-label fw-bold">Status</label>
+    <div class="col-lg-10">
       <div class="input-group">
         <select id="status" name="status" [(ngModel)]="entity.status" [disabled]="mode === 3" class="form-select">
           <option *ngFor="let status of status" [ngValue]="status.key">{{status.value}}</option>
@@ -23,14 +23,14 @@
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="user" class="col-sm-2 col-form-label fw-bold">User</label>
-    <div class="col-sm-10">
+    <label for="user" class="col-lg-2 col-form-label fw-bold">User</label>
+    <div class="col-lg-10">
       <fusio-form-autocomplete name="user" [service]="user" [data]="entity.userId" (dataChangeId)="entity.userId = $event" [disabled]="mode === 3"></fusio-form-autocomplete>
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="name" class="col-sm-2 col-form-label fw-bold">Name</label>
-    <div class="col-sm-10">
+    <label for="name" class="col-lg-2 col-form-label fw-bold">Name</label>
+    <div class="col-lg-10">
       <div class="input-group">
         <input type="text" id="name" name="name" [(ngModel)]="entity.name" [disabled]="mode === 3" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
@@ -39,8 +39,8 @@
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="url" class="col-sm-2 col-form-label fw-bold">Url</label>
-    <div class="col-sm-10">
+    <label for="url" class="col-lg-2 col-form-label fw-bold">Url</label>
+    <div class="col-lg-10">
       <div class="input-group">
         <input type="url" id="url" name="url" [(ngModel)]="entity.url" [disabled]="mode === 3" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="urlHelp"><i class="bi bi-question"></i></button>
