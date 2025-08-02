@@ -4,14 +4,14 @@
 <fusio-message [response]="response"></fusio-message>
 
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-xl-6">
     <div class="card">
       <div class="card-header">Generator</div>
       <div class="card-body">
         <form>
           <div class="mb-3 row">
-            <label for="class" class="col-lg-2 col-form-label fw-bold">Format</label>
-            <div class="col-lg-10">
+            <label for="class" class="col-xl-2 col-form-label fw-bold">Format</label>
+            <div class="col-xl-10">
               <div class="input-group">
                 <select id="class" name="class" [(ngModel)]="type" class="form-select">
                   <option *ngFor="let type of types|keyvalue" [ngValue]="type.key">{{type.key}}</option>
@@ -20,8 +20,8 @@
             </div>
           </div>
           <div class="mb-3 row">
-            <label for="namespace" class="col-lg-2 col-form-label fw-bold">Namespace</label>
-            <div class="col-lg-10">
+            <label for="namespace" class="col-xl-2 col-form-label fw-bold">Namespace</label>
+            <div class="col-xl-10">
               <div class="input-group">
                 <input type="text" id="namespace" name="namespace" [(ngModel)]="namespace" class="form-control">
               </div>
@@ -34,7 +34,7 @@
       </div>
     </div>
   </div>
-  <div class="col-md-6">
+  <div class="col-xl-6 mt-3 mt-xl-0">
     <div class="card">
       <div class="card-header">Help</div>
       <div class="card-body">
