@@ -14,7 +14,7 @@
     <label for="name" class="col-lg-2 col-form-label fw-bold">Name</label>
     <div class="col-lg-10">
       <div class="input-group">
-        <input type="text" id="name" name="name" [(ngModel)]="entity.name" [disabled]="mode === 3" class="form-control">
+        <input type="text" id="name" name="name" [(ngModel)]="entity.name" [disabled]="mode !== 1" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
         <ng-template #nameHelp>Unique name of the connection</ng-template>
       </div>
