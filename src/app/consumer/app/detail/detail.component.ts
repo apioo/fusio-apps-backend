@@ -11,6 +11,8 @@ import {AppService} from "../../../services/app.service";
 })
 export class DetailComponent extends Detail<BackendApp> {
 
+  hideSecret = true;
+
   constructor(private service: AppService, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);
   }

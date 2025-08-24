@@ -8,6 +8,7 @@ import {NgxApexchartsModule} from "ngx-apexcharts";
 import {MarkdownModule} from "ngx-markdown";
 import {ApiService as SDK, FusioSdkModule} from "ngx-fusio-sdk";
 import {TypeschemaEditorModule} from "ngx-typeschema-editor";
+import {ClipboardModule} from "ngx-clipboard";
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {ApiService} from "./api.service";
@@ -272,7 +273,8 @@ import {CsvPipe} from "./shared/tag-editor/csv.pipe";
     MonacoEditorModule.forRoot(EditorConfig.getConfig()),
     MarkdownModule.forRoot(),
     TypeschemaEditorModule,
-    FusioSdkModule.forRoot(ConfigBuilder.build())
+    FusioSdkModule.forRoot(ConfigBuilder.build()),
+    ClipboardModule
   ],
   providers: [
     {

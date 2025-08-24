@@ -37,6 +37,17 @@
       <div class="col-lg-10">{{selected.appKey}}</div>
     </div>
     <div class="row">
+      <div class="col-lg-2 fw-bold">App-Secret</div>
+      <div class="col-lg-10">
+        <span *ngIf="hideSecret"><code>...</code></span>
+        <span *ngIf="!hideSecret"><code>{{selected.appSecret}}</code></span>
+        <div class="btn-group float-end">
+          <button class="btn btn-sm btn-secondary" ngxClipboard [cbContent]="selected.appSecret">Copy</button>
+          <button class="btn btn-sm btn-secondary" (click)="hideSecret = !hideSecret">Show</button>
+        </div>
+      </div>
+    </div>
+    <div class="row">
       <div class="col-lg-2 fw-bold">Scopes</div>
       <div class="col-lg-10"><fusio-scopes [scopes]="selected.scopes"></fusio-scopes></div>
     </div>
