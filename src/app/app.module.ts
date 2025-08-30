@@ -135,6 +135,7 @@ import {SchemaSelectorComponent} from './shared/schema-selector/schema-selector.
 import {ScopeCategoriesComponent} from './shared/scope-categories/scope-categories.component';
 import {TagEditorComponent} from './shared/tag-editor/tag-editor.component';
 import {CsvPipe} from "./shared/tag-editor/csv.pipe";
+import {ErrorDetailsComponent} from "./shared/error-details/error-details.component";
 
 @NgModule({
   declarations: [
@@ -252,6 +253,7 @@ import {CsvPipe} from "./shared/tag-editor/csv.pipe";
     ActionSelectorComponent,
     CollectionComponent,
     ConfigComponent,
+    ErrorDetailsComponent,
     MapComponent,
     OperationParametersComponent,
     OperationThrowsComponent,
@@ -274,7 +276,7 @@ import {CsvPipe} from "./shared/tag-editor/csv.pipe";
     MarkdownModule.forRoot(),
     TypeschemaEditorModule,
     FusioSdkModule.forRoot(ConfigBuilder.build()),
-    ClipboardModule
+    ClipboardModule,
   ],
   providers: [
     {

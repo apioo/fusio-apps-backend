@@ -35,25 +35,7 @@
       <div class="col-lg-2 fw-bold">Action</div>
       <div class="col-lg-8"><app-action-link [data]="selected.action"></app-action-link></div>
     </div>
-    <div class="card" style="margin-top:1rem" *ngIf="selected.errors">
-      <div class="card-header">Errors</div>
-      <div class="card-body">
-        <table class="table table-striped">
-          <thead>
-          <tr>
-            <th style="width:50%">Message</th>
-            <th style="width:50%">File</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr *ngFor="let error of selected.errors">
-            <td>{{error.message}}</td>
-            <td>{{error.file}}</td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <app-error-details *ngIf="selected.errors" [errors]="selected.errors"></app-error-details>
   </div>
   <div class="fusio-json" *ngIf="jsonView">
     <div style="height:600px;" class="mt-3">

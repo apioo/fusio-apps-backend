@@ -44,32 +44,7 @@
         <pre>{{selected.body|json}}</pre>
       </div>
     </div>
-    <div class="card" style="margin-top:1rem" *ngIf="selected.errors">
-      <div class="card-header">Errors</div>
-      <div class="card-body">
-
-        <table class="table table-striped">
-          <thead>
-          <tr>
-            <th style="width:50%">Message</th>
-            <th style="width:50%">File</th>
-            <th></th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr *ngFor="let error of selected.errors">
-            <td>{{error.message}}</td>
-            <td>{{error.file}}</td>
-            <td>
-              <div class="btn-group" role="group">
-                <a [routerLink]="['/', 'error', error.id]" class="btn btn-primary"><i class="bi bi-search"></i></a>
-              </div>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <app-error-details *ngIf="selected.errors" [errors]="selected.errors"></app-error-details>
   </div>
   <div class="fusio-json" *ngIf="jsonView">
     <div style="height:600px;" class="mt-3">
