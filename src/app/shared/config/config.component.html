@@ -1,31 +1,37 @@
 
 <div class="mb-3 row" *ngFor="let element of elements">
-  <label [for]="element.name" class="col-lg-2 col-form-label fw-bold">{{element.title}}</label>
+  <label [for]="'config-' + element.name" class="col-lg-2 col-form-label fw-bold">{{element.title}}</label>
   <div class="col-lg-10" *ngIf="element.name">
     <ng-container [ngSwitch]="element.element">
       <ng-container *ngSwitchCase="'input'">
-        <input [ngModel]="data![element.name]" (ngModelChange)="doChange(element.name, $event)" [name]="element.name" [type]="element.type" [disabled]="disabled" class="form-control">
+        <input [ngModel]="data![element.name]" (ngModelChange)="doChange(element.name, $event)" [id]="'config-' + element.name" [name]="element.name" [type]="element.type" [disabled]="disabled" class="form-control">
+        <div class="form-text" [innerHTML]="element.help"></div>
       </ng-container>
       <ng-container *ngSwitchCase="'checkbox'">
         <div class="form-check form-switch">
-          <input [ngModel]="data![element.name]" (ngModelChange)="doChange(element.name, $event)" [name]="element.name" [disabled]="disabled" type="checkbox" class="form-check-input">
+          <input [ngModel]="data![element.name]" (ngModelChange)="doChange(element.name, $event)" [id]="'config-' + element.name" [name]="element.name" [disabled]="disabled" type="checkbox" class="form-check-input">
         </div>
+        <div class="form-text" [innerHTML]="element.help"></div>
       </ng-container>
       <ng-container *ngSwitchCase="'select'">
-        <select *ngIf="element?.options" [ngModel]="data![element.name]" (ngModelChange)="doChange(element.name, $event)" [name]="element.name" [disabled]="disabled" class="form-select">
+        <select *ngIf="element?.options" [ngModel]="data![element.name]" (ngModelChange)="doChange(element.name, $event)" [id]="'config-' + element.name" [name]="element.name" [disabled]="disabled" class="form-select">
           <option *ngFor="let opt of element?.options" [value]="opt.key">{{opt.value}}</option>
         </select>
+        <div class="form-text" [innerHTML]="element.help"></div>
       </ng-container>
       <ng-container *ngSwitchCase="'textarea'">
         <div style="width:100%;height:500px;border:1px solid #ced4da">
-          <ngx-monaco-editor [ngModel]="data![element.name]" (ngModelChange)="doChange(element.name, $event)" [options]="{theme: 'vs-light', language: element.mode, readOnly: disabled}" [name]="element.name" style="height:100%"></ngx-monaco-editor>
+          <ngx-monaco-editor [ngModel]="data![element.name]" (ngModelChange)="doChange(element.name, $event)" [options]="{theme: 'vs-light', language: element.mode, readOnly: disabled}" [id]="'config-' + element.name" [name]="element.name" style="height:100%"></ngx-monaco-editor>
         </div>
+        <div class="form-text" [innerHTML]="element.help"></div>
       </ng-container>
       <ng-container *ngSwitchCase="'collection'">
-        <app-collection [data]="data![element.name]" (dataChange)="doChange(element.name, $event)" [name]="element.name" [disabled]="disabled"></app-collection>
+        <app-collection [data]="data![element.name]" (dataChange)="doChange(element.name, $event)" [id]="'config-' + element.name" [name]="element.name" [disabled]="disabled"></app-collection>
+        <div class="form-text" [innerHTML]="element.help"></div>
       </ng-container>
       <ng-container *ngSwitchCase="'map'">
-        <app-map [data]="data![element.name]" (dataChange)="doChange(element.name, $event)" [name]="element.name" [disabled]="disabled"></app-map>
+        <app-map [data]="data![element.name]" (dataChange)="doChange(element.name, $event)" [id]="'config-' + element.name" [name]="element.name" [disabled]="disabled"></app-map>
+        <div class="form-text" [innerHTML]="element.help"></div>
       </ng-container>
       <ng-container *ngSwitchCase="'typeschema'">
         <div style="width:100%;min-height:500px;border:1px solid #ced4da">
