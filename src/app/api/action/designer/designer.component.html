@@ -85,7 +85,7 @@
 <div class="row" *ngIf="response" style="margin-top:1rem;">
   <div class="col-md-12">
     <div class="card">
-      <div class="card-header">Response - {{response.statusCode}}</div>
+      <div class="card-header" *ngIf="response.statusCode" [ngClass]="{'text-bg-success': response.statusCode >= 200 && response.statusCode < 300, 'text-bg-warning': response.statusCode >= 400 && response.statusCode < 500, 'text-bg-danger': response.statusCode >= 500 && response.statusCode < 600}">Response<span *ngIf="response.statusCode > 0"> - {{response.statusCode}}</span></div>
       <div class="card-body">
         <pre>{{ response.body|json }}</pre>
       </div>
