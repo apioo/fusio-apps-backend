@@ -27,6 +27,9 @@ import {FormComponent as ConnectionForm} from "./api/connection/form/form.compon
 import {ListComponent as CronjobList} from "./api/cronjob/list/list.component";
 import {DetailComponent as CronjobDetail} from "./api/cronjob/detail/detail.component";
 import {FormComponent as CronjobForm} from "./api/cronjob/form/form.component";
+import {ListComponent as TriggerList} from "./api/trigger/list/list.component";
+import {DetailComponent as TriggerDetail} from "./api/trigger/detail/detail.component";
+import {FormComponent as TriggerForm} from "./api/trigger/form/form.component";
 import {ListComponent as DashboardList} from "./api/dashboard/list/list.component";
 import {ListComponent as EventList} from "./api/event/list/list.component";
 import {DetailComponent as EventDetail} from "./api/event/detail/detail.component";
@@ -126,6 +129,7 @@ const routes: Routes = [
     ] },
   { path: 'event', canActivate: [isAuthenticated], children: EntityRoute.getAll(EventList, EventDetail, EventForm) },
   { path: 'cronjob', canActivate: [isAuthenticated], children: EntityRoute.getAll(CronjobList, CronjobDetail, CronjobForm) },
+  { path: 'trigger', canActivate: [isAuthenticated], children: EntityRoute.getAll(TriggerList, TriggerDetail, TriggerForm) },
 
   { path: 'generator', component: GeneratorComponent, canActivate: [isAuthenticated] },
   { path: 'marketplace', component: MarketplaceList, canActivate: [isAuthenticated] },

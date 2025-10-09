@@ -80,6 +80,12 @@ export class NavigationService {
               "icon": "bi-alarm",
               "path": "/cronjob",
               "scope": "backend.cronjob"
+            },
+            {
+              "title": "Trigger",
+              "icon": "bi-disc",
+              "path": "/trigger",
+              "scope": "backend.trigger"
             }
           ]
         },

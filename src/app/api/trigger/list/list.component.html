@@ -1,5 +1,5 @@
 
-<h1>Cronjob</h1>
+<h1>Trigger</h1>
 
 <fusio-message [response]="response"></fusio-message>
 
@@ -7,14 +7,14 @@
   [searchTerm]="search"
   (search)="doSearch(1, $event)"
   (newClick)="router.navigate(getNewLink())"
-  placeholder="cronjob"
-  helpPath="api/cronjob/">
+  placeholder="trigger"
+  helpPath="api/trigger/">
 </fusio-search>
 <table class="table table-striped">
   <thead>
   <tr>
     <th style="width:40%">Name</th>
-    <th style="width:20%">Cron</th>
+    <th style="width:20%">Event</th>
     <th style="width:40%">Action</th>
     <th></th>
   </tr>
@@ -22,7 +22,7 @@
   <tbody>
   <tr *ngFor="let entry of entries">
     <td>{{entry.name}}</td>
-    <td>{{entry.cron}}</td>
+    <td>{{entry.event}}</td>
     <td><app-action-link [data]="entry.action"></app-action-link></td>
     <td>
       <div class="btn-group" role="group">

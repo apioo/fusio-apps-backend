@@ -53,6 +53,9 @@ import {SdkComponent} from './api/connection/sdk/sdk.component';
 import {DetailComponent as CronjobDetail} from "./api/cronjob/detail/detail.component";
 import {ListComponent as CronjobList} from "./api/cronjob/list/list.component";
 import {FormComponent as CronjobForm} from "./api/cronjob/form/form.component";
+import {DetailComponent as TriggerDetail} from "./api/trigger/detail/detail.component";
+import {ListComponent as TriggerList} from "./api/trigger/list/list.component";
+import {FormComponent as TriggerForm} from "./api/trigger/form/form.component";
 import {ListComponent as DashboardList} from "./api/dashboard/list/list.component";
 import {DetailComponent as EventDetail} from "./api/event/detail/detail.component";
 import {ListComponent as EventList} from "./api/event/list/list.component";
@@ -179,6 +182,9 @@ import {ErrorDetailsComponent} from "./shared/error-details/error-details.compon
     CronjobDetail,
     CronjobList,
     CronjobForm,
+    TriggerDetail,
+    TriggerList,
+    TriggerForm,
     DashboardList,
     EventDetail,
     EventList,
