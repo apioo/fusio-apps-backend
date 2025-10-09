@@ -9,6 +9,7 @@
 <div *ngIf="selected">
   <div class="btn-group" role="group">
     <a [routerLink]="getEditLink(selected.id)" class="btn btn-primary fusio-btn-update">Update</a>
+    <a (click)="resend(selected)" placement="top" ngbTooltip="Resends the activation mail to the user" class="btn btn-secondary logs">Resend</a>
     <a [routerLink]="getDeleteLink(selected.id)" class="btn btn-danger fusio-btn-delete">Delete</a>
   </div>
   <div class="float-end">

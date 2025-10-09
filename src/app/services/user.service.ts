@@ -31,6 +31,10 @@ export class UserService extends Service<BackendUser> {
     return this.fusio.getClient().backend().user().delete('' + entity.id);
   }
 
+  async resend(entity: BackendUser): Promise<CommonMessage> {
+    return this.fusio.getClient().backend().user().resend('' + entity.id, {});
+  }
+
   newEntity(): BackendUser {
     return {
       status: 1,

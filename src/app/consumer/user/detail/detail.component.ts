@@ -19,4 +19,12 @@ export class DetailComponent extends Detail<BackendUser> {
     return this.service;
   }
 
+  async resend(user: BackendUser) {
+    try {
+      this.response = await this.service.resend(user);
+    } catch (error) {
+      this.response = this.error.convert(error);
+    }
+  }
+
 }
