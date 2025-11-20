@@ -6,7 +6,9 @@
     <div class="row">
       <div class="col-2">
         <select name="statistic" [(ngModel)]="statistic" (change)="selectStatistic()" class="form-select">
-          <option *ngFor="let statistic of statistics" [ngValue]="statistic.value">{{statistic.name}}</option>
+          @for (statistic of statistics; track statistic.value) {
+            <option [ngValue]="statistic.value">{{statistic.name}}</option>
+          }
         </select>
       </div>
       <div class="col-10">
@@ -23,12 +25,12 @@
 <div class="card">
   <div class="card-header">{{statisticName}}</div>
   <div class="card-body">
-    <ng-container *ngIf="pieChart">
+    @if (pieChart) {
       <apx-chart [series]="pieChart.series" [labels]="pieChart.labels" [chart]="{type: 'donut', height: 500}" [stroke]="{curve: 'smooth'}"></apx-chart>
-    </ng-container>
-    <ng-container *ngIf="chart">
+    }
+    @if (chart) {
       <apx-chart [series]="chart.series" [chart]="{type: 'line', height: 500}" [xaxis]="chart.xaxis" [stroke]="{curve: 'smooth'}"></apx-chart>
-    </ng-container>
+    }
   </div>
 </div>
 

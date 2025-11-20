@@ -1,14 +1,27 @@
 import {Component} from '@angular/core';
-import {ErrorService, Form, HelpComponent} from "ngx-fusio-sdk";
+import {ErrorService, Form, HelpComponent, MessageComponent} from "ngx-fusio-sdk";
 import {BackendAction, BackendActionIndexEntry, CommonFormContainer} from "fusio-sdk";
 import {ActionService} from "../../../services/action.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {ApiService} from "../../../api.service";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal, NgbPopover} from "@ng-bootstrap/ng-bootstrap";
+import {FormsModule} from "@angular/forms";
+import {ConfigComponent} from "../../../shared/config/config.component";
+import {FormBreadcrump} from "../../../shared/form-breadcrump/form-breadcrump";
+import {FormButtons} from "../../../shared/form-buttons/form-buttons";
 
 @Component({
   selector: 'app-action-modal',
   templateUrl: './form.component.html',
+  imports: [
+    RouterLink,
+    MessageComponent,
+    FormsModule,
+    NgbPopover,
+    ConfigComponent,
+    FormBreadcrump,
+    FormButtons
+  ],
   styleUrls: ['./form.component.css']
 })
 export class FormComponent extends Form<BackendAction> {

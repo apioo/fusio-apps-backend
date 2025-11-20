@@ -4,10 +4,16 @@ import {OperationService} from "../../../services/operation.service";
 import {AppService} from "../../../services/app.service";
 import {UserService} from "../../../services/user.service";
 import {Filter} from "../list/list.component";
+import {FormAutocompleteComponent} from "ngx-fusio-sdk";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-log-filter',
   templateUrl: './filter.component.html',
+  imports: [
+    FormAutocompleteComponent,
+    FormsModule
+  ],
   styleUrls: ['./filter.component.css']
 })
 export class FilterComponent {

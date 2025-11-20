@@ -1,5 +1,5 @@
-import {Config} from "ngx-fusio-sdk/lib/config/config";
 import {InstanceManager} from "./instance-manager";
+import {Config} from "ngx-fusio-sdk";
 
 export class ConfigBuilder {
 

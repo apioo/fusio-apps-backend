@@ -4,10 +4,16 @@ import {BackendApp, BackendUser} from "fusio-sdk";
 import {ApiService} from "../../../api.service";
 import {AppService} from "../../../services/app.service";
 import {UserService} from "../../../services/user.service";
+import {FormsModule} from "@angular/forms";
+import {FormAutocompleteComponent} from "ngx-fusio-sdk";
 
 @Component({
   selector: 'app-token-filter',
   templateUrl: './filter.component.html',
+  imports: [
+    FormsModule,
+    FormAutocompleteComponent
+  ],
   styleUrls: ['./filter.component.css']
 })
 export class FilterComponent {

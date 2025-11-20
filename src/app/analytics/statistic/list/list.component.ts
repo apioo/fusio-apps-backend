@@ -5,10 +5,16 @@ import {FilterComponent} from "../../log/filter/filter.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {HelpService} from "ngx-fusio-sdk";
 import {ApiService} from "../../../api.service";
+import {FormsModule} from "@angular/forms";
+import {ChartComponent} from "ngx-apexcharts";
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
+  imports: [
+    FormsModule,
+    ChartComponent
+  ],
   styleUrls: ['./list.component.css']
 })
 export class ListComponent implements OnInit {

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {ErrorService} from "ngx-fusio-sdk";
+import {ActivatedRoute, RouterLink} from "@angular/router";
+import {ErrorService, MessageComponent} from "ngx-fusio-sdk";
 import {
   BackendAction,
   BackendActionExecuteRequest,
@@ -9,10 +9,25 @@ import {
   CommonMessage
 } from "fusio-sdk";
 import {ApiService} from "../../../api.service";
+import {ConfigComponent} from "../../../shared/config/config.component";
+import {FormsModule} from "@angular/forms";
+import {NgbPopover} from "@ng-bootstrap/ng-bootstrap";
+import {EditorComponent} from "ngx-monaco-editor-v2";
+import {JsonPipe, NgClass} from "@angular/common";
 
 @Component({
   selector: 'app-action-designer',
   templateUrl: './designer.component.html',
+  imports: [
+    RouterLink,
+    MessageComponent,
+    ConfigComponent,
+    FormsModule,
+    NgbPopover,
+    EditorComponent,
+    NgClass,
+    JsonPipe
+  ],
   styleUrls: ['./designer.component.css']
 })
 export class DesignerComponent implements OnInit {

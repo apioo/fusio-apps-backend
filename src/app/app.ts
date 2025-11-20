@@ -1,16 +1,17 @@
 import {Component, OnInit} from '@angular/core';
-import {UserService} from "ngx-fusio-sdk";
 import {BackendUser} from "fusio-sdk";
+import {UserService} from "ngx-fusio-sdk";
 import {ApiService} from "./api.service";
-import {Config} from "./editor/config";
 import {InstanceManager} from "./instance-manager";
+import {Config} from "./editor/config";
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  templateUrl: './app.html',
+  styleUrl: './app.css'
 })
-export class AppComponent implements OnInit {
+export class App implements OnInit {
+
   title = 'fusio';
   hasUrl: boolean = true;
   hasActiveInstance: boolean = false;
@@ -34,4 +35,8 @@ export class AppComponent implements OnInit {
     Config.fusio = this.fusio;
   }
 
+}
+
+declare global {
+  var FUSIO_URL: string | undefined;
 }

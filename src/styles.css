@@ -1,8 +1,4 @@
 
-@import "~bootstrap-icons/font/bootstrap-icons.css";
-@import "~bootstrap/dist/css/bootstrap.min.css";
-@import "~@vscode/codicons/dist/codicon.css";
-
 body
 {
   background-color:#fff;
@@ -23,40 +19,38 @@ pre
   margin-top:2px;
 }
 
+#anonymousMenu,
+#anonymousMenu:hover
+{
+  color:#fff;
+}
+
 #userMenu,
 #userMenu:hover
 {
   color:#fff;
 }
 
-.fusio-instance
-{
-  background-color:#eee;
-  position:fixed;
-  width:180px;
-  height:100%;
-  overflow-y:auto;
-  border-right:2px solid #222;
-}
-
 .fusio-navigation
 {
   background-color:#021c35;
   position:fixed;
-  left:0;
   height:100%;
   overflow-y:auto;
-}
-
-.fusio-navigation-instance
-{
-  left:180px;
 }
 
 .fusio-navigation > nav
 {
   width:180px;
+  float:left;
   padding:0 15px;
+}
+
+@media (max-width:767px) {
+  .fusio-navigation > nav
+  {
+    width:110px;
+  }
 }
 
 .fusio-navigation > nav > h1
@@ -135,9 +129,11 @@ pre
   margin-left:180px;
 }
 
-.fusio-container-instance
-{
-  margin-left:360px;
+@media (max-width:767px) {
+  .fusio-container
+  {
+    margin-left:110px;
+  }
 }
 
 .fusio-content
@@ -161,14 +157,9 @@ pre
   background-image: linear-gradient(to bottom,#444 0,#222 100%);
 }
 
-.fusio-content > * > h1 > a
+.fusio-content > div > h1 > a
 {
   color:#eee;
-}
-
-.fusio-content > * > form
-{
-  margin-bottom:64px;
 }
 
 .fusio-search
@@ -479,4 +470,13 @@ pre
 
 .psx-property-required {
   border-bottom:1px dotted #999;
+}
+
+/* diff view */
+.line-selector > .inline-diff-old {
+  width: 3rem!important;
+}
+
+.line-selector > .inline-diff-new {
+  width: 3rem!important;
 }

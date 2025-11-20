@@ -3,7 +3,7 @@
 
 <div *ngFor="let type of types | keyvalue" class="card float-start" style="width:14rem;margin-right:1rem;margin-bottom:1rem">
   <h5 class="card-header">{{type.key}}</h5>
-  <img src="assets/sdk/{{type.key}}.png" class="card-img-top" style="padding:16px;">
+  <img src="../../../../../public/assets/sdk/{{type.key}}.png" class="card-img-top" style="padding:16px;">
   <div class="card-body">
     <div class="btn-group" role="group">
       <a *ngIf="type.value" [href]="type.value" class="btn btn-primary">Download</a>

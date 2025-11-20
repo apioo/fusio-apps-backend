@@ -1,12 +1,18 @@
 import {Component} from '@angular/core';
-import {ErrorService, List} from "ngx-fusio-sdk";
+import {ErrorService, List, SearchComponent} from "ngx-fusio-sdk";
 import {BackendToken} from "fusio-sdk";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {TokenService} from "../../../services/token.service";
+import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-token-list',
   templateUrl: './list.component.html',
+  imports: [
+    SearchComponent,
+    RouterLink,
+    NgbPagination
+  ],
   styleUrls: ['./list.component.css']
 })
 export class ListComponent extends List<BackendToken> {
