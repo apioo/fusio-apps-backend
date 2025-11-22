@@ -63,5 +63,5 @@
       </table>
     </div>
   </div>
-  <app-form-buttons (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="router.navigate(getListLink())" (onHelp)="showHelp('consumer/scope')"></app-form-buttons>
+  <app-form-buttons [mode]="mode" (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="router.navigate(getListLink())" (onHelp)="showHelp('consumer/scope')"></app-form-buttons>
 </form>

@@ -47,5 +47,5 @@
       </div>
     </div>
   </div>
-  <app-form-buttons (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="router.navigate(getListLink())" (onHelp)="showHelp('system/firewall')"></app-form-buttons>
+  <app-form-buttons [mode]="mode" (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="router.navigate(getListLink())" (onHelp)="showHelp('system/firewall')"></app-form-buttons>
 </form>

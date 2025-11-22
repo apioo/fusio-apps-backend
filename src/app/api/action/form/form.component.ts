@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, signal} from '@angular/core';
 import {ErrorService, Form, HelpComponent, MessageComponent} from "ngx-fusio-sdk";
 import {BackendAction, BackendActionIndexEntry, CommonFormContainer} from "fusio-sdk";
 import {ActionService} from "../../../services/action.service";
@@ -26,10 +26,11 @@ import {FormButtons} from "../../../shared/form-buttons/form-buttons";
 })
 export class FormComponent extends Form<BackendAction> {
 
-  actions?: Array<BackendActionIndexEntry>;
-  form?: CommonFormContainer;
-  entityClass?: string;
-  custom: boolean = false;
+  actions = signal<Array<BackendActionIndexEntry>>([]);
+  form = signal<CommonFormContainer|undefined>(undefined);
+  custom = signal<boolean>(false);
+
+  entityClass? = '';
 
   constructor(private service: ActionService, private fusio: ApiService, private modal: NgbModal, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);
@@ -43,7 +44,7 @@ export class FormComponent extends Form<BackendAction> {
     super.ngOnInit();
 
     const response = await this.fusio.getClient().backend().action().getClasses();
-    this.actions = response.actions;
+    this.actions.set(response.actions || []);
   }
 
   protected override async onLoad() {
@@ -51,7 +52,7 @@ export class FormComponent extends Form<BackendAction> {
   }
 
   async changeClass(classString?: string) {
-    if (!classString || !this.entity) {
+    if (!classString) {
       return;
     }
 
@@ -64,7 +65,11 @@ export class FormComponent extends Form<BackendAction> {
       return;
     }
 
-    this.form = await this.fusio.getClient().backend().action().getForm(classString);
+    try {
+      this.form.set(await this.fusio.getClient().backend().action().getForm(classString));
+    } catch (error) {
+      this.response.set(this.error.convert(error));
+    }
 
     const hasChanged = this.entityClass && this.entityClass !== this.entity().class;
     this.entityClass = this.entity().class;
@@ -81,7 +86,7 @@ export class FormComponent extends Form<BackendAction> {
 
     let className = this.entity().class;
     if (className) {
-      let action = this.actions?.find((action) => {
+      let action = this.actions()?.find((action) => {
         return action.class === className;
       })
 

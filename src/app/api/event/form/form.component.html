@@ -34,5 +34,5 @@
       <app-schema-selector name="schema" [data]="entity().schema" (dataChange)="set(entity, 'schema', $event)" [disabled]="mode === 3"></app-schema-selector>
     </div>
   </div>
-  <app-form-buttons (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="router.navigate(getListLink())" (onHelp)="showHelp('api/event')"></app-form-buttons>
+  <app-form-buttons [mode]="mode" (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="router.navigate(getListLink())" (onHelp)="showHelp('api/event')"></app-form-buttons>
 </form>

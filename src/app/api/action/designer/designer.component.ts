@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, signal, WritableSignal} from '@angular/core';
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {ErrorService, MessageComponent} from "ngx-fusio-sdk";
 import {
-  BackendAction,
+  BackendAction, BackendActionConfig,
   BackendActionExecuteRequest,
   BackendActionExecuteResponse,
   CommonFormContainer,
@@ -32,9 +32,11 @@ import {JsonPipe, NgClass} from "@angular/common";
 })
 export class DesignerComponent implements OnInit {
 
-  message?: CommonMessage;
-  action?: BackendAction;
-  form?: CommonFormContainer;
+  form = signal<CommonFormContainer|undefined>(undefined);
+  action = signal<BackendAction|undefined>(undefined);
+  message = signal<CommonMessage|undefined>(undefined);
+  response = signal<BackendActionExecuteResponse|undefined>(undefined);
+
   request: BackendActionExecuteRequest = {
     method: 'GET',
     uriFragments: '',
@@ -42,8 +44,6 @@ export class DesignerComponent implements OnInit {
     headers: '',
   };
   body: string = '';
-  response?: BackendActionExecuteResponse;
-  contentType?: string;
 
   constructor(private fusio: ApiService, private route: ActivatedRoute, private error: ErrorService) {
   }
@@ -58,7 +58,8 @@ export class DesignerComponent implements OnInit {
   }
 
   async submit() {
-    if (!this.action || !this.request) {
+    const action = this.action();
+    if (!action || !this.request) {
       return;
     }
 
@@ -68,23 +69,24 @@ export class DesignerComponent implements OnInit {
         request.body = JSON.parse(this.body);
       }
 
-      await this.fusio.getClient().backend().action().update('' + this.action.id, this.action);
+      await this.fusio.getClient().backend().action().update('' + action.id, action);
 
-      this.response = await this.fusio.getClient().backend().action().execute('' + this.action.id, request);
+      this.response.set(await this.fusio.getClient().backend().action().execute('' + action.id, request));
     } catch (error) {
-      this.message = this.error.convert(error);
+      this.message.set(this.error.convert(error));
     }
   }
 
   async loadAction(id: string) {
     try {
-      this.action = await this.fusio.getClient().backend().action().get(id);
+      this.action.set(await this.fusio.getClient().backend().action().get(id));
 
-      if (this.action.class) {
-        this.loadConfig(this.action.class);
+      const classString = this.action()?.class;
+      if (classString) {
+        this.loadConfig(classString);
       }
     } catch (error) {
-      this.message = this.error.convert(error);
+      this.message.set(this.error.convert(error));
     }
   }
 
@@ -93,7 +95,23 @@ export class DesignerComponent implements OnInit {
       return;
     }
 
-    this.form = await this.fusio.getClient().backend().action().getForm(classString);
+    try {
+      this.form.set(await this.fusio.getClient().backend().action().getForm(classString));
+    } catch (error) {
+      this.message.set(this.error.convert(error));
+    }
+  }
+
+  setConfig(config: BackendActionConfig) {
+    this.action.update((entity) => {
+      if (entity === undefined) {
+        entity = {};
+      }
+
+      entity.config = config;
+
+      return entity;
+    });
   }
 
 }

@@ -9,7 +9,6 @@
 @if (selected(); as selected) {
   <div class="btn-group" role="group">
     <a [routerLink]="getEditLink(selected.id)" class="btn btn-primary fusio-btn-update">Update</a>
-    <a routerLink="/schema/designer/{{selected.id}}" class="btn btn-secondary fusio-btn-designer">Designer</a>
     <a [routerLink]="getDeleteLink(selected.id)" class="btn btn-danger fusio-btn-delete">Delete</a>
   </div>
   <div class="float-end">
@@ -17,16 +16,7 @@
   </div>
   @if (!jsonView) {
     <div class="fusio-detail">
-      @if (!loading && preview) {
-        <div [innerHtml]="preview" style="margin-top:1rem"></div>
-      }
-      @else {
-        <div style="margin-top:1rem">
-          <div class="spinner-grow text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-        </div>
-      }
+      <typeschema-editor [specification]="spec()" [readonly]="true"></typeschema-editor>
     </div>
   }
   @if (jsonView) {

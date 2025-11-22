@@ -30,7 +30,7 @@ export class ConfigBuilder {
     return {
       instance: instanceIndex,
       baseUrl: baseUrl,
-      logo: 'fusio_64px.png',
+      logo: 'assets/fusio_64px.png',
       appKey: appKey && appKey !== '${APP_KEY}' ? appKey : undefined,
       homePath: '/',
       helpUrl: 'https://docs.fusio-project.org/docs/backend/',

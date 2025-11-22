@@ -1,7 +1,7 @@
 
 <h1>
   <a [routerLink]="['/', 'connection']">Connection</a> /
-  <a [routerLink]="['/', 'connection', selectedConnection?.id]">{{selectedConnection?.name}}</a> /
+  <a [routerLink]="['/', 'connection', selectedConnection()?.id]">{{selectedConnection()?.name}}</a> /
   <a [routerLink]="getListLink()">Database</a> /
   <a [routerLink]="getDetailLink(entity().name)">{{ entity().name }}</a> /
   <app-form-breadcrump [mode]="mode"></app-form-breadcrump>
@@ -45,5 +45,5 @@
       <app-connection-database-table-foreign-key [data]="entity().foreignKeys || []" [disabled]="mode === 3" (dataChange)="set(entity, 'foreignKeys', $event)"></app-connection-database-table-foreign-key>
     </div>
   </div>
-  <app-form-buttons (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)"></app-form-buttons>
+  <app-form-buttons [mode]="mode" (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)"></app-form-buttons>
 </form>

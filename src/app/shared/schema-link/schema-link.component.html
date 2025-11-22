@@ -1,21 +1,21 @@
 
-@if (scheme === 'schema') {
-  <a routerLink="/schema/~{{value}}">{{value}}</a>
+@if (scheme() === 'schema') {
+  <a routerLink="/schema/~{{value()}}">{{value()}}</a>
 }
-@if (scheme === 'php+class') {
-  <span>{{value}}</span>
+@else if (scheme() === 'php+class') {
+  <span>{{value()}}</span>
 }
-@if (scheme === 'file') {
-  <span>{{value}}</span>
+@else if (scheme() === 'file') {
+  <span>{{value()}}</span>
 }
-@if (scheme === 'http') {
-  <a href="http://{{value}}">{{value}}</a>
+@else if (scheme() === 'http') {
+  <a href="http://{{value()}}">{{value()}}</a>
 }
-@if (scheme === 'https') {
-  <a href="https://{{value}}">{{value}}</a>
+@else if (scheme() === 'https') {
+  <a href="https://{{value()}}">{{value()}}</a>
 }
-@if (scheme === 'typehub') {
-  <span>{{value}}</span>
+@else if (scheme() === 'typehub') {
+  <span>{{value()}}</span>
 }
 @else {
   <span>{{data}}</span>

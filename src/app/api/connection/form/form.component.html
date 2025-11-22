@@ -22,31 +22,29 @@
     <label for="class" class="col-lg-2 col-form-label fw-bold">Class</label>
     <div class="col-lg-10">
       <div class="input-group">
-        @if (custom) {
+        @if (custom()) {
           <input type="text" id="class" name="class" [ngModel]="entity().class" (ngModelChange)="set(entity, 'class', $event)" (change)="loadConfig(entity().class)" [disabled]="mode === 3" class="form-control">
         }
-        @if (!custom) {
+        @if (!custom()) {
           <select id="class" name="class" [ngModel]="entity().class" (ngModelChange)="set(entity, 'class', $event)" (change)="loadConfig(entity().class)" [disabled]="mode === 3" class="form-select">
             <optgroup label="Basic">
-              @for (connection of basicConnections; track connection.class) {
+              @for (connection of basicConnections(); track connection.class) {
                 <option [ngValue]="connection.class">{{connection.name}}</option>
               }
             </optgroup>
             <optgroup label="SDK">
-              @for (connection of sdkConnections; track connection.class) {
+              @for (connection of sdkConnections(); track connection.class) {
                 <option [ngValue]="connection.class">{{connection.name}}</option>
               }
             </optgroup>
           </select>
         }
-        <button class="btn btn-outline-secondary" type="button" (click)="custom = !custom" [disabled]="mode === 3"><i class="bi bi-pen"></i></button>
+        <button class="btn btn-outline-secondary" type="button" (click)="custom.set(!custom)" [disabled]="mode === 3"><i class="bi bi-pen"></i></button>
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="classHelp"><i class="bi bi-question"></i></button>
         <ng-template #classHelp>Connection class which gets executed. Each action can provide additional configuration parameters which are loaded if a class was selected</ng-template>
       </div>
     </div>
   </div>
-  @if (form) {
-    <app-config [container]="form" [data]="entity().config" (dataChange)="set(entity, 'config', $event)" [disabled]="mode === 3"></app-config>
-  }
-  <app-form-buttons (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="router.navigate(getListLink())" (onHelp)="showHelp()"></app-form-buttons>
+  <app-config [container]="form()" [data]="entity().config" (dataChange)="set(entity, 'config', $event)" [disabled]="mode === 3"></app-config>
+  <app-form-buttons [mode]="mode" (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="router.navigate(getListLink())" (onHelp)="showHelp()"></app-form-buttons>
 </form>

@@ -73,5 +73,5 @@
     </div>
   </div>
   <app-scope-categories [scopes]="entity().scopes" (dataChange)="set(entity, 'scopes', $event)"></app-scope-categories>
-  <app-form-buttons (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="router.navigate(getListLink())" (onHelp)="showHelp('monetization/plan')"></app-form-buttons>
+  <app-form-buttons [mode]="mode" (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="router.navigate(getListLink())" (onHelp)="showHelp('monetization/plan')"></app-form-buttons>
 </form>

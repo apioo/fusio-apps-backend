@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, signal} from '@angular/core';
 import {ErrorService, Form, HelpComponent, MessageComponent} from "ngx-fusio-sdk";
 import {BackendConnection, BackendConnectionIndexEntry, CommonFormContainer} from "fusio-sdk";
 import {ApiService} from "../../../api.service";
@@ -26,13 +26,13 @@ import {FormsModule} from "@angular/forms";
 })
 export class FormComponent extends Form<BackendConnection> {
 
-  connections?: Array<BackendConnectionIndexEntry>;
-  form?: CommonFormContainer;
-  entityClass?: string;
-  custom: boolean = false;
+  basicConnections = signal<Array<BackendConnectionIndexEntry>>([]);
+  sdkConnections = signal<Array<BackendConnectionIndexEntry>>([]);
+  form = signal<CommonFormContainer|undefined>(undefined);
+  custom = signal<boolean>(false);
 
-  basicConnections: Array<BackendConnectionIndexEntry> = [];
-  sdkConnections: Array<BackendConnectionIndexEntry> = [];
+  connections: Array<BackendConnectionIndexEntry> = [];
+  entityClass?: string;
 
   constructor(private service: ConnectionService, private fusio: ApiService, private modal: NgbModal, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);
@@ -44,9 +44,11 @@ export class FormComponent extends Form<BackendConnection> {
 
   override async onLoad(): Promise<void> {
     const response = await this.fusio.getClient().backend().connection().getClasses();
-    this.connections = response.connections;
-    this.basicConnections = this.getBasicConnections(this.connections || []);
-    this.sdkConnections = this.getSDKConnections(this.connections || []);
+
+    this.connections = response.connections || [];
+
+    this.basicConnections.set(this.getBasicConnections(this.connections));
+    this.sdkConnections.set(this.getSDKConnections(this.connections));
 
     const className = this.entity().class;
     if (className) {
@@ -59,7 +61,11 @@ export class FormComponent extends Form<BackendConnection> {
       return;
     }
 
-    this.form = await this.fusio.getClient().backend().connection().getForm(classString);
+    try {
+      this.form.set(await this.fusio.getClient().backend().connection().getForm(classString));
+    } catch (error) {
+      this.response.set(this.error.convert(error));
+    }
 
     const hasChanged = this.entityClass && this.entityClass !== this.entity().class;
     this.entityClass = this.entity().class;

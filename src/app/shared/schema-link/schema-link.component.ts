@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, signal, SimpleChanges} from '@angular/core';
 import {RouterLink} from "@angular/router";
 
 @Component({
@@ -13,8 +13,8 @@ export class SchemaLinkComponent implements OnInit, OnChanges {
 
   @Input() data?: string = '';
 
-  scheme?: string = '';
-  value?: string = '';
+  scheme = signal<string>('');
+  value = signal<string>('');
 
   ngOnInit(): void {
     this.parse();
@@ -35,7 +35,7 @@ export class SchemaLinkComponent implements OnInit, OnChanges {
       return;
     }
 
-    this.scheme = data.substring(0, pos);
-    this.value = data.substring(pos + 3);
+    this.scheme.set(data.substring(0, pos));
+    this.value.set(data.substring(pos + 3));
   }
 }

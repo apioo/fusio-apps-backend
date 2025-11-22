@@ -1,21 +1,23 @@
 
 <h1>
   <a [routerLink]="['/', 'action']">Action</a> /
-  <a [routerLink]="['/', 'action', '~' + action?.name]">{{ action?.name }}</a> /
+  <a [routerLink]="['/', 'action', '~' + action()?.name]">{{ action()?.name }}</a> /
   Designer
 </h1>
 
-<fusio-message [response]="message"></fusio-message>
+<fusio-message [response]="message()"></fusio-message>
 
 <div class="row">
   <div class="col-xl-6">
     <div class="card">
       <div class="card-header">Action</div>
-      @if (form && action) {
-        <div class="card-body">
-          <app-config [container]="form" [data]="action.config" (dataChange)="action.config = $event"></app-config>
-          <button (click)="submit()" class="btn btn-primary" type="button">Execute</button>
-        </div>
+      @if (form(); as form) {
+        @if (action(); as action) {
+          <div class="card-body">
+            <app-config [container]="form" [data]="action.config" (dataChange)="setConfig($event)"></app-config>
+            <button (click)="submit()" class="btn btn-primary" type="button">Execute</button>
+          </div>
+        }
       }
     </div>
   </div>
@@ -84,7 +86,7 @@
   </div>
 </div>
 
-@if (response) {
+@if (response(); as response) {
   <div class="row" style="margin-top:1rem;">
     <div class="col-md-12">
       <div class="card">

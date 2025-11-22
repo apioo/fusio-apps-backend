@@ -1,4 +1,4 @@
-@for (row of result; track $index) {
+@for (row of result(); track $index) {
   <div class="row mb-3">
     <div class="col-3">
       <input type="text" placeholder="" [id]="name + '_name_' + row.name" [name]="name + '_name_' + row.name" [(ngModel)]="row.name" (ngModelChange)="changeValue()" [disabled]="disabled" class="form-control">

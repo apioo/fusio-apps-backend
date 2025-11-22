@@ -18,13 +18,13 @@
       </div>
     </div>
   </div>
-  <div class="mb-3 row">
-    <label class="col-lg-2 col-form-label fw-bold">Schema</label>
-    <div class="col-lg-10">
-      <div style="height:500px;border:1px solid #ced4da">
-        <ngx-monaco-editor style="height:100%" name="schema" [options]="{theme: 'vs-light', language: 'json', readOnly: mode === 3}" [(ngModel)]="schema" [disabled]="mode === 3"></ngx-monaco-editor>
+  @if (spec(); as specification) {
+    <div class="mb-3 row">
+      <label class="col-lg-2 col-form-label fw-bold">Schema</label>
+      <div class="col-lg-10">
+        <typeschema-editor [specification]="specification" [importEnabled]="true" (change)="spec.set($event)"></typeschema-editor>
       </div>
     </div>
-  </div>
-  <app-form-buttons (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="router.navigate(getListLink())" (onHelp)="showHelp('api/schema')"></app-form-buttons>
+  }
+  <app-form-buttons [mode]="mode" (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="router.navigate(getListLink())" (onHelp)="showHelp('api/schema')"></app-form-buttons>
 </form>

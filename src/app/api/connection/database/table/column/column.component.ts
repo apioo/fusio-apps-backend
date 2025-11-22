@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, signal} from '@angular/core';
 import {BackendDatabaseTableColumn} from "fusio-sdk";
 import {FormsModule} from "@angular/forms";
 
@@ -21,7 +21,7 @@ export class ColumnComponent implements OnInit {
   newLength?: number;
   newNotNull?: boolean = false;
 
-  result: Array<BackendDatabaseTableColumn> = [];
+  result = signal<Array<BackendDatabaseTableColumn>>([]);
 
   types = [
     {key: 'smallint', value: 'SmallInt'},
@@ -41,7 +41,7 @@ export class ColumnComponent implements OnInit {
   ]
 
   ngOnInit(): void {
-    this.result = this.filter(this.data);
+    this.result.set(this.filter(this.data));
   }
 
   add() {
@@ -49,12 +49,15 @@ export class ColumnComponent implements OnInit {
       return;
     }
 
-    this.result.push({
-      name: this.newName,
-      type: this.newType,
-      length: this.newLength,
-      notNull: this.newNotNull,
-    })
+    this.result.update((columns) => {
+      columns.push({
+        name: this.newName,
+        type: this.newType,
+        length: this.newLength,
+        notNull: this.newNotNull,
+      });
+      return columns;
+    });
 
     this.newName = undefined;
     this.newType = 'string';
@@ -67,8 +70,11 @@ export class ColumnComponent implements OnInit {
       return;
     }
 
-    this.result = this.result.filter((row) => {
-      return row.name !== name;
+    this.result.update((columns) => {
+      columns = columns.filter((row) => {
+        return row.name !== name;
+      });
+      return columns;
     });
   }
 
@@ -77,7 +83,7 @@ export class ColumnComponent implements OnInit {
       return;
     }
 
-    this.dataChange.emit(this.filter(this.result));
+    this.dataChange.emit(this.filter(this.result()));
   }
 
   private filter(result: Array<BackendDatabaseTableColumn>) {

@@ -1,11 +1,16 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {CommonFormContainer} from "fusio-sdk";
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, signal, SimpleChanges} from '@angular/core';
+import {
+  CommonFormContainer,
+  CommonFormElement, CommonFormElementInput,
+  CommonFormElementSelect,
+  CommonFormElementTag,
+  CommonFormElementTextArea
+} from "fusio-sdk";
 import {FormsModule} from "@angular/forms";
 import {EditorComponent} from "ngx-monaco-editor-v2";
 import {CollectionComponent} from "../collection/collection.component";
 import {MapComponent} from "../map/map.component";
 import {Specification, TypeschemaEditorModule} from "ngx-typeschema-editor";
-import {KeyValuePipe} from "@angular/common";
 
 @Component({
   selector: 'app-config',
@@ -26,7 +31,7 @@ export class ConfigComponent implements OnInit, OnChanges {
   @Input() disabled: boolean = false;
   @Output() dataChange = new EventEmitter<Record<string, any>>();
 
-  elements: Array<any> = [];
+  elements = signal<Array<CommonFormElementInput | CommonFormElementSelect | CommonFormElementTag | CommonFormElementTextArea>>([]);
 
   spec: Specification = {
     imports: [],
@@ -56,9 +61,8 @@ export class ConfigComponent implements OnInit, OnChanges {
   }
 
   private loadElements(container?: CommonFormContainer): void {
-    this.elements = [];
-
     let data: Record<string, any> = {};
+    let elements: Array<CommonFormElementInput | CommonFormElementSelect | CommonFormElementTag | CommonFormElementTextArea> = [];
     container?.element?.forEach((element) => {
       if (!element.name) {
         return;
@@ -90,8 +94,10 @@ export class ConfigComponent implements OnInit, OnChanges {
         };
       }
 
-      this.elements.push(element);
+      elements.push(element);
     });
+
+    this.elements.set(elements);
 
     if (!this.data) {
       this.data = data;
@@ -99,5 +105,4 @@ export class ConfigComponent implements OnInit, OnChanges {
     }
   }
 
-  protected readonly Array = Array;
 }

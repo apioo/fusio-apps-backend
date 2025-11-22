@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, signal} from '@angular/core';
 import {BackendUser} from "fusio-sdk";
 import {UserService} from "ngx-fusio-sdk";
 import {ApiService} from "./api.service";
@@ -29,8 +29,8 @@ import {RouterLink, RouterOutlet} from "@angular/router";
 export class App implements OnInit {
 
   title = 'fusio';
-  hasUrl: boolean = true;
-  hasActiveInstance: boolean = false;
+  hasUrl = signal(true);
+  hasActiveInstance = signal(false);
 
   user?: BackendUser;
   menu = [{
@@ -45,8 +45,8 @@ export class App implements OnInit {
 
   ngOnInit(): void {
     this.user = this.userMeta.get();
-    this.hasUrl = typeof FUSIO_URL !== 'undefined' && FUSIO_URL !== null && FUSIO_URL !== '';
-    this.hasActiveInstance = InstanceManager.getActiveIndex() !== null;
+    this.hasUrl.set(typeof FUSIO_URL !== 'undefined' && FUSIO_URL !== null && FUSIO_URL !== '');
+    this.hasActiveInstance.set(InstanceManager.getActiveIndex() !== null);
 
     Config.fusio = this.fusio;
   }

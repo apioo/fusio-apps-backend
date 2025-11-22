@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, signal} from '@angular/core';
 import {ChartOptions, Converter, PieChartOptions} from "../../../analytics/statistic/converter";
 import {ApiService} from "../../../api.service";
-import {ChartComponent} from "ngx-apexcharts/signals";
+import {ChartComponent} from "ngx-apexcharts";
 
 @Component({
   selector: 'app-list',
@@ -13,15 +13,15 @@ import {ChartComponent} from "ngx-apexcharts/signals";
 })
 export class ListComponent implements OnInit {
 
-  errorsPerOperation?: ChartOptions;
-  incomingRequests?: ChartOptions;
-  incomingTransactions?: ChartOptions;
-  mostUsedOperations?: ChartOptions;
-  timePerOperation?: ChartOptions;
-  testCoverage?: PieChartOptions;
-  mostUsedActivities?: ChartOptions;
-  activitiesPerUser?: ChartOptions;
-  userRegistrations?: ChartOptions;
+  errorsPerOperation = signal<ChartOptions|undefined>(undefined);
+  incomingRequests = signal<ChartOptions|undefined>(undefined);
+  incomingTransactions = signal<ChartOptions|undefined>(undefined);
+  mostUsedOperations = signal<ChartOptions|undefined>(undefined);
+  timePerOperation = signal<ChartOptions|undefined>(undefined);
+  testCoverage = signal<PieChartOptions|undefined>(undefined);
+  mostUsedActivities = signal<ChartOptions|undefined>(undefined);
+  activitiesPerUser = signal<ChartOptions|undefined>(undefined);
+  userRegistrations = signal<ChartOptions|undefined>(undefined);
 
   constructor(private fusio: ApiService) {
   }
@@ -30,39 +30,39 @@ export class ListComponent implements OnInit {
     const response = await this.fusio.getClient().backend().dashboard().getAll();
 
     if (response.errorsPerOperation) {
-      this.errorsPerOperation = Converter.convertChart(response.errorsPerOperation, 10);
+      this.errorsPerOperation.set(Converter.convertChart(response.errorsPerOperation, 10));
     }
 
     if (response.incomingRequests) {
-      this.incomingRequests = Converter.convertChart(response.incomingRequests, 10);
+      this.incomingRequests.set(Converter.convertChart(response.incomingRequests, 10));
     }
 
     if (response.incomingTransactions) {
-      this.incomingTransactions = Converter.convertChart(response.incomingTransactions, 10);
+      this.incomingTransactions.set(Converter.convertChart(response.incomingTransactions, 10));
     }
 
     if (response.mostUsedOperations) {
-      this.mostUsedOperations = Converter.convertChart(response.mostUsedOperations, 10);
+      this.mostUsedOperations.set(Converter.convertChart(response.mostUsedOperations, 10));
     }
 
     if (response.timePerOperation) {
-      this.timePerOperation = Converter.convertChart(response.timePerOperation, 10);
+      this.timePerOperation.set(Converter.convertChart(response.timePerOperation, 10));
     }
 
     if (response.testCoverage) {
-      this.testCoverage = Converter.convertPieChart(response.testCoverage);
+      this.testCoverage.set(Converter.convertPieChart(response.testCoverage));
     }
 
     if (response.mostUsedActivities) {
-      this.mostUsedActivities = Converter.convertChart(response.mostUsedActivities, 10);
+      this.mostUsedActivities.set(Converter.convertChart(response.mostUsedActivities, 10));
     }
 
     if (response.activitiesPerUser) {
-      this.activitiesPerUser = Converter.convertChart(response.activitiesPerUser, 10);
+      this.activitiesPerUser.set(Converter.convertChart(response.activitiesPerUser, 10));
     }
 
     if (response.userRegistrations) {
-      this.userRegistrations = Converter.convertChart(response.userRegistrations, 10);
+      this.userRegistrations.set(Converter.convertChart(response.userRegistrations, 10));
     }
   }
 

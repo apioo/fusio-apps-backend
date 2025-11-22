@@ -21,7 +21,6 @@ import {DesignerComponent as ActionDesigner} from "./api/action/designer/designe
 import {ListComponent as SchemaList} from "./api/schema/list/list.component";
 import {DetailComponent as SchemaDetail} from "./api/schema/detail/detail.component";
 import {FormComponent as SchemaForm} from "./api/schema/form/form.component";
-import {DesignerComponent as SchemaDesigner} from "./api/schema/designer/designer.component";
 import {ListComponent as ConnectionList} from "./api/connection/list/list.component";
 import {DetailComponent as ConnectionDetail} from "./api/connection/detail/detail.component";
 import {FormComponent as ConnectionForm} from "./api/connection/form/form.component";
@@ -117,8 +116,6 @@ export const routes: Routes = [
   { path: 'action', canActivate: [isAuthenticated], children: EntityRoute.getAll(ActionList, ActionDetail, ActionForm) },
   { path: 'action/designer/:id', component: ActionDesigner, canActivate: [isAuthenticated] },
   { path: 'schema', canActivate: [isAuthenticated], children: EntityRoute.getAll(SchemaList, SchemaDetail, SchemaForm) },
-  { path: 'schema/designer/-/new', component: SchemaDesigner, canActivate: [isAuthenticated] },
-  { path: 'schema/designer/:id', component: SchemaDesigner, canActivate: [isAuthenticated] },
   { path: 'connection', canActivate: [isAuthenticated], children: [
       ...EntityRoute.getAll(ConnectionList, ConnectionDetail, ConnectionForm),
       { path: ':connection/database', canActivate: [isAuthenticated], children: EntityRoute.getAll(TableList, TableDetail, TableForm) },

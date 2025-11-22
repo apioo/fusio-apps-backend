@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, signal} from '@angular/core';
 import {BackendConnection, BackendDatabaseTable} from "fusio-sdk";
 import {ErrorService, Form, MessageComponent} from "ngx-fusio-sdk";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
@@ -28,7 +28,7 @@ import {FormButtons} from "../../../../../shared/form-buttons/form-buttons";
 })
 export class FormComponent extends Form<BackendDatabaseTable> implements OnInit {
 
-  selectedConnection?: BackendConnection;
+  selectedConnection = signal<BackendConnection|undefined>(undefined);
 
   constructor(private service: TableService, private connection: ConnectionService, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);
@@ -41,9 +41,14 @@ export class FormComponent extends Form<BackendDatabaseTable> implements OnInit 
   override async ngOnInit(): Promise<void> {
     this.route.params.subscribe(async (params) => {
       if (params['connection']) {
-        this.selectedConnection = await this.connection.get(params['connection']);
-        if (this.selectedConnection) {
-          this.service.setConnection(this.selectedConnection);
+        try {
+          const connection = await this.connection.get(params['connection']);
+          this.selectedConnection.set(connection);
+          if (connection) {
+            this.service.setConnection(connection);
+          }
+        } catch (error) {
+          this.response.set(this.error.convert(error));
         }
       }
 

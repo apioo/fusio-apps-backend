@@ -157,7 +157,7 @@ pre
   background-image: linear-gradient(to bottom,#444 0,#222 100%);
 }
 
-.fusio-content > div > h1 > a
+.fusio-content > * > h1 > a
 {
   color:#eee;
 }

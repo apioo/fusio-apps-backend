@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, signal} from '@angular/core';
 import {BackendDatabaseTableIndex} from "fusio-sdk";
 import {FormsModule} from "@angular/forms";
 import {CsvPipe} from "../../../../../shared/tag-editor/csv.pipe";
@@ -22,10 +22,10 @@ export class IndexComponent implements OnInit {
   newUnique?: boolean = false;
   newColumns?: Array<string>;
 
-  result: Array<BackendDatabaseTableIndex> = [];
+  result = signal<Array<BackendDatabaseTableIndex>>([]);
 
   ngOnInit(): void {
-    this.result = this.filter(this.data);
+    this.result.set(this.filter(this.data));
   }
 
   add() {
@@ -33,11 +33,14 @@ export class IndexComponent implements OnInit {
       return;
     }
 
-    this.result.push({
-      name: this.newName,
-      unique: this.newUnique,
-      columns: this.newColumns,
-    })
+    this.result.update((columns) => {
+      columns.push({
+        name: this.newName,
+        unique: this.newUnique,
+        columns: this.newColumns,
+      });
+      return columns;
+    });
 
     this.newName = undefined;
     this.newUnique = false;
@@ -49,8 +52,11 @@ export class IndexComponent implements OnInit {
       return;
     }
 
-    this.result = this.result.filter((row) => {
-      return row.name !== name;
+    this.result.update((columns) => {
+      columns = columns.filter((row) => {
+        return row.name !== name;
+      });
+      return columns;
     });
   }
 
@@ -59,7 +65,7 @@ export class IndexComponent implements OnInit {
       return;
     }
 
-    this.dataChange.emit(this.filter(this.result));
+    this.dataChange.emit(this.filter(this.result()));
   }
 
   private filter(result: Array<BackendDatabaseTableIndex>) {

@@ -1,20 +1,20 @@
 
-@for (element of elements; track element.name) {
+@for (element of elements(); track $index) {
   <div class="mb-3 row">
     <label [for]="'config-' + element.name" class="col-lg-2 col-form-label fw-bold">{{element.title}}</label>
     <div class="col-lg-10">
-      @if (element.element === 'input') {
+      @if (element.name && element.element === 'input') {
         <input [ngModel]="data![element.name]" (ngModelChange)="doChange(element.name, $event)" [id]="'config-' + element.name" [name]="element.name" [type]="element.type" [disabled]="disabled" class="form-control">
         <div class="form-text" [innerHTML]="element.help"></div>
       }
-      @if (element.element === 'checkbox') {
+      @else if (element.name && element.element === 'checkbox') {
         <div class="form-check form-switch">
           <input [ngModel]="data![element.name]" (ngModelChange)="doChange(element.name, $event)" [id]="'config-' + element.name" [name]="element.name" [disabled]="disabled" type="checkbox" class="form-check-input">
         </div>
         <div class="form-text" [innerHTML]="element.help"></div>
       }
-      @if (element.element === 'select') {
-        @if (Array.isArray(element?.options)) {
+      @else if (element.name && element.element === 'select') {
+        @if ("options" in element) {
           <select [ngModel]="data![element.name]" (ngModelChange)="doChange(element.name, $event)" [id]="'config-' + element.name" [name]="element.name" [disabled]="disabled" class="form-select">
             @for (opt of element?.options; track opt.key) {
               <option [value]="opt.key">{{opt.value}}</option>
@@ -23,26 +23,28 @@
         }
         <div class="form-text" [innerHTML]="element.help"></div>
       }
-      @if (element.element === 'textarea') {
-        <div style="width:100%;height:500px;border:1px solid #ced4da">
-          <ngx-monaco-editor [ngModel]="data![element.name]" (ngModelChange)="doChange(element.name, $event)" [options]="{theme: 'vs-light', language: element.mode, readOnly: disabled}" [id]="'config-' + element.name" [name]="element.name" style="height:100%"></ngx-monaco-editor>
-        </div>
+      @else if (element.name && element.element === 'textarea') {
+        @if ("mode" in element) {
+          <div style="width:100%;height:500px;border:1px solid #ced4da">
+            <ngx-monaco-editor [ngModel]="data![element.name]" (ngModelChange)="doChange(element.name, $event)" [options]="{theme: 'vs-light', language: element.mode, readOnly: disabled}" [id]="'config-' + element.name" [name]="element.name" style="height:100%"></ngx-monaco-editor>
+          </div>
+        }
         <div class="form-text" [innerHTML]="element.help"></div>
       }
-      @if (element.element === 'collection') {
+      @else if (element.name && element.element === 'collection') {
         <app-collection [data]="data![element.name]" (dataChange)="doChange(element.name, $event)" [id]="'config-' + element.name" [name]="element.name" [disabled]="disabled"></app-collection>
         <div class="form-text" [innerHTML]="element.help"></div>
       }
-      @if (element.element === 'map') {
+      @else if (element.name && element.element === 'map') {
         <app-map [data]="data![element.name]" (dataChange)="doChange(element.name, $event)" [id]="'config-' + element.name" [name]="element.name" [disabled]="disabled"></app-map>
         <div class="form-text" [innerHTML]="element.help"></div>
       }
-      @if (element.element === 'typeschema') {
+      @else if (element.name && element.element === 'typeschema') {
         <div style="width:100%;min-height:500px;border:1px solid #ced4da">
           <typeschema-editor [specification]="spec" (change)="doChange(element.name, $event)" [importEnabled]="false" [readonly]="disabled"></typeschema-editor>
         </div>
       }
-      @if (element.element === 'typeapi') {
+      @else if (element.name && element.element === 'typeapi') {
         <div style="width:100%;min-height:500px;border:1px solid #ced4da">
           <typeschema-editor [specification]="spec" [operationEnabled]="true" [importEnabled]="false" (change)="doChange(element.name, $event)" [readonly]="disabled"></typeschema-editor>
         </div>
@@ -50,4 +52,3 @@
     </div>
   </div>
 }
-
