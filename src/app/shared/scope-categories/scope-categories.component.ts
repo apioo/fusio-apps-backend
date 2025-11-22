@@ -1,10 +1,18 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {BackendScopeCategory, BackendScopeCategoryScope} from "fusio-sdk";
 import {ApiService} from "../../api.service";
+import {NgbNav, NgbNavContent, NgbNavItem, NgbNavLink, NgbNavOutlet} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-scope-categories',
   templateUrl: './scope-categories.component.html',
+  imports: [
+    NgbNav,
+    NgbNavItem,
+    NgbNavLink,
+    NgbNavContent,
+    NgbNavOutlet
+  ],
   styleUrls: ['./scope-categories.component.css']
 })
 export class ScopeCategoriesComponent implements OnInit {

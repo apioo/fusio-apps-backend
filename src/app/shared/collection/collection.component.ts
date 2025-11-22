@@ -1,8 +1,12 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-collection',
   templateUrl: './collection.component.html',
+  imports: [
+    FormsModule
+  ],
   styleUrls: ['./collection.component.css']
 })
 export class CollectionComponent implements OnInit {

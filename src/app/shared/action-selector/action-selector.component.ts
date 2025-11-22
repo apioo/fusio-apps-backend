@@ -1,9 +1,17 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ActionService} from "../../services/action.service";
+import {FormsModule} from "@angular/forms";
+import {FormAutocompleteComponent} from "ngx-fusio-sdk";
+import {NgbPopover} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-action-selector',
   templateUrl: './action-selector.component.html',
+  imports: [
+    FormsModule,
+    FormAutocompleteComponent,
+    NgbPopover
+  ],
   styleUrls: ['./action-selector.component.css']
 })
 export class ActionSelectorComponent implements OnInit {

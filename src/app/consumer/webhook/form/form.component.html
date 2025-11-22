@@ -1,20 +1,18 @@
 
 <h1>
   <a [routerLink]="getListLink()">Webhook</a> /
-  <a [routerLink]="getDetailLink('~' + entity?.name)">{{ entity?.name }}</a> /
-  <ng-container *ngIf="mode === 1">Create</ng-container>
-  <ng-container *ngIf="mode === 2">Update</ng-container>
-  <ng-container *ngIf="mode === 3">Delete</ng-container>
+  <a [routerLink]="getDetailLink('~' + entity().name)">{{ entity().name }}</a> /
+  <app-form-breadcrump [mode]="mode"></app-form-breadcrump>
 </h1>
 
-<fusio-message [response]="response"></fusio-message>
+<fusio-message [response]="response()"></fusio-message>
 
-<form *ngIf="entity">
+<form>
   <div class="mb-3 row">
     <label for="endpoint" class="col-lg-2 col-form-label fw-bold">Name</label>
     <div class="col-lg-10">
       <div class="input-group">
-        <input type="url" id="name" name="name" [(ngModel)]="entity.name" [disabled]="mode === 3" class="form-control">
+        <input type="url" id="name" name="name" [ngModel]="entity().name" (ngModelChange)="set(entity, 'name', $event)" [disabled]="mode === 3" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
         <ng-template #nameHelp>The name of the webhook</ng-template>
       </div>
@@ -23,7 +21,7 @@
   <div class="mb-3 row">
     <label for="event" class="col-lg-2 col-form-label fw-bold">Event</label>
     <div class="col-lg-10">
-      <fusio-form-autocomplete name="event" [service]="event" [data]="entity.eventId" (dataChangeId)="entity.eventId = $event" [disabled]="mode === 3">
+      <fusio-form-autocomplete name="event" [service]="event" [data]="entity().eventId" (dataChangeId)="set(entity, 'eventId', $event)" [disabled]="mode === 3">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="eventHelp"><i class="bi bi-question"></i></button>
         <ng-template #eventHelp>Target event for this subscription</ng-template>
       </fusio-form-autocomplete>
@@ -32,23 +30,18 @@
   <div class="mb-3 row">
     <label for="user" class="col-lg-2 col-form-label fw-bold">User</label>
     <div class="col-lg-10">
-      <fusio-form-autocomplete name="user" [service]="user" [data]="entity.userId" (dataChangeId)="entity.userId = $event" [disabled]="mode === 3"></fusio-form-autocomplete>
+      <fusio-form-autocomplete name="user" [service]="user" [data]="entity().userId" (dataChangeId)="set(entity, 'userId', $event)" [disabled]="mode === 3"></fusio-form-autocomplete>
     </div>
   </div>
   <div class="mb-3 row">
     <label for="endpoint" class="col-lg-2 col-form-label fw-bold">Endpoint</label>
     <div class="col-lg-10">
       <div class="input-group">
-        <input type="url" id="endpoint" name="endpoint" [(ngModel)]="entity.endpoint" [disabled]="mode === 3" class="form-control">
+        <input type="url" id="endpoint" name="endpoint" [ngModel]="entity().endpoint" (ngModelChange)="set(entity, 'endpoint', $event)" [disabled]="mode === 3" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="endpointHelp"><i class="bi bi-question"></i></button>
         <ng-template #endpointHelp>The endpoint which receives the webhook</ng-template>
       </div>
     </div>
   </div>
-  <div class="btn-group" role="group">
-    <ng-container *ngIf="mode === 1"><button type="button" class="btn btn-primary" (click)="doCreate(entity)">Create</button></ng-container>
-    <ng-container *ngIf="mode === 2"><button type="button" class="btn btn-primary" (click)="doUpdate(entity)">Update</button></ng-container>
-    <ng-container *ngIf="mode === 3"><button type="button" class="btn btn-danger" (click)="doDelete(entity)">Delete</button></ng-container>
-    <button type="button" (click)="router.navigate(getListLink())" class="btn btn-light fusio-btn-back">Back</button>
-  </div>
+  <app-form-buttons (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="router.navigate(getListLink())" (onHelp)="showHelp('consumer/webhook')"></app-form-buttons>
 </form>

@@ -1,10 +1,10 @@
 
 <h1>Operation</h1>
 
-<fusio-message [response]="response"></fusio-message>
+<fusio-message [response]="response()"></fusio-message>
 
 <fusio-search
-  [searchTerm]="search"
+  [searchTerm]="search()"
   (search)="doSearch(1, $event)"
   (newClick)="router.navigate(getNewLink())"
   placeholder="/acme/endpoint"
@@ -22,31 +22,41 @@
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let entry of entries">
-    <td>
-      <span *ngIf="entry.active === true" class="badge bg-success fusio-operation-active me-1">Active</span>
-      <span *ngIf="entry.active !== true" class="badge bg-secondary fusio-operation-active me-1">Inactive</span>
-      <span *ngIf="entry.public === true" class="badge bg-primary fusio-operation-public">Public</span>
-      <span *ngIf="entry.public !== true" class="badge bg-info fusio-operation-public">Private</span>
-    </td>
-    <td><code>{{entry.name}}</code></td>
-    <td><span class="badge text-bg-dark fusio-operation-http-method me-1">{{entry.httpMethod}}</span></td>
-    <td><code class="fusio-operation-http-path"><a href="{{baseUrl}}{{entry.httpPath}}">{{entry.httpPath}}</a></code></td>
-    <td><app-action-link [data]="entry.action"></app-action-link></td>
-    <td>
-      <div class="btn-group" role="group">
-        <a [routerLink]="getDetailLink(entry.id)" class="btn btn-primary"><i class="bi bi-search"></i></a>
-        <a [routerLink]="getEditLink(entry.id)" class="btn btn-secondary"><i class="bi bi-pen"></i></a>
-        <a [routerLink]="getDeleteLink(entry.id)" class="btn btn-danger"><i class="bi bi-x"></i></a>
-      </div>
-    </td>
-  </tr>
+  @for (entry of entries(); track entry.id) {
+    <tr>
+      <td>
+        @if (entry.active === true) {
+          <span class="badge bg-success fusio-operation-active me-1">Active</span>
+        }
+        @if (entry.active !== true) {
+          <span class="badge bg-secondary fusio-operation-active me-1">Inactive</span>
+        }
+        @if (entry.public === true) {
+          <span class="badge bg-primary fusio-operation-public">Public</span>
+        }
+        @if (entry.public !== true) {
+          <span class="badge bg-info fusio-operation-public">Private</span>
+        }
+      </td>
+      <td><code>{{entry.name}}</code></td>
+      <td><span class="badge text-bg-dark fusio-operation-http-method me-1">{{entry.httpMethod}}</span></td>
+      <td><code class="fusio-operation-http-path"><a href="{{baseUrl}}{{entry.httpPath}}">{{entry.httpPath}}</a></code></td>
+      <td><app-action-link [data]="entry.action"></app-action-link></td>
+      <td>
+        <div class="btn-group" role="group">
+          <a [routerLink]="getDetailLink(entry.id)" class="btn btn-primary"><i class="bi bi-search"></i></a>
+          <a [routerLink]="getEditLink(entry.id)" class="btn btn-secondary"><i class="bi bi-pen"></i></a>
+          <a [routerLink]="getDeleteLink(entry.id)" class="btn btn-danger"><i class="bi bi-x"></i></a>
+        </div>
+      </td>
+    </tr>
+  }
   </tbody>
 </table>
 <ngb-pagination
-  [(page)]="page"
-  [pageSize]="pageSize"
-  [collectionSize]="totalResults"
+  [page]="page()"
+  [pageSize]="pageSize()"
+  [collectionSize]="totalResults()"
   [maxSize]="4"
   [ellipses]="false"
   (pageChange)="doSearch($event)"></ngb-pagination>

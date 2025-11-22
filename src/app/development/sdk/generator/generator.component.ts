@@ -1,12 +1,20 @@
 import {Component, OnInit} from '@angular/core';
-import {ErrorService} from "ngx-fusio-sdk";
+import {ErrorService, MessageComponent} from "ngx-fusio-sdk";
 import {BackendSdkTypes, CommonMessage} from "fusio-sdk";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, RouterLink} from "@angular/router";
 import {ApiService} from "../../../api.service";
+import {FormsModule} from "@angular/forms";
+import {KeyValuePipe} from "@angular/common";
 
 @Component({
   selector: 'app-sdk-generator',
   templateUrl: './generator.component.html',
+  imports: [
+    RouterLink,
+    MessageComponent,
+    FormsModule,
+    KeyValuePipe
+  ],
   styleUrls: ['./generator.component.css']
 })
 export class GeneratorComponent implements OnInit {

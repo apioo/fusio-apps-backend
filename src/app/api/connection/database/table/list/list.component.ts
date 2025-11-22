@@ -1,13 +1,19 @@
 import {Component} from '@angular/core';
-import {ErrorService, List} from "ngx-fusio-sdk";
+import {ErrorService, List, SearchComponent} from "ngx-fusio-sdk";
 import {BackendConnection, BackendDatabaseTable} from "fusio-sdk";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {TableService} from "../../../../../services/connection/database/table.service";
 import {ConnectionService} from "../../../../../services/connection.service";
+import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-connection-database-table-list',
   templateUrl: './list.component.html',
+  imports: [
+    RouterLink,
+    SearchComponent,
+    NgbPagination
+  ],
   styleUrls: ['./list.component.css']
 })
 export class ListComponent extends List<BackendDatabaseTable> {

@@ -1,13 +1,19 @@
 import {Component, OnInit} from '@angular/core';
-import {ErrorService} from "ngx-fusio-sdk";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ErrorService, MessageComponent} from "ngx-fusio-sdk";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {ApiService} from "../../../api.service";
 import {ConnectionService} from "../../../services/connection.service";
 import {BackendConnection, CommonMessage} from "fusio-sdk";
+import {TypeschemaEditorModule} from "ngx-typeschema-editor";
 
 @Component({
   selector: 'app-connection-sdk',
   templateUrl: './sdk.component.html',
+  imports: [
+    RouterLink,
+    MessageComponent,
+    TypeschemaEditorModule
+  ],
   styleUrls: ['./sdk.component.css']
 })
 export class SdkComponent implements OnInit {

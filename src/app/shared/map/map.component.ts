@@ -1,8 +1,12 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
+  imports: [
+    FormsModule
+  ],
   styleUrls: ['./map.component.css']
 })
 export class MapComponent implements OnInit {

@@ -1,10 +1,16 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {BackendOperationThrows} from "fusio-sdk";
 import {SchemaService} from "../../services/schema.service";
+import {FormsModule} from "@angular/forms";
+import {SchemaSelectorComponent} from "../schema-selector/schema-selector.component";
 
 @Component({
   selector: 'app-operation-throws',
   templateUrl: './operation-throws.component.html',
+  imports: [
+    FormsModule,
+    SchemaSelectorComponent
+  ],
   styleUrls: ['./operation-throws.component.css']
 })
 export class OperationThrowsComponent implements OnInit {

@@ -6,10 +6,14 @@ import {Instance, InstanceManager} from "../instance-manager";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {ModalComponent} from "./modal/modal.component";
 import {ConfigBuilder} from "../config-builder";
+import {NgClass} from "@angular/common";
 
 @Component({
   selector: 'app-instance',
   templateUrl: './instance.component.html',
+  imports: [
+    NgClass
+  ],
   styleUrl: './instance.component.css'
 })
 export class InstanceComponent implements OnInit {

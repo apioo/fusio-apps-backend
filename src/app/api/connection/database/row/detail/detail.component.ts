@@ -1,14 +1,23 @@
 import {Component} from '@angular/core';
 import {Detail, ErrorService} from "ngx-fusio-sdk";
 import {BackendConnection, BackendDatabaseRow, BackendDatabaseTable} from "fusio-sdk";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {RowService} from "../../../../../services/connection/database/row.service";
 import {TableService} from "../../../../../services/connection/database/table.service";
 import {ConnectionService} from "../../../../../services/connection.service";
+import {EditorComponent} from "ngx-monaco-editor-v2";
+import {FormsModule} from "@angular/forms";
+import {JsonPipe} from "@angular/common";
 
 @Component({
   selector: 'app-connection-database-row-detail',
   templateUrl: './detail.component.html',
+  imports: [
+    RouterLink,
+    EditorComponent,
+    FormsModule,
+    JsonPipe
+  ],
   styleUrls: ['./detail.component.css']
 })
 export class DetailComponent extends Detail<BackendDatabaseRow> {

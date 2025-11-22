@@ -1,14 +1,20 @@
 import {Component} from '@angular/core';
-import {ErrorService, List} from "ngx-fusio-sdk";
+import {ErrorService, List, SearchComponent} from "ngx-fusio-sdk";
 import {BackendConnection, BackendDatabaseRow, BackendDatabaseTable, BackendDatabaseTableColumn} from "fusio-sdk";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {RowService} from "../../../../../services/connection/database/row.service";
 import {TableService} from "../../../../../services/connection/database/table.service";
 import {ConnectionService} from "../../../../../services/connection.service";
+import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-connection-database-row-list',
   templateUrl: './list.component.html',
+  imports: [
+    RouterLink,
+    SearchComponent,
+    NgbPagination
+  ],
   styleUrls: ['./list.component.css']
 })
 export class ListComponent extends List<BackendDatabaseRow> {
@@ -57,8 +63,8 @@ export class ListComponent extends List<BackendDatabaseRow> {
         return;
       }
 
-      this.page = page || 1;
-      this.search = search || '';
+      this.page.set(page || 1);
+      this.search.set(search || '');
     });
   }
 

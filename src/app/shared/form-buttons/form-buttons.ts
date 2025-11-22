@@ -13,6 +13,7 @@ export class FormButtons {
   @Output() onCreate = new EventEmitter<void>();
   @Output() onUpdate = new EventEmitter<void>();
   @Output() onDelete = new EventEmitter<void>();
+  @Output() onBack = new EventEmitter<void>();
   @Output() onHelp = new EventEmitter<void>();
 
 }

@@ -1,21 +1,21 @@
 
 <h1>
   <a [routerLink]="getListLink()">Form</a> /
-  <a [routerLink]="getDetailLink('~' + entity?.name)">{{ entity?.name }}</a> /
-  <ng-container *ngIf="mode === 1">Create</ng-container>
-  <ng-container *ngIf="mode === 2">Update</ng-container>
-  <ng-container *ngIf="mode === 3">Delete</ng-container>
+  <a [routerLink]="getDetailLink('~' + entity().name)">{{ entity().name }}</a> /
+  <app-form-breadcrump [mode]="mode"></app-form-breadcrump>
 </h1>
 
-<fusio-message [response]="response"></fusio-message>
+<fusio-message [response]="response()"></fusio-message>
 
-<form *ngIf="entity">
+<form>
   <div class="mb-3 row">
     <label for="status" class="col-lg-2 col-form-label fw-bold">Status</label>
     <div class="col-lg-10">
       <div class="input-group">
-        <select id="status" name="status" [(ngModel)]="entity.status" [disabled]="mode === 3" class="form-select">
-          <option *ngFor="let status of status" [ngValue]="status.key">{{status.value}}</option>
+        <select id="status" name="status" [ngModel]="entity().status" (ngModelChange)="set(entity, 'status', $event)" [disabled]="mode === 3" class="form-select">
+          @for (status of status; track status.key) {
+            <option [ngValue]="status.key">{{status.value}}</option>
+          }
         </select>
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="statusHelp"><i class="bi bi-question"></i></button>
         <ng-template #statusHelp>The status of the user</ng-template>
@@ -25,7 +25,7 @@
   <div class="mb-3 row">
     <label for="role" class="col-lg-2 col-form-label fw-bold">Role</label>
     <div class="col-lg-10">
-      <fusio-form-autocomplete name="role" [service]="role" [data]="entity.roleId" (dataChangeId)="entity.roleId = $event" [disabled]="mode === 3">
+      <fusio-form-autocomplete name="role" [service]="role" [data]="entity().roleId" (dataChangeId)="set(entity, 'roleId', $event)" [disabled]="mode === 3">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="roleHelp"><i class="bi bi-question"></i></button>
         <ng-template #roleHelp>Role for this user</ng-template>
       </fusio-form-autocomplete>
@@ -35,7 +35,7 @@
     <label for="name" class="col-lg-2 col-form-label fw-bold">Name</label>
     <div class="col-lg-10">
       <div class="input-group">
-        <input type="text" id="name" name="name" [(ngModel)]="entity.name" [disabled]="mode === 3" class="form-control">
+        <input type="text" id="name" name="name" [ngModel]="entity().name" (ngModelChange)="set(entity, 'name', $event)" [disabled]="mode === 3" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
         <ng-template #nameHelp>Unique name of the user</ng-template>
       </div>
@@ -45,26 +45,26 @@
     <label for="email" class="col-lg-2 col-form-label fw-bold">Email</label>
     <div class="col-lg-10">
       <div class="input-group">
-        <input type="email" id="email" name="email" [(ngModel)]="entity.email" [disabled]="mode === 3" class="form-control">
+        <input type="email" id="email" name="email" [ngModel]="entity().email" (ngModelChange)="set(entity, 'email', $event)" [disabled]="mode === 3" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="emailHelp"><i class="bi bi-question"></i></button>
         <ng-template #emailHelp>Unique email assigned to the user</ng-template>
       </div>
     </div>
   </div>
-  <div class="mb-3 row" *ngIf="mode === 1">
-    <label for="password" class="col-lg-2 col-form-label fw-bold">Password</label>
-    <div class="col-lg-10">
-      <div class="input-group">
-        <input type="password" id="password" name="password" [(ngModel)]="entity.password" class="form-control">
-        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="passwordHelp"><i class="bi bi-question"></i></button>
-        <ng-template #passwordHelp>Password for this user</ng-template>
+  @if (mode === 1) {
+    <div class="mb-3 row">
+      <label for="password" class="col-lg-2 col-form-label fw-bold">Password</label>
+      <div class="col-lg-10">
+        <div class="input-group">
+          <input type="password" id="password" name="password" [ngModel]="entity().password" (ngModelChange)="set(entity, 'password', $event)" class="form-control">
+          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="passwordHelp"><i class="bi bi-question"></i></button>
+          <ng-template #passwordHelp>Password for this user</ng-template>
+        </div>
       </div>
     </div>
-  </div>
-  <app-scope-categories *ngIf="mode === 2" [scopes]="entity.scopes" (dataChange)="entity.scopes = $event"></app-scope-categories>
-  <div class="btn-group" role="group">
-    <ng-container *ngIf="mode === 1"><button type="button" class="btn btn-primary" (click)="doCreate(entity)">Create</button></ng-container>
-    <ng-container *ngIf="mode === 2"><button type="button" class="btn btn-primary" (click)="doUpdate(entity)">Update</button></ng-container>
-    <ng-container *ngIf="mode === 3"><button type="button" class="btn btn-danger" (click)="doDelete(entity)">Delete</button></ng-container>
-  </div>
+  }
+  @if (mode === 2) {
+    <app-scope-categories [scopes]="entity().scopes" (dataChange)="set(entity, 'scopes', $event)"></app-scope-categories>
+  }
+  <app-form-buttons (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="router.navigate(getListLink())" (onHelp)="showHelp('consumer/user')"></app-form-buttons>
 </form>

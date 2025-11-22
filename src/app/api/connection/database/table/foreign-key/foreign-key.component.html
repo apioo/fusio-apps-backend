@@ -1,20 +1,24 @@
-<div class="row mb-3" *ngFor="let row of result;">
-  <div class="col-3">
-    <input type="text" [id]="name + '_name_' + row.name" [name]="name + '_name_' + row.name" [(ngModel)]="row.name" (ngModelChange)="changeValue()" [disabled]="disabled" class="form-control">
-  </div>
-  <div class="col-3">
-    <input type="text" [id]="name + '_foreign_table_' + row.name" [name]="name + '_foreign_table_' + row.name" [(ngModel)]="row.foreignTable" (ngModelChange)="changeValue()" [disabled]="disabled" class="form-control">
-  </div>
-  <div class="col-3">
-    <input type="text" [id]="name + '_local_columns_' + row.name" [name]="name + '_local_columns_' + row.name" [ngModel]="row.localColumnNames | csv" (ngModelChange)="row.localColumnNames = parseCsv($event); changeValue()" [disabled]="disabled" class="form-control">
-  </div>
-  <div class="col-3">
-    <div class="input-group">
-      <input type="text" [id]="name + '_foreign_columns_' + row.name" [name]="name + '_foreign_columns_' + row.name" [ngModel]="row.foreignColumnNames | csv" (ngModelChange)="row.foreignColumnNames = parseCsv($event); changeValue()" [disabled]="disabled" class="form-control">
-      <button class="btn btn-outline-secondary" (click)="remove(row.name); changeValue()"><i class="bi bi-x"></i></button>
+
+@for (row of result; track $index) {
+  <div class="row mb-3">
+    <div class="col-3">
+      <input type="text" [id]="name + '_name_' + row.name" [name]="name + '_name_' + row.name" [(ngModel)]="row.name" (ngModelChange)="changeValue()" [disabled]="disabled" class="form-control">
+    </div>
+    <div class="col-3">
+      <input type="text" [id]="name + '_foreign_table_' + row.name" [name]="name + '_foreign_table_' + row.name" [(ngModel)]="row.foreignTable" (ngModelChange)="changeValue()" [disabled]="disabled" class="form-control">
+    </div>
+    <div class="col-3">
+      <input type="text" [id]="name + '_local_columns_' + row.name" [name]="name + '_local_columns_' + row.name" [ngModel]="row.localColumnNames | csv" (ngModelChange)="row.localColumnNames = parseCsv($event); changeValue()" [disabled]="disabled" class="form-control">
+    </div>
+    <div class="col-3">
+      <div class="input-group">
+        <input type="text" [id]="name + '_foreign_columns_' + row.name" [name]="name + '_foreign_columns_' + row.name" [ngModel]="row.foreignColumnNames | csv" (ngModelChange)="row.foreignColumnNames = parseCsv($event); changeValue()" [disabled]="disabled" class="form-control">
+        <button class="btn btn-outline-secondary" (click)="remove(row.name); changeValue()"><i class="bi bi-x"></i></button>
+      </div>
     </div>
   </div>
-</div>
+}
+
 <div class="row">
   <div class="col-3">
     <input type="text" [id]="name + '_name'" [name]="name + '_name'" [(ngModel)]="newName" (ngModelChange)="changeValue()" [disabled]="disabled" class="form-control">

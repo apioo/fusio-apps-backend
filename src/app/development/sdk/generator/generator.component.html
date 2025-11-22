@@ -17,7 +17,9 @@
             <div class="col-xl-10">
               <div class="input-group">
                 <select id="class" name="class" [(ngModel)]="type" class="form-select">
-                  <option *ngFor="let type of types|keyvalue" [ngValue]="type.key">{{type.key}}</option>
+                  @for (type of types|keyvalue; track type.key) {
+                    <option [ngValue]="type.key">{{type.key}}</option>
+                  }
                 </select>
               </div>
             </div>

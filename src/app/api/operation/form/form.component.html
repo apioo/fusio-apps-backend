@@ -1,20 +1,18 @@
 
 <h1>
   <a [routerLink]="getListLink()">Operation</a> /
-  <a [routerLink]="getDetailLink('~' + entity?.name)">{{ entity?.name }}</a> /
-  <ng-container *ngIf="mode === 1">Create</ng-container>
-  <ng-container *ngIf="mode === 2">Update</ng-container>
-  <ng-container *ngIf="mode === 3">Delete</ng-container>
+  <a [routerLink]="getDetailLink('~' + entity().name)">{{ entity().name }}</a> /
+  <app-form-breadcrump [mode]="mode"></app-form-breadcrump>
 </h1>
 
-<fusio-message [response]="response"></fusio-message>
+<fusio-message [response]="response()"></fusio-message>
 
-<form *ngIf="entity">
+<form>
   <div class="mb-3 row">
     <label for="name" class="col-lg-2 col-form-label fw-bold">Name</label>
     <div class="col-lg-10">
       <div class="input-group">
-        <input type="text" id="name" name="name" [(ngModel)]="entity.name" [disabled]="isDisabled()" class="form-control">
+        <input type="text" id="name" name="name" [ngModel]="entity().name" (ngModelChange)="set(entity, 'name', $event)" [disabled]="isDisabled()" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
         <ng-template #nameHelp>Unique name of the operation i.e. <code>My.Awesome.Operation.execute</code></ng-template>
       </div>
@@ -23,14 +21,14 @@
   <div class="mb-3 row">
     <label for="scope" class="col-lg-2 col-form-label fw-bold">Scopes</label>
     <div class="col-lg-10">
-      <app-tag-editor name="scope" [data]="entity.scopes" (dataChange)="entity.scopes = $event" [disabled]="isDisabled()"></app-tag-editor>
+      <app-tag-editor name="scope" [data]="entity().scopes" (dataChange)="set(entity, 'scopes', $event)" [disabled]="isDisabled()"></app-tag-editor>
     </div>
   </div>
   <div class="mb-3 row">
     <label for="active" class="col-lg-2 col-form-label fw-bold">Active</label>
     <div class="col-lg-10">
       <div class="form-check form-switch">
-        <input type="checkbox" id="active" name="active" [(ngModel)]="entity.active" [disabled]="isDisabled()" class="form-check-input">
+        <input type="checkbox" id="active" name="active" [ngModel]="entity().active" (ngModelChange)="set(entity, 'active', $event)" [disabled]="isDisabled()" class="form-check-input">
       </div>
     </div>
   </div>
@@ -38,7 +36,7 @@
     <label for="public" class="col-lg-2 col-form-label fw-bold">Public</label>
     <div class="col-lg-10">
       <div class="form-check form-switch">
-        <input type="checkbox" id="public" name="public" [(ngModel)]="entity.public" [disabled]="isDisabled()" class="form-check-input">
+        <input type="checkbox" id="public" name="public" [ngModel]="entity().public" (ngModelChange)="set(entity, 'public', $event)" [disabled]="isDisabled()" class="form-check-input">
       </div>
     </div>
   </div>
@@ -46,7 +44,7 @@
     <label for="stability" class="col-lg-2 col-form-label fw-bold">Stability</label>
     <div class="col-lg-10">
       <div class="input-group">
-        <select id="stability" name="stability" [(ngModel)]="entity.stability" class="form-select">
+        <select id="stability" name="stability" [ngModel]="entity().stability" (ngModelChange)="set(entity, 'stability', $event)" class="form-select">
           <option *ngFor="let stability of stabilities" [ngValue]="stability.key">{{stability.value}}</option>
         </select>
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="stabilityHelp"><i class="bi bi-question"></i></button>
@@ -58,7 +56,7 @@
     <label for="description" class="col-lg-2 col-form-label fw-bold">Description</label>
     <div class="col-lg-10">
       <div class="input-group">
-        <input type="text" id="description" name="description" [(ngModel)]="entity.description" [disabled]="isDisabled()" class="form-control">
+        <input type="text" id="description" name="description" [ngModel]="entity().description" (ngModelChange)="set(entity, 'description', $event)" [disabled]="isDisabled()" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="descriptionHelp"><i class="bi bi-question"></i></button>
         <ng-template #descriptionHelp>A short description of the operation</ng-template>
       </div>
@@ -68,8 +66,10 @@
     <label for="httpMethod" class="col-lg-2 col-form-label fw-bold">HTTP-Method</label>
     <div class="col-lg-10">
       <div class="input-group">
-        <select id="httpMethod" name="httpMethod" [(ngModel)]="entity.httpMethod" (ngModelChange)="changeHttpMethod()" [disabled]="isDisabled()" class="form-select">
-          <option *ngFor="let method of methods" [ngValue]="method.key">{{method.value}}</option>
+        <select id="httpMethod" name="httpMethod" [ngModel]="entity().httpMethod" (ngModelChange)="set(entity, 'httpMethod', $event);changeHttpMethod()" [disabled]="isDisabled()" class="form-select">
+          @for (method of methods; track method.key) {
+            <option [ngValue]="method.key">{{method.value}}</option>
+          }
         </select>
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="httpMethodHelp"><i class="bi bi-question"></i></button>
         <ng-template #httpMethodHelp>The assigned HTTP request method for this operation</ng-template>
@@ -80,7 +80,7 @@
     <label for="httpPath" class="col-lg-2 col-form-label fw-bold">HTTP-Path</label>
     <div class="col-lg-10">
       <div class="input-group">
-        <input type="text" id="httpPath" name="httpPath" [(ngModel)]="entity.httpPath" [disabled]="isDisabled()" class="form-control">
+        <input type="text" id="httpPath" name="httpPath" [ngModel]="entity().httpPath" (ngModelChange)="set(entity, 'httpPath', $event)" [disabled]="isDisabled()" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="httpPathHelp"><i class="bi bi-question"></i></button>
         <ng-template #httpPathHelp>The assigned HTTP path for this operation i.e. <code>/acme/news</code>. It is possible to use variable path fragments i.e. <code>/acme/:news</code>. Click <a href="https://docs.fusio-project.org/docs/backend/api/operation/#http-path">here</a> for more information</ng-template>
       </div>
@@ -90,8 +90,10 @@
     <label for="httpCode" class="col-lg-2 col-form-label fw-bold">HTTP-Code</label>
     <div class="col-lg-10">
       <div class="input-group">
-        <select id="httpCode" name="httpCode" [(ngModel)]="entity.httpCode" [disabled]="isDisabled()" class="form-select">
-          <option *ngFor="let code of successStatusCodes" [ngValue]="code.key">{{code.value}}</option>
+        <select id="httpCode" name="httpCode" [ngModel]="entity().httpCode" (ngModelChange)="set(entity, 'httpCode', $event)" [disabled]="isDisabled()" class="form-select">
+          @for (code of successStatusCodes; track code.key) {
+            <option [ngValue]="code.key">{{code.value}}</option>
+          }
         </select>
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="httpCodeHelp"><i class="bi bi-question"></i></button>
         <ng-template #httpCodeHelp>The success HTTP response code for this operation</ng-template>
@@ -101,46 +103,44 @@
   <div class="mb-3 row">
     <label for="parameters" class="col-lg-2 col-form-label fw-bold">Parameters</label>
     <div class="col-lg-10">
-      <app-operation-parameters [data]="entity.parameters" (dataChange)="entity.parameters = $event" [disabled]="isDisabled()"></app-operation-parameters>
+      <app-operation-parameters [data]="entity().parameters" (dataChange)="set(entity, 'parameters', $event)" [disabled]="isDisabled()"></app-operation-parameters>
     </div>
   </div>
-  <div class="mb-3 row" *ngIf="entity.httpMethod !== 'GET' && entity.httpMethod !== 'DELETE'">
-    <label for="incoming" class="col-lg-2 col-form-label fw-bold">Incoming</label>
-    <div class="col-lg-10">
-      <app-schema-selector name="incoming" [data]="entity.incoming" (dataChange)="entity.incoming = $event" [disabled]="isDisabled()"></app-schema-selector>
+  @if (entity().httpMethod !== 'GET' && entity().httpMethod !== 'DELETE') {
+    <div class="mb-3 row">
+      <label for="incoming" class="col-lg-2 col-form-label fw-bold">Incoming</label>
+      <div class="col-lg-10">
+        <app-schema-selector name="incoming" [data]="entity().incoming" (dataChange)="set(entity, 'incoming', $event)" [disabled]="isDisabled()"></app-schema-selector>
+      </div>
     </div>
-  </div>
+  }
   <div class="mb-3 row">
     <label for="outgoing" class="col-lg-2 col-form-label fw-bold">Outgoing</label>
     <div class="col-lg-10">
-      <app-schema-selector name="outgoing" [data]="entity.outgoing" (dataChange)="entity.outgoing = $event" [disabled]="isDisabled()"></app-schema-selector>
+      <app-schema-selector name="outgoing" [data]="entity().outgoing" (dataChange)="set(entity, 'outgoing', $event)" [disabled]="isDisabled()"></app-schema-selector>
     </div>
   </div>
   <div class="mb-3 row">
     <label class="col-lg-2 col-form-label fw-bold">Throws</label>
     <div class="col-lg-10">
-      <app-operation-throws [data]="entity.throws" (dataChange)="entity.throws = $event" [disabled]="isDisabled()"></app-operation-throws>
+      <app-operation-throws [data]="entity().throws" (dataChange)="set(entity, 'throws', $event)" [disabled]="isDisabled()"></app-operation-throws>
     </div>
   </div>
   <div class="mb-3 row">
     <label for="action" class="col-lg-2 col-form-label fw-bold">Action</label>
     <div class="col-lg-10">
-      <app-action-selector name="action" [data]="entity.action" (dataChange)="entity.action = $event" [disabled]="isDisabled()"></app-action-selector>
+      <app-action-selector name="action" [data]="entity().action" (dataChange)="set(entity, 'action', $event)" [disabled]="isDisabled()"></app-action-selector>
     </div>
   </div>
   <div class="mb-3 row">
     <label for="costs" class="col-lg-2 col-form-label fw-bold">Costs</label>
     <div class="col-lg-10">
       <div class="input-group">
-        <input type="number" id="costs" name="costs" [(ngModel)]="entity.costs" [disabled]="isDisabled()" class="form-control">
+        <input type="number" id="costs" name="costs" [ngModel]="entity().costs" (ngModelChange)="set(entity, 'costs', $event)" [disabled]="isDisabled()" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="costsHelp"><i class="bi bi-question"></i></button>
         <ng-template #costsHelp>The amount of points a user needs to pay to invoke this operation</ng-template>
       </div>
     </div>
   </div>
-  <div class="btn-group" role="group">
-    <ng-container *ngIf="mode === 1"><button type="button" class="btn btn-primary" (click)="doCreate(entity)">Create</button></ng-container>
-    <ng-container *ngIf="mode === 2"><button type="button" class="btn btn-primary" (click)="doUpdate(entity)">Update</button></ng-container>
-    <ng-container *ngIf="mode === 3"><button type="button" class="btn btn-danger" (click)="doDelete(entity)">Delete</button></ng-container>
-  </div>
+  <app-form-buttons (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="router.navigate(getListLink())" (onHelp)="showHelp('api/operation')"></app-form-buttons>
 </form>

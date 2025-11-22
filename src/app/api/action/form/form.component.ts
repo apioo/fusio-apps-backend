@@ -47,7 +47,7 @@ export class FormComponent extends Form<BackendAction> {
   }
 
   protected override async onLoad() {
-    this.loadConfig(this.entity?.class);
+    this.loadConfig(this.entity().class);
   }
 
   async changeClass(classString?: string) {
@@ -55,7 +55,7 @@ export class FormComponent extends Form<BackendAction> {
       return;
     }
 
-    this.entity.config = {};
+    this.set(this.entity, 'config', {});
     this.loadConfig(classString);
   }
 
@@ -66,11 +66,11 @@ export class FormComponent extends Form<BackendAction> {
 
     this.form = await this.fusio.getClient().backend().action().getForm(classString);
 
-    const hasChanged = this.entityClass && this.entityClass !== this.entity.class;
-    this.entityClass = this.entity.class;
+    const hasChanged = this.entityClass && this.entityClass !== this.entity().class;
+    this.entityClass = this.entity().class;
 
     if (hasChanged) {
-      this.entity.config = {};
+      this.set(this.entity, 'config', {});
     }
   }
 
@@ -79,7 +79,7 @@ export class FormComponent extends Form<BackendAction> {
       return;
     }
 
-    let className = this.entity.class;
+    let className = this.entity().class;
     if (className) {
       let action = this.actions?.find((action) => {
         return action.class === className;

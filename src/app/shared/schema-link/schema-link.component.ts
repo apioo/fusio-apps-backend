@@ -1,8 +1,12 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-schema-link',
   templateUrl: './schema-link.component.html',
+  imports: [
+    RouterLink
+  ],
   styleUrls: ['./schema-link.component.css']
 })
 export class SchemaLinkComponent implements OnInit, OnChanges {

@@ -1,10 +1,22 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {Specification} from "ngx-typeschema-editor/lib/model/Specification";
 import {CommonFormContainer} from "fusio-sdk";
+import {FormsModule} from "@angular/forms";
+import {EditorComponent} from "ngx-monaco-editor-v2";
+import {CollectionComponent} from "../collection/collection.component";
+import {MapComponent} from "../map/map.component";
+import {Specification, TypeschemaEditorModule} from "ngx-typeschema-editor";
+import {KeyValuePipe} from "@angular/common";
 
 @Component({
   selector: 'app-config',
   templateUrl: './config.component.html',
+  imports: [
+    FormsModule,
+    EditorComponent,
+    CollectionComponent,
+    MapComponent,
+    TypeschemaEditorModule
+  ],
   styleUrls: ['./config.component.css']
 })
 export class ConfigComponent implements OnInit, OnChanges {
@@ -87,4 +99,5 @@ export class ConfigComponent implements OnInit, OnChanges {
     }
   }
 
+  protected readonly Array = Array;
 }

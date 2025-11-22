@@ -1,13 +1,18 @@
 import {Component, OnInit} from '@angular/core';
-import {ErrorService, Mode} from "ngx-fusio-sdk";
+import {ErrorService, MessageComponent, Mode} from "ngx-fusio-sdk";
 import {BackendTest, CommonMessage} from "fusio-sdk";
 import {FormComponent} from "../form/form.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {ApiService} from "../../../api.service";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-test-list',
   templateUrl: './list.component.html',
+  imports: [
+    MessageComponent,
+    RouterLink
+  ],
   styleUrls: ['./list.component.css']
 })
 export class ListComponent implements OnInit {

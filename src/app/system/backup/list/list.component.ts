@@ -1,11 +1,18 @@
 import {Component} from '@angular/core';
-import {ErrorService} from "ngx-fusio-sdk";
+import {ErrorService, MessageComponent} from "ngx-fusio-sdk";
 import {CommonMessage} from "fusio-sdk";
 import {ApiService} from "../../../api.service";
+import {EditorComponent} from "ngx-monaco-editor-v2";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-backup-list',
   templateUrl: './list.component.html',
+  imports: [
+    EditorComponent,
+    FormsModule,
+    MessageComponent
+  ],
   styleUrls: ['./list.component.css']
 })
 export class ListComponent {

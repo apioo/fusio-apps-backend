@@ -1,10 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {ChartOptions, Converter, PieChartOptions} from "../../../analytics/statistic/converter";
 import {ApiService} from "../../../api.service";
+import {ChartComponent} from "ngx-apexcharts/signals";
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
+  imports: [
+    ChartComponent
+  ],
   styleUrls: ['./list.component.css']
 })
 export class ListComponent implements OnInit {

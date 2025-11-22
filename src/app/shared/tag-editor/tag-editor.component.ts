@@ -1,8 +1,16 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {FormsModule} from "@angular/forms";
+import {CsvPipe} from "./csv.pipe";
+import {NgbPopover} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-tag-editor',
   templateUrl: './tag-editor.component.html',
+  imports: [
+    FormsModule,
+    CsvPipe,
+    NgbPopover
+  ],
   styleUrls: ['./tag-editor.component.css']
 })
 export class TagEditorComponent implements OnInit {

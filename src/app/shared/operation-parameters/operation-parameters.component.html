@@ -1,26 +1,34 @@
-<div class="row mb-3" *ngFor="let row of result;">
-  <div class="col-3">
-    <input type="text" placeholder="" [id]="name + '_name_' + row.name" [name]="name + '_name_' + row.name" [(ngModel)]="row.name" (ngModelChange)="changeValue()" [disabled]="disabled" class="form-control">
-  </div>
-  <div class="col-3">
-    <select [id]="name + '_type_' + row.name" [name]="name + '_type_' + row.name" [(ngModel)]="row.type" [disabled]="disabled" class="form-select">
-      <option *ngFor="let type of types" [ngValue]="type.key">{{type.value}}</option>
-    </select>
-  </div>
-  <div class="col-6">
-    <div class="input-group">
-      <input type="text" [id]="name + '_description_' + row.name" [name]="name + '_description_' + row.name" [(ngModel)]="row.description" (ngModelChange)="changeValue()" [disabled]="disabled" class="form-control">
-      <button class="btn btn-outline-secondary" (click)="remove(row.name); changeValue()"><i class="bi bi-x"></i></button>
+
+@for (row of result; track row.name) {
+  <div class="row mb-3">
+    <div class="col-3">
+      <input type="text" placeholder="" [id]="name + '_name_' + row.name" [name]="name + '_name_' + row.name" [(ngModel)]="row.name" (ngModelChange)="changeValue()" [disabled]="disabled" class="form-control">
+    </div>
+    <div class="col-3">
+      <select [id]="name + '_type_' + row.name" [name]="name + '_type_' + row.name" [(ngModel)]="row.type" [disabled]="disabled" class="form-select">
+        @for (type of types; track $index) {
+          <option [ngValue]="type.key">{{type.value}}</option>
+        }
+      </select>
+    </div>
+    <div class="col-6">
+      <div class="input-group">
+        <input type="text" [id]="name + '_description_' + row.name" [name]="name + '_description_' + row.name" [(ngModel)]="row.description" (ngModelChange)="changeValue()" [disabled]="disabled" class="form-control">
+        <button class="btn btn-outline-secondary" (click)="remove(row.name); changeValue()"><i class="bi bi-x"></i></button>
+      </div>
     </div>
   </div>
-</div>
+}
+
 <div class="row">
   <div class="col-3">
     <input type="text" [id]="name + '_name'" [name]="name + '_name'" [(ngModel)]="newName" (ngModelChange)="changeValue()" [disabled]="disabled" class="form-control">
   </div>
   <div class="col-3">
     <select [id]="name + '_type'" [name]="name + '_type'" [(ngModel)]="newType" [disabled]="disabled" class="form-select">
-      <option *ngFor="let type of types" [ngValue]="type.key">{{type.value}}</option>
+      @for (type of types; track type.key) {
+        <option [ngValue]="type.key">{{type.value}}</option>
+      }
     </select>
   </div>
   <div class="col-6">

@@ -9,5 +9,10 @@
   @if (mode === 3) {
     <button type="button" class="btn btn-danger" (click)="onDelete.emit()">Delete</button>
   }
-  <button type="button" class="btn btn-light" (click)="onHelp.emit()">Help</button>
+  @if (onBack.observed) {
+    <button type="button" class="btn btn-light fusio-btn-back" (click)="onBack.emit()">Back</button>
+  }
+  @if (onHelp.observed) {
+    <button type="button" class="btn btn-light" (click)="onHelp.emit()">Help</button>
+  }
 </div>

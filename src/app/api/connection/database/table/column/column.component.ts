@@ -1,9 +1,13 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {BackendDatabaseTableColumn} from "fusio-sdk";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-connection-database-table-column',
   templateUrl: './column.component.html',
+  imports: [
+    FormsModule
+  ],
   styleUrls: ['./column.component.css']
 })
 export class ColumnComponent implements OnInit {

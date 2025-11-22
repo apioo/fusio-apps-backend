@@ -1,12 +1,17 @@
 import {Component, OnInit} from '@angular/core';
-import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbActiveModal, NgbPopover} from "@ng-bootstrap/ng-bootstrap";
 import {Instance} from "../../instance-manager";
 import {ConsumerUserJWT, ConsumerUserLogin, SystemAbout} from "fusio-sdk";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-instance-modal',
   templateUrl: './modal.component.html',
+  imports: [
+    FormsModule,
+    NgbPopover
+  ],
   styleUrl: './modal.component.css'
 })
 export class ModalComponent implements OnInit {

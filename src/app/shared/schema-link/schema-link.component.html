@@ -1,24 +1,22 @@
 
-<ng-container [ngSwitch]="scheme">
-  <ng-container *ngSwitchCase="'schema'">
-    <a routerLink="/schema/~{{value}}">{{value}}</a>
-  </ng-container>
-  <ng-container *ngSwitchCase="'php+class'">
-    <span>{{value}}</span>
-  </ng-container>
-  <ng-container *ngSwitchCase="'file'">
-    <span>{{value}}</span>
-  </ng-container>
-  <ng-container *ngSwitchCase="'http'">
-    <a href="http://{{value}}">{{value}}</a>
-  </ng-container>
-  <ng-container *ngSwitchCase="'https'">
-    <a href="https://{{value}}">{{value}}</a>
-  </ng-container>
-  <ng-container *ngSwitchCase="'typehub'">
-    <span>{{value}}</span>
-  </ng-container>
-  <ng-container *ngSwitchDefault>
-    <span>{{data}}</span>
-  </ng-container>
-</ng-container>
+@if (scheme === 'schema') {
+  <a routerLink="/schema/~{{value}}">{{value}}</a>
+}
+@if (scheme === 'php+class') {
+  <span>{{value}}</span>
+}
+@if (scheme === 'file') {
+  <span>{{value}}</span>
+}
+@if (scheme === 'http') {
+  <a href="http://{{value}}">{{value}}</a>
+}
+@if (scheme === 'https') {
+  <a href="https://{{value}}">{{value}}</a>
+}
+@if (scheme === 'typehub') {
+  <span>{{value}}</span>
+}
+@else {
+  <span>{{data}}</span>
+}

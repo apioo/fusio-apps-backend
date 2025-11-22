@@ -1,12 +1,26 @@
 import {Component} from '@angular/core';
-import {Detail, ErrorService} from "ngx-fusio-sdk";
+import {Detail, ErrorService, MessageComponent, ScopesComponent} from "ngx-fusio-sdk";
 import {BackendUser} from "fusio-sdk";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {UserService} from "../../../services/user.service";
+import {NgbTooltip} from "@ng-bootstrap/ng-bootstrap";
+import {DatePipe, JsonPipe} from "@angular/common";
+import {EditorComponent} from "ngx-monaco-editor-v2";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-user-detail',
   templateUrl: './detail.component.html',
+  imports: [
+    RouterLink,
+    MessageComponent,
+    NgbTooltip,
+    ScopesComponent,
+    DatePipe,
+    EditorComponent,
+    FormsModule,
+    JsonPipe
+  ],
   styleUrls: ['./detail.component.css']
 })
 export class DetailComponent extends Detail<BackendUser> {
@@ -21,9 +35,9 @@ export class DetailComponent extends Detail<BackendUser> {
 
   async resend(user: BackendUser) {
     try {
-      this.response = await this.service.resend(user);
+      this.response.set(await this.service.resend(user));
     } catch (error) {
-      this.response = this.error.convert(error);
+      this.response.set(this.error.convert(error));
     }
   }
 

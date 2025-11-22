@@ -1,14 +1,20 @@
 import {Component} from '@angular/core';
-import {ErrorService, List} from "ngx-fusio-sdk";
+import {ErrorService, List, MessageComponent, SearchComponent} from "ngx-fusio-sdk";
 import {BackendAudit} from "fusio-sdk";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {AuditService} from "../../../services/audit.service";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal, NgbPagination} from "@ng-bootstrap/ng-bootstrap";
 import {FilterComponent} from "../filter/filter.component";
 
 @Component({
   selector: 'app-audit-list',
   templateUrl: './list.component.html',
+  imports: [
+    MessageComponent,
+    SearchComponent,
+    RouterLink,
+    NgbPagination
+  ],
   styleUrls: ['./list.component.css']
 })
 export class ListComponent extends List<BackendAudit> {

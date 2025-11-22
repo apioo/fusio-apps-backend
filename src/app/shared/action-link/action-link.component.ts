@@ -1,8 +1,12 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-action-link',
   templateUrl: './action-link.component.html',
+  imports: [
+    RouterLink
+  ],
   styleUrls: ['./action-link.component.css']
 })
 export class ActionLinkComponent implements OnInit, OnChanges {

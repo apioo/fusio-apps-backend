@@ -1,9 +1,17 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {SchemaService} from "../../services/schema.service";
+import {FormsModule} from "@angular/forms";
+import {FormAutocompleteComponent} from "ngx-fusio-sdk";
+import {NgbPopover} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-schema-selector',
   templateUrl: './schema-selector.component.html',
+  imports: [
+    FormsModule,
+    FormAutocompleteComponent,
+    NgbPopover
+  ],
   styleUrls: ['./schema-selector.component.css']
 })
 export class SchemaSelectorComponent implements OnInit {

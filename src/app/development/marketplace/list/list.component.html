@@ -18,16 +18,23 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let action of actions">
-          <td><i class="bi bi-{{ action.icon }}"></i></td>
-          <td><i class="bi bi-patch-check-fill text-primary me-1" *ngIf="action.author?.verified"></i><b>{{action.author?.name}}/{{action.name}}</b><br><small>{{action.summary}}</small></td>
-          <td>{{action.version}}</td>
-          <td>
-            <div class="btn-group" role="group">
-              <a [routerLink]="['/marketplace/', selectedType, action.author?.name, action.name]" class="btn btn-primary"><i class="bi bi-search"></i></a>
-            </div>
-          </td>
-        </tr>
+        @for (action of actions; track action.id) {
+          <tr>
+            <td><i class="bi bi-{{ action.icon }}"></i></td>
+            <td>
+              @if (action.author?.verified) {
+                <i class="bi bi-patch-check-fill text-primary me-1"></i>
+              }
+              <b>{{action.author?.name}}/{{action.name}}</b><br><small>{{action.summary}}</small>
+            </td>
+            <td>{{action.version}}</td>
+            <td>
+              <div class="btn-group" role="group">
+                <a [routerLink]="['/marketplace/', selectedType, action.author?.name, action.name]" class="btn btn-primary"><i class="bi bi-search"></i></a>
+              </div>
+            </td>
+          </tr>
+        }
         </tbody>
       </table>
       <ngb-pagination
@@ -53,16 +60,23 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let app of apps">
-          <td><i class="bi bi-{{ app.icon }}"></i></td>
-          <td><i class="bi bi-patch-check-fill text-primary me-1" *ngIf="app.author?.verified"></i><b>{{app.author?.name}}/{{app.name}}</b><br><small>{{app.summary}}</small></td>
-          <td>{{app.version}}</td>
-          <td>
-            <div class="btn-group" role="group">
-              <a [routerLink]="['/marketplace/', selectedType, app.author?.name, app.name]" class="btn btn-primary"><i class="bi bi-search"></i></a>
-            </div>
-          </td>
-        </tr>
+        @for (app of apps; track app.id) {
+          <tr>
+            <td><i class="bi bi-{{ app.icon }}"></i></td>
+            <td>
+              @if (app.author?.verified) {
+                <i class="bi bi-patch-check-fill text-primary me-1"></i>
+              }
+              <b>{{app.author?.name}}/{{app.name}}</b><br><small>{{app.summary}}</small>
+            </td>
+            <td>{{app.version}}</td>
+            <td>
+              <div class="btn-group" role="group">
+                <a [routerLink]="['/marketplace/', selectedType, app.author?.name, app.name]" class="btn btn-primary"><i class="bi bi-search"></i></a>
+              </div>
+            </td>
+          </tr>
+        }
         </tbody>
       </table>
       <ngb-pagination

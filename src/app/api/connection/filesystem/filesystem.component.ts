@@ -1,13 +1,21 @@
 import {Component} from '@angular/core';
-import {ErrorService, List, Service} from "ngx-fusio-sdk";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ErrorService, List, MessageComponent, Service} from "ngx-fusio-sdk";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {BackendConnection, BackendFile} from "fusio-sdk";
 import {FilesystemService} from "../../../services/connection/filesystem.service";
 import {ConnectionService} from "../../../services/connection.service";
+import {DatePipe} from "@angular/common";
+import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-connection-filesystem',
   templateUrl: './filesystem.component.html',
+  imports: [
+    RouterLink,
+    MessageComponent,
+    DatePipe,
+    NgbPagination
+  ],
   styleUrls: ['./filesystem.component.css']
 })
 export class FilesystemComponent extends List<BackendFile> {
@@ -56,7 +64,7 @@ export class FilesystemComponent extends List<BackendFile> {
       a.click();
       URL.revokeObjectURL(downloadUrl);
     } catch (error) {
-      this.response = this.error.convert(error);
+      this.response.set(this.error.convert(error));
     }
   }
 
@@ -77,9 +85,9 @@ export class FilesystemComponent extends List<BackendFile> {
     }
 
     try {
-      this.response = await this.service.upload(formData)
+      this.response.set(await this.service.upload(formData));
     } catch (error) {
-      this.response = this.error.convert(error);
+      this.response.set(this.error.convert(error));
     }
 
     target.value = '';

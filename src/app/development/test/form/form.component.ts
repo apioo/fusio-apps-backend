@@ -1,18 +1,29 @@
 import {Component} from '@angular/core';
-import {ErrorService, Form} from "ngx-fusio-sdk";
-import {BackendTest} from "fusio-sdk";
+import {ErrorService, Form, MessageComponent} from "ngx-fusio-sdk";
+import {BackendTest, BackendTestConfig} from "fusio-sdk";
 import {ActivatedRoute, Router} from "@angular/router";
 import {TestService} from "../../../services/test.service";
-import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbActiveModal, NgbPopover} from "@ng-bootstrap/ng-bootstrap";
+import {FormBreadcrump} from "../../../shared/form-breadcrump/form-breadcrump";
+import {FormsModule} from "@angular/forms";
+import {EditorComponent} from "ngx-monaco-editor-v2";
 
 @Component({
-  selector: 'app-test-form',
-  templateUrl: './form.component.html',
-  styleUrls: ['./form.component.css']
+    selector: 'app-test-form',
+    templateUrl: './form.component.html',
+  imports: [
+    FormBreadcrump,
+    MessageComponent,
+    FormsModule,
+    NgbPopover,
+    EditorComponent
+  ],
+    styleUrls: ['./form.component.css']
 })
 export class FormComponent extends Form<BackendTest> {
 
   body: string = '';
+  config?: BackendTestConfig;
   disabled: boolean = false;
 
   constructor(private service: TestService, public modal: NgbActiveModal, route: ActivatedRoute, router: Router, error: ErrorService) {
@@ -24,9 +35,10 @@ export class FormComponent extends Form<BackendTest> {
   }
 
   override onLoad() {
-    this.disabled = this.entity?.status === 6;
-    if (this.entity?.config?.body) {
-      this.body = JSON.stringify(this.entity.config?.body, null, 2);
+    this.disabled = this.entity().status === 6;
+    this.config = this.entity().config;
+    if (this.config?.body) {
+      this.body = JSON.stringify(this.config?.body, null, 2);
     }
   }
 

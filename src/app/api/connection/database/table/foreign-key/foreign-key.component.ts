@@ -1,9 +1,15 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {BackendDatabaseTableForeignKeyConstraint} from "fusio-sdk";
+import {FormsModule} from "@angular/forms";
+import {CsvPipe} from "../../../../../shared/tag-editor/csv.pipe";
 
 @Component({
   selector: 'app-connection-database-table-foreign-key',
   templateUrl: './foreign-key.component.html',
+  imports: [
+    FormsModule,
+    CsvPipe
+  ],
   styleUrls: ['./foreign-key.component.css']
 })
 export class ForeignKeyComponent implements OnInit {

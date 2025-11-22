@@ -1,20 +1,18 @@
 
 <h1>
   <a [routerLink]="getListLink()">Plan</a> /
-  <a [routerLink]="getDetailLink('~' + entity?.name)">{{ entity?.name }}</a> /
-  <ng-container *ngIf="mode === 1">Create</ng-container>
-  <ng-container *ngIf="mode === 2">Update</ng-container>
-  <ng-container *ngIf="mode === 3">Delete</ng-container>
+  <a [routerLink]="getDetailLink('~' + entity().name)">{{ entity().name }}</a> /
+  <app-form-breadcrump [mode]="mode"></app-form-breadcrump>
 </h1>
 
-<fusio-message [response]="response"></fusio-message>
+<fusio-message [response]="response()"></fusio-message>
 
-<form *ngIf="entity">
+<form>
   <div class="mb-3 row">
     <label for="name" class="col-lg-2 col-form-label fw-bold">Name</label>
     <div class="col-lg-10">
       <div class="input-group">
-        <input type="text" id="name" name="name" [(ngModel)]="entity.name" [disabled]="mode === 3" class="form-control">
+        <input type="text" id="name" name="name" [ngModel]="entity().name" (ngModelChange)="set(entity, 'name', $event)" [disabled]="mode === 3" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
         <ng-template #nameHelp>Unique name of the plan</ng-template>
       </div>
@@ -24,7 +22,7 @@
     <label for="description" class="col-lg-2 col-form-label fw-bold">Description</label>
     <div class="col-lg-10">
       <div class="input-group">
-        <textarea id="description" name="description" [(ngModel)]="entity.description" [disabled]="mode === 3" class="form-control"></textarea>
+        <textarea id="description" name="description" [ngModel]="entity().description" (ngModelChange)="set(entity, 'description', $event)" [disabled]="mode === 3" class="form-control"></textarea>
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="descriptionHelp"><i class="bi bi-question"></i></button>
         <ng-template #descriptionHelp>A short description of this plan</ng-template>
       </div>
@@ -34,7 +32,7 @@
     <label for="price" class="col-lg-2 col-form-label fw-bold">Price</label>
     <div class="col-lg-10">
       <div class="input-group">
-        <input type="number" id="price" name="price" [(ngModel)]="entity.price" [disabled]="mode === 3" class="form-control">
+        <input type="number" id="price" name="price" [ngModel]="entity().price" (ngModelChange)="set(entity, 'price', $event)" [disabled]="mode === 3" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="priceHelp"><i class="bi bi-question"></i></button>
         <ng-template #priceHelp>The price how much this plan costs</ng-template>
       </div>
@@ -44,7 +42,7 @@
     <label for="points" class="col-lg-2 col-form-label fw-bold">Points</label>
     <div class="col-lg-10">
       <div class="input-group">
-        <input type="number" id="points" name="points" [(ngModel)]="entity.points" [disabled]="mode === 3" class="form-control">
+        <input type="number" id="points" name="points" [ngModel]="entity().points" (ngModelChange)="set(entity, 'points', $event)" [disabled]="mode === 3" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="pointsHelp"><i class="bi bi-question"></i></button>
         <ng-template #pointsHelp>The amount of points a user receives if he buys this plan</ng-template>
       </div>
@@ -54,8 +52,10 @@
     <label for="period" class="col-lg-2 col-form-label fw-bold">Period</label>
     <div class="col-lg-10">
       <div class="input-group">
-        <select id="period" name="period" [(ngModel)]="entity.period" [disabled]="mode === 3" class="form-select">
-          <option *ngFor="let period of periods" [ngValue]="period.id">{{period.name}}</option>
+        <select id="period" name="period" [ngModel]="entity().period" (ngModelChange)="set(entity, 'period', $event)" [disabled]="mode === 3" class="form-select">
+          @for (period of periods; track period.id) {
+            <option [ngValue]="period.id">{{period.name}}</option>
+          }
         </select>
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="periodHelp"><i class="bi bi-question"></i></button>
         <ng-template #periodHelp>Indicates whether this plan is one-time or a subscription</ng-template>
@@ -66,16 +66,12 @@
     <label for="externalId" class="col-lg-2 col-form-label fw-bold">External-Id</label>
     <div class="col-lg-10">
       <div class="input-group">
-        <input type="text" id="externalId" name="externalId" [(ngModel)]="entity.externalId" [disabled]="mode === 3" class="form-control">
+        <input type="text" id="externalId" name="externalId" [ngModel]="entity().externalId" (ngModelChange)="set(entity, 'externalId', $event)" [disabled]="mode === 3" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="externalIdHelp"><i class="bi bi-question"></i></button>
         <ng-template #externalIdHelp>Optional an external id which can be configured at the payment provider i.e. for Stripe this would be a price id</ng-template>
       </div>
     </div>
   </div>
-  <app-scope-categories [scopes]="entity.scopes" (dataChange)="entity.scopes = $event"></app-scope-categories>
-  <div class="btn-group" role="group">
-    <ng-container *ngIf="mode === 1"><button type="button" class="btn btn-primary" (click)="doCreate(entity)">Create</button></ng-container>
-    <ng-container *ngIf="mode === 2"><button type="button" class="btn btn-primary" (click)="doUpdate(entity)">Update</button></ng-container>
-    <ng-container *ngIf="mode === 3"><button type="button" class="btn btn-danger" (click)="doDelete(entity)">Delete</button></ng-container>
-  </div>
+  <app-scope-categories [scopes]="entity().scopes" (dataChange)="set(entity, 'scopes', $event)"></app-scope-categories>
+  <app-form-buttons (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="router.navigate(getListLink())" (onHelp)="showHelp('monetization/plan')"></app-form-buttons>
 </form>

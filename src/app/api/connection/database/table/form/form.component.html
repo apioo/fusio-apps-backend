@@ -3,51 +3,47 @@
   <a [routerLink]="['/', 'connection']">Connection</a> /
   <a [routerLink]="['/', 'connection', selectedConnection?.id]">{{selectedConnection?.name}}</a> /
   <a [routerLink]="getListLink()">Database</a> /
-  <a [routerLink]="getDetailLink(entity?.name)">{{ entity?.name }}</a> /
-  <ng-container *ngIf="mode === 1">Create</ng-container>
-  <ng-container *ngIf="mode === 2">Update</ng-container>
-  <ng-container *ngIf="mode === 3">Delete</ng-container>
+  <a [routerLink]="getDetailLink(entity().name)">{{ entity().name }}</a> /
+  <app-form-breadcrump [mode]="mode"></app-form-breadcrump>
 </h1>
 
-<form *ngIf="entity">
-  <fusio-message [response]="response"></fusio-message>
+<form>
+  <fusio-message [response]="response()"></fusio-message>
   <div class="mb-3 row">
     <label for="name" class="col-lg-2 col-form-label fw-bold">Name</label>
     <div class="col-lg-10">
       <div class="input-group">
-        <input type="text" id="name" name="name" [(ngModel)]="entity.name" [disabled]="mode === 3" class="form-control">
+        <input type="text" id="name" name="name" [ngModel]="entity().name" (ngModelChange)="set(entity, 'name', $event)" [disabled]="mode === 3" class="form-control">
       </div>
     </div>
   </div>
   <div class="mb-3 row">
     <label for="name" class="col-lg-2 col-form-label fw-bold">Columns</label>
     <div class="col-lg-10">
-      <app-connection-database-table-column [data]="entity.columns || []" [disabled]="mode === 3" (dataChange)="entity.columns = $event"></app-connection-database-table-column>
+      <app-connection-database-table-column [data]="entity().columns || []" [disabled]="mode === 3" (dataChange)="set(entity, 'columns', $event)"></app-connection-database-table-column>
     </div>
   </div>
   <div class="mb-3 row">
     <label for="primaryKey" class="col-lg-2 col-form-label fw-bold">Primary-Key</label>
     <div class="col-lg-10">
-      <select id="primaryKey" name="primaryKey" [(ngModel)]="entity.primaryKey" [disabled]="mode === 3" class="form-select">
-        <option *ngFor="let column of entity.columns" [ngValue]="column.name">{{column.name}}</option>
+      <select id="primaryKey" name="primaryKey" [ngModel]="entity().primaryKey" (ngModelChange)="set(entity, 'primaryKey', $event)" [disabled]="mode === 3" class="form-select">
+        @for (column of entity().columns; track column.name) {
+          <option [ngValue]="column.name">{{column.name}}</option>
+        }
       </select>
     </div>
   </div>
   <div class="mb-3 row">
     <label for="name" class="col-lg-2 col-form-label fw-bold">Indexes</label>
     <div class="col-lg-10">
-      <app-connection-database-table-index [data]="entity.indexes || []" [disabled]="mode === 3" (dataChange)="entity.indexes = $event"></app-connection-database-table-index>
+      <app-connection-database-table-index [data]="entity().indexes || []" [disabled]="mode === 3" (dataChange)="set(entity, 'indexes', $event)"></app-connection-database-table-index>
     </div>
   </div>
   <div class="mb-3 row">
     <label for="name" class="col-lg-2 col-form-label fw-bold">Foreign Keys</label>
     <div class="col-lg-10">
-      <app-connection-database-table-foreign-key [data]="entity.foreignKeys || []" [disabled]="mode === 3" (dataChange)="entity.foreignKeys = $event"></app-connection-database-table-foreign-key>
+      <app-connection-database-table-foreign-key [data]="entity().foreignKeys || []" [disabled]="mode === 3" (dataChange)="set(entity, 'foreignKeys', $event)"></app-connection-database-table-foreign-key>
     </div>
   </div>
-  <div class="btn-group" role="group">
-    <ng-container *ngIf="mode === 1"><button type="button" class="btn btn-primary" (click)="doCreate(entity)">Create</button></ng-container>
-    <ng-container *ngIf="mode === 2"><button type="button" class="btn btn-primary" (click)="doUpdate(entity)">Update</button></ng-container>
-    <ng-container *ngIf="mode === 3"><button type="button" class="btn btn-danger" (click)="doDelete(entity)">Delete</button></ng-container>
-  </div>
+  <app-form-buttons (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)"></app-form-buttons>
 </form>

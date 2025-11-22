@@ -5,7 +5,7 @@
   Filesystem
 </h1>
 
-<fusio-message [response]="response"></fusio-message>
+<fusio-message [response]="response()"></fusio-message>
 
 <div class="text-center">
   <div class="input-group mb-3">
@@ -23,22 +23,24 @@
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let entry of entries">
-    <td>{{entry.name}}</td>
-    <td>{{entry.contentType}}</td>
-    <td>{{entry.lastModified|date:'short'}}</td>
-    <td>
-      <div class="btn-group" role="group">
-        <a (click)="download(entry)" class="btn btn-primary"><i class="bi bi-download"></i></a>
-      </div>
-    </td>
-  </tr>
+  @for (entry of entries(); track $index) {
+    <tr>
+      <td>{{entry.name}}</td>
+      <td>{{entry.contentType}}</td>
+      <td>{{entry.lastModified|date:'short'}}</td>
+      <td>
+        <div class="btn-group" role="group">
+          <a (click)="download(entry)" class="btn btn-primary"><i class="bi bi-download"></i></a>
+        </div>
+      </td>
+    </tr>
+  }
   </tbody>
 </table>
 <ngb-pagination
-  [(page)]="page"
-  [pageSize]="pageSize"
-  [collectionSize]="totalResults"
+  [page]="page()"
+  [pageSize]="pageSize()"
+  [collectionSize]="totalResults()"
   [maxSize]="4"
   [ellipses]="false"
   (pageChange)="doSearch($event)"></ngb-pagination>

@@ -1,9 +1,13 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {BackendOperationParameters} from "fusio-sdk";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-operation-parameters',
   templateUrl: './operation-parameters.component.html',
+  imports: [
+    FormsModule
+  ],
   styleUrls: ['./operation-parameters.component.css']
 })
 export class OperationParametersComponent implements OnInit {

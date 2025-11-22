@@ -1,12 +1,19 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {HelpService} from "ngx-fusio-sdk";
+import {HelpService, MessageComponent} from "ngx-fusio-sdk";
 import {BackendTrashData, CommonMessage} from "fusio-sdk";
 import {ApiService} from "../../../api.service";
+import {FormsModule} from "@angular/forms";
+import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
+  imports: [
+    MessageComponent,
+    FormsModule,
+    NgbPagination
+  ],
   styleUrls: ['./list.component.css']
 })
 export class ListComponent implements OnInit {

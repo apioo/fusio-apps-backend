@@ -4,10 +4,26 @@ import {UserService} from "ngx-fusio-sdk";
 import {ApiService} from "./api.service";
 import {InstanceManager} from "./instance-manager";
 import {Config} from "./editor/config";
+import {InstanceComponent} from "./instance/instance.component";
+import {NavigationComponent} from "./navigation/navigation.component";
+import {NgClass} from "@angular/common";
+import {NgbDropdown, NgbDropdownItem, NgbDropdownMenu, NgbDropdownToggle} from "@ng-bootstrap/ng-bootstrap";
+import {RouterLink, RouterOutlet} from "@angular/router";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.html',
+  imports: [
+    InstanceComponent,
+    NavigationComponent,
+    NgClass,
+    NgbDropdown,
+    NgbDropdownToggle,
+    NgbDropdownMenu,
+    NgbDropdownItem,
+    RouterLink,
+    RouterOutlet
+  ],
   styleUrl: './app.css'
 })
 export class App implements OnInit {
@@ -39,4 +55,5 @@ export class App implements OnInit {
 
 declare global {
   var FUSIO_URL: string | undefined;
+  var FUSIO_APP_KEY: string | undefined;
 }

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ErrorService} from "ngx-fusio-sdk";
+import {ErrorService, MessageComponent} from "ngx-fusio-sdk";
 import {
   BackendGeneratorIndexProvider,
   BackendGeneratorProvider,
@@ -8,10 +8,21 @@ import {
   CommonMessage
 } from "fusio-sdk";
 import {ApiService} from "../../api.service";
+import {FormsModule} from "@angular/forms";
+import {NgbPopover} from "@ng-bootstrap/ng-bootstrap";
+import {TagEditorComponent} from "../../shared/tag-editor/tag-editor.component";
+import {ConfigComponent} from "../../shared/config/config.component";
 
 @Component({
   selector: 'app-generator',
   templateUrl: './generator.component.html',
+  imports: [
+    MessageComponent,
+    FormsModule,
+    NgbPopover,
+    TagEditorComponent,
+    ConfigComponent
+  ],
   styleUrls: ['./generator.component.css']
 })
 export class GeneratorComponent implements OnInit {

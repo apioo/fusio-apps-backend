@@ -13,6 +13,6 @@
   to contribute changes in case an operation or type is missing.
 </div>
 
-<ng-container *ngIf="spec">
+@if (spec) {
   <typeschema-editor [specification]="spec" [operationEnabled]="true" [readonly]="true"></typeschema-editor>
-</ng-container>
+}

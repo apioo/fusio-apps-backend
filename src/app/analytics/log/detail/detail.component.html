@@ -39,12 +39,14 @@
         <div class="col-lg-2 fw-bold">Date</div>
         <div class="col-lg-10">{{selected.date|date:'short'}}</div>
       </div>
-      <div class="card" style="margin-top:1rem" *ngIf="selected.body">
-        <div class="card-header">Body</div>
-        <div class="card-body">
-          <pre>{{selected.body|json}}</pre>
+      @if (selected.body) {
+        <div class="card" style="margin-top:1rem">
+          <div class="card-header">Body</div>
+          <div class="card-body">
+            <pre>{{selected.body|json}}</pre>
+          </div>
         </div>
-      </div>
+      }
       @if (selected.errors) {
         <app-error-details [errors]="selected.errors"></app-error-details>
       }

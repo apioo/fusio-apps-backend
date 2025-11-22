@@ -45,7 +45,9 @@
               </div>
             </div>
           </div>
-          <app-config *ngIf="form" [container]="form" [data]="provider.config" (dataChange)="provider.config = $event"></app-config>
+          @if (form) {
+            <app-config [container]="form" [data]="provider.config" (dataChange)="provider.config = $event"></app-config>
+          }
           <div class="btn-group">
             <button type="button" class="btn btn-primary" (click)="submit()" [disabled]="response?.success === true">Execute</button>
             <button type="button" class="btn btn-secondary" (click)="loadChangelog()" [disabled]="response?.success === true">Changelog</button>
@@ -57,48 +59,56 @@
   <div class="col-xl-6 mt-3 mt-xl-0">
     <div class="card">
       <div class="card-header">Changelog</div>
-      <div class="card-body" *ngIf="changelog">
-        <table class="table">
-          <thead>
-          <tr>
-            <th>Operation</th>
-            <th>Method</th>
-            <th>Path</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr *ngFor="let operation of changelog.operations">
-            <td>{{operation.name}}</td>
-            <td><code>{{operation.httpMethod}}</code></td>
-            <td><code>{{operation.httpPath}}</code></td>
-          </tr>
-          </tbody>
-        </table>
-        <table class="table">
-          <thead>
-          <tr>
-            <th>Action</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr *ngFor="let action of changelog.actions">
-            <td>{{action.name}}</td>
-          </tr>
-          </tbody>
-        </table>
-        <table class="table">
-          <thead>
-          <tr>
-            <th>Schema</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr *ngFor="let schema of changelog.schemas">
-            <td>{{schema.name}}</td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
+      @if (changelog) {
+        <div class="card-body">
+          <table class="table">
+            <thead>
+            <tr>
+              <th>Operation</th>
+              <th>Method</th>
+              <th>Path</th>
+            </tr>
+            </thead>
+            <tbody>
+            @for (operation of changelog.operations; track $index) {
+              <tr>
+                <td>{{operation.name}}</td>
+                <td><code>{{operation.httpMethod}}</code></td>
+                <td><code>{{operation.httpPath}}</code></td>
+              </tr>
+            }
+            </tbody>
+          </table>
+          <table class="table">
+            <thead>
+            <tr>
+              <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            @for (action of changelog.actions; track $index) {
+              <tr>
+                <td>{{action.name}}</td>
+              </tr>
+            }
+            </tbody>
+          </table>
+          <table class="table">
+            <thead>
+            <tr>
+              <th>Schema</th>
+            </tr>
+            </thead>
+            <tbody>
+            @for (schema of changelog.schemas; track $index) {
+              <tr>
+                <td>{{schema.name}}</td>
+              </tr>
+            }
+            </tbody>
+          </table>
+        </div>
+      }
     </div>
   </div>
 </div>

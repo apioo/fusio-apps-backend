@@ -2,11 +2,22 @@ import {Component} from '@angular/core';
 import {Detail, ErrorService} from "ngx-fusio-sdk";
 import {BackendTransaction} from "fusio-sdk";
 import {TransactionService} from "../../../services/transaction.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {CurrencyPipe, DatePipe, JsonPipe} from "@angular/common";
+import {EditorComponent} from "ngx-monaco-editor-v2";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-transaction-detail',
   templateUrl: './detail.component.html',
+  imports: [
+    RouterLink,
+    CurrencyPipe,
+    DatePipe,
+    EditorComponent,
+    FormsModule,
+    JsonPipe
+  ],
   styleUrls: ['./detail.component.css']
 })
 export class DetailComponent extends Detail<BackendTransaction> {

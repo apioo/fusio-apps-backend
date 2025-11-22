@@ -1,12 +1,31 @@
 import {Component, OnInit} from '@angular/core';
-import {ErrorService} from "ngx-fusio-sdk";
+import {ErrorService, MessageComponent, SearchComponent} from "ngx-fusio-sdk";
 import {CommonMessage, MarketplaceAction, MarketplaceApp} from "fusio-sdk";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {ApiService} from "../../../api.service";
+import {
+  NgbNav,
+  NgbNavContent,
+  NgbNavItem,
+  NgbNavLinkBase,
+  NgbNavOutlet,
+  NgbPagination
+} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-marketplace-list',
   templateUrl: './list.component.html',
+  imports: [
+    MessageComponent,
+    NgbNav,
+    NgbNavItem,
+    NgbNavLinkBase,
+    NgbNavContent,
+    SearchComponent,
+    RouterLink,
+    NgbPagination,
+    NgbNavOutlet
+  ],
   styleUrls: ['./list.component.css']
 })
 export class ListComponent implements OnInit {

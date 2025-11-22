@@ -1,12 +1,12 @@
 
 <h1>
   <a [routerLink]="getListLink()">Form</a> /
-  {{selected?.name}}
+  {{selected()?.name}}
 </h1>
 
-<fusio-message [response]="response"></fusio-message>
+<fusio-message [response]="response()"></fusio-message>
 
-<div *ngIf="selected">
+@if (selected(); as selected) {
   <div class="btn-group" role="group">
     <a [routerLink]="getEditLink(selected.id)" class="btn btn-primary fusio-btn-update">Update</a>
     <a [routerLink]="getDeleteLink(selected.id)" class="btn btn-danger fusio-btn-delete">Delete</a>
@@ -14,23 +14,27 @@
   <div class="float-end">
     <button type="button" (click)="jsonView = !jsonView" class="btn btn-outline-secondary fusio-btn-json ms-2">JSON</button>
   </div>
-  <div class="fusio-detail" *ngIf="!jsonView">
-    <div class="row">
-      <div class="col-lg-2 fw-bold">Name</div>
-      <div class="col-lg-10">{{selected.name}}</div>
+  @if (!jsonView) {
+    <div class="fusio-detail">
+      <div class="row">
+        <div class="col-lg-2 fw-bold">Name</div>
+        <div class="col-lg-10">{{selected.name}}</div>
+      </div>
+      <div class="row">
+        <div class="col-lg-2 fw-bold">Operation</div>
+        <div class="col-lg-10"><a [routerLink]="['/', 'operation', selected.operationId]">{{selected.operationId}}</a></div>
+      </div>
+      <div class="row">
+        <div class="col-lg-2 fw-bold">UI-Schema</div>
+        <div class="col-lg-10"><pre>{{selected.uiSchema|json}}</pre></div>
+      </div>
     </div>
-    <div class="row">
-      <div class="col-lg-2 fw-bold">Operation</div>
-      <div class="col-lg-10"><a [routerLink]="['/', 'operation', selected.operationId]">{{selected.operationId}}</a></div>
+  }
+  @if (jsonView) {
+    <div class="fusio-json">
+      <div style="height:600px;" class="mt-3">
+        <ngx-monaco-editor style="height:100%" name="json" [options]="{theme: 'vs-light', language: 'json'}" [ngModel]="selected|json"></ngx-monaco-editor>
+      </div>
     </div>
-    <div class="row">
-      <div class="col-lg-2 fw-bold">UI-Schema</div>
-      <div class="col-lg-10"><pre>{{selected.uiSchema|json}}</pre></div>
-    </div>
-  </div>
-  <div class="fusio-json" *ngIf="jsonView">
-    <div style="height:600px;" class="mt-3">
-      <ngx-monaco-editor style="height:100%" name="json" [options]="{theme: 'vs-light', language: 'json'}" [ngModel]="selected|json"></ngx-monaco-editor>
-    </div>
-  </div>
-</div>
+  }
+}

@@ -1,17 +1,30 @@
 import {Component} from '@angular/core';
-import {ErrorService, Form} from "ngx-fusio-sdk";
+import {ErrorService, Form, FormAutocompleteComponent, HelpService, MessageComponent} from "ngx-fusio-sdk";
 import {BackendApp, BackendOperation, BackendPlan, BackendRate, BackendUser} from "fusio-sdk";
 import {RateService} from "../../../services/rate.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {OperationService} from "../../../services/operation.service";
 import {UserService} from "../../../services/user.service";
 import {AppService} from "../../../services/app.service";
 import {PlanService} from "../../../services/plan.service";
+import {FormBreadcrump} from "../../../shared/form-breadcrump/form-breadcrump";
+import {FormButtons} from "../../../shared/form-buttons/form-buttons";
+import {FormsModule} from "@angular/forms";
+import {NgbPopover} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
-  selector: 'app-rate-modal',
-  templateUrl: './form.component.html',
-  styleUrls: ['./form.component.css']
+    selector: 'app-rate-modal',
+    templateUrl: './form.component.html',
+  imports: [
+    FormBreadcrump,
+    RouterLink,
+    MessageComponent,
+    FormButtons,
+    FormsModule,
+    NgbPopover,
+    FormAutocompleteComponent
+  ],
+    styleUrls: ['./form.component.css']
 })
 export class FormComponent extends Form<BackendRate> {
 
@@ -53,7 +66,7 @@ export class FormComponent extends Form<BackendRate> {
   plans?: Array<BackendPlan>;
   apps?: Array<BackendApp>;
 
-  constructor(private service: RateService, public operation: OperationService, public user: UserService, public plan: PlanService, public app: AppService, route: ActivatedRoute, router: Router, error: ErrorService) {
+  constructor(private service: RateService, private help: HelpService, public operation: OperationService, public user: UserService, public plan: PlanService, public app: AppService, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);
   }
 
@@ -74,23 +87,22 @@ export class FormComponent extends Form<BackendRate> {
   }
 
   addAllocation() {
-    if (!this.entity) {
-      return;
+    let allocation = this.entity().allocation;
+    if (!allocation) {
+      allocation = [];
     }
 
-    if (!this.entity.allocation) {
-      this.entity.allocation = [];
-    }
-    this.entity.allocation.push({});
+    allocation.push({});
+
+    this.set(this.entity, 'allocation', allocation);
   }
 
   removeAllocation(index: number) {
-    if (!this.entity) {
-      return;
-    }
+    let allocation = this.entity().allocation;
+    if (allocation) {
+      allocation.splice(index, 1);
 
-    if (this.entity.allocation) {
-      this.entity.allocation.splice(index, 1);
+      this.set(this.entity, 'allocation', allocation);
     }
   }
 
@@ -108,6 +120,10 @@ export class FormComponent extends Form<BackendRate> {
     } else {
       return undefined;
     }
+  }
+
+  showHelp(path: string) {
+    this.help.showDialog(path);
   }
 
 }

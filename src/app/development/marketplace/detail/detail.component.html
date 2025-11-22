@@ -8,7 +8,7 @@
 
 <fusio-message [response]="response"></fusio-message>
 
-<div *ngIf="entity">
+@if (entity) {
   <div class="btn-group" role="group">
     <button type="button" (click)="doInstall()" class="btn btn-primary fusio-btn-install">Install</button>
     <button type="button" (click)="doUpgrade()" class="btn btn-secondary fusio-btn-upgrade">Upgrade</button>
@@ -20,7 +20,7 @@
     </div>
     <div class="row">
       <div class="col-2 fw-bold">Author</div>
-      <div class="col-10">{{entity.author?.name}} <i class="bi bi-patch-check-fill text-primary" *ngIf="entity.author?.verified"></i></div>
+      <div class="col-10">{{entity.author?.name}} @if (entity.author?.verified) {<i class="bi bi-patch-check-fill text-primary"></i>}</div>
     </div>
     <div class="row">
       <div class="col-2 fw-bold">Version</div>
@@ -45,4 +45,4 @@
       <div class="col-10">{{entity.cost}}</div>
     </div>
   </div>
-</div>
+}

@@ -8,7 +8,7 @@
 </h1>
 
 <fusio-search
-  [searchTerm]="search"
+  [searchTerm]="search()"
   (search)="doSearch(1, $event)"
   (newClick)="router.navigate(getNewLink())"
   placeholder="table"
@@ -18,30 +18,32 @@
   <thead>
   <tr>
     <th style="width:100px;"></th>
-    <ng-container *ngFor="let column of columns">
+    @for (column of columns; track column.name) {
       <th>{{column.name}}</th>
-    </ng-container>
+    }
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let entry of entries">
-    <td>
-      <div class="btn-group" role="group">
-        <a [routerLink]="getDetailLink(entry[this.primaryKey])" class="btn btn-primary"><i class="bi bi-search"></i></a>
-        <a [routerLink]="getEditLink(entry[this.primaryKey])" class="btn btn-secondary"><i class="bi bi-pen"></i></a>
-        <a [routerLink]="getDeleteLink(entry[this.primaryKey])" class="btn btn-danger"><i class="bi bi-x"></i></a>
-      </div>
-    </td>
-    <ng-container *ngFor="let column of columns">
-      <td>{{entry[column.name || '']}}</td>
-    </ng-container>
-  </tr>
+  @for (entry of entries(); track $index) {
+    <tr>
+      <td>
+        <div class="btn-group" role="group">
+          <a [routerLink]="getDetailLink(entry[this.primaryKey])" class="btn btn-primary"><i class="bi bi-search"></i></a>
+          <a [routerLink]="getEditLink(entry[this.primaryKey])" class="btn btn-secondary"><i class="bi bi-pen"></i></a>
+          <a [routerLink]="getDeleteLink(entry[this.primaryKey])" class="btn btn-danger"><i class="bi bi-x"></i></a>
+        </div>
+      </td>
+      @for (column of columns; track column.name) {
+        <td>{{entry[column.name || '']}}</td>
+      }
+    </tr>
+  }
   </tbody>
 </table>
 <ngb-pagination
-  [(page)]="page"
-  [pageSize]="pageSize"
-  [collectionSize]="totalResults"
+  [page]="page()"
+  [pageSize]="pageSize()"
+  [collectionSize]="totalResults()"
   [maxSize]="4"
   [ellipses]="false"
   (pageChange)="doSearch($event)"></ngb-pagination>

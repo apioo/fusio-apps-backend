@@ -13,11 +13,13 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let log of logs?.entry">
-      <td><span class="badge text-bg-dark">{{log.method}}</span></td>
-      <td>{{log.userAgent}}</td>
-      <td><a (click)="detail(log)" class="btn btn-light"><i class="bi bi-search"></i></a></td>
-    </tr>
+    @for (log of logs?.entry; track log.id) {
+      <tr>
+        <td><span class="badge text-bg-dark">{{log.method}}</span></td>
+        <td>{{log.userAgent}}</td>
+        <td><a (click)="detail(log)" class="btn btn-light"><i class="bi bi-search"></i></a></td>
+      </tr>
+    }
     </tbody>
   </table>
 </div>

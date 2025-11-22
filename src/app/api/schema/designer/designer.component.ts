@@ -1,13 +1,22 @@
 import {Component, OnInit} from '@angular/core';
-import {ExportService, ImportService, Specification} from "ngx-typeschema-editor";
-import {ActivatedRoute} from "@angular/router";
-import {ErrorService} from "ngx-fusio-sdk";
+import {ExportService, ImportService, Specification, TypeschemaEditorModule} from "ngx-typeschema-editor";
+import {ActivatedRoute, RouterLink} from "@angular/router";
+import {ErrorService, MessageComponent} from "ngx-fusio-sdk";
 import {BackendSchema, BackendSchemaCreate, CommonMessage} from "fusio-sdk";
 import {SchemaService} from "../../../services/schema.service";
+import {FormsModule} from "@angular/forms";
+import {NgbPopover} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-schema-designer',
   templateUrl: './designer.component.html',
+  imports: [
+    RouterLink,
+    MessageComponent,
+    FormsModule,
+    TypeschemaEditorModule,
+    NgbPopover
+  ],
   styleUrls: ['./designer.component.css']
 })
 export class DesignerComponent implements OnInit {

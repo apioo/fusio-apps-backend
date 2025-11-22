@@ -1,17 +1,22 @@
-<div class="card" style="margin-top:1rem" *ngIf="errors.length > 0">
-  <div class="card-header">Errors</div>
-  <div class="card-body">
-    <table class="table table-striped">
-      <colgroup>
-        <col>
-        <col style="width:50px">
-      </colgroup>
-      <tbody>
-      <tr *ngFor="let error of errors">
-        <td>{{error.message}}</td>
-        <td><button (click)="showTrace(error)" class="btn btn-secondary"><i class="bi bi-search"></i></button></td>
-      </tr>
-      </tbody>
-    </table>
+
+@if (errors.length > 0) {
+  <div class="card" style="margin-top:1rem">
+    <div class="card-header">Errors</div>
+    <div class="card-body">
+      <table class="table table-striped">
+        <colgroup>
+          <col>
+          <col style="width:50px">
+        </colgroup>
+        <tbody>
+        @for (error of errors; track $index) {
+          <tr>
+            <td>{{error.message}}</td>
+            <td><button (click)="showTrace(error)" class="btn btn-secondary"><i class="bi bi-search"></i></button></td>
+          </tr>
+        }
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
+}

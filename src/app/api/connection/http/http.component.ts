@@ -1,13 +1,25 @@
 import {Component, OnInit} from '@angular/core';
-import {ErrorService} from "ngx-fusio-sdk";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ErrorService, FormMapComponent, MessageComponent} from "ngx-fusio-sdk";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {ApiService} from "../../../api.service";
 import {BackendConnection, BackendHttpRequest, BackendHttpResponse, CommonMessage} from "fusio-sdk";
 import {ConnectionService} from "../../../services/connection.service";
+import {KeyValuePipe, NgClass} from "@angular/common";
+import {EditorComponent} from "ngx-monaco-editor-v2";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-connection-http',
   templateUrl: './http.component.html',
+  imports: [
+    NgClass,
+    EditorComponent,
+    FormsModule,
+    KeyValuePipe,
+    FormMapComponent,
+    MessageComponent,
+    RouterLink
+  ],
   styleUrls: ['./http.component.css']
 })
 export class HttpComponent implements OnInit {

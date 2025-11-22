@@ -1,20 +1,18 @@
 
 <h1>
   <a [routerLink]="getListLink()">Cronjob</a> /
-  <a [routerLink]="getDetailLink('~' + entity?.name)">{{ entity?.name }}</a> /
-  <ng-container *ngIf="mode === 1">Create</ng-container>
-  <ng-container *ngIf="mode === 2">Update</ng-container>
-  <ng-container *ngIf="mode === 3">Delete</ng-container>
+  <a [routerLink]="getDetailLink('~' + entity().name)">{{ entity().name }}</a> /
+  <app-form-breadcrump [mode]="mode"></app-form-breadcrump>
 </h1>
 
-<fusio-message [response]="response"></fusio-message>
+<fusio-message [response]="response()"></fusio-message>
 
-<form *ngIf="entity">
+<form>
   <div class="mb-3 row">
     <label for="name" class="col-lg-2 col-form-label fw-bold">Name</label>
     <div class="col-lg-10">
       <div class="input-group">
-        <input type="text" id="name" name="name" [(ngModel)]="entity.name" [disabled]="mode === 3" class="form-control">
+        <input type="text" id="name" name="name" [ngModel]="entity().name" (ngModelChange)="set(entity, 'name', $event)" [disabled]="mode === 3" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
         <ng-template #nameHelp>Unique name of the cronjob</ng-template>
       </div>
@@ -24,7 +22,7 @@
     <label for="cron" class="col-lg-2 col-form-label fw-bold">Cron</label>
     <div class="col-lg-10">
       <div class="input-group">
-        <input type="text" id="cron" name="cron" [(ngModel)]="entity.cron" [disabled]="mode === 3" class="form-control">
+        <input type="text" id="cron" name="cron" [ngModel]="entity().cron" (ngModelChange)="set(entity, 'cron', $event)" [disabled]="mode === 3" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="cronHelp"><i class="bi bi-question"></i></button>
         <ng-template #cronHelp>Cron expression at which the action gets executed. Click <a href="https://wikipedia.org/wiki/Cron">here</a> for more information about the syntax</ng-template>
       </div>
@@ -33,12 +31,8 @@
   <div class="mb-3 row">
     <label for="action" class="col-lg-2 col-form-label fw-bold">Action</label>
     <div class="col-lg-10">
-      <app-action-selector name="action" [data]="entity.action" (dataChange)="entity.action = $event" [disabled]="mode === 3"></app-action-selector>
+      <app-action-selector name="action" [data]="entity().action" (dataChange)="set(entity, 'action', $event)" [disabled]="mode === 3"></app-action-selector>
     </div>
   </div>
-  <div class="btn-group" role="group">
-    <ng-container *ngIf="mode === 1"><button type="button" class="btn btn-primary" (click)="doCreate(entity)">Create</button></ng-container>
-    <ng-container *ngIf="mode === 2"><button type="button" class="btn btn-primary" (click)="doUpdate(entity)">Update</button></ng-container>
-    <ng-container *ngIf="mode === 3"><button type="button" class="btn btn-danger" (click)="doDelete(entity)">Delete</button></ng-container>
-  </div>
+  <app-form-buttons (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="router.navigate(getListLink())" (onHelp)="showHelp('api/cronjob')"></app-form-buttons>
 </form>

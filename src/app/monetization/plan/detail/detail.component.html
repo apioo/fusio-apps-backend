@@ -1,12 +1,12 @@
 
 <h1>
   <a [routerLink]="getListLink()">Plan</a> /
-  {{selected?.name}}
+  {{selected()?.name}}
 </h1>
 
-<fusio-message [response]="response"></fusio-message>
+<fusio-message [response]="response()"></fusio-message>
 
-<div *ngIf="selected">
+@if (selected(); as selected) {
   <div class="btn-group" role="group">
     <a [routerLink]="getEditLink(selected.id)" class="btn btn-primary fusio-btn-update">Update</a>
     <a [routerLink]="getDeleteLink(selected.id)" class="btn btn-danger fusio-btn-delete">Delete</a>
@@ -14,38 +14,46 @@
   <div class="float-end">
     <button type="button" (click)="jsonView = !jsonView" class="btn btn-outline-secondary fusio-btn-json">JSON</button>
   </div>
-  <div class="fusio-detail" *ngIf="!jsonView">
-    <div class="row">
-      <div class="col-lg-2 fw-bold">Name</div>
-      <div class="col-lg-10">{{selected.name}}</div>
-    </div>
-    <div class="row">
-      <div class="col-lg-2 fw-bold">Description</div>
-      <div class="col-lg-10"><markdown [data]="selected.description"></markdown></div>
-    </div>
-    <div class="row">
-      <div class="col-lg-2 fw-bold">Price</div>
-      <div class="col-lg-10">{{selected.price|currency}}</div>
-    </div>
-    <div class="row">
-      <div class="col-lg-2 fw-bold">Points</div>
-      <div class="col-lg-10">{{selected.points}}</div>
-    </div>
-    <div class="row">
-      <div class="col-lg-2 fw-bold">Period</div>
-      <div class="col-lg-10">
-        <span *ngIf="selected.period === 0" class="badge bg-success">One-Time</span>
-        <span *ngIf="selected.period === 1" class="badge bg-success">Subscription</span>
+  @if (!jsonView) {
+    <div class="fusio-detail">
+      <div class="row">
+        <div class="col-lg-2 fw-bold">Name</div>
+        <div class="col-lg-10">{{selected.name}}</div>
+      </div>
+      <div class="row">
+        <div class="col-lg-2 fw-bold">Description</div>
+        <div class="col-lg-10"><markdown [data]="selected.description"></markdown></div>
+      </div>
+      <div class="row">
+        <div class="col-lg-2 fw-bold">Price</div>
+        <div class="col-lg-10">{{selected.price|currency}}</div>
+      </div>
+      <div class="row">
+        <div class="col-lg-2 fw-bold">Points</div>
+        <div class="col-lg-10">{{selected.points}}</div>
+      </div>
+      <div class="row">
+        <div class="col-lg-2 fw-bold">Period</div>
+        <div class="col-lg-10">
+          @if (selected.period === 0) {
+            <span class="badge bg-success">One-Time</span>
+          }
+          @if (selected.period === 1) {
+            <span class="badge bg-success">Subscription</span>
+          }
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-2 fw-bold">Scopes</div>
+        <div class="col-lg-10"><fusio-scopes [scopes]="selected.scopes"></fusio-scopes></div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-lg-2 fw-bold">Scopes</div>
-      <div class="col-lg-10"><fusio-scopes [scopes]="selected.scopes"></fusio-scopes></div>
+  }
+  @if (jsonView) {
+    <div class="fusio-json">
+      <div style="height:600px;" class="mt-3">
+        <ngx-monaco-editor style="height:100%" name="json" [options]="{theme: 'vs-light', language: 'json'}" [ngModel]="selected|json"></ngx-monaco-editor>
+      </div>
     </div>
-  </div>
-  <div class="fusio-json" *ngIf="jsonView">
-    <div style="height:600px;" class="mt-3">
-      <ngx-monaco-editor style="height:100%" name="json" [options]="{theme: 'vs-light', language: 'json'}" [ngModel]="selected|json"></ngx-monaco-editor>
-    </div>
-  </div>
-</div>
+  }
+}

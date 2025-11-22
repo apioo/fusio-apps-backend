@@ -1,12 +1,18 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {ErrorService} from "ngx-fusio-sdk";
+import {ActivatedRoute, RouterLink} from "@angular/router";
+import {ErrorService, MessageComponent} from "ngx-fusio-sdk";
 import {CommonMessage, MarketplaceObject} from "fusio-sdk";
 import {ApiService} from "../../../api.service";
+import {MarkdownComponent} from "ngx-markdown";
 
 @Component({
   selector: 'app-marketplace-detail',
   templateUrl: './detail.component.html',
+  imports: [
+    RouterLink,
+    MessageComponent,
+    MarkdownComponent
+  ],
   styleUrls: ['./detail.component.css']
 })
 export class DetailComponent implements OnInit {

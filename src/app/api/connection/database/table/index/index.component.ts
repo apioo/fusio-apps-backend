@@ -1,9 +1,15 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {BackendDatabaseTableIndex} from "fusio-sdk";
+import {FormsModule} from "@angular/forms";
+import {CsvPipe} from "../../../../../shared/tag-editor/csv.pipe";
 
 @Component({
   selector: 'app-connection-database-table-index',
   templateUrl: './index.component.html',
+  imports: [
+    FormsModule,
+    CsvPipe
+  ],
   styleUrls: ['./index.component.css']
 })
 export class IndexComponent implements OnInit {
