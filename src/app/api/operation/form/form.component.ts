@@ -67,16 +67,21 @@ export class FormComponent extends Form<BackendOperation> {
   }
 
   public isDisabled(): boolean {
-    if (!this.entity) {
+    const entity = this.entity();
+    if (!entity) {
       return false;
     }
 
-    return this.mode === 3 || (this.entity().stability === 2 || this.entity().stability === 3);
+    return this.mode === 3 || (entity.stability === 2 || entity.stability === 3);
   }
 
   changeHttpMethod(): void {
-    if (this.entity && this.entity().incoming && (this.entity().httpMethod === 'GET' || this.entity().httpMethod === 'DELETE')) {
-      delete this.entity().incoming;
+    const entity = this.entity();
+    if (entity && entity.incoming && (entity.httpMethod === 'GET' || entity.httpMethod === 'DELETE')) {
+      this.entity.update((operation) => {
+        delete operation.incoming;
+        return operation;
+      });
     }
   }
 

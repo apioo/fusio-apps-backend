@@ -1,4 +1,14 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {
+  AfterContentChecked,
+  Component,
+  EventEmitter,
+  input,
+  Input,
+  OnInit,
+  output,
+  Output,
+  signal
+} from '@angular/core';
 import {SchemaService} from "../../services/schema.service";
 import {FormsModule} from "@angular/forms";
 import {FormAutocompleteComponent} from "ngx-fusio-sdk";
@@ -14,12 +24,15 @@ import {NgbPopover} from "@ng-bootstrap/ng-bootstrap";
   ],
   styleUrls: ['./schema-selector.component.css']
 })
-export class SchemaSelectorComponent implements OnInit {
+export class SchemaSelectorComponent implements AfterContentChecked {
 
-  @Input() name!: string;
-  @Input() disabled: boolean = false;
-  @Input() data?: string = undefined;
-  @Output() dataChange = new EventEmitter<string>();
+  name = input.required<string>();
+  data = input.required<string|undefined>();
+  disabled = input<boolean>(false);
+  dataChange = output<string>();
+
+  scheme = signal<string>('');
+  value = signal<string>('');
 
   schemes = [{
     key: 'schema',
@@ -44,39 +57,39 @@ export class SchemaSelectorComponent implements OnInit {
     value: 'TypeHub'
   }*/];
 
-  scheme: string = '';
-  value: string = '';
-
   constructor(public schema: SchemaService) {
   }
 
-  async ngOnInit(): Promise<void> {
-    if (this.data) {
-      const pos = this.data.indexOf('://');
+  ngAfterContentChecked() {
+    const data = this.data();
+    if (data) {
+      const pos = data.indexOf('://');
       if (pos > 0) {
-        this.scheme = this.data.substring(0, pos);
-        this.value = this.data.substring(pos + 3);
+        this.scheme.set(data.substring(0, pos));
+        this.value.set(data.substring(pos + 3));
       }
     }
-    if (!this.scheme) {
-      this.scheme = 'schema';
+    if (!this.scheme()) {
+      this.scheme.set('schema');
     }
   }
 
   changeScheme() {
-    if (this.disabled) {
+    if (this.disabled()) {
       return;
     }
 
-    this.dataChange.emit(this.scheme + '://' + this.value);
+    this.value.set('');
+
+    this.dataChange.emit(this.scheme() + '://' + this.value());
   }
 
   changeValue() {
-    if (this.disabled) {
+    if (this.disabled()) {
       return;
     }
 
-    this.dataChange.emit(this.scheme + '://' + this.value);
+    this.dataChange.emit(this.scheme() + '://' + this.value());
   }
 
 }

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {AfterContentChecked, AfterContentInit, Component, computed, input, OnInit, output, signal} from '@angular/core';
 import {ActionService} from "../../services/action.service";
 import {FormsModule} from "@angular/forms";
 import {FormAutocompleteComponent} from "ngx-fusio-sdk";
@@ -14,12 +14,15 @@ import {NgbPopover} from "@ng-bootstrap/ng-bootstrap";
   ],
   styleUrls: ['./action-selector.component.css']
 })
-export class ActionSelectorComponent implements OnInit {
+export class ActionSelectorComponent implements AfterContentChecked {
 
-  @Input() name!: string;
-  @Input() disabled: boolean = false;
-  @Input() data?: string = undefined;
-  @Output() dataChange = new EventEmitter<string>();
+  name = input.required<string>();
+  data = input.required<string|undefined>();
+  disabled = input<boolean>(false);
+  dataChange = output<string>();
+
+  scheme = signal<string>('');
+  value = signal<string>('');
 
   schemes = [{
     key: 'action',
@@ -38,39 +41,39 @@ export class ActionSelectorComponent implements OnInit {
     value: 'File'
   }];
 
-  scheme: string = '';
-  value: string = '';
-
   constructor(public action: ActionService) {
   }
 
-  async ngOnInit(): Promise<void> {
-    if (this.data) {
-      const pos = this.data.indexOf('://');
+  ngAfterContentChecked() {
+    const data = this.data();
+    if (data) {
+      const pos = data.indexOf('://');
       if (pos > 0) {
-        this.scheme = this.data.substring(0, pos);
-        this.value = this.data.substring(pos + 3);
+        this.scheme.set(data.substring(0, pos));
+        this.value.set(data.substring(pos + 3));
       }
     }
-    if (!this.scheme) {
-      this.scheme = 'action';
+    if (!this.scheme()) {
+      this.scheme.set('action');
     }
   }
 
   changeScheme() {
-    if (this.disabled) {
+    if (this.disabled()) {
       return;
     }
 
-    this.dataChange.emit(this.scheme + '://' + this.value);
+    this.value.set('');
+
+    this.dataChange.emit(this.scheme() + '://' + this.value());
   }
 
   changeValue() {
-    if (this.disabled) {
+    if (this.disabled()) {
       return;
     }
 
-    this.dataChange.emit(this.scheme + '://' + this.value);
+    this.dataChange.emit(this.scheme() + '://' + this.value());
   }
 
 }

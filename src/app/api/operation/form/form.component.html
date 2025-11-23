@@ -14,7 +14,7 @@
       <div class="input-group">
         <input type="text" id="name" name="name" [ngModel]="entity().name" (ngModelChange)="set(entity, 'name', $event)" [disabled]="isDisabled()" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
-        <ng-template #nameHelp>Unique name of the operation i.e. <code>My.Awesome.Operation.execute</code></ng-template>
+        <ng-template #nameHelp>Unique name of the operation i.e. <code>product.findAll</code></ng-template>
       </div>
     </div>
   </div>
@@ -45,7 +45,9 @@
     <div class="col-lg-10">
       <div class="input-group">
         <select id="stability" name="stability" [ngModel]="entity().stability" (ngModelChange)="set(entity, 'stability', $event)" class="form-select">
-          <option *ngFor="let stability of stabilities" [ngValue]="stability.key">{{stability.value}}</option>
+          @for (stability of stabilities; track stability.key) {
+            <option [ngValue]="stability.key">{{stability.value}}</option>
+          }
         </select>
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="stabilityHelp"><i class="bi bi-question"></i></button>
         <ng-template #stabilityHelp>Indicates the stability of the operation. If an operation is marked as stable it is not longer possible to change any values</ng-template>
