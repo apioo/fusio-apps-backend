@@ -1,4 +1,14 @@
-import {AfterContentChecked, AfterContentInit, Component, computed, input, OnInit, output, signal} from '@angular/core';
+import {
+  AfterContentChecked,
+  AfterContentInit,
+  Component,
+  computed,
+  effect,
+  input,
+  OnInit,
+  output,
+  signal
+} from '@angular/core';
 import {ActionService} from "../../services/action.service";
 import {FormsModule} from "@angular/forms";
 import {FormAutocompleteComponent} from "ngx-fusio-sdk";
@@ -14,7 +24,7 @@ import {NgbPopover} from "@ng-bootstrap/ng-bootstrap";
   ],
   styleUrls: ['./action-selector.component.css']
 })
-export class ActionSelectorComponent implements AfterContentChecked {
+export class ActionSelectorComponent {
 
   name = input.required<string>();
   data = input.required<string|undefined>();
@@ -42,20 +52,19 @@ export class ActionSelectorComponent implements AfterContentChecked {
   }];
 
   constructor(public action: ActionService) {
-  }
-
-  ngAfterContentChecked() {
-    const data = this.data();
-    if (data) {
-      const pos = data.indexOf('://');
-      if (pos > 0) {
-        this.scheme.set(data.substring(0, pos));
-        this.value.set(data.substring(pos + 3));
+    effect(() => {
+      const data = this.data();
+      if (data) {
+        const pos = data.indexOf('://');
+        if (pos > 0) {
+          this.scheme.set(data.substring(0, pos));
+          this.value.set(data.substring(pos + 3));
+        }
       }
-    }
-    if (!this.scheme()) {
-      this.scheme.set('action');
-    }
+      if (!this.scheme()) {
+        this.scheme.set('action');
+      }
+    });
   }
 
   changeScheme() {

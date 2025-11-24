@@ -1,14 +1,4 @@
-import {
-  AfterContentChecked,
-  Component,
-  EventEmitter,
-  input,
-  Input,
-  OnInit,
-  output,
-  Output,
-  signal
-} from '@angular/core';
+import {Component, effect, input, output, signal} from '@angular/core';
 import {SchemaService} from "../../services/schema.service";
 import {FormsModule} from "@angular/forms";
 import {FormAutocompleteComponent} from "ngx-fusio-sdk";
@@ -24,7 +14,7 @@ import {NgbPopover} from "@ng-bootstrap/ng-bootstrap";
   ],
   styleUrls: ['./schema-selector.component.css']
 })
-export class SchemaSelectorComponent implements AfterContentChecked {
+export class SchemaSelectorComponent {
 
   name = input.required<string>();
   data = input.required<string|undefined>();
@@ -58,20 +48,19 @@ export class SchemaSelectorComponent implements AfterContentChecked {
   }*/];
 
   constructor(public schema: SchemaService) {
-  }
-
-  ngAfterContentChecked() {
-    const data = this.data();
-    if (data) {
-      const pos = data.indexOf('://');
-      if (pos > 0) {
-        this.scheme.set(data.substring(0, pos));
-        this.value.set(data.substring(pos + 3));
+    effect(() => {
+      const data = this.data();
+      if (data) {
+        const pos = data.indexOf('://');
+        if (pos > 0) {
+          this.scheme.set(data.substring(0, pos));
+          this.value.set(data.substring(pos + 3));
+        }
       }
-    }
-    if (!this.scheme()) {
-      this.scheme.set('schema');
-    }
+      if (!this.scheme()) {
+        this.scheme.set('schema');
+      }
+    });
   }
 
   changeScheme() {

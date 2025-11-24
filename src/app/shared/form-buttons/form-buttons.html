@@ -1,14 +1,15 @@
 
 <div class="btn-group" role="group">
-  @if (mode === 1) {
+  @if (mode() === 1) {
     <button type="button" class="btn btn-primary" (click)="onCreate.emit()">Create</button>
   }
-  @if (mode === 2) {
+  @else if (mode() === 2) {
     <button type="button" class="btn btn-primary" (click)="onUpdate.emit()">Update</button>
   }
-  @if (mode === 3) {
+  @else if (mode() === 3) {
     <button type="button" class="btn btn-danger" (click)="onDelete.emit()">Delete</button>
   }
+
   @if (onBack.observed) {
     <button type="button" class="btn btn-light fusio-btn-back" (click)="onBack.emit()">Back</button>
   }

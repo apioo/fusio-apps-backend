@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, input, Input, Output} from '@angular/core';
 
 @Component({
   selector: 'app-form-buttons',
@@ -8,7 +8,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 })
 export class FormButtons {
 
-  @Input() mode!: number;
+  mode = input.required<number>();
 
   @Output() onCreate = new EventEmitter<void>();
   @Output() onUpdate = new EventEmitter<void>();

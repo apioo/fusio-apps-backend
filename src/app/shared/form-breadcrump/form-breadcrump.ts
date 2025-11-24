@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, input, Input} from '@angular/core';
 
 @Component({
   selector: 'app-form-breadcrump',
@@ -8,6 +8,6 @@ import {Component, Input} from '@angular/core';
 })
 export class FormBreadcrump {
 
-  @Input() mode!: number;
+  mode = input.required<number>();
 
 }
