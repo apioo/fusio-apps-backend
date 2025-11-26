@@ -7,6 +7,7 @@ import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {ApiService} from "../../../api.service";
 import {ActionLinkComponent} from "../../../shared/action-link/action-link.component";
 import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
+import {OperationStatus} from "../../../shared/operation-status/operation-status";
 
 @Component({
   selector: 'app-operation-list',
@@ -16,7 +17,8 @@ import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
     SearchComponent,
     ActionLinkComponent,
     RouterLink,
-    NgbPagination
+    NgbPagination,
+    OperationStatus
   ],
   styleUrls: ['./list.component.css']
 })

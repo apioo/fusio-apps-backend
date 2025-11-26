@@ -21,18 +21,7 @@
       <div class="row">
         <div class="col-lg-2 fw-bold">Status</div>
         <div class="col-lg-10">
-          @if (selected.active === true) {
-            <span class="badge bg-success fusio-operation-active">Active</span>
-          }
-          @if (selected.active !== true) {
-            <span class="badge bg-secondary fusio-operation-active">Inactive</span>
-          }
-          @if (selected.public === true) {
-            <span class="badge bg-primary fusio-operation-public">Public</span>
-          }
-          @if (selected.public !== true) {
-            <span class="badge bg-info fusio-operation-public">Private</span>
-          }
+          <app-operation-status [active]="selected.active" [public]="selected.public"></app-operation-status>
         </div>
       </div>
       <div class="row">

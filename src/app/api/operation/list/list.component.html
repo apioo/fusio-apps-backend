@@ -13,37 +13,20 @@
 <table class="table table-striped">
   <thead>
   <tr>
-    <th style="width:10%">Status</th>
-    <th style="width:30%">Name</th>
-    <th style="width:50px;">Method</th>
-    <th style="width:30%">Path</th>
-    <th style="width:30%">Action</th>
+    <th style="width:100px">Status</th>
+    <th style="width:40%">Name</th>
+    <th style="width:40%">Action</th>
     <th></th>
   </tr>
   </thead>
   <tbody>
   @for (entry of entries(); track entry.id) {
     <tr>
-      <td>
-        @if (entry.active === true) {
-          <span class="badge bg-success fusio-operation-active me-1">Active</span>
-        }
-        @if (entry.active !== true) {
-          <span class="badge bg-secondary fusio-operation-active me-1">Inactive</span>
-        }
-        @if (entry.public === true) {
-          <span class="badge bg-primary fusio-operation-public">Public</span>
-        }
-        @if (entry.public !== true) {
-          <span class="badge bg-info fusio-operation-public">Private</span>
-        }
-      </td>
-      <td><code>{{entry.name}}</code></td>
-      <td><span class="badge text-bg-dark fusio-operation-http-method me-1">{{entry.httpMethod}}</span></td>
-      <td><code class="fusio-operation-http-path"><a href="{{baseUrl}}{{entry.httpPath}}">{{entry.httpPath}}</a></code></td>
+      <td><app-operation-status [active]="entry.active" [public]="entry.public"></app-operation-status></td>
+      <td><a href="{{baseUrl}}{{entry.httpPath}}" class="font-monospace">{{entry.name}}</a></td>
       <td><app-action-link [data]="entry.action"></app-action-link></td>
       <td>
-        <div class="btn-group" role="group">
+        <div class="btn-group float-end" role="group">
           <a [routerLink]="getDetailLink(entry.id)" class="btn btn-primary"><i class="bi bi-search"></i></a>
           <a [routerLink]="getEditLink(entry.id)" class="btn btn-secondary"><i class="bi bi-pen"></i></a>
           <a [routerLink]="getDeleteLink(entry.id)" class="btn btn-danger"><i class="bi bi-x"></i></a>

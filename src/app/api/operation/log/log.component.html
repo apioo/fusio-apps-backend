@@ -4,6 +4,7 @@
   <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
 </div>
 <div class="modal-body">
+  <fusio-message [response]="response()"></fusio-message>
   <table class="table table-striped">
     <thead>
     <tr>
@@ -13,7 +14,7 @@
     </tr>
     </thead>
     <tbody>
-    @for (log of logs?.entry; track log.id) {
+    @for (log of logs()?.entry; track log.id) {
       <tr>
         <td><span class="badge text-bg-dark">{{log.method}}</span></td>
         <td>{{log.userAgent}}</td>

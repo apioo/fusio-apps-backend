@@ -12,6 +12,7 @@ import {ActionLinkComponent} from "../../../shared/action-link/action-link.compo
 import {EditorComponent} from "ngx-monaco-editor-v2";
 import {FormsModule} from "@angular/forms";
 import {JsonPipe, KeyValuePipe} from "@angular/common";
+import {OperationStatus} from "../../../shared/operation-status/operation-status";
 
 @Component({
   selector: 'app-operation-detail',
@@ -25,7 +26,8 @@ import {JsonPipe, KeyValuePipe} from "@angular/common";
     EditorComponent,
     FormsModule,
     JsonPipe,
-    KeyValuePipe
+    KeyValuePipe,
+    OperationStatus
   ],
   styleUrls: ['./detail.component.css']
 })

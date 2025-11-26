@@ -1,0 +1,16 @@
+
+<div class="text-nowrap">
+  @if (active()) {
+    <span class="badge bg-success fusio-operation-active me-1"><i class="bi bi-lightbulb" title="Active"></i></span>
+  }
+  @else {
+    <span class="badge bg-secondary fusio-operation-active me-1"><i class="bi bi-lightbulb-off" title="Inactive"></i></span>
+  }
+
+  @if (public()) {
+    <span class="badge bg-primary fusio-operation-public"><i class="bi bi-eye" title="Public"></i></span>
+  }
+  @else {
+    <span class="badge bg-info fusio-operation-public"><i class="bi bi-shield-lock" title="Private"></i></span>
+  }
+</div>
