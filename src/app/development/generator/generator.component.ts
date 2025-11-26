@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, signal} from '@angular/core';
 import {ErrorService, MessageComponent} from "ngx-fusio-sdk";
 import {
   BackendGeneratorIndexProvider,
   BackendGeneratorProvider,
-  BackendGeneratorProviderChangelog,
+  BackendGeneratorProviderChangelog, BackendGeneratorProviderConfig,
   CommonFormContainer,
   CommonMessage
 } from "fusio-sdk";
@@ -27,57 +27,95 @@ import {ConfigComponent} from "../../shared/config/config.component";
 })
 export class GeneratorComponent implements OnInit {
 
-  providers?: Array<BackendGeneratorIndexProvider>;
-  provider: BackendGeneratorProvider = {
+  providers = signal<Array<BackendGeneratorIndexProvider>>([]);
+  provider = signal<BackendGeneratorProvider>({
     path: '',
     scopes: [],
     config: {},
-  };
-  selected?: string;
-  form?: CommonFormContainer;
-  response?: CommonMessage;
-  changelog?: BackendGeneratorProviderChangelog;
+  });
+
+  selected = signal<string|undefined>(undefined);
+  form = signal<CommonFormContainer|undefined>(undefined);
+  response = signal<CommonMessage|undefined>(undefined);
+  changelog = signal<BackendGeneratorProviderChangelog|undefined>(undefined);
 
   constructor(private fusio: ApiService, private error: ErrorService) { }
 
   async ngOnInit(): Promise<void> {
     const response = await this.fusio.getClient().backend().generator().getClasses();
     if (response.providers) {
-      this.providers = response.providers;
+      this.providers.set(response.providers || []);
     }
+  }
+
+  setPath(path: string) {
+    this.provider.update((provider) => {
+      provider.path = path;
+      return provider;
+    });
+  }
+
+  setScopes(scopes: Array<string>) {
+    this.provider.update((provider) => {
+      provider.scopes = scopes;
+      return provider;
+    });
+  }
+
+  setPublic(pub: boolean) {
+    this.provider.update((provider) => {
+      provider.public = pub;
+      return provider;
+    });
+  }
+
+  setConfig(config: BackendGeneratorProviderConfig) {
+    this.provider.update((provider) => {
+      provider.config = config;
+      return provider;
+    });
   }
 
   async loadConfig() {
-    if (!this.selected || !this.provider) {
+    const selected = this.selected();
+    if (!selected || !this.provider()) {
       return;
     }
 
-    this.form = await this.fusio.getClient().backend().generator().getForm(this.selected);
-    this.provider.config = {};
+    this.form.set(await this.fusio.getClient().backend().generator().getForm(selected));
+
+    this.provider.update((provider) => {
+      provider.config = {};
+      return provider;
+    });
   }
 
   async loadChangelog() {
-    if (!this.selected || !this.provider.config) {
+    const selected = this.selected();
+    const provider = this.provider();
+    if (!selected || !provider.config) {
       return;
     }
 
     try {
-      this.changelog = await this.fusio.getClient().backend().generator().getChangelog(this.selected, this.provider.config);
-      this.response = undefined;
+      this.changelog.set(await this.fusio.getClient().backend().generator().getChangelog(selected, provider.config));
+      this.response.set(undefined);
     } catch (error) {
-      this.response = this.error.convert(error);
+      this.response.set(this.error.convert(error));
     }
   }
 
   async submit() {
-    if (!this.selected || !this.provider) {
+    const selected = this.selected();
+    const provider = this.provider();
+    if (!selected || !provider) {
       return;
     }
 
     try {
-      this.response = await this.fusio.getClient().backend().generator().executeProvider(this.selected, this.provider);
+      this.response.set(await this.fusio.getClient().backend().generator().executeProvider(selected, provider));
     } catch (error) {
-      this.response = this.error.convert(error);
+      this.response.set(this.error.convert(error));
     }
   }
 
