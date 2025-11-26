@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, effect, input, output, signal} from '@angular/core';
 import {BackendOperationParameters} from "fusio-sdk";
 import {FormsModule} from "@angular/forms";
 
@@ -10,18 +10,18 @@ import {FormsModule} from "@angular/forms";
   ],
   styleUrls: ['./operation-parameters.component.css']
 })
-export class OperationParametersComponent implements OnInit {
+export class OperationParametersComponent {
 
-  @Input() name: string = 'operation-parameters';
-  @Input() disabled: boolean = false;
-  @Input() data?: BackendOperationParameters = {};
-  @Output() dataChange = new EventEmitter<BackendOperationParameters>();
+  name = input<string>('operation-parameters');
+  disabled = input<boolean>(false);
+  data = input<BackendOperationParameters|undefined>({});
+  dataChange = output<BackendOperationParameters>();
 
-  result: Array<{ name?: string, type?: string, format?: string, description?: string }> = [];
+  result = signal<Array<{ name?: string, type?: string, format?: string, description?: string }>>([]);
 
-  newName?: string;
-  newType?: string = 'string';
-  newDescription?: string;
+  newName = signal<string>('');
+  newType= signal<string>('string');
+  newDescription = signal<string>('');
 
   types = [
     {key: 'string', value: 'String'},
@@ -30,53 +30,84 @@ export class OperationParametersComponent implements OnInit {
     {key: 'boolean', value: 'Boolean'},
   ]
 
-  ngOnInit() {
-    if (this.data) {
-      this.result = [];
-      for (const [key, value] of Object.entries(this.data)) {
-        this.result.push({
-          name: key,
-          type: value.type,
-          format: value.format,
-          description: value.description,
-        })
+  constructor() {
+    effect(() => {
+      const data = this.data();
+      if (data) {
+        const result = [];
+        for (const [key, value] of Object.entries(data)) {
+          result.push({
+            name: key,
+            type: value.type,
+            format: value.format,
+            description: value.description,
+          })
+        }
+
+        this.result.set(result);
       }
-    }
+    });
   }
 
   add() {
-    if (!this.newName || !this.newType || this.disabled) {
+    if (!this.newName() || !this.newType() || this.disabled()) {
       return;
     }
 
-    this.result.push({
-      name: this.newName,
-      type: this.newType,
-      description: this.newDescription,
-    })
+    this.result.update((entries) => {
+      entries.push({
+        name: this.newName(),
+        type: this.newType(),
+        description: this.newDescription(),
+      });
+      return entries;
+    });
 
-    this.newName = undefined;
-    this.newType = 'string';
-    this.newDescription = undefined;
+    this.newName.set('');
+    this.newType.set('string');
+    this.newDescription.set('');
+  }
+
+  setName(index: number, name: string) {
+    this.result.update((entries) => {
+      entries[index].name = name;
+      return entries;
+    });
+  }
+
+  setType(index: number, type: string) {
+    this.result.update((entries) => {
+      entries[index].type = type;
+      return entries;
+    });
+  }
+
+  setDescription(index: number, description: string) {
+    this.result.update((entries) => {
+      entries[index].description = description;
+      return entries;
+    });
   }
 
   remove(name?: string) {
-    if (this.disabled) {
+    if (this.disabled()) {
       return;
     }
 
-    this.result = this.result.filter((row) => {
-      return row.name !== name;
+    this.result.update((entries) => {
+      return entries.filter((row) => {
+        return row.name !== name;
+      });
     });
   }
 
   changeValue() {
-    if (this.disabled) {
+    if (this.disabled()) {
       return;
     }
 
     const result: BackendOperationParameters = {};
-    this.result.forEach((row) => {
+    this.result().forEach((row) => {
       if (!row.name) {
         return;
       }

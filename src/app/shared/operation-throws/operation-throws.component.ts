@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, effect, EventEmitter, input, Input, OnInit, output, Output, signal} from '@angular/core';
 import {BackendOperationThrows} from "fusio-sdk";
 import {SchemaService} from "../../services/schema.service";
 import {FormsModule} from "@angular/forms";
@@ -13,16 +13,16 @@ import {SchemaSelectorComponent} from "../schema-selector/schema-selector.compon
   ],
   styleUrls: ['./operation-throws.component.css']
 })
-export class OperationThrowsComponent implements OnInit {
+export class OperationThrowsComponent {
 
-  @Input() name: string = 'operation-throws';
-  @Input() disabled: boolean = false;
-  @Input() data?: BackendOperationThrows = {};
-  @Output() dataChange = new EventEmitter<BackendOperationThrows>();
+  name = input<string>('operation-throws');
+  disabled = input<boolean>(false);
+  data = input<BackendOperationThrows|undefined>({});
+  dataChange = output<BackendOperationThrows>();
 
-  result: Array<{ code: number, schema: string }> = [];
+  result = signal<Array<{ code: number, schema: string }>>([]);
 
-  newCode?: number;
+  newCode = signal<number|undefined>(undefined);
 
   errorStatusCodes = [
     {key: 0, value: ''},
@@ -53,46 +53,68 @@ export class OperationThrowsComponent implements OnInit {
   ]
 
   constructor(public schema: SchemaService) {
-  }
+    effect(() => {
+      const data = this.data();
+      if (data) {
+        const result = [];
+        for (const [key, value] of Object.entries(data)) {
+          result.push({
+            code: parseInt(key),
+            schema: value,
+          })
+        }
 
-  ngOnInit() {
-    if (this.data) {
-      this.result = [];
-      for (const [key, value] of Object.entries(this.data)) {
-        this.result.push({
-          code: parseInt(key),
-          schema: value,
-        })
+        this.result.set(result);
       }
-    }
+    });
   }
 
   add() {
-    if (!this.newCode || this.disabled) {
+    const newCode = this.newCode();
+    if (!newCode || this.disabled()) {
       return;
     }
 
-    this.result.push({
-      code: this.newCode,
-      schema: ''
-    })
+    this.result.update((entries) => {
+      entries.push({
+        code: newCode,
+        schema: ''
+      });
+      return entries;
+    });
 
-    this.newCode = undefined;
+    this.newCode.set(undefined);
+  }
+
+  setCode(index: number, code: number) {
+    this.result.update((entries) => {
+      entries[index].code = code;
+      return entries;
+    });
+  }
+
+  setSchema(index: number, schema: string) {
+    this.result.update((entries) => {
+      entries[index].schema = schema;
+      return entries;
+    });
   }
 
   remove() {
-    if (this.disabled) {
+    if (this.disabled()) {
       return;
     }
 
-    this.result = this.result.filter((row) => {
-      return row.code !== 0;
+    this.result.update((entries) => {
+      return entries.filter((row) => {
+        return row.code !== 0;
+      });
     });
   }
 
   getNotUsedCodes() {
     return this.errorStatusCodes.filter((code) => {
-      const selected = this.result.find((row) => {
+      const selected = this.result().find((row) => {
         return row.code === code.key;
       });
       return !selected;
@@ -100,12 +122,12 @@ export class OperationThrowsComponent implements OnInit {
   }
 
   changeValue() {
-    if (this.disabled) {
+    if (this.disabled()) {
       return;
     }
 
     const result: BackendOperationThrows = {};
-    this.result.forEach((row) => {
+    this.result().forEach((row) => {
       result[row.code] = row.schema;
     });
 
