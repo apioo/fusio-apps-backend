@@ -47,7 +47,7 @@ export class NavigationService {
             },
             {
               "title": "Operation",
-              "icon": "bi-router",
+              "icon": "bi-terminal",
               "path": "/operation",
               "scope": "backend.operation"
             },
