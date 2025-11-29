@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, signal} from '@angular/core';
 import {ErrorService, MessageComponent, SearchComponent} from "ngx-fusio-sdk";
 import {CommonMessage, MarketplaceAction, MarketplaceApp} from "fusio-sdk";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
@@ -30,21 +30,21 @@ import {
 })
 export class ListComponent implements OnInit {
 
-  response?: CommonMessage;
+  response = signal<CommonMessage|undefined>(undefined);
 
-  apps?: Array<MarketplaceApp>;
-  appTotalResults: number = 0;
-  appPage: number = 1;
-  appPageSize: number = 16;
-  appSearch?: string;
+  apps = signal<Array<MarketplaceApp>>([]);
+  appTotalResults = signal<number>(0);
+  appPage = signal<number>(1);
+  appPageSize = signal<number>(16);
+  appSearch = signal<string|undefined>('');
 
-  actions?: Array<MarketplaceAction>;
-  actionTotalResults: number = 0;
-  actionPage: number = 1;
-  actionPageSize: number = 16;
-  actionSearch?: string;
+  actions = signal<Array<MarketplaceAction>>([]);
+  actionTotalResults = signal<number>(0);
+  actionPage = signal<number>(1);
+  actionPageSize = signal<number>(16);
+  actionSearch = signal<string|undefined>('');
 
-  selectedType: 'action'|'app' = 'action';
+  selectedType = signal<'action'|'app'>('action');
 
   constructor(private fusio: ApiService, private route: ActivatedRoute, private router: Router, private error: ErrorService) { }
 
@@ -56,59 +56,59 @@ export class ListComponent implements OnInit {
 
   selectType(type?: string) {
     if (type === 'action') {
-      this.selectedType = 'action';
+      this.selectedType.set('action');
     } else {
-      this.selectedType = 'app';
+      this.selectedType.set('app');
     }
 
     this.load();
   }
 
   changeTab() {
-    this.router.navigate(['/marketplace/', this.selectedType]);
+    this.router.navigate(['/marketplace/', this.selectedType()]);
   }
 
-  doPageChange(page?: number) {
+  doPageChange() {
     this.load();
   }
 
   doSearch(search?: string) {
-    if (this.selectedType === 'action') {
-      this.actionSearch = search;
+    if (this.selectedType() === 'action') {
+      this.actionSearch.set(search);
     } else {
-      this.appSearch = search;
+      this.appSearch.set(search);
     }
     this.load();
   }
 
   async load(): Promise<void> {
     try {
-      if (this.selectedType === 'action') {
+      if (this.selectedType() === 'action') {
         const response = await this.fusio.getClient().backend().marketplace().action().getAll(...this.getActionCollectionQuery())
-        this.actions = response.entry || [];
-        this.actionTotalResults = response.totalResults || 0;
+        this.actions.set(response.entry || []);
+        this.actionTotalResults.set(response.totalResults || 0);
       } else {
         const response = await this.fusio.getClient().backend().marketplace().app().getAll(...this.getAppCollectionQuery())
-        this.apps = response.entry || [];
-        this.appTotalResults = response.totalResults || 0;
+        this.apps.set(response.entry || []);
+        this.appTotalResults.set(response.totalResults || 0);
       }
     } catch (error) {
-      this.response = this.error.convert(error);
+      this.response.set(this.error.convert(error));
     }
   }
 
   private getActionCollectionQuery(): Array<any> {
     let query: Array<any> = [];
-    query.push((this.actionPage - 1) * this.actionPageSize);
-    query.push(this.actionSearch || '');
+    query.push((this.actionPage() - 1) * this.actionPageSize());
+    query.push(this.actionSearch() || '');
 
     return query;
   }
 
   private getAppCollectionQuery(): Array<any> {
     let query: Array<any> = [];
-    query.push((this.appPage - 1) * this.appPageSize);
-    query.push(this.appSearch || '');
+    query.push((this.appPage() - 1) * this.appPageSize());
+    query.push(this.appSearch() || '');
 
     return query;
   }

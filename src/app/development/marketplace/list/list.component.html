@@ -1,13 +1,13 @@
 
 <h1>Marketplace</h1>
 
-<fusio-message [response]="response"></fusio-message>
+<fusio-message [response]="response()"></fusio-message>
 
-<ul ngbNav #nav="ngbNav" [(activeId)]="selectedType" (activeIdChange)="changeTab()" class="nav-tabs">
+<ul ngbNav #nav="ngbNav" [activeId]="selectedType()" (activeIdChange)="selectedType.set($event);changeTab()" class="nav-tabs">
   <li [ngbNavItem]="'action'">
     <button ngbNavLink>Actions</button>
     <ng-template ngbNavContent>
-      <fusio-search [searchTerm]="actionSearch" (search)="doSearch($event)" placeholder="action" helpPath="development/marketplace/"></fusio-search>
+      <fusio-search [searchTerm]="actionSearch()" (search)="doSearch($event)" placeholder="action" helpPath="development/marketplace/"></fusio-search>
       <table class="table table-striped">
         <thead>
         <tr>
@@ -18,7 +18,7 @@
         </tr>
         </thead>
         <tbody>
-        @for (action of actions; track action.id) {
+        @for (action of actions(); track action.id) {
           <tr>
             <td><i class="bi bi-{{ action.icon }}"></i></td>
             <td>
@@ -30,7 +30,7 @@
             <td>{{action.version}}</td>
             <td>
               <div class="btn-group" role="group">
-                <a [routerLink]="['/marketplace/', selectedType, action.author?.name, action.name]" class="btn btn-primary"><i class="bi bi-search"></i></a>
+                <a [routerLink]="['/marketplace/', selectedType(), action.author?.name, action.name]" class="btn btn-primary"><i class="bi bi-search"></i></a>
               </div>
             </td>
           </tr>
@@ -38,18 +38,18 @@
         </tbody>
       </table>
       <ngb-pagination
-        [(page)]="actionPage"
-        [pageSize]="actionPageSize"
-        [collectionSize]="actionTotalResults"
+        [page]="actionPage()"
+        [pageSize]="actionPageSize()"
+        [collectionSize]="actionTotalResults()"
         [maxSize]="8"
         [ellipses]="true"
-        (pageChange)="doPageChange($event)"></ngb-pagination>
+        (pageChange)="actionPage.set($event);doPageChange()"></ngb-pagination>
     </ng-template>
   </li>
   <li [ngbNavItem]="'app'">
     <button ngbNavLink>Apps</button>
     <ng-template ngbNavContent>
-      <fusio-search [searchTerm]="appSearch" (search)="doSearch($event)" placeholder="app" helpPath="development/marketplace/"></fusio-search>
+      <fusio-search [searchTerm]="appSearch()" (search)="doSearch($event)" placeholder="app" helpPath="development/marketplace/"></fusio-search>
       <table class="table table-striped">
         <thead>
         <tr>
@@ -60,7 +60,7 @@
         </tr>
         </thead>
         <tbody>
-        @for (app of apps; track app.id) {
+        @for (app of apps(); track app.id) {
           <tr>
             <td><i class="bi bi-{{ app.icon }}"></i></td>
             <td>
@@ -72,7 +72,7 @@
             <td>{{app.version}}</td>
             <td>
               <div class="btn-group" role="group">
-                <a [routerLink]="['/marketplace/', selectedType, app.author?.name, app.name]" class="btn btn-primary"><i class="bi bi-search"></i></a>
+                <a [routerLink]="['/marketplace/', selectedType(), app.author?.name, app.name]" class="btn btn-primary"><i class="bi bi-search"></i></a>
               </div>
             </td>
           </tr>
@@ -80,12 +80,12 @@
         </tbody>
       </table>
       <ngb-pagination
-        [(page)]="appPage"
-        [pageSize]="appPageSize"
-        [collectionSize]="appTotalResults"
+        [page]="appPage()"
+        [pageSize]="appPageSize()"
+        [collectionSize]="appTotalResults()"
         [maxSize]="8"
         [ellipses]="true"
-        (pageChange)="doPageChange($event)"></ngb-pagination>
+        (pageChange)="appPage.set($event);doPageChange()"></ngb-pagination>
     </ng-template>
   </li>
 </ul>
