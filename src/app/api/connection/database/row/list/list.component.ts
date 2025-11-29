@@ -1,4 +1,4 @@
-import {Component, signal} from '@angular/core';
+import {Component, computed, signal} from '@angular/core';
 import {ErrorService, List, SearchComponent} from "ngx-fusio-sdk";
 import {BackendConnection, BackendDatabaseRow, BackendDatabaseTable, BackendDatabaseTableColumn} from "fusio-sdk";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
@@ -21,6 +21,26 @@ export class ListComponent extends List<BackendDatabaseRow> {
 
   selectedConnection = signal<BackendConnection|undefined>(undefined);
   selectedTable = signal<BackendDatabaseTable|undefined>(undefined);
+
+  primaryKey = computed<string>(() => {
+    return this.selectedTable()?.primaryKey || '';
+  });
+
+  columns = computed<Array<BackendDatabaseTableColumn>>(() => {
+    const tableColumns = this.selectedTable()?.columns;
+    if (!tableColumns) {
+      return [];
+    }
+
+    let columns = [];
+    for (const col of tableColumns) {
+      if (col.type === 'string' || col.type === 'integer' || col.type === 'boolean' || col.type === 'float') {
+        columns.push(col);
+      }
+    }
+
+    return columns;
+  });
 
   constructor(private service: RowService, private connection: ConnectionService, private tableService: TableService, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);
@@ -51,26 +71,6 @@ export class ListComponent extends List<BackendDatabaseRow> {
         }
       }
     });
-  }
-
-  get columns(): Array<BackendDatabaseTableColumn> {
-    const tableColumns = this.selectedTable()?.columns;
-    if (!tableColumns) {
-      return [];
-    }
-
-    let columns = [];
-    for (const col of tableColumns) {
-      if (col.type === 'string' || col.type === 'integer' || col.type === 'boolean' || col.type === 'float') {
-        columns.push(col);
-      }
-    }
-
-    return columns;
-  }
-
-  get primaryKey(): string {
-    return this.selectedTable()?.primaryKey || '';
   }
 
 }

@@ -5,6 +5,7 @@ import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {TableService} from "../../../../../services/connection/database/table.service";
 import {ConnectionService} from "../../../../../services/connection.service";
 import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
+import {RowService} from "../../../../../services/connection/database/row.service";
 
 @Component({
   selector: 'app-connection-database-table-list',
@@ -20,7 +21,7 @@ export class ListComponent extends List<BackendDatabaseTable> {
 
   selectedConnection = signal<BackendConnection|undefined>(undefined);
 
-  constructor(private service: TableService, private connection: ConnectionService, route: ActivatedRoute, router: Router, error: ErrorService) {
+  constructor(private service: TableService, private connection: ConnectionService, private row: RowService, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);
   }
 
@@ -46,4 +47,7 @@ export class ListComponent extends List<BackendDatabaseTable> {
     });
   }
 
+  protected override onLoad() {
+    this.row.resetTable();
+  }
 }

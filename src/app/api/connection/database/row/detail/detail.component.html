@@ -5,20 +5,20 @@
   <a [routerLink]="['/', 'connection', selectedConnection()?.id, 'database']" class="link-light">Database</a> /
   <a [routerLink]="['/', 'connection', selectedConnection()?.id, 'database', selectedTable()?.name]" class="link-light">{{ selectedTable()?.name }}</a> /
   <a (click)="doList()" class="link-light">Data</a> /
-  {{ selected()?.[primaryKey] }}
+  {{ selected()?.[primaryKey()] }}
 </h1>
 
 @if (selected(); as selected) {
   <div class="btn-group" role="group">
-    <a (click)="doEdit(selected[primaryKey])" class="btn btn-primary fusio-btn-update">Update</a>
-    <a (click)="doDelete(selected[primaryKey])" class="btn btn-danger fusio-btn-delete">Delete</a>
+    <a (click)="doEdit(selected[primaryKey()])" class="btn btn-primary fusio-btn-update">Update</a>
+    <a (click)="doDelete(selected[primaryKey()])" class="btn btn-danger fusio-btn-delete">Delete</a>
   </div>
   <div class="float-end">
     <button type="button" (click)="jsonView.set(!jsonView())" class="btn btn-outline-secondary fusio-btn-json ms-2">JSON</button>
   </div>
   @if (!jsonView()) {
     <div class="fusio-detail">
-      @for (kv of keyValues; track $index) {
+      @for (kv of keyValues(); track $index) {
         <div class="row">
           <div class="col-lg-2 fw-bold">{{ kv.key }}</div>
           <div class="col-lg-10">{{ kv.value }}</div>

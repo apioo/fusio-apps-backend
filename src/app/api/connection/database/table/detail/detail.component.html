@@ -108,7 +108,7 @@
                 @for (foreignKey of selected.foreignKeys; track $index) {
                   <tr>
                     <td>{{foreignKey.name}}</td>
-                    <td><a [routerLink]="['/database', selectedConnection()?.id, foreignKey.foreignTable]">{{foreignKey.foreignTable}}</a></td>
+                    <td><a [routerLink]="['/connection', selectedConnection()?.id, 'database', foreignKey.foreignTable]">{{foreignKey.foreignTable}}</a></td>
                     <td>{{foreignKey.localColumnNames}}</td>
                     <td>{{foreignKey.foreignColumnNames}}</td>
                   </tr>

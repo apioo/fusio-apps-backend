@@ -31,7 +31,7 @@ export class TableService extends Service<BackendDatabaseTable> {
   }
 
   async getAll(parameters: Array<any>): Promise<CommonCollection<BackendDatabaseTable>> {
-    return this.fusio.getClient().backend().connection().database().getTables(this.getConnection());
+    return this.fusio.getClient().backend().connection().database().getTables(this.getConnection(), ...parameters);
   }
 
   async get(id: string): Promise<BackendDatabaseTable> {

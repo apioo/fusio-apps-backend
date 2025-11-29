@@ -5,7 +5,7 @@
   <a [routerLink]="['/', 'connection', selectedConnection()?.id, 'database']" class="link-light">Database</a> /
   <a [routerLink]="['/', 'connection', selectedConnection()?.id, 'database', selectedTable()?.name]" class="link-light">{{ selectedTable()?.name }}</a> /
   <a (click)="doList()" class="link-light">Data</a> /
-  {{ entity()[primaryKey] }} /
+  {{ entity()[primaryKey()] }} /
   <app-form-breadcrump [mode]="mode"></app-form-breadcrump>
 </h1>
 

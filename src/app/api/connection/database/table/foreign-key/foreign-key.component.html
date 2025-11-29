@@ -1,18 +1,18 @@
 
-@for (row of result; track $index) {
+@for (row of result(); track $index) {
   <div class="row mb-3">
     <div class="col-3">
-      <input type="text" [id]="name + '_name_' + row.name" [name]="name + '_name_' + row.name" [(ngModel)]="row.name" (ngModelChange)="changeValue()" [disabled]="disabled" class="form-control">
+      <input type="text" [id]="name() + '_name_' + row.name" [name]="name() + '_name_' + row.name" [ngModel]="row.name" (ngModelChange)="setName($index, $event)" [disabled]="disabled()" class="form-control">
     </div>
     <div class="col-3">
-      <input type="text" [id]="name + '_foreign_table_' + row.name" [name]="name + '_foreign_table_' + row.name" [(ngModel)]="row.foreignTable" (ngModelChange)="changeValue()" [disabled]="disabled" class="form-control">
+      <input type="text" [id]="name() + '_foreign_table_' + row.name" [name]="name() + '_foreign_table_' + row.name" [ngModel]="row.foreignTable" (ngModelChange)="setForeignTable($index, $event)" [disabled]="disabled()" class="form-control">
     </div>
     <div class="col-3">
-      <input type="text" [id]="name + '_local_columns_' + row.name" [name]="name + '_local_columns_' + row.name" [ngModel]="row.localColumnNames | csv" (ngModelChange)="row.localColumnNames = parseCsv($event); changeValue()" [disabled]="disabled" class="form-control">
+      <input type="text" [id]="name() + '_local_columns_' + row.name" [name]="name() + '_local_columns_' + row.name" [ngModel]="row.localColumnNames | csv" (ngModelChange)="setLocalColumnNames($index, $event)" [disabled]="disabled()" class="form-control">
     </div>
     <div class="col-3">
       <div class="input-group">
-        <input type="text" [id]="name + '_foreign_columns_' + row.name" [name]="name + '_foreign_columns_' + row.name" [ngModel]="row.foreignColumnNames | csv" (ngModelChange)="row.foreignColumnNames = parseCsv($event); changeValue()" [disabled]="disabled" class="form-control">
+        <input type="text" [id]="name() + '_foreign_columns_' + row.name" [name]="name() + '_foreign_columns_' + row.name" [ngModel]="row.foreignColumnNames | csv" (ngModelChange)="setForeignColumnNames($index, $event)" [disabled]="disabled()" class="form-control">
         <button class="btn btn-outline-secondary" (click)="remove(row.name); changeValue()"><i class="bi bi-x"></i></button>
       </div>
     </div>
@@ -21,17 +21,17 @@
 
 <div class="row">
   <div class="col-3">
-    <input type="text" [id]="name + '_name'" [name]="name + '_name'" [(ngModel)]="newName" (ngModelChange)="changeValue()" [disabled]="disabled" class="form-control">
+    <input type="text" [id]="name() + '_name'" [name]="name() + '_name'" [ngModel]="newName()" (ngModelChange)="newName.set($event)" [disabled]="disabled()" class="form-control">
   </div>
   <div class="col-3">
-    <input type="text" [id]="name + '_foreign_table'" [name]="name + '_foreign_table'" [(ngModel)]="newForeignTable" (ngModelChange)="changeValue()" [disabled]="disabled" class="form-control" placeholder="Foreign table">
+    <input type="text" [id]="name() + '_foreign_table'" [name]="name() + '_foreign_table'" [ngModel]="newForeignTable()" (ngModelChange)="newForeignTable.set($event)" [disabled]="disabled()" class="form-control" placeholder="Foreign table">
   </div>
   <div class="col-3">
-    <input type="text" [id]="name + '_local_columns'" [name]="name + '_local_columns'" [ngModel]="newLocalColumnNames | csv" (ngModelChange)="newLocalColumnNames = parseCsv($event); changeValue()" [disabled]="disabled" class="form-control" placeholder="Local columns">
+    <input type="text" [id]="name() + '_local_columns'" [name]="name() + '_local_columns'" [ngModel]="newLocalColumnNames | csv" (ngModelChange)="newLocalColumnNames.set(parseCsv($event))" [disabled]="disabled()" class="form-control" placeholder="Local columns">
   </div>
   <div class="col-3">
     <div class="input-group">
-      <input type="text" [id]="name + '_foreign_columns'" [name]="name + '_foreign_columns'" [ngModel]="newForeignColumnNames | csv" (ngModelChange)="newForeignColumnNames = parseCsv($event); changeValue()" [disabled]="disabled" class="form-control" placeholder="Foreign columns">
+      <input type="text" [id]="name() + '_foreign_columns'" [name]="name() + '_foreign_columns'" [ngModel]="newForeignColumnNames | csv" (ngModelChange)="newForeignColumnNames.set(parseCsv($event))" [disabled]="disabled()" class="form-control" placeholder="Foreign columns">
       <button class="btn btn-outline-secondary" (click)="add(); changeValue()"><i class="bi bi-plus"></i></button>
     </div>
   </div>

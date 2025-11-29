@@ -1,4 +1,4 @@
-import {Component, signal} from '@angular/core';
+import {Component, computed, signal} from '@angular/core';
 import {ErrorService, Form, MessageComponent} from "ngx-fusio-sdk";
 import {BackendConnection, BackendDatabaseRow, BackendDatabaseTable} from "fusio-sdk";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
@@ -25,6 +25,10 @@ export class FormComponent extends Form<BackendDatabaseRow> {
 
   selectedConnection = signal<BackendConnection|undefined>(undefined);
   selectedTable = signal<BackendDatabaseTable|undefined>(undefined);
+
+  primaryKey = computed<string>(() => {
+    return this.selectedTable()?.primaryKey || '';
+  });
 
   constructor(private service: RowService, private connection: ConnectionService, private tableService: TableService, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);
@@ -55,10 +59,6 @@ export class FormComponent extends Form<BackendDatabaseRow> {
         }
       }
     });
-  }
-
-  get primaryKey(): string {
-    return this.selectedTable()?.primaryKey || '';
   }
 
 }

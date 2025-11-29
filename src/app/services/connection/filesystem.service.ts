@@ -31,7 +31,7 @@ export class FilesystemService extends Service<BackendFile> {
   }
 
   async getAll(parameters: Array<any>): Promise<CommonCollection<BackendFile>> {
-    return this.fusio.getClient().backend().connection().filesystem().getAll(this.getConnection());
+    return this.fusio.getClient().backend().connection().filesystem().getAll(this.getConnection(), ...parameters);
   }
 
   async get(id: string): Promise<BackendFile> {
@@ -63,7 +63,7 @@ export class FilesystemService extends Service<BackendFile> {
   }
 
   getLink(): Array<string> {
-    return ['/', 'filesystem', this.getConnection()];
+    return ['/', 'connection', this.getConnection(), 'filesystem'];
   }
 
 }

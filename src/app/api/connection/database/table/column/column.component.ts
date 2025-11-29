@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output, signal} from '@angular/core';
+import {Component, effect, EventEmitter, input, Input, OnInit, output, Output, signal} from '@angular/core';
 import {BackendDatabaseTableColumn} from "fusio-sdk";
 import {FormsModule} from "@angular/forms";
 
@@ -10,16 +10,16 @@ import {FormsModule} from "@angular/forms";
   ],
   styleUrls: ['./column.component.css']
 })
-export class ColumnComponent implements OnInit {
-  @Input() name: string = 'table-columns';
-  @Input() disabled: boolean = false;
-  @Input() data: Array<BackendDatabaseTableColumn> = [];
-  @Output() dataChange = new EventEmitter<Array<BackendDatabaseTableColumn>>();
+export class ColumnComponent {
+  name = input<string>('table-columns');
+  disabled = input<boolean>(false);
+  data = input<Array<BackendDatabaseTableColumn>>([]);
+  dataChange = output<Array<BackendDatabaseTableColumn>>();
 
-  newName?: string;
-  newType?: string = 'string';
-  newLength?: number;
-  newNotNull?: boolean = false;
+  newName = signal<string|undefined>(undefined);
+  newType = signal<string|undefined>('string');
+  newLength = signal<number|undefined>(undefined);
+  newNotNull = signal<boolean>(false);
 
   result = signal<Array<BackendDatabaseTableColumn>>([]);
 
@@ -40,33 +40,84 @@ export class ColumnComponent implements OnInit {
     {key: 'json', value: 'JSON'},
   ]
 
-  ngOnInit(): void {
-    this.result.set(this.filter(this.data));
+  constructor() {
+    effect(() => {
+      this.result.set(this.filter(this.data()));
+    });
   }
 
   add() {
-    if (!this.newName || !this.newType || this.disabled) {
+    const newName = this.newName();
+    const newType = this.newType();
+    if (!newName || !newType || this.disabled()) {
       return;
     }
 
     this.result.update((columns) => {
       columns.push({
-        name: this.newName,
-        type: this.newType,
-        length: this.newLength,
-        notNull: this.newNotNull,
+        name: newName,
+        type: newType,
+        length: this.newLength(),
+        notNull: this.newNotNull(),
       });
       return columns;
     });
 
-    this.newName = undefined;
-    this.newType = 'string';
-    this.newLength = undefined;
-    this.newNotNull = false;
+    this.newName.set(undefined);
+    this.newType.set('string');
+    this.newLength.set(undefined);
+    this.newNotNull.set(false);
+
+    this.changeValue();
+  }
+
+  setName(index:number, name: string) {
+    this.result.update((columns) => {
+      columns[index].name = name;
+      return columns;
+    });
+
+    this.changeValue();
+  }
+
+  setType(index:number, type: string) {
+    this.result.update((columns) => {
+      columns[index].type = type;
+      return columns;
+    });
+
+    this.changeValue();
+  }
+
+  setLength(index:number, length?: number) {
+    this.result.update((columns) => {
+      columns[index].length = length;
+      return columns;
+    });
+
+    this.changeValue();
+  }
+
+  setNotNull(index:number, notNull: boolean) {
+    this.result.update((columns) => {
+      columns[index].notNull = notNull;
+      return columns;
+    });
+
+    this.changeValue();
+  }
+
+  setAutoIncrement(index:number, autoIncrement: boolean) {
+    this.result.update((columns) => {
+      columns[index].autoIncrement = autoIncrement;
+      return columns;
+    });
+
+    this.changeValue();
   }
 
   remove(name?: string) {
-    if (this.disabled) {
+    if (this.disabled()) {
       return;
     }
 
@@ -76,10 +127,12 @@ export class ColumnComponent implements OnInit {
       });
       return columns;
     });
+
+    this.changeValue();
   }
 
   changeValue() {
-    if (this.disabled) {
+    if (this.disabled()) {
       return;
     }
 

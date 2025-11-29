@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output, signal} from '@angular/core';
+import {Component, effect, EventEmitter, input, Input, OnInit, output, Output, signal} from '@angular/core';
 import {BackendDatabaseTableIndex} from "fusio-sdk";
 import {FormsModule} from "@angular/forms";
 import {CsvPipe} from "../../../../../shared/tag-editor/csv.pipe";
@@ -12,43 +12,76 @@ import {CsvPipe} from "../../../../../shared/tag-editor/csv.pipe";
   ],
   styleUrls: ['./index.component.css']
 })
-export class IndexComponent implements OnInit {
-  @Input() name: string = 'table-index';
-  @Input() disabled: boolean = false;
-  @Input() data: Array<BackendDatabaseTableIndex> = [];
-  @Output() dataChange = new EventEmitter<Array<BackendDatabaseTableIndex>>();
+export class IndexComponent {
+  name = input<string>('table-index');
+  disabled = input<boolean>(false);
+  data = input<Array<BackendDatabaseTableIndex>>([]);
+  dataChange = output<Array<BackendDatabaseTableIndex>>();
 
-  newName?: string;
-  newUnique?: boolean = false;
-  newColumns?: Array<string>;
+  newName = signal<string|undefined>(undefined);
+  newUnique = signal<boolean>(false);
+  newColumns = signal<Array<string>|undefined>(undefined);
 
   result = signal<Array<BackendDatabaseTableIndex>>([]);
 
-  ngOnInit(): void {
-    this.result.set(this.filter(this.data));
+  constructor() {
+    effect(() => {
+      this.result.set(this.filter(this.data()));
+    });
   }
 
   add() {
-    if (!this.newName || !this.newColumns || this.disabled) {
+    const newName = this.newName();
+    const newColumns = this.newColumns();
+    if (!newName || !newColumns || this.disabled()) {
       return;
     }
 
     this.result.update((columns) => {
       columns.push({
-        name: this.newName,
-        unique: this.newUnique,
-        columns: this.newColumns,
+        name: newName,
+        unique: this.newUnique(),
+        columns: newColumns,
       });
       return columns;
     });
 
-    this.newName = undefined;
-    this.newUnique = false;
-    this.newColumns = undefined;
+    this.newName.set(undefined);
+    this.newUnique.set(false);
+    this.newColumns.set(undefined);
+
+    this.changeValue();
+  }
+
+  setName(index:number, name: string) {
+    this.result.update((indexes) => {
+      indexes[index].name = name;
+      return indexes;
+    });
+
+    this.changeValue();
+  }
+
+  setUnique(index:number, unique: boolean) {
+    this.result.update((indexes) => {
+      indexes[index].unique = unique;
+      return indexes;
+    });
+
+    this.changeValue();
+  }
+
+  setColumns(index:number, columns: string) {
+    this.result.update((indexes) => {
+      indexes[index].columns = this.parseCsv(columns);
+      return indexes;
+    });
+
+    this.changeValue();
   }
 
   remove(name?: string) {
-    if (this.disabled) {
+    if (this.disabled()) {
       return;
     }
 
@@ -58,10 +91,12 @@ export class IndexComponent implements OnInit {
       });
       return columns;
     });
+
+    this.changeValue();
   }
 
   changeValue() {
-    if (this.disabled) {
+    if (this.disabled()) {
       return;
     }
 

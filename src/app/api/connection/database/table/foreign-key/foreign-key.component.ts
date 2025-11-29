@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, effect, EventEmitter, input, Input, OnInit, output, Output, signal} from '@angular/core';
 import {BackendDatabaseTableForeignKeyConstraint} from "fusio-sdk";
 import {FormsModule} from "@angular/forms";
 import {CsvPipe} from "../../../../../shared/tag-editor/csv.pipe";
@@ -12,57 +12,106 @@ import {CsvPipe} from "../../../../../shared/tag-editor/csv.pipe";
   ],
   styleUrls: ['./foreign-key.component.css']
 })
-export class ForeignKeyComponent implements OnInit {
-  @Input() name: string = 'table-foreign-key';
-  @Input() disabled: boolean = false;
-  @Input() data: Array<BackendDatabaseTableForeignKeyConstraint> = [];
-  @Output() dataChange = new EventEmitter<Array<BackendDatabaseTableForeignKeyConstraint>>();
+export class ForeignKeyComponent {
+  name = input<string>('table-foreign-key');
+  disabled = input<boolean>(false);
+  data = input<Array<BackendDatabaseTableForeignKeyConstraint>>([]);
+  dataChange = output<Array<BackendDatabaseTableForeignKeyConstraint>>();
 
-  newName?: string;
-  newForeignTable?: string;
-  newLocalColumnNames: Array<string> = [];
-  newForeignColumnNames: Array<string> = [];
+  newName = signal<string|undefined>(undefined);
+  newForeignTable = signal<string|undefined>(undefined);
+  newLocalColumnNames = signal<Array<string>>([]);
+  newForeignColumnNames = signal<Array<string>>([]);
 
-  result: Array<BackendDatabaseTableForeignKeyConstraint> = [];
+  result = signal<Array<BackendDatabaseTableForeignKeyConstraint>>([]);
 
-  ngOnInit(): void {
-    this.result = this.filter(this.data);
-  }
-
-  add() {
-    if (!this.newName || !this.newForeignTable || this.disabled) {
-      return;
-    }
-
-    this.result.push({
-      name: this.newName,
-      foreignTable: this.newForeignTable,
-      localColumnNames: this.newLocalColumnNames,
-      foreignColumnNames: this.newForeignColumnNames,
-    })
-
-    this.newName = undefined;
-    this.newForeignTable = undefined;
-    this.newLocalColumnNames = [];
-    this.newForeignColumnNames = [];
-  }
-
-  remove(name?: string) {
-    if (this.disabled) {
-      return;
-    }
-
-    this.result = this.result.filter((row) => {
-      return row.name !== name;
+  constructor() {
+    effect(() => {
+      this.result.set(this.filter(this.data()));
     });
   }
 
-  changeValue() {
-    if (this.disabled) {
+  add() {
+    const newName = this.newName();
+    const newForeignTable = this.newForeignTable();
+    if (!newName || !newForeignTable || this.disabled()) {
       return;
     }
 
-    this.dataChange.emit(this.filter(this.result));
+    this.result.update((keys) => {
+      keys.push({
+        name: newName,
+        foreignTable: newForeignTable,
+        localColumnNames: this.newLocalColumnNames(),
+        foreignColumnNames: this.newForeignColumnNames(),
+      });
+      return keys;
+    });
+
+    this.newName.set(undefined);
+    this.newForeignTable.set(undefined);
+    this.newLocalColumnNames.set([]);
+    this.newForeignColumnNames.set([]);
+
+    this.changeValue();
+  }
+
+  setName(index:number, name: string) {
+    this.result.update((keys) => {
+      keys[index].name = name;
+      return keys;
+    });
+
+    this.changeValue();
+  }
+
+  setForeignTable(index:number, foreignTable: string) {
+    this.result.update((keys) => {
+      keys[index].foreignTable = foreignTable;
+      return keys;
+    });
+
+    this.changeValue();
+  }
+
+  setLocalColumnNames(index:number, localColumnNames: string) {
+    this.result.update((keys) => {
+      keys[index].localColumnNames = this.parseCsv(localColumnNames);
+      return keys;
+    });
+
+    this.changeValue();
+  }
+
+  setForeignColumnNames(index:number, foreignColumnNames: string) {
+    this.result.update((keys) => {
+      keys[index].foreignColumnNames = this.parseCsv(foreignColumnNames);
+      return keys;
+    });
+
+    this.changeValue();
+  }
+
+  remove(name?: string) {
+    if (this.disabled()) {
+      return;
+    }
+
+    this.result.update((keys) => {
+      return keys.filter((row) => {
+        return row.name !== name;
+      });
+    });
+
+    this.changeValue();
+  }
+
+  changeValue() {
+    if (this.disabled()) {
+      return;
+    }
+
+    this.dataChange.emit(this.filter(this.result()));
   }
 
   private filter(result: Array<BackendDatabaseTableForeignKeyConstraint>) {

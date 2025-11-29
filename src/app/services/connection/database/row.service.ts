@@ -32,6 +32,10 @@ export class RowService extends Service<BackendDatabaseRow> {
     this.checkConfiguration();
   }
 
+  public resetTable(): void {
+    this.table = undefined;
+  }
+
   private getTable(): string {
     if (!this.table) {
       throw new Error('No table selected');

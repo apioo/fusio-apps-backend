@@ -1,4 +1,4 @@
-import {Component, signal} from '@angular/core';
+import {Component, computed, signal} from '@angular/core';
 import {Detail, ErrorService} from "ngx-fusio-sdk";
 import {BackendConnection, BackendDatabaseRow, BackendDatabaseTable} from "fusio-sdk";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
@@ -25,6 +25,27 @@ export class DetailComponent extends Detail<BackendDatabaseRow> {
   id = signal<string|null>(null);
   selectedConnection = signal<BackendConnection|undefined>(undefined);
   selectedTable = signal<BackendDatabaseTable|undefined>(undefined);
+
+  primaryKey = computed<string>(() => {
+    return this.selectedTable()?.primaryKey || '';
+  });
+
+  keyValues = computed<Array<KeyValue>>(() => {
+    const selected = this.selected();
+    if (!selected) {
+      return [];
+    }
+
+    const result = [];
+    for (const [key, value] of Object.entries(selected)) {
+      result.push({
+        key: key,
+        value: value,
+      })
+    }
+
+    return result;
+  });
 
   constructor(private service: RowService, private connection: ConnectionService, private tableService: TableService, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);
@@ -59,27 +80,6 @@ export class DetailComponent extends Detail<BackendDatabaseRow> {
     this.route.paramMap.subscribe(async params => {
       this.id.set(params.get('id'));
     });
-  }
-
-  get primaryKey(): string {
-    return this.selectedTable()?.primaryKey || '';
-  }
-
-  get keyValues(): Array<KeyValue> {
-    const selected = this.selected();
-    if (!selected) {
-      return [];
-    }
-
-    const result = [];
-    for (const [key, value] of Object.entries(selected)) {
-      result.push({
-        key: key,
-        value: value,
-      })
-    }
-
-    return result;
   }
 
 }
