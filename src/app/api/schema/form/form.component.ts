@@ -43,7 +43,13 @@ export class FormComponent extends Form<BackendSchema> {
       this.spec.set({
         imports: [],
         operations: [],
-        types: []
+        types: [{
+          type: 'struct',
+          name: 'MyObject',
+          description: '',
+          properties: []
+        }],
+        root: 0
       })
     }
   }
