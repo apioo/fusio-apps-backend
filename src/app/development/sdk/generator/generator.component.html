@@ -4,7 +4,7 @@
   Generator
 </h1>
 
-<fusio-message [response]="response"></fusio-message>
+<fusio-message [response]="response()"></fusio-message>
 
 <div class="row">
   <div class="col-xl-6">
@@ -16,8 +16,8 @@
             <label for="class" class="col-xl-2 col-form-label fw-bold">Format</label>
             <div class="col-xl-10">
               <div class="input-group">
-                <select id="class" name="class" [(ngModel)]="type" class="form-select">
-                  @for (type of types|keyvalue; track type.key) {
+                <select id="class" name="class" [ngModel]="type()" (ngModelChange)="type.set($event)" class="form-select">
+                  @for (type of types()|keyvalue; track type.key) {
                     <option [ngValue]="type.key">{{type.key}}</option>
                   }
                 </select>
@@ -28,7 +28,7 @@
             <label for="namespace" class="col-xl-2 col-form-label fw-bold">Namespace</label>
             <div class="col-xl-10">
               <div class="input-group">
-                <input type="text" id="namespace" name="namespace" [(ngModel)]="namespace" class="form-control">
+                <input type="text" id="namespace" name="namespace" [ngModel]="namespace()" (ngModelChange)="namespace.set($event)" class="form-control">
               </div>
             </div>
           </div>

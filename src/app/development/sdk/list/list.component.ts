@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, signal} from '@angular/core';
 import {ErrorService} from "ngx-fusio-sdk";
 import {BackendSdkTypes, CommonMessage} from "fusio-sdk";
 import {ApiService} from "../../../api.service";
@@ -16,18 +16,18 @@ import {RouterLink} from "@angular/router";
 })
 export class ListComponent implements OnInit {
 
-  constructor(private fusio: ApiService, private error: ErrorService) { }
+  types = signal<BackendSdkTypes>({});
+  response = signal<CommonMessage|undefined>(undefined);
 
-  public types: BackendSdkTypes = {};
-  public response?: CommonMessage;
+  constructor(private fusio: ApiService, private error: ErrorService) { }
 
   async ngOnInit(): Promise<void> {
     try {
       const response = await this.fusio.getClient().backend().sdk().getAll();
 
-      this.types = response.types || {};
+      this.types.set(response.types || {});
     } catch (error) {
-      this.response = this.error.convert(error);
+      this.response.set(this.error.convert(error));
     }
   }
 

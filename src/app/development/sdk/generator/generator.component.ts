@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, signal} from '@angular/core';
 import {ErrorService, MessageComponent} from "ngx-fusio-sdk";
 import {BackendSdkTypes, CommonMessage} from "fusio-sdk";
 import {ActivatedRoute, RouterLink} from "@angular/router";
@@ -19,27 +19,27 @@ import {KeyValuePipe} from "@angular/common";
 })
 export class GeneratorComponent implements OnInit {
 
+  types = signal<BackendSdkTypes>({});
+  response = signal<CommonMessage|undefined>(undefined);
+
+  type = signal<string|undefined>(undefined);
+  namespace = signal<string|undefined>(undefined);
+
   constructor(private fusio: ApiService, private route: ActivatedRoute, private error: ErrorService) { }
-
-  public types: BackendSdkTypes = {};
-  public response?: CommonMessage;
-
-  public type?: string;
-  public namespace?: string;
 
   async ngOnInit(): Promise<void> {
     try {
       const response = await this.fusio.getClient().backend().sdk().getAll();
 
-      this.types = response.types || {};
+      this.types.set(response.types || {});
     } catch (error) {
-      this.response = this.error.convert(error);
+      this.response.set(this.error.convert(error));
     }
 
     this.route.paramMap.subscribe(async params => {
       const type = params.get('type');
       if (type) {
-        this.type = type;
+        this.type.set(type);
       }
     });
   }
@@ -47,22 +47,23 @@ export class GeneratorComponent implements OnInit {
   async generate() {
     try {
       const config: Record<string, string> = {};
-      if (this.namespace) {
-        config['namespace'] = this.namespace;
+      const namespace = this.namespace();
+      if (namespace) {
+        config['namespace'] = namespace;
       }
 
       const response = await this.fusio.getClient().backend().sdk().generate({
-        format: this.type,
+        format: this.type(),
         config: new URLSearchParams(config).toString(),
       });
 
       if (response.success === true && response.link) {
         window.location.href = response.link;
       } else {
-        this.response = response;
+        this.response.set(response);
       }
     } catch (error) {
-      this.response = this.error.convert(error);
+      this.response.set(this.error.convert(error));
     }
   }
 
