@@ -1,7 +1,7 @@
 
 <h1>
-  <a [routerLink]="getListLink()">Role</a> /
-  <a [routerLink]="getDetailLink('~' + entity().name)">{{ entity().name }}</a> /
+  <a (click)="doList()">Role</a> /
+  <a (click)="doDetail('~' + entity().name)">{{ entity().name }}</a> /
   <app-form-breadcrump [mode]="mode"></app-form-breadcrump>
 </h1>
 
@@ -25,5 +25,5 @@
     </div>
   </div>
   <app-scope-categories [scopes]="entity().scopes" (dataChange)="set(entity, 'scopes', $event)"></app-scope-categories>
-  <app-form-buttons [mode]="mode" (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="router.navigate(getListLink())" (onHelp)="showHelp('system/role')"></app-form-buttons>
+  <app-form-buttons [mode]="mode" (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="doList()" (onHelp)="showHelp('system/role')"></app-form-buttons>
 </form>

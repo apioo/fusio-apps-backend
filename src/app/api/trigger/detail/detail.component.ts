@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {Detail, ErrorService, MessageComponent} from "ngx-fusio-sdk";
 import {BackendTrigger} from "fusio-sdk";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {TriggerService} from "../../../services/trigger.service";
 import {ActionLinkComponent} from "../../../shared/action-link/action-link.component";
 import {EditorComponent} from "ngx-monaco-editor-v2";
@@ -12,7 +12,6 @@ import {JsonPipe} from "@angular/common";
   selector: 'app-trigger-detail',
   templateUrl: './detail.component.html',
   imports: [
-    RouterLink,
     MessageComponent,
     ActionLinkComponent,
     EditorComponent,

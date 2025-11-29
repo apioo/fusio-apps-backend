@@ -2,22 +2,21 @@ import {Component} from '@angular/core';
 import {ErrorService, Form, HelpService, MessageComponent} from "ngx-fusio-sdk";
 import {BackendConfig} from "fusio-sdk";
 import {ConfigService} from "../../../services/config.service";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {FormBreadcrump} from "../../../shared/form-breadcrump/form-breadcrump";
 import {FormButtons} from "../../../shared/form-buttons/form-buttons";
 import {FormsModule} from "@angular/forms";
 
 @Component({
-    selector: 'app-config-form',
-    templateUrl: './form.component.html',
+  selector: 'app-config-form',
+  templateUrl: './form.component.html',
   imports: [
     FormBreadcrump,
-    RouterLink,
     MessageComponent,
     FormButtons,
     FormsModule
   ],
-    styleUrls: ['./form.component.css']
+  styleUrls: ['./form.component.css']
 })
 export class FormComponent extends Form<BackendConfig> {
 

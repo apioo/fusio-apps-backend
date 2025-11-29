@@ -1,7 +1,7 @@
-import {Component} from '@angular/core';
+import {Component, computed, signal} from '@angular/core';
 import {ErrorService, List, MessageComponent, SearchComponent} from "ngx-fusio-sdk";
 import {BackendLog} from "fusio-sdk";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {LogService} from "../../../services/log.service";
 import {NgbModal, NgbPagination} from "@ng-bootstrap/ng-bootstrap";
 import {FilterComponent} from "../filter/filter.component";
@@ -12,14 +12,13 @@ import {FilterComponent} from "../filter/filter.component";
   imports: [
     MessageComponent,
     SearchComponent,
-    RouterLink,
     NgbPagination
   ],
   styleUrls: ['./list.component.css']
 })
 export class ListComponent extends List<BackendLog> {
 
-  filter: Filter = {
+  filter = signal<Filter>({
     from: undefined,
     to: undefined,
     operationId: undefined,
@@ -31,7 +30,29 @@ export class ListComponent extends List<BackendLog> {
     path: undefined,
     header: undefined,
     body: undefined,
-  };
+  });
+
+  override collectionQuery = computed<Array<any>>(() => {
+    let query: Array<any> = [];
+    query.push((this.page() - 1) * this.pageSize());
+    query.push(this.pageSize());
+    const search = this.search();
+    if (search) {
+      query.push(search);
+    } else {
+      query.push('');
+    }
+
+    for (const [key, value] of Object.entries(this.filter())) {
+      if (value !== undefined && value !== null) {
+        query.push(value);
+      } else {
+        query.push('');
+      }
+    }
+
+    return query;
+  });
 
   constructor(private service: LogService, private modalService: NgbModal, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);
@@ -45,25 +66,11 @@ export class ListComponent extends List<BackendLog> {
     const modalRef = this.modalService.open(FilterComponent, {
       size: 'lg'
     });
-    modalRef.componentInstance.filter = this.filter;
+    modalRef.componentInstance.filter = this.filter();
     modalRef.closed.subscribe(async (filter: Filter) => {
-      this.filter = filter;
+      this.filter.set(filter);
       await this.doList();
     });
-  }
-
-  protected override getCollectionQuery(): Array<any> {
-    let query = super.getCollectionQuery();
-
-    for (const [key, value] of Object.entries(this.filter)) {
-      if (value !== undefined && value !== null) {
-        query.push(value);
-      } else {
-        query.push('');
-      }
-    }
-
-    return query;
   }
 
 }

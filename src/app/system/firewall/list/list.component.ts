@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {ErrorService, List, MessageComponent, SearchComponent} from "ngx-fusio-sdk";
 import {BackendFirewall} from "fusio-sdk";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {FirewallService} from "../../../services/firewall.service";
 import {DatePipe} from "@angular/common";
 import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
@@ -13,7 +13,6 @@ import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
     MessageComponent,
     SearchComponent,
     DatePipe,
-    RouterLink,
     NgbPagination
   ],
   styleUrls: ['./list.component.css']

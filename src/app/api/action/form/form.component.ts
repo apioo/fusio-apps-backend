@@ -2,7 +2,7 @@ import {Component, signal} from '@angular/core';
 import {ErrorService, Form, HelpComponent, MessageComponent} from "ngx-fusio-sdk";
 import {BackendAction, BackendActionIndexEntry, CommonFormContainer} from "fusio-sdk";
 import {ActionService} from "../../../services/action.service";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {ApiService} from "../../../api.service";
 import {NgbModal, NgbPopover} from "@ng-bootstrap/ng-bootstrap";
 import {FormsModule} from "@angular/forms";
@@ -14,7 +14,6 @@ import {FormButtons} from "../../../shared/form-buttons/form-buttons";
   selector: 'app-action-modal',
   templateUrl: './form.component.html',
   imports: [
-    RouterLink,
     MessageComponent,
     FormsModule,
     NgbPopover,

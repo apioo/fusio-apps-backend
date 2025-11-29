@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {Detail, ErrorService, ScopesComponent} from "ngx-fusio-sdk";
 import {BackendToken} from "fusio-sdk";
 import {TokenService} from "../../../services/token.service";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {DatePipe, JsonPipe} from "@angular/common";
 import {EditorComponent} from "ngx-monaco-editor-v2";
 import {FormsModule} from "@angular/forms";
@@ -11,7 +11,6 @@ import {FormsModule} from "@angular/forms";
   selector: 'app-token-detail',
   templateUrl: './detail.component.html',
   imports: [
-    RouterLink,
     ScopesComponent,
     DatePipe,
     EditorComponent,

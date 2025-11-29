@@ -1,19 +1,17 @@
 import {Component, signal} from '@angular/core';
 import {Detail, ErrorService, MessageComponent} from "ngx-fusio-sdk";
 import {BackendSchema} from "fusio-sdk";
-import {ApiService} from "../../../api.service";
 import {SchemaService} from "../../../services/schema.service";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {EditorComponent} from "ngx-monaco-editor-v2";
 import {FormsModule} from "@angular/forms";
 import {JsonPipe} from "@angular/common";
-import {ExportService, ImportService, Specification, TypeschemaEditorModule} from "ngx-typeschema-editor";
+import {ImportService, Specification, TypeschemaEditorModule} from "ngx-typeschema-editor";
 
 @Component({
   selector: 'app-schema-detail',
   templateUrl: './detail.component.html',
   imports: [
-    RouterLink,
     MessageComponent,
     EditorComponent,
     FormsModule,

@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, signal} from '@angular/core';
 import {Detail, ErrorService} from "ngx-fusio-sdk";
 import {BackendConnection, BackendDatabaseRow, BackendDatabaseTable} from "fusio-sdk";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
@@ -22,9 +22,9 @@ import {JsonPipe} from "@angular/common";
 })
 export class DetailComponent extends Detail<BackendDatabaseRow> {
 
-  id: string|null = null;
-  selectedConnection?: BackendConnection;
-  table?: BackendDatabaseTable;
+  id = signal<string|null>(null);
+  selectedConnection = signal<BackendConnection|undefined>(undefined);
+  selectedTable = signal<BackendDatabaseTable|undefined>(undefined);
 
   constructor(private service: RowService, private connection: ConnectionService, private tableService: TableService, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);
@@ -35,40 +35,44 @@ export class DetailComponent extends Detail<BackendDatabaseRow> {
   }
 
   override async ngOnInit(): Promise<void> {
+    super.ngOnInit();
+
     this.route.params.subscribe(async (params) => {
       if (params['connection']) {
-        this.selectedConnection = await this.connection.get(params['connection']);
-        if (this.selectedConnection) {
-          this.service.setConnection(this.selectedConnection);
-          this.tableService.setConnection(this.selectedConnection);
+        const connection = await this.connection.get(params['connection']);
+        if (connection) {
+          this.service.setConnection(connection);
+          this.tableService.setConnection(connection);
+          this.selectedConnection.set(connection);
         }
       }
-      if (params['table']) {
-        this.table = await this.tableService.get(params['table']);
-        this.service.setTable(this.table);
-      }
 
-      if (this.service.isConfigured()) {
-        await super.ngOnInit();
+      if (params['table']) {
+        const table = await this.tableService.get(params['table']);
+        if (table) {
+          this.service.setTable(table);
+          this.selectedTable.set(table);
+        }
       }
     });
 
     this.route.paramMap.subscribe(async params => {
-      this.id = params.get('id');
+      this.id.set(params.get('id'));
     });
   }
 
   get primaryKey(): string {
-    return this.table?.primaryKey || '';
+    return this.selectedTable()?.primaryKey || '';
   }
 
   get keyValues(): Array<KeyValue> {
-    if (!this.selected) {
+    const selected = this.selected();
+    if (!selected) {
       return [];
     }
 
     const result = [];
-    for (const [key, value] of Object.entries(this.selected)) {
+    for (const [key, value] of Object.entries(selected)) {
       result.push({
         key: key,
         value: value,

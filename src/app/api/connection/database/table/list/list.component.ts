@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, signal} from '@angular/core';
 import {ErrorService, List, SearchComponent} from "ngx-fusio-sdk";
 import {BackendConnection, BackendDatabaseTable} from "fusio-sdk";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
@@ -18,7 +18,7 @@ import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
 })
 export class ListComponent extends List<BackendDatabaseTable> {
 
-  selectedConnection?: BackendConnection;
+  selectedConnection = signal<BackendConnection|undefined>(undefined);
 
   constructor(private service: TableService, private connection: ConnectionService, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);
@@ -29,16 +29,19 @@ export class ListComponent extends List<BackendDatabaseTable> {
   }
 
   override async ngOnInit(): Promise<void> {
+    super.ngOnInit();
+
     this.route.params.subscribe(async (params) => {
       if (params['connection']) {
-        this.selectedConnection = await this.connection.get(params['connection']);
-        if (this.selectedConnection) {
-          this.service.setConnection(this.selectedConnection);
+        try {
+          const connection = await this.connection.get(params['connection']);
+          if (connection) {
+            this.service.setConnection(connection);
+            this.selectedConnection.set(connection);
+          }
+        } catch (error) {
+          this.response.set(this.error.convert(error));
         }
-      }
-
-      if (this.service.isConfigured()) {
-        await super.ngOnInit();
       }
     });
   }

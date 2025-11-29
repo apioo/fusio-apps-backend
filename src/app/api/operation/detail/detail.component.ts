@@ -5,7 +5,7 @@ import {Detail, ErrorService, MessageComponent, ScopesComponent} from "ngx-fusio
 import {BackendOperation} from "fusio-sdk";
 import {ApiService} from "../../../api.service";
 import {ActionService} from "../../../services/action.service";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {OperationService} from "../../../services/operation.service";
 import {SchemaLinkComponent} from "../../../shared/schema-link/schema-link.component";
 import {ActionLinkComponent} from "../../../shared/action-link/action-link.component";
@@ -18,7 +18,6 @@ import {OperationStatus} from "../../../shared/operation-status/operation-status
   selector: 'app-operation-detail',
   templateUrl: './detail.component.html',
   imports: [
-    RouterLink,
     MessageComponent,
     ScopesComponent,
     SchemaLinkComponent,

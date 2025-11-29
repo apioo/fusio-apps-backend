@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {Detail, ErrorService, MessageComponent} from "ngx-fusio-sdk";
 import {BackendRate} from "fusio-sdk";
 import {RateService} from "../../../services/rate.service";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {EditorComponent} from "ngx-monaco-editor-v2";
 import {FormsModule} from "@angular/forms";
 import {JsonPipe} from "@angular/common";
@@ -11,7 +11,6 @@ import {JsonPipe} from "@angular/common";
   selector: 'app-rate-detail',
   templateUrl: './detail.component.html',
   imports: [
-    RouterLink,
     MessageComponent,
     EditorComponent,
     FormsModule,

@@ -3,7 +3,7 @@ import {ErrorService, Form, HelpService, MessageComponent} from "ngx-fusio-sdk";
 import {BackendOperation} from "fusio-sdk";
 import {OperationService} from "../../../services/operation.service";
 import {ActionService} from "../../../services/action.service";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {SchemaService} from "../../../services/schema.service";
 import {FormBreadcrump} from "../../../shared/form-breadcrump/form-breadcrump";
 import {FormButtons} from "../../../shared/form-buttons/form-buttons";
@@ -19,7 +19,6 @@ import {ActionSelectorComponent} from "../../../shared/action-selector/action-se
   selector: 'app-operation-modal',
   templateUrl: './form.component.html',
   imports: [
-    RouterLink,
     FormBreadcrump,
     MessageComponent,
     FormButtons,

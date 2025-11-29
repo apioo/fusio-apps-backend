@@ -1,9 +1,8 @@
 import {Component} from '@angular/core';
 import {ErrorService, List, MessageComponent, SearchComponent} from "ngx-fusio-sdk";
-import {BackendScope, BackendScopeCollection, Client} from "fusio-sdk";
-import {FormComponent} from "../form/form.component";
+import {BackendScope} from "fusio-sdk";
 import {ScopeService} from "../../../services/scope.service";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
@@ -12,7 +11,6 @@ import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
   imports: [
     MessageComponent,
     SearchComponent,
-    RouterLink,
     NgbPagination
   ],
   styleUrls: ['./list.component.css']

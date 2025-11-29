@@ -3,7 +3,7 @@ import {ErrorService, List, MessageComponent, SearchComponent} from "ngx-fusio-s
 import {BackendOperation} from "fusio-sdk";
 import {OperationService} from "../../../services/operation.service";
 import {ActionService} from "../../../services/action.service";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {ApiService} from "../../../api.service";
 import {ActionLinkComponent} from "../../../shared/action-link/action-link.component";
 import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
@@ -16,7 +16,6 @@ import {OperationStatus} from "../../../shared/operation-status/operation-status
     MessageComponent,
     SearchComponent,
     ActionLinkComponent,
-    RouterLink,
     NgbPagination,
     OperationStatus
   ],

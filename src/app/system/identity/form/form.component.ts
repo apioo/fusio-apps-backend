@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {ErrorService, Form, FormAutocompleteComponent, HelpService, MessageComponent} from "ngx-fusio-sdk";
 import {BackendConnectionIndexEntry, BackendIdentity, CommonFormContainer} from "fusio-sdk";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {IdentityService} from "../../../services/identity.service";
 import {AppService} from "../../../services/app.service";
 import {RoleService} from "../../../services/role.service";
@@ -17,7 +17,6 @@ import {ConfigComponent} from "../../../shared/config/config.component";
     templateUrl: './form.component.html',
   imports: [
     FormBreadcrump,
-    RouterLink,
     MessageComponent,
     FormButtons,
     FormAutocompleteComponent,

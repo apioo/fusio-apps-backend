@@ -15,6 +15,7 @@ export class TableService extends Service<BackendDatabaseTable> {
 
   public setConnection(connection: BackendConnection): void {
     this.connection = connection;
+    this.checkConfiguration();
   }
 
   private getConnection(): string {
@@ -25,7 +26,7 @@ export class TableService extends Service<BackendDatabaseTable> {
     return '' + this.connection.id;
   }
 
-  public isConfigured(): boolean {
+  public override isConfigured(): boolean {
     return this.connection !== undefined;
   }
 

@@ -22,7 +22,7 @@
       <td>{{entry.ip}}</td>
       <td>
         <div class="btn-group" role="group">
-          <a [routerLink]="getDetailLink(entry.id)" class="btn btn-primary"><i class="bi bi-search"></i></a>
+          <a (click)="doDetail(entry.id)" class="btn btn-primary"><i class="bi bi-search"></i></a>
         </div>
       </td>
     </tr>

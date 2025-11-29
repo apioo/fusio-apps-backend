@@ -3,7 +3,7 @@ import {ErrorService, List, MessageComponent, SearchComponent} from "ngx-fusio-s
 import {BackendWebhook} from "fusio-sdk";
 import {WebhookService} from "../../../services/webhook.service";
 import {RoleService} from "../../../services/role.service";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
@@ -12,7 +12,6 @@ import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
   imports: [
     MessageComponent,
     SearchComponent,
-    RouterLink,
     NgbPagination
   ],
   styleUrls: ['./list.component.css']

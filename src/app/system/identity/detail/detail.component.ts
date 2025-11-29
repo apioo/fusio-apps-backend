@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {Detail, ErrorService, MessageComponent} from "ngx-fusio-sdk";
 import {BackendIdentity} from "fusio-sdk";
 import {ApiService} from "../../../api.service";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {IdentityService} from "../../../services/identity.service";
 import {EditorComponent} from "ngx-monaco-editor-v2";
 import {FormsModule} from "@angular/forms";
@@ -12,7 +12,6 @@ import {JsonPipe} from "@angular/common";
   selector: 'app-identity-detail',
   templateUrl: './detail.component.html',
   imports: [
-    RouterLink,
     MessageComponent,
     EditorComponent,
     FormsModule,

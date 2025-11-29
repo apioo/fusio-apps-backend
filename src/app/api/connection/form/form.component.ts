@@ -2,7 +2,7 @@ import {Component, signal} from '@angular/core';
 import {ErrorService, Form, HelpComponent, MessageComponent} from "ngx-fusio-sdk";
 import {BackendConnection, BackendConnectionIndexEntry, CommonFormContainer} from "fusio-sdk";
 import {ApiService} from "../../../api.service";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {ConnectionService} from "../../../services/connection.service";
 import {NgbModal, NgbPopover} from "@ng-bootstrap/ng-bootstrap";
 import {FormBreadcrump} from "../../../shared/form-breadcrump/form-breadcrump";
@@ -14,7 +14,6 @@ import {FormsModule} from "@angular/forms";
   selector: 'app-connection-form',
   templateUrl: './form.component.html',
   imports: [
-    RouterLink,
     FormBreadcrump,
     FormButtons,
     ConfigComponent,

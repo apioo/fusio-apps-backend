@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {Detail, ErrorService, MessageComponent} from "ngx-fusio-sdk";
 import {BackendCronjob} from "fusio-sdk";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {CronjobService} from "../../../services/cronjob.service";
 import {ActionLinkComponent} from "../../../shared/action-link/action-link.component";
 import {ErrorDetailsComponent} from "../../../shared/error-details/error-details.component";
@@ -13,7 +13,6 @@ import {DatePipe, JsonPipe} from "@angular/common";
   selector: 'app-cronjob-detail',
   templateUrl: './detail.component.html',
   imports: [
-    RouterLink,
     MessageComponent,
     ActionLinkComponent,
     ErrorDetailsComponent,

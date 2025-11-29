@@ -1,8 +1,7 @@
 import {Component} from '@angular/core';
 import {ErrorService, List, SearchComponent} from "ngx-fusio-sdk";
-import {BackendTransaction, BackendTransactionCollection, Client} from "fusio-sdk";
-import {PlanService} from "../../../services/plan.service";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {BackendTransaction} from "fusio-sdk";
+import {ActivatedRoute, Router} from "@angular/router";
 import {TransactionService} from "../../../services/transaction.service";
 import {CurrencyPipe} from "@angular/common";
 import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
@@ -13,7 +12,6 @@ import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
   imports: [
     SearchComponent,
     CurrencyPipe,
-    RouterLink,
     NgbPagination
   ],
   styleUrls: ['./list.component.css']

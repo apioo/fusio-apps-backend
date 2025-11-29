@@ -1,8 +1,7 @@
 import {Component} from '@angular/core';
 import {Detail, ErrorService, MessageComponent, ScopesComponent} from "ngx-fusio-sdk";
 import {BackendPlan} from "fusio-sdk";
-import {WebhookService} from "../../../services/webhook.service";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {PlanService} from "../../../services/plan.service";
 import {MarkdownComponent} from "ngx-markdown";
 import {CurrencyPipe, JsonPipe} from "@angular/common";
@@ -13,7 +12,6 @@ import {FormsModule} from "@angular/forms";
   selector: 'app-plan-detail',
   templateUrl: './detail.component.html',
   imports: [
-    RouterLink,
     MessageComponent,
     MarkdownComponent,
     CurrencyPipe,

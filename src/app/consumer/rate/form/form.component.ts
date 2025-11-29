@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {ErrorService, Form, FormAutocompleteComponent, HelpService, MessageComponent} from "ngx-fusio-sdk";
 import {BackendApp, BackendOperation, BackendPlan, BackendRate, BackendUser} from "fusio-sdk";
 import {RateService} from "../../../services/rate.service";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {OperationService} from "../../../services/operation.service";
 import {UserService} from "../../../services/user.service";
 import {AppService} from "../../../services/app.service";
@@ -13,18 +13,17 @@ import {FormsModule} from "@angular/forms";
 import {NgbPopover} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
-    selector: 'app-rate-modal',
-    templateUrl: './form.component.html',
+  selector: 'app-rate-modal',
+  templateUrl: './form.component.html',
   imports: [
     FormBreadcrump,
-    RouterLink,
     MessageComponent,
     FormButtons,
     FormsModule,
     NgbPopover,
     FormAutocompleteComponent
   ],
-    styleUrls: ['./form.component.css']
+  styleUrls: ['./form.component.css']
 })
 export class FormComponent extends Form<BackendRate> {
 

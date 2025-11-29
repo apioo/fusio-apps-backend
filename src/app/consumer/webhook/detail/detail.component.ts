@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {Detail, ErrorService, MessageComponent} from "ngx-fusio-sdk";
 import {BackendWebhook} from "fusio-sdk";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {WebhookService} from "../../../services/webhook.service";
 import {DatePipe, JsonPipe} from "@angular/common";
 import {EditorComponent} from "ngx-monaco-editor-v2";
@@ -11,7 +11,6 @@ import {FormsModule} from "@angular/forms";
   selector: 'app-webhook-detail',
   templateUrl: './detail.component.html',
   imports: [
-    RouterLink,
     MessageComponent,
     DatePipe,
     EditorComponent,

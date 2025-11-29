@@ -6,7 +6,7 @@
 <fusio-search
   [searchTerm]="search()"
   (search)="doSearch(1, $event)"
-  (newClick)="router.navigate(getNewLink())"
+  (newClick)="doNew()"
   placeholder="connection"
   helpPath="api/connection/">
 </fusio-search>
@@ -25,12 +25,12 @@
       <td>{{entry.class}}</td>
       <td>
         <div class="btn-group" role="group">
-          <a [routerLink]="getDetailLink(entry.id)" class="btn btn-primary"><i class="bi bi-search"></i></a>
-          <a [routerLink]="getEditLink(entry.id)" class="btn btn-secondary"><i class="bi bi-pen"></i></a>
+          <a (click)="doDetail(entry.id)" class="btn btn-primary"><i class="bi bi-search"></i></a>
+          <a (click)="doEdit(entry.id)" class="btn btn-secondary"><i class="bi bi-pen"></i></a>
           @if (hasDesignerLink(entry)) {
             <a [routerLink]="getDesignerLink(entry)" class="btn btn-secondary"><i class="bi bi-terminal"></i></a>
           }
-          <a [routerLink]="getDeleteLink(entry.id)" class="btn btn-danger"><i class="bi bi-x"></i></a>
+          <a (click)="doDelete(entry.id)" class="btn btn-danger"><i class="bi bi-x"></i></a>
         </div>
       </td>
     </tr>

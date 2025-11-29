@@ -1,21 +1,21 @@
 
 <h1>
-  <a [routerLink]="['/', 'connection']">Connection</a> /
-  <a [routerLink]="['/', 'connection', selectedConnection?.id]">{{selectedConnection?.name}}</a> /
-  <a [routerLink]="getListLink()">Database</a> /
+  <a [routerLink]="['/', 'connection']" class="link-light">Connection</a> /
+  <a [routerLink]="['/', 'connection', selectedConnection()?.id]" class="link-light">{{selectedConnection()?.name}}</a> /
+  <a (click)="doList()" class="link-light">Database</a> /
   {{selected()?.name}}
 </h1>
 
 @if (selected(); as selected) {
   <div class="btn-group" role="group">
-    <a [routerLink]="getEditLink(selected.name)" class="btn btn-primary fusio-btn-update">Update</a>
-    <a [routerLink]="['/', 'database', selectedConnection, selected.name, 'data']" class="btn btn-secondary">Data</a>
-    <a [routerLink]="getDeleteLink(selected.name)" class="btn btn-danger fusio-btn-delete">Delete</a>
+    <a (click)="doEdit(selected.name)" class="btn btn-primary fusio-btn-update">Update</a>
+    <a [routerLink]="['/', 'connection', selectedConnection()?.id, 'database', selected.name, 'data']" class="btn btn-secondary">Data</a>
+    <a (click)="doDelete(selected.name)" class="btn btn-danger fusio-btn-delete">Delete</a>
   </div>
   <div class="float-end">
-    <button type="button" (click)="jsonView = !jsonView" class="btn btn-outline-secondary fusio-btn-json ms-2">JSON</button>
+    <button type="button" (click)="jsonView.set(!jsonView())" class="btn btn-outline-secondary fusio-btn-json ms-2">JSON</button>
   </div>
-  @if (!jsonView) {
+  @if (!jsonView()) {
     <div class="fusio-detail">
       <div class="card mt-3">
         <div class="card-header">{{selected.name}}</div>
@@ -108,7 +108,7 @@
                 @for (foreignKey of selected.foreignKeys; track $index) {
                   <tr>
                     <td>{{foreignKey.name}}</td>
-                    <td><a [routerLink]="['/database', selectedConnection, foreignKey.foreignTable]">{{foreignKey.foreignTable}}</a></td>
+                    <td><a [routerLink]="['/database', selectedConnection()?.id, foreignKey.foreignTable]">{{foreignKey.foreignTable}}</a></td>
                     <td>{{foreignKey.localColumnNames}}</td>
                     <td>{{foreignKey.foreignColumnNames}}</td>
                   </tr>
@@ -120,7 +120,7 @@
       }
     </div>
   }
-  @if (jsonView) {
+  @if (jsonView()) {
     <div class="fusio-json">
       <div style="height:600px;" class="mt-3">
         <ngx-monaco-editor style="height:100%" name="json" [options]="{theme: 'vs-light', language: 'json'}" [ngModel]="selected|json"></ngx-monaco-editor>

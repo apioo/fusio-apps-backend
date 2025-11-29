@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, signal} from '@angular/core';
 import {ErrorService, List, SearchComponent} from "ngx-fusio-sdk";
 import {BackendConnection, BackendDatabaseRow, BackendDatabaseTable, BackendDatabaseTableColumn} from "fusio-sdk";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
@@ -19,8 +19,8 @@ import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
 })
 export class ListComponent extends List<BackendDatabaseRow> {
 
-  selectedConnection?: BackendConnection;
-  table?: BackendDatabaseTable;
+  selectedConnection = signal<BackendConnection|undefined>(undefined);
+  selectedTable = signal<BackendDatabaseTable|undefined>(undefined);
 
   constructor(private service: RowService, private connection: ConnectionService, private tableService: TableService, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);
@@ -31,50 +31,36 @@ export class ListComponent extends List<BackendDatabaseRow> {
   }
 
   override async ngOnInit(): Promise<void> {
+    super.ngOnInit();
+
     this.route.params.subscribe(async (params) => {
       if (params['connection']) {
-        this.selectedConnection = await this.connection.get(params['connection']);
-        if (this.selectedConnection) {
-          this.service.setConnection(this.selectedConnection);
-          this.tableService.setConnection(this.selectedConnection);
+        const connection = await this.connection.get(params['connection']);
+        if (connection) {
+          this.service.setConnection(connection);
+          this.tableService.setConnection(connection);
+          this.selectedConnection.set(connection);
         }
       }
 
       if (params['table']) {
-        this.table = await this.tableService.get(params['table']);
-        this.service.setTable(this.table);
+        const table = await this.tableService.get(params['table']);
+        if (table) {
+          this.service.setTable(table);
+          this.selectedTable.set(table);
+        }
       }
-
-      if (this.service.isConfigured()) {
-        await super.ngOnInit();
-      }
-    });
-
-    this.route.queryParams.subscribe(async params => {
-      let page, search;
-      if (params['page']) {
-        page = parseInt(params['page']);
-      }
-      if (params['search']) {
-        search = params['search'];
-      }
-
-      if (!this.hasQueryParamsChange(page, search)) {
-        return;
-      }
-
-      this.page.set(page || 1);
-      this.search.set(search || '');
     });
   }
 
   get columns(): Array<BackendDatabaseTableColumn> {
-    if (!this.table?.columns) {
+    const tableColumns = this.selectedTable()?.columns;
+    if (!tableColumns) {
       return [];
     }
 
     let columns = [];
-    for (const col of this.table.columns) {
+    for (const col of tableColumns) {
       if (col.type === 'string' || col.type === 'integer' || col.type === 'boolean' || col.type === 'float') {
         columns.push(col);
       }
@@ -84,7 +70,7 @@ export class ListComponent extends List<BackendDatabaseRow> {
   }
 
   get primaryKey(): string {
-    return this.table?.primaryKey || '';
+    return this.selectedTable()?.primaryKey || '';
   }
 
 }

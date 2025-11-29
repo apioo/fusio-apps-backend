@@ -1,7 +1,7 @@
 import {Component, signal} from '@angular/core';
 import {ErrorService, Form, HelpService, MessageComponent} from "ngx-fusio-sdk";
 import {BackendSchema} from "fusio-sdk";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {SchemaService} from "../../../services/schema.service";
 import {FormBreadcrump} from "../../../shared/form-breadcrump/form-breadcrump";
 import {FormButtons} from "../../../shared/form-buttons/form-buttons";
@@ -10,18 +10,17 @@ import {NgbPopover} from "@ng-bootstrap/ng-bootstrap";
 import {ExportService, ImportService, Specification, TypeschemaEditorModule} from "ngx-typeschema-editor";
 
 @Component({
-    selector: 'app-schema-form',
-    templateUrl: './form.component.html',
+  selector: 'app-schema-form',
+  templateUrl: './form.component.html',
   imports: [
     FormBreadcrump,
-    RouterLink,
     MessageComponent,
     FormButtons,
     FormsModule,
     NgbPopover,
     TypeschemaEditorModule
   ],
-    styleUrls: ['./form.component.css']
+  styleUrls: ['./form.component.css']
 })
 export class FormComponent extends Form<BackendSchema> {
 

@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, signal} from '@angular/core';
 import {ErrorService, Form, MessageComponent} from "ngx-fusio-sdk";
 import {BackendConnection, BackendDatabaseRow, BackendDatabaseTable} from "fusio-sdk";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
@@ -23,8 +23,8 @@ import {FormsModule} from "@angular/forms";
 })
 export class FormComponent extends Form<BackendDatabaseRow> {
 
-  selectedConnection?: BackendConnection;
-  table?: BackendDatabaseTable;
+  selectedConnection = signal<BackendConnection|undefined>(undefined);
+  selectedTable = signal<BackendDatabaseTable|undefined>(undefined);
 
   constructor(private service: RowService, private connection: ConnectionService, private tableService: TableService, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);
@@ -35,26 +35,30 @@ export class FormComponent extends Form<BackendDatabaseRow> {
   }
 
   override async ngOnInit(): Promise<void> {
+    super.ngOnInit();
+
     this.route.params.subscribe(async (params) => {
       if (params['connection']) {
-        this.selectedConnection = await this.connection.get(params['connection']);
-        if (this.selectedConnection) {
-          this.service.setConnection(this.selectedConnection);
+        const connection = await this.connection.get(params['connection']);
+        if (connection) {
+          this.service.setConnection(connection);
+          this.tableService.setConnection(connection);
+          this.selectedConnection.set(connection);
         }
       }
-      if (params['table']) {
-        this.table = await this.tableService.get(params['table']);
-        this.service.setTable(this.table);
-      }
 
-      if (this.service.isConfigured()) {
-        await super.ngOnInit();
+      if (params['table']) {
+        const table = await this.tableService.get(params['table']);
+        if (table) {
+          this.service.setTable(table);
+          this.selectedTable.set(table);
+        }
       }
     });
   }
 
   get primaryKey(): string {
-    return this.table?.primaryKey || '';
+    return this.selectedTable()?.primaryKey || '';
   }
 
 }

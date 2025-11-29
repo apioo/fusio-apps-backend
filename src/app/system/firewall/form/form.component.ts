@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {ErrorService, Form, HelpService, MessageComponent} from "ngx-fusio-sdk";
 import {BackendFirewall} from "fusio-sdk";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {FirewallService} from "../../../services/firewall.service";
 import {FormBreadcrump} from "../../../shared/form-breadcrump/form-breadcrump";
 import {FormButtons} from "../../../shared/form-buttons/form-buttons";
@@ -13,7 +13,6 @@ import {NgbPopover} from "@ng-bootstrap/ng-bootstrap";
     templateUrl: './form.component.html',
   imports: [
     FormBreadcrump,
-    RouterLink,
     MessageComponent,
     FormButtons,
     FormsModule,

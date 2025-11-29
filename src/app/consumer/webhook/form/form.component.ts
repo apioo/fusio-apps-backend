@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {ErrorService, Form, FormAutocompleteComponent, HelpService, MessageComponent} from "ngx-fusio-sdk";
 import {BackendWebhook} from "fusio-sdk";
 import {RoleService} from "../../../services/role.service";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {WebhookService} from "../../../services/webhook.service";
 import {UserService} from "../../../services/user.service";
 import {EventService} from "../../../services/event.service";
@@ -12,18 +12,17 @@ import {FormsModule} from "@angular/forms";
 import {NgbPopover} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
-    selector: 'app-webhook-form',
-    templateUrl: './form.component.html',
+  selector: 'app-webhook-form',
+  templateUrl: './form.component.html',
   imports: [
     FormBreadcrump,
-    RouterLink,
     MessageComponent,
     FormButtons,
     FormsModule,
     NgbPopover,
     FormAutocompleteComponent
   ],
-    styleUrls: ['./form.component.css']
+  styleUrls: ['./form.component.css']
 })
 export class FormComponent extends Form<BackendWebhook> {
 

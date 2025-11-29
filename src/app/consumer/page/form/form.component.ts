@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 import {ErrorService, Form, HelpService, MessageComponent} from "ngx-fusio-sdk";
-import {BackendPage, CommonMessage} from "fusio-sdk";
+import {BackendPage} from "fusio-sdk";
 import {PageService} from "../../../services/page.service";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {FormBreadcrump} from "../../../shared/form-breadcrump/form-breadcrump";
 import {FormButtons} from "../../../shared/form-buttons/form-buttons";
 import {FormsModule} from "@angular/forms";
@@ -10,18 +10,17 @@ import {NgbPopover} from "@ng-bootstrap/ng-bootstrap";
 import {EditorComponent} from "ngx-monaco-editor-v2";
 
 @Component({
-    selector: 'app-page-form',
-    templateUrl: './form.component.html',
+  selector: 'app-page-form',
+  templateUrl: './form.component.html',
   imports: [
     FormBreadcrump,
-    RouterLink,
     MessageComponent,
     FormButtons,
     FormsModule,
     NgbPopover,
     EditorComponent
   ],
-    styleUrls: ['./form.component.css']
+  styleUrls: ['./form.component.css']
 })
 export class FormComponent extends Form<BackendPage> {
 

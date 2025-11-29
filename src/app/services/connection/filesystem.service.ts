@@ -15,6 +15,7 @@ export class FilesystemService extends Service<BackendFile> {
 
   public setConnection(connection: BackendConnection): void {
     this.connection = connection;
+    this.checkConfiguration();
   }
 
   private getConnection(): string {
@@ -25,7 +26,7 @@ export class FilesystemService extends Service<BackendFile> {
     return '' + this.connection.id;
   }
 
-  public isConfigured(): boolean {
+  public override isConfigured(): boolean {
     return this.connection !== undefined;
   }
 

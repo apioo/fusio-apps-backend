@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {Detail, ErrorService, MessageComponent, ScopesComponent} from "ngx-fusio-sdk";
 import {BackendApp} from "fusio-sdk";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {AppService} from "../../../services/app.service";
 import {ClipboardModule} from "ngx-clipboard";
 import {DatePipe, JsonPipe} from "@angular/common";
@@ -12,7 +12,6 @@ import {FormsModule} from "@angular/forms";
   selector: 'app-app-detail',
   templateUrl: './detail.component.html',
   imports: [
-    RouterLink,
     MessageComponent,
     ClipboardModule,
     ScopesComponent,
