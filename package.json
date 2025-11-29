@@ -42,7 +42,7 @@
     "monaco-editor": "^0.52.0",
     "ngx-apexcharts": "^0.8.0",
     "ngx-captcha": "^14.0.0",
-    "ngx-fusio-sdk": "^7.0.1",
+    "ngx-fusio-sdk": "^7.0.5",
     "ngx-clipboard": "^16.0.0",
     "ngx-gravatar": "^13.0.0",
     "ngx-markdown": "^20.0.0",
