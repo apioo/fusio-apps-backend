@@ -44,7 +44,10 @@ import {DetailComponent as TriggerDetail} from "./api/trigger/detail/detail.comp
 import {FormComponent as TriggerForm} from "./api/trigger/form/form.component";
 import {GeneratorComponent} from "./development/generator/generator.component";
 import {ListComponent as MarketplaceList} from "./development/marketplace/list/list.component";
-import {DetailComponent as MarketplaceDetail} from "./development/marketplace/detail/detail.component";
+import {ListComponent as MarketplaceActionList} from "./development/marketplace/action/list/list.component";
+import {DetailComponent as MarketplaceActionDetail} from "./development/marketplace/action/detail/detail.component";
+import {ListComponent as MarketplaceAppList} from "./development/marketplace/app/list/list.component";
+import {DetailComponent as MarketplaceAppDetail} from "./development/marketplace/app/detail/detail.component";
 import {ListComponent as SdkList} from "./development/sdk/list/list.component";
 import {GeneratorComponent as SdkGenerator} from "./development/sdk/generator/generator.component";
 import {ListComponent as TestList} from "./development/test/list/list.component";
@@ -130,8 +133,10 @@ export const routes: Routes = [
 
   { path: 'generator', component: GeneratorComponent, canActivate: [isAuthenticated] },
   { path: 'marketplace', component: MarketplaceList, canActivate: [isAuthenticated] },
-  { path: 'marketplace/:type', component: MarketplaceList, canActivate: [isAuthenticated] },
-  { path: 'marketplace/:type/:user/:name', component: MarketplaceDetail, canActivate: [isAuthenticated] },
+  { path: 'marketplace/action', component: MarketplaceActionList, canActivate: [isAuthenticated] },
+  { path: 'marketplace/action/:id', component: MarketplaceActionDetail, canActivate: [isAuthenticated] },
+  { path: 'marketplace/app', component: MarketplaceAppList, canActivate: [isAuthenticated] },
+  { path: 'marketplace/app/:id', component: MarketplaceAppDetail, canActivate: [isAuthenticated] },
   { path: 'sdk', component: SdkList, canActivate: [isAuthenticated] },
   { path: 'sdk/generator/:type', component: SdkGenerator, canActivate: [isAuthenticated] },
   { path: 'test', component: TestList, canActivate: [isAuthenticated] },

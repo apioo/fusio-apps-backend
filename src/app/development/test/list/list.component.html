@@ -1,7 +1,7 @@
 
 <h1>Test</h1>
 
-<fusio-message [response]="response"></fusio-message>
+<fusio-message [response]="response()"></fusio-message>
 
 <div class="btn-group" role="group">
   <button (click)="doRun()" class="btn btn-primary">Run</button>
@@ -27,7 +27,7 @@
   </tr>
   </thead>
   <tbody>
-  @for (test of tests; track test.id) {
+  @for (test of tests(); track test.id) {
     <tr>
       <td>
         @if (test.status === 1) {
@@ -54,7 +54,7 @@
       <td>
         <div class="btn-group">
           <button class="btn btn-primary" (click)="openUpdateDialog(test)"><i class="bi bi-gear"></i></button>
-          <button class="btn btn-secondary" [routerLink]="['/operation/', '~' + test.operationName]"><i class="bi bi-router"></i></button>
+          <button class="btn btn-secondary" [routerLink]="['/operation/', '~' + test.operationName]"><i class="bi bi-terminal"></i></button>
         </div>
       </td>
     </tr>

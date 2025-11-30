@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, signal} from '@angular/core';
 import {ErrorService, MessageComponent, Mode} from "ngx-fusio-sdk";
 import {BackendTest, CommonMessage} from "fusio-sdk";
 import {FormComponent} from "../form/form.component";
@@ -17,8 +17,8 @@ import {RouterLink} from "@angular/router";
 })
 export class ListComponent implements OnInit {
 
-  public tests: Array<BackendTest> = [];
-  public response?: CommonMessage;
+  tests = signal<Array<BackendTest>>([]);
+  response = signal<CommonMessage|undefined>(undefined);
 
   constructor(private fusio: ApiService, private error: ErrorService, private modalService: NgbModal) { }
 
@@ -30,27 +30,27 @@ export class ListComponent implements OnInit {
     try {
       const response = await this.fusio.getClient().backend().test().getAll();
 
-      this.tests = response.entry || [];
+      this.tests.set(response.entry || []);
     } catch (error) {
-      this.response = this.error.convert(error);
+      this.response.set(this.error.convert(error));
     }
   }
 
   async doRefresh() {
     try {
-      this.response = await this.fusio.getClient().backend().test().refresh();
+      this.response.set(await this.fusio.getClient().backend().test().refresh());
       await this.doLoad();
     } catch (error) {
-      this.response = this.error.convert(error);
+      this.response.set(this.error.convert(error));
     }
   }
 
   async doRun() {
     try {
-      this.response = await this.fusio.getClient().backend().test().run();
+      this.response.set(await this.fusio.getClient().backend().test().run());
       await this.doLoad();
     } catch (error) {
-      this.response = this.error.convert(error);
+      this.response.set(this.error.convert(error));
     }
   }
 
@@ -58,7 +58,7 @@ export class ListComponent implements OnInit {
     try {
       entity = await this.fusio.getClient().backend().test().get('' + entity.id)
     } catch (error) {
-      this.response = this.error.convert(error);
+      this.response.set(this.error.convert(error));
       return;
     }
 
@@ -68,8 +68,8 @@ export class ListComponent implements OnInit {
     modalRef.componentInstance.mode = Mode.Update;
     modalRef.componentInstance.entity = entity;
     modalRef.closed.subscribe(async (result: CommonMessage) => {
-      this.response = result;
-      if (this.response.success) {
+      this.response.set(result);
+      if (result.success) {
         await this.doLoad();
       }
     });

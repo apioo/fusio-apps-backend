@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, input} from '@angular/core';
 import {ErrorService, Form, MessageComponent} from "ngx-fusio-sdk";
 import {BackendTest, BackendTestConfig} from "fusio-sdk";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -9,8 +9,8 @@ import {FormsModule} from "@angular/forms";
 import {EditorComponent} from "ngx-monaco-editor-v2";
 
 @Component({
-    selector: 'app-test-form',
-    templateUrl: './form.component.html',
+  selector: 'app-test-form',
+  templateUrl: './form.component.html',
   imports: [
     FormBreadcrump,
     MessageComponent,
@@ -18,7 +18,7 @@ import {EditorComponent} from "ngx-monaco-editor-v2";
     NgbPopover,
     EditorComponent
   ],
-    styleUrls: ['./form.component.css']
+  styleUrls: ['./form.component.css']
 })
 export class FormComponent extends Form<BackendTest> {
 

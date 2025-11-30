@@ -1,0 +1,59 @@
+
+<h1>
+  <a [routerLink]="['/', 'marketplace']">Marketplace</a> /
+  <a [routerLink]="['/', 'marketplace', 'action']">App</a> /
+  {{selected()?.author?.name}}-{{selected()?.name}}
+</h1>
+
+<fusio-message [response]="response()"></fusio-message>
+
+@if (selected(); as selected) {
+  <div class="btn-group" role="group">
+    <a (click)="doInstall(selected)" class="btn btn-primary fusio-btn-update">Install</a>
+    <a (click)="doUpgrade(selected)" class="btn btn-danger fusio-btn-delete">Upgrade</a>
+  </div>
+  <div class="float-end">
+    <button type="button" (click)="jsonView.set(!jsonView())" class="btn btn-outline-secondary fusio-btn-json ms-2">JSON</button>
+  </div>
+  @if (!jsonView()) {
+    <div class="fusio-detail">
+      <div class="row">
+        <div class="col-2 fw-bold">Name</div>
+        <div class="col-10">{{selected.name}}</div>
+      </div>
+      <div class="row">
+        <div class="col-2 fw-bold">Author</div>
+        <div class="col-10">{{selected.author?.name}} @if (selected.author?.verified) {<i class="bi bi-patch-check-fill text-primary"></i>}</div>
+      </div>
+      <div class="row">
+        <div class="col-2 fw-bold">Version</div>
+        <div class="col-10">{{selected.version}}</div>
+      </div>
+      <div class="row">
+        <div class="col-2 fw-bold">Icon</div>
+        <div class="col-10"><i class="bi bi-{{selected.icon}}"></i></div>
+      </div>
+      <div class="row">
+        <div class="col-2 fw-bold">Summary</div>
+        <div class="col-10">{{selected.summary}}</div>
+      </div>
+      <div class="row">
+        <div class="col-2 fw-bold">Description</div>
+        <div class="col-10">
+          <markdown [data]="selected.description"></markdown>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-2 fw-bold">Costs</div>
+        <div class="col-10">{{selected.cost}}</div>
+      </div>
+    </div>
+  }
+  @if (jsonView()) {
+    <div class="fusio-json">
+      <div style="height:600px;" class="mt-3">
+        <ngx-monaco-editor style="height:100%" name="json" [options]="{theme: 'vs-light', language: 'json'}" [ngModel]="selected|json"></ngx-monaco-editor>
+      </div>
+    </div>
+  }
+}
