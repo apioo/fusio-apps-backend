@@ -1,15 +1,15 @@
 import {Component} from '@angular/core';
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {Detail, ErrorService, MessageComponent} from "ngx-fusio-sdk";
-import {MarketplaceAction} from "fusio-sdk";
+import {MarketplaceBundle} from "fusio-sdk";
 import {MarkdownComponent} from "ngx-markdown";
-import {ActionService} from "../../../../services/marketplace/action.service";
 import {EditorComponent} from "ngx-monaco-editor-v2";
 import {JsonPipe} from "@angular/common";
 import {FormsModule} from "@angular/forms";
+import {BundleService} from "../../../../services/marketplace/bundle.service";
 
 @Component({
-  selector: 'app-marketplace-action-detail',
+  selector: 'app-marketplace-bundle-detail',
   templateUrl: './detail.component.html',
   imports: [
     RouterLink,
@@ -21,17 +21,17 @@ import {FormsModule} from "@angular/forms";
   ],
   styleUrls: ['./detail.component.css']
 })
-export class DetailComponent extends Detail<MarketplaceAction> {
+export class DetailComponent extends Detail<MarketplaceBundle> {
 
-  constructor(private service: ActionService, route: ActivatedRoute, router: Router, error: ErrorService) {
+  constructor(private service: BundleService, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);
   }
 
-  protected getService(): ActionService {
+  protected getService(): BundleService {
     return this.service;
   }
 
-  async doInstall(entity: MarketplaceAction) {
+  async doInstall(entity: MarketplaceBundle) {
     try {
       this.response.set(await this.service.create(entity));
     } catch (error) {
@@ -39,7 +39,7 @@ export class DetailComponent extends Detail<MarketplaceAction> {
     }
   }
 
-  async doUpgrade(entity: MarketplaceAction) {
+  async doUpgrade(entity: MarketplaceBundle) {
     try {
       this.response.set(await this.service.update(entity));
     } catch (error) {

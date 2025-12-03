@@ -1,7 +1,7 @@
 
 <h1>
   <a [routerLink]="['/', 'marketplace']">Marketplace</a> /
-  Action
+  Bundle
 </h1>
 
 <fusio-message [response]="response()"></fusio-message>
@@ -9,8 +9,8 @@
 <fusio-search
   [searchTerm]="search()"
   (search)="doSearch(1, $event)"
-  placeholder="action"
-  helpPath="development/marketplace/action/">
+  placeholder="bundle"
+  helpPath="development/marketplace/bundle/">
 </fusio-search>
 <table class="table table-striped">
   <thead>
@@ -34,7 +34,7 @@
         <td>{{entry.version}}</td>
         <td>
           <div class="btn-group" role="group">
-            <a [routerLink]="['/marketplace', 'action', entry.author?.name + '-' + entry.name]" class="btn btn-primary"><i class="bi bi-search"></i></a>
+            <a [routerLink]="['/marketplace', 'bundle', entry.author?.name + '-' + entry.name]" class="btn btn-primary"><i class="bi bi-search"></i></a>
           </div>
         </td>
       </tr>

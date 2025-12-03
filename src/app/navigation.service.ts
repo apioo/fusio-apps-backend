@@ -116,6 +116,12 @@ export class NavigationService {
               "icon": "bi-bug",
               "path": "/test",
               "scope": "backend.test"
+            },
+            {
+              "title": "Bundle",
+              "icon": "bi-box",
+              "path": "/bundle",
+              "scope": "backend.bundle"
             }
           ]
         },

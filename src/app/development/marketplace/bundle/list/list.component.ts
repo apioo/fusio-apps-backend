@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
 import {ErrorService, List, MessageComponent, SearchComponent} from "ngx-fusio-sdk";
-import {MarketplaceAction} from "fusio-sdk";
+import {MarketplaceBundle} from "fusio-sdk";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
-import {ActionService} from "../../../../services/marketplace/action.service";
+import {BundleService} from "../../../../services/marketplace/bundle.service";
 
 @Component({
   selector: 'app-marketplace-list',
@@ -16,13 +16,13 @@ import {ActionService} from "../../../../services/marketplace/action.service";
   ],
   styleUrls: ['./list.component.css']
 })
-export class ListComponent extends List<MarketplaceAction> {
+export class ListComponent extends List<MarketplaceBundle> {
 
-  constructor(private service: ActionService, route: ActivatedRoute, router: Router, error: ErrorService) {
+  constructor(private service: BundleService, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);
   }
 
-  protected getService(): ActionService {
+  protected getService(): BundleService {
     return this.service;
   }
 

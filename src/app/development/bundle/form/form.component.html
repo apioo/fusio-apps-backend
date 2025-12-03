@@ -1,0 +1,52 @@
+
+<h1>
+  <a (click)="doList()">Bundle</a> /
+  <a (click)="doDetail('~' + entity().name)">{{ entity().name }}</a> /
+  <app-form-breadcrump [mode]="mode"></app-form-breadcrump>
+</h1>
+
+<fusio-message [response]="response()"></fusio-message>
+
+<form>
+  <div class="mb-3 row">
+    <label for="name" class="col-lg-2 col-form-label fw-bold">Name</label>
+    <div class="col-lg-10">
+      <div class="input-group">
+        <input type="text" id="name" name="name" [ngModel]="entity().name" (ngModelChange)="set(entity, 'name', $event)" class="form-control">
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
+        <ng-template #nameHelp>Unique name of the category</ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="name" class="col-lg-2 col-form-label fw-bold">Actions</label>
+    <div class="col-lg-10">
+      <fusio-form-list name="actions" type="autocomplete" [service]="action" [useId]="true" [data]="getEntries('actions')" (dataChange)="setEntries('actions', $event)"></fusio-form-list>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="name" class="col-lg-2 col-form-label fw-bold">Schemas</label>
+    <div class="col-lg-10">
+      <fusio-form-list name="schemas" type="autocomplete" [service]="schema" [useId]="true" [data]="getEntries('schemas')" (dataChange)="setEntries('schemas', $event)"></fusio-form-list>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="name" class="col-lg-2 col-form-label fw-bold">Events</label>
+    <div class="col-lg-10">
+      <fusio-form-list name="events" type="autocomplete" [service]="event" [useId]="true" [data]="getEntries('events')" (dataChange)="setEntries('events', $event)"></fusio-form-list>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="name" class="col-lg-2 col-form-label fw-bold">Cronjobs</label>
+    <div class="col-lg-10">
+      <fusio-form-list name="cronjobs" type="autocomplete" [service]="cronjob" [useId]="true" [data]="getEntries('cronjobs')" (dataChange)="setEntries('cronjobs', $event)"></fusio-form-list>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="name" class="col-lg-2 col-form-label fw-bold">Triggers</label>
+    <div class="col-lg-10">
+      <fusio-form-list name="triggers" type="autocomplete" [service]="trigger" [useId]="true" [data]="getEntries('triggers')" (dataChange)="setEntries('triggers', $event)"></fusio-form-list>
+    </div>
+  </div>
+  <app-form-buttons [mode]="mode" (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="doList()" (onHelp)="showHelp('development/bundle')"></app-form-buttons>
+</form>

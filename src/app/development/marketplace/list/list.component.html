@@ -4,10 +4,11 @@
 <div class="row">
   <div class="col-4">
     <div class="card">
-      <div class="card-header">Action</div>
+      <div class="card-header">Bundle</div>
       <div class="card-body">
-        <p></p>
-        <a [routerLink]="['/', 'marketplace', 'action']" class="btn btn-primary">Actions</a>
+        <p>Browse and install bundles from the Fusio marketplace. A bundle contains action, schema, event, cronjob and
+        trigger configurations which you can install to solve specific use cases.</p>
+        <a [routerLink]="['/', 'marketplace', 'bundle']" class="btn btn-primary">Bundles</a>
       </div>
     </div>
   </div>
@@ -15,9 +16,19 @@
     <div class="card">
       <div class="card-header">App</div>
       <div class="card-body">
-        <p>Install apps from the global Fusio marketplace. An app is a small javascript based app which works with the
+        <p>Browse and install apps from the Fusio marketplace. An app is a small javascript based app which works with the
           Fusio API like the developer portal. By default all apps are installed under <code>public/apps</code>.</p>
         <a [routerLink]="['/', 'marketplace', 'app']" class="btn btn-primary">Apps</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="card">
+      <div class="card-header">Submit</div>
+      <div class="card-body">
+        <p>If you want to submit bundles from your local Fusio instance to the marketplace you can create and submit
+          bundles at the following panel.</p>
+        <a [routerLink]="['/', 'bundle']" class="btn btn-primary">Submit</a>
       </div>
     </div>
   </div>
