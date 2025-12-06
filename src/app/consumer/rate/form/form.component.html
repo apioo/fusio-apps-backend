@@ -73,20 +73,20 @@
         @for (allocation of entity().allocation; track $index) {
           <tr>
             <td>
-              <fusio-form-autocomplete [name]="'operation_' + $index" [service]="operation" [data]="allocation.operationId" (dataChangeId)="allocation.operationId = $event" [disabled]="mode === 3"></fusio-form-autocomplete>
+              <fusio-form-autocomplete [name]="'operation_' + $index" [service]="operation" [data]="allocation.operationId" (dataChangeId)="setAllocationOperationId($index, $event)" [disabled]="mode === 3"></fusio-form-autocomplete>
             </td>
             <td>
-              <fusio-form-autocomplete [name]="'user_' + $index" [service]="user" [data]="allocation.userId" (dataChangeId)="allocation.userId = $event" [disabled]="mode === 3"></fusio-form-autocomplete>
+              <fusio-form-autocomplete [name]="'user_' + $index" [service]="user" [data]="allocation.userId" (dataChangeId)="setAllocationUserId($index, $event)" [disabled]="mode === 3"></fusio-form-autocomplete>
             </td>
             <td>
-              <fusio-form-autocomplete [name]="'plan_' + $index" [service]="plan" [data]="allocation.planId" (dataChangeId)="allocation.planId = $event" [disabled]="mode === 3"></fusio-form-autocomplete>
+              <fusio-form-autocomplete [name]="'plan_' + $index" [service]="plan" [data]="allocation.planId" (dataChangeId)="setAllocationPlanId($index, $event)" [disabled]="mode === 3"></fusio-form-autocomplete>
             </td>
             <td>
-              <fusio-form-autocomplete [name]="'app_' + $index" [service]="app" [data]="allocation.appId" (dataChangeId)="allocation.appId = $event" [disabled]="mode === 3"></fusio-form-autocomplete>
+              <fusio-form-autocomplete [name]="'app_' + $index" [service]="app" [data]="allocation.appId" (dataChangeId)="setAllocationAppId($index, $event)" [disabled]="mode === 3"></fusio-form-autocomplete>
             </td>
             <td>
               <div class="form-check form-switch">
-                <input [name]="'authenticated_' + $index" type="checkbox" [(ngModel)]="allocation.authenticated" [disabled]="mode === 3" class="form-check-input">
+                <input [name]="'authenticated_' + $index" type="checkbox" [ngModel]="allocation.authenticated" (ngModelChange)="setAllocationAuthenticated($index, $event)" [disabled]="mode === 3" class="form-check-input">
               </div>
             </td>
             <td>
