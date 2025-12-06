@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, signal} from '@angular/core';
 import {ErrorService, Form, HelpService, MessageComponent} from "ngx-fusio-sdk";
 import {BackendOperation, BackendScope, BackendScopeOperation} from "fusio-sdk";
 import {ScopeService} from "../../../services/scope.service";
@@ -23,7 +23,7 @@ import {NgbPopover} from "@ng-bootstrap/ng-bootstrap";
 })
 export class FormComponent extends Form<BackendScope> {
 
-  operations: Array<BackendOperation & ExtendOperation> = [];
+  operations = signal<Array<BackendOperation & ExtendOperation>>([]);
 
   constructor(private service: ScopeService, private fusio: ApiService, private help: HelpService, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);
@@ -36,7 +36,7 @@ export class FormComponent extends Form<BackendScope> {
   override async onLoad(): Promise<void> {
     const response = await this.fusio.getClient().backend().operation().getAll(0, 1024);
 
-    this.operations = [];
+    const result: Array<BackendOperation & ExtendOperation> = [];
     response.entry?.forEach((operation) => {
       let extendOperation : BackendOperation & ExtendOperation = operation;
 
@@ -47,8 +47,10 @@ export class FormComponent extends Form<BackendScope> {
         extendOperation.allow = false;
       }
 
-      this.operations.push(extendOperation);
+      result.push(extendOperation);
     });
+
+    this.operations.set(result);
   }
 
   protected override beforeCreate(entity: BackendScope): BackendScope {
@@ -73,7 +75,7 @@ export class FormComponent extends Form<BackendScope> {
 
   private getConfiguredScopes(): Array<BackendScopeOperation> {
     const operations: Array<BackendScopeOperation> = [];
-    this.operations.forEach((operation) => {
+    this.operations().forEach((operation) => {
       if (operation.allow) {
         operations.push({
           operationId: operation.id,
@@ -85,7 +87,7 @@ export class FormComponent extends Form<BackendScope> {
   }
 
   toggleSelect() {
-    this.operations.forEach((operation) => {
+    this.operations().forEach((operation) => {
       operation.allow = !operation.allow;
     });
   }

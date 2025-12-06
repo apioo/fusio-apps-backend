@@ -43,7 +43,7 @@
         </tr>
         </thead>
         <tbody>
-        @for (operation of operations; track operation.id) {
+        @for (operation of operations(); track operation.id) {
           <tr>
             <td>{{operation.name}}</td>
             <td>
