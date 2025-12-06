@@ -5,7 +5,7 @@
   <form (submit)="doSearch()">
     <div class="row">
       <div class="col-2">
-        <select name="statistic" [(ngModel)]="statistic" (change)="selectStatistic()" class="form-select">
+        <select name="statistic" [ngModel]="statistic()" (ngModelChange)="selectStatistic($event)" class="form-select">
           @for (statistic of statistics; track statistic.value) {
             <option [ngValue]="statistic.value">{{statistic.name}}</option>
           }
@@ -13,7 +13,7 @@
       </div>
       <div class="col-10">
         <div class="input-group">
-          <input type="text" class="form-control" name="search" [(ngModel)]="search" placeholder="Search i.e. log" />
+          <input type="text" class="form-control" name="search" [ngModel]="search()" (ngModelChange)="search.set($event)" placeholder="Search i.e. log" />
           <button type="button" (click)="doFilterClick()" class="btn btn-primary fusio-btn-create"><i class="bi bi-plus"></i></button>
           <button type="button" (click)="showHelp('analytics/statistic')" class="btn btn-secondary fusio-btn-help"><i class="bi bi-question"></i></button>
         </div>
@@ -25,10 +25,10 @@
 <div class="card">
   <div class="card-header">{{statisticName}}</div>
   <div class="card-body">
-    @if (pieChart) {
+    @if (pieChart(); as pieChart) {
       <apx-chart [series]="pieChart.series" [labels]="pieChart.labels" [chart]="{type: 'donut', height: 500}" [stroke]="{curve: 'smooth'}"></apx-chart>
     }
-    @if (chart) {
+    @if (chart(); as chart) {
       <apx-chart [series]="chart.series" [chart]="{type: 'line', height: 500}" [xaxis]="chart.xaxis" [stroke]="{curve: 'smooth'}"></apx-chart>
     }
   </div>

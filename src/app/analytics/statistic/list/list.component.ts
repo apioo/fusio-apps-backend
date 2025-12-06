@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, signal} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {ChartOptions, Converter, PieChartOptions} from "../converter";
 import {FilterComponent} from "../../log/filter/filter.component";
@@ -20,10 +20,10 @@ import {ChartComponent} from "ngx-apexcharts";
 export class ListComponent implements OnInit {
 
   filter: Array<any> = [0, 16];
-  chart?: ChartOptions;
-  pieChart?: PieChartOptions;
-  statistic = 'incoming_requests';
-  search: string = '';
+  chart = signal<ChartOptions|undefined>(undefined);
+  pieChart = signal<PieChartOptions|undefined>(undefined);
+  statistic = signal<string>('incoming_requests');
+  search = signal<string>('');
 
   statistics: Array<Statistic> = [{
     name: 'Activities per user',
@@ -72,7 +72,7 @@ export class ListComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       const statistic = params.get('statistic');
       if (statistic) {
-        this.statistic = statistic;
+        this.statistic.set(statistic);
         this.doFilter();
       }
     });
@@ -81,63 +81,63 @@ export class ListComponent implements OnInit {
   }
 
   async doFilter() {
-    if (this.statistic === StatisticType.activities_per_user) {
+    if (this.statistic() === StatisticType.activities_per_user) {
       const response = await this.fusio.getClient().backend().statistic().getActivitiesPerUser(...this.filter);
-      this.chart = Converter.convertChart(response);
-      this.pieChart = undefined;
-    } else if (this.statistic === StatisticType.errors_per_operation) {
+      this.chart.set(Converter.convertChart(response));
+      this.pieChart.set(undefined);
+    } else if (this.statistic() === StatisticType.errors_per_operation) {
       const response = await this.fusio.getClient().backend().statistic().getErrorsPerOperation(...this.filter);
-      this.chart = Converter.convertChart(response);
-      this.pieChart = undefined;
-    } else if (this.statistic === StatisticType.incoming_requests) {
+      this.chart.set(Converter.convertChart(response));
+      this.pieChart.set(undefined);
+    } else if (this.statistic() === StatisticType.incoming_requests) {
       const response = await this.fusio.getClient().backend().statistic().getIncomingRequests(...this.filter);
-      this.chart = Converter.convertChart(response);
-      this.pieChart = undefined;
-    } else if (this.statistic === StatisticType.incoming_transactions) {
+      this.chart.set(Converter.convertChart(response));
+      this.pieChart.set(undefined);
+    } else if (this.statistic() === StatisticType.incoming_transactions) {
       const response = await this.fusio.getClient().backend().statistic().getIncomingTransactions(...this.filter);
-      this.chart = Converter.convertChart(response);
-      this.pieChart = undefined;
-    } else if (this.statistic === StatisticType.issued_tokens) {
+      this.chart.set(Converter.convertChart(response));
+      this.pieChart.set(undefined);
+    } else if (this.statistic() === StatisticType.issued_tokens) {
       const response = await this.fusio.getClient().backend().statistic().getIssuedTokens(...this.filter);
-      this.chart = Converter.convertChart(response);
-      this.pieChart = undefined;
-    } else if (this.statistic === StatisticType.most_used_activities) {
+      this.chart.set(Converter.convertChart(response));
+      this.pieChart.set(undefined);
+    } else if (this.statistic() === StatisticType.most_used_activities) {
       const response = await this.fusio.getClient().backend().statistic().getMostUsedActivities(...this.filter);
-      this.chart = Converter.convertChart(response);
-      this.pieChart = undefined;
-    } else if (this.statistic === StatisticType.most_used_apps) {
+      this.chart.set(Converter.convertChart(response));
+      this.pieChart.set(undefined);
+    } else if (this.statistic() === StatisticType.most_used_apps) {
       const response = await this.fusio.getClient().backend().statistic().getMostUsedApps(...this.filter);
-      this.chart = Converter.convertChart(response);
-      this.pieChart = undefined;
-    } else if (this.statistic === StatisticType.most_used_operations) {
+      this.chart.set(Converter.convertChart(response));
+      this.pieChart.set(undefined);
+    } else if (this.statistic() === StatisticType.most_used_operations) {
       const response = await this.fusio.getClient().backend().statistic().getMostUsedOperations(...this.filter);
-      this.chart = Converter.convertChart(response);
-      this.pieChart = undefined;
-    } else if (this.statistic === StatisticType.test_coverage) {
+      this.chart.set(Converter.convertChart(response));
+      this.pieChart.set(undefined);
+    } else if (this.statistic() === StatisticType.test_coverage) {
       const response = await this.fusio.getClient().backend().statistic().getTestCoverage();
-      this.chart = undefined;
-      this.pieChart = Converter.convertPieChart(response);
-    } else if (this.statistic === StatisticType.time_average) {
+      this.chart.set(undefined);
+      this.pieChart.set(Converter.convertPieChart(response));
+    } else if (this.statistic() === StatisticType.time_average) {
       const response = await this.fusio.getClient().backend().statistic().getTimeAverage(...this.filter);
-      this.chart = Converter.convertChart(response);
-      this.pieChart = undefined;
-    } else if (this.statistic === StatisticType.time_per_operation) {
+      this.chart.set(Converter.convertChart(response));
+      this.pieChart.set(undefined);
+    } else if (this.statistic() === StatisticType.time_per_operation) {
       const response = await this.fusio.getClient().backend().statistic().getTimePerOperation(...this.filter);
-      this.chart = Converter.convertChart(response);
-      this.pieChart = undefined;
-    } else if (this.statistic === StatisticType.used_points) {
+      this.chart.set(Converter.convertChart(response));
+      this.pieChart.set(undefined);
+    } else if (this.statistic() === StatisticType.used_points) {
       const response = await this.fusio.getClient().backend().statistic().getUsedPoints(...this.filter);
-      this.chart = Converter.convertChart(response);
-      this.pieChart = undefined;
-    } else if (this.statistic === StatisticType.user_registrations) {
+      this.chart.set(Converter.convertChart(response));
+      this.pieChart.set(undefined);
+    } else if (this.statistic() === StatisticType.user_registrations) {
       const response = await this.fusio.getClient().backend().statistic().getUserRegistrations(...this.filter);
-      this.chart = Converter.convertChart(response);
-      this.pieChart = undefined;
+      this.chart.set(Converter.convertChart(response));
+      this.pieChart.set(undefined);
     }
   }
 
   doSearch() {
-    this.filter = [0, 16, this.search];
+    this.filter = [0, 16, this.search()];
     this.doFilter();
   }
 
@@ -147,13 +147,13 @@ export class ListComponent implements OnInit {
     });
     modalRef.componentInstance.filter = this.filter.slice(3);
     modalRef.closed.subscribe(async (filter) => {
-      this.filter = [0, 16, this.search, ...filter];
+      this.filter = [0, 16, this.search(), ...filter];
       await this.doFilter();
     });
   }
 
-  selectStatistic() {
-    this.router.navigate(['/statistic/' + this.statistic]);
+  selectStatistic(statistic: string) {
+    this.router.navigate(['/statistic/' + statistic]);
   }
 
   showHelp(path: string) {
@@ -162,7 +162,7 @@ export class ListComponent implements OnInit {
 
   get statisticName(): string|null {
     for (let i = 0; i < this.statistics.length; i++) {
-      if (this.statistics[i].value === this.statistic) {
+      if (this.statistics[i].value === this.statistic()) {
         return this.statistics[i].name;
       }
     }
