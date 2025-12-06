@@ -22,7 +22,7 @@
     <label for="description" class="col-lg-2 col-form-label fw-bold">Description</label>
     <div class="col-lg-10">
       <div class="input-group">
-        <textarea id="description" name="description" [ngModel]="entity().description" (ngModelChange)="set(entity, 'description', $event)" [disabled]="mode === 3" class="form-control"></textarea>
+        <textarea id="description" name="description" [ngModel]="entity().description" (ngModelChange)="set(entity, 'description', $event)" [disabled]="mode === 3" rows="5" class="form-control"></textarea>
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="descriptionHelp"><i class="bi bi-question"></i></button>
         <ng-template #descriptionHelp>A short description of this plan</ng-template>
       </div>
