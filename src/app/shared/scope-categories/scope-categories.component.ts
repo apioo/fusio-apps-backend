@@ -1,7 +1,7 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, effect, EventEmitter, input, Output, resource, signal} from '@angular/core';
 import {BackendScopeCategory, BackendScopeCategoryScope} from "fusio-sdk";
-import {ApiService} from "../../api.service";
 import {NgbNav, NgbNavContent, NgbNavItem, NgbNavLink, NgbNavOutlet} from "@ng-bootstrap/ng-bootstrap";
+import {ApiService} from "../../api.service";
 
 @Component({
   selector: 'app-scope-categories',
@@ -15,26 +15,32 @@ import {NgbNav, NgbNavContent, NgbNavItem, NgbNavLink, NgbNavOutlet} from "@ng-b
   ],
   styleUrls: ['./scope-categories.component.css']
 })
-export class ScopeCategoriesComponent implements OnInit {
+export class ScopeCategoriesComponent {
 
-  @Input() scopes?: Array<string>;
-  @Input() disabled: boolean = false;
+  scopes = input<Array<string>|undefined>(undefined);
+  disabled = input<boolean>(false);
+
   @Output() dataChange = new EventEmitter<any>();
 
-  categories?: Array<BackendScopeCategory>;
-  selected: Array<string> = [];
+  categories = resource({
+    loader: async (): Promise<Array<BackendScopeCategory>> => {
+      const response = await this.fusio.getClient().backend().scope().getCategories();
+      return response.categories || [];
+    },
+  });
+
+  selected = signal<Array<string>>([]);
+
   selectedCategory: number = 1;
   toggleScope: boolean = true;
 
   constructor(private fusio: ApiService) {
-  }
-
-  async ngOnInit(): Promise<void> {
-    const response = await this.fusio.getClient().backend().scope().getCategories();
-    this.categories = response.categories;
-    if (this.scopes) {
-      this.selected = this.scopes;
-    }
+    effect(async () => {
+      const scopes = this.scopes();
+      if (scopes) {
+        this.selected.set(scopes);
+      }
+    });
   }
 
   scopeSelect(event: any, scope?: string) {
@@ -49,7 +55,7 @@ export class ScopeCategoriesComponent implements OnInit {
       this.removeScope(scope);
     }
 
-    this.dataChange.emit(this.selected)
+    this.dataChange.emit(this.selected())
   }
 
   toggleScopes(scopes?: Array<BackendScopeCategoryScope>) {
@@ -68,17 +74,24 @@ export class ScopeCategoriesComponent implements OnInit {
       }
     });
 
-    this.dataChange.emit(this.selected)
+    this.dataChange.emit(this.selected())
     this.toggleScope = !this.toggleScope;
   }
 
   private addScope(scope: string) {
-    this.selected.push(scope)
+    this.selected.update((entries) => {
+      entries.push(scope);
+      return entries;
+    });
   }
 
   private removeScope(scope: string) {
-    this.selected = this.selected.filter((value) => {
-      return value !== scope;
+    this.selected.update((entries) => {
+      entries = entries.filter((value) => {
+        return value !== scope;
+      });
+      return entries;
     });
   }
+
 }
