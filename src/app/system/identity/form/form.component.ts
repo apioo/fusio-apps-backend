@@ -11,6 +11,7 @@ import {FormButtons} from "../../../shared/form-buttons/form-buttons";
 import {FormsModule} from "@angular/forms";
 import {NgbPopover} from "@ng-bootstrap/ng-bootstrap";
 import {ConfigComponent} from "../../../shared/config/config.component";
+import {IconProvider} from "../../../icon-provider";
 
 @Component({
     selector: 'app-identity-form',
@@ -31,6 +32,7 @@ export class FormComponent extends Form<BackendIdentity> {
   providers?: Array<BackendConnectionIndexEntry>;
   form?: CommonFormContainer;
   entityClass?: string;
+  icons = IconProvider.icons;
 
   constructor(private service: IdentityService, private fusio: ApiService, private help: HelpService, public role: RoleService, public app: AppService, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);

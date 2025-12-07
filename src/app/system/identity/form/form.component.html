@@ -34,9 +34,13 @@
     <label for="icon" class="col-lg-2 col-form-label fw-bold">Icon</label>
     <div class="col-lg-10">
       <div class="input-group">
-        <input type="text" id="icon" name="icon" [ngModel]="entity().icon" (ngModelChange)="set(entity, 'icon', $event)" [disabled]="mode === 3" class="form-control">
+        <select id="icon" name="icon" [ngModel]="entity().icon" (ngModelChange)="set(entity, 'icon', $event)" [disabled]="mode === 3" class="form-select">
+          @for (icon of icons; track $index) {
+            <option [ngValue]="'bi-' + icon">{{icon}}</option>
+          }
+        </select>
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="iconHelp"><i class="bi bi-question"></i></button>
-        <ng-template #iconHelp>Unique name of the identity</ng-template>
+        <ng-template #iconHelp>Icon of the identity provider</ng-template>
       </div>
     </div>
   </div>
