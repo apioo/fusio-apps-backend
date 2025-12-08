@@ -12,6 +12,7 @@ import {SchemaService} from "../../../services/schema.service";
 import {EventService} from "../../../services/event.service";
 import {CronjobService} from "../../../services/cronjob.service";
 import {TriggerService} from "../../../services/trigger.service";
+import {IconProvider} from "../../../icon-provider";
 
 @Component({
   selector: 'app-bundle-form',
@@ -27,6 +28,8 @@ import {TriggerService} from "../../../services/trigger.service";
   styleUrls: ['./form.component.css']
 })
 export class FormComponent extends Form<BackendBundle> {
+
+  icons = IconProvider.icons;
 
   constructor(private service: BundleService, private help: HelpService, public action: ActionService, public schema: SchemaService, public event: EventService, public cronjob: CronjobService, public trigger: TriggerService, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);

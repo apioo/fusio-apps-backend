@@ -41,6 +41,10 @@ export class BundleService extends Service<BackendBundle> {
   newEntity(): BackendBundle {
     return {
       name: '',
+      version: '0.1.0',
+      summary: '',
+      description: '',
+      cost: 0,
       config: {
         actions: [],
         schemas: [],
