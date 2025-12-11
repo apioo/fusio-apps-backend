@@ -20,7 +20,7 @@ export class ListComponent implements OnInit {
   tests = signal<Array<BackendTest>>([]);
   response = signal<CommonMessage|undefined>(undefined);
 
-  constructor(private fusio: ApiService, private error: ErrorService, private modalService: NgbModal) { }
+  constructor(private fusio: ApiService, private error: ErrorService) { }
 
   async ngOnInit(): Promise<void> {
     await this.doLoad();
@@ -52,27 +52,6 @@ export class ListComponent implements OnInit {
     } catch (error) {
       this.response.set(this.error.convert(error));
     }
-  }
-
-  async openUpdateDialog(entity: BackendTest) {
-    try {
-      entity = await this.fusio.getClient().backend().test().get('' + entity.id)
-    } catch (error) {
-      this.response.set(this.error.convert(error));
-      return;
-    }
-
-    const modalRef = this.modalService.open(FormComponent, {
-      size: 'lg'
-    });
-    modalRef.componentInstance.mode = Mode.Update;
-    modalRef.componentInstance.entity = entity;
-    modalRef.closed.subscribe(async (result: CommonMessage) => {
-      this.response.set(result);
-      if (result.success) {
-        await this.doLoad();
-      }
-    });
   }
 
 }

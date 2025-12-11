@@ -53,7 +53,7 @@
       <td>{{test.message}}</td>
       <td>
         <div class="btn-group">
-          <button class="btn btn-primary" (click)="openUpdateDialog(test)"><i class="bi bi-gear"></i></button>
+          <button class="btn btn-primary" [routerLink]="['/test', test.id, 'edit']"><i class="bi bi-gear"></i></button>
           <button class="btn btn-secondary" [routerLink]="['/operation/', '~' + test.operationName]"><i class="bi bi-terminal"></i></button>
         </div>
       </td>

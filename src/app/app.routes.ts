@@ -51,6 +51,8 @@ import {DetailComponent as MarketplaceAppDetail} from "./development/marketplace
 import {ListComponent as SdkList} from "./development/sdk/list/list.component";
 import {GeneratorComponent as SdkGenerator} from "./development/sdk/generator/generator.component";
 import {ListComponent as TestList} from "./development/test/list/list.component";
+import {DetailComponent as TestDetail} from "./development/test/detail/detail.component";
+import {FormComponent as TestForm} from "./development/test/form/form.component";
 import {ListComponent as BundleList} from "./development/bundle/list/list.component";
 import {DetailComponent as BundleDetail} from "./development/bundle/detail/detail.component";
 import {FormComponent as BundleForm} from "./development/bundle/form/form.component";
@@ -142,7 +144,7 @@ export const routes: Routes = [
   { path: 'marketplace/app/:id', component: MarketplaceAppDetail, canActivate: [isAuthenticated] },
   { path: 'sdk', component: SdkList, canActivate: [isAuthenticated] },
   { path: 'sdk/generator/:type', component: SdkGenerator, canActivate: [isAuthenticated] },
-  { path: 'test', component: TestList, canActivate: [isAuthenticated] },
+  { path: 'test', canActivate: [isAuthenticated], children: EntityRoute.getAll(TestList, TestDetail, TestForm) },
   { path: 'bundle', canActivate: [isAuthenticated], children: EntityRoute.getAll(BundleList, BundleDetail, BundleForm) },
 
   { path: 'app', canActivate: [isAuthenticated], children: EntityRoute.getAll(AppList, AppDetail, AppForm) },
