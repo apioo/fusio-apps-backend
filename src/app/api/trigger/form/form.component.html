@@ -21,7 +21,7 @@
   <div class="mb-3 row">
     <label for="event" class="col-lg-2 col-form-label fw-bold">Event</label>
     <div class="col-lg-10">
-      <fusio-form-autocomplete name="event" [service]="event" [data]="entity().event" (dataChange)="set(entity, 'event', $event)" [disabled]="mode === 3">
+      <fusio-form-autocomplete name="event" [service]="event" [useTilde]="true" [data]="entity().event" (dataChange)="set(entity, 'event', $event)" [disabled]="mode === 3">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="eventHelp"><i class="bi bi-question"></i></button>
         <ng-template #eventHelp>Target event for this trigger</ng-template>
       </fusio-form-autocomplete>

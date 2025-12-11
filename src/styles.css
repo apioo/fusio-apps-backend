@@ -160,6 +160,8 @@ pre
 .fusio-content > * > h1 > a
 {
   color:#eee;
+  text-decoration:underline!important;
+  cursor:pointer;
 }
 
 .fusio-search

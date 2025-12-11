@@ -1,8 +1,8 @@
 
 <h1>
-  <a [routerLink]="['/', 'connection']" class="link-light">Connection</a> /
-  <a [routerLink]="['/', 'connection', selectedConnection()?.id]" class="link-light">{{selectedConnection()?.name}}</a> /
-  <a (click)="doList()" class="link-light">Database</a> /
+  <a [routerLink]="['/', 'connection']">Connection</a> /
+  <a [routerLink]="['/', 'connection', selectedConnection()?.id]">{{selectedConnection()?.name}}</a> /
+  <a (click)="doList()">Database</a> /
   {{selected()?.name}}
 </h1>
 

@@ -2,15 +2,15 @@
 <h1>SDK</h1>
 
 @for (type of types() | keyvalue; track type.key) {
-  <div class="card float-start" style="width:14rem;margin-right:1rem;margin-bottom:1rem">
-    <h5 class="card-header">{{type.key}}</h5>
+  <div class="card float-start" style="width:12rem;margin-right:1rem;margin-bottom:1rem;">
     <img src="/assets/sdk/{{type.key}}.png" class="card-img-top" style="padding:16px;">
     <div class="card-body">
+      <h5 style="min-height:64px;" class="card-title font-monospace text-nowrap overflow-hidden" [title]="type.key">{{type.key}}</h5>
       <div class="btn-group" role="group">
         @if (type.value) {
-          <a [href]="type.value" class="btn btn-primary">Download</a>
+          <a [href]="type.value" class="btn btn-primary" title="Download"><i class="bi bi-cloud-arrow-down"></i></a>
         }
-        <a [routerLink]="['/sdk/generator/', type.key]" class="btn btn-secondary">Generate</a>
+        <a [routerLink]="['/sdk/generator/', type.key]" class="btn btn-secondary" title="Generate"><i class="bi bi-arrow-clockwise"></i></a>
       </div>
     </div>
   </div>

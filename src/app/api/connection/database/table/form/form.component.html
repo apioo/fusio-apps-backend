@@ -1,9 +1,9 @@
 
 <h1>
-  <a [routerLink]="['/', 'connection']" class="link-light">Connection</a> /
-  <a [routerLink]="['/', 'connection', selectedConnection()?.id]" class="link-light">{{selectedConnection()?.name}}</a> /
-  <a (click)="doList()" class="link-light">Database</a> /
-  <a (click)="doDetail(entity().name)" class="link-light">{{ entity().name }}</a> /
+  <a [routerLink]="['/', 'connection']">Connection</a> /
+  <a [routerLink]="['/', 'connection', selectedConnection()?.id]">{{selectedConnection()?.name}}</a> /
+  <a (click)="doList()">Database</a> /
+  <a (click)="doDetail(entity().name)">{{ entity().name }}</a> /
   <app-form-breadcrump [mode]="mode"></app-form-breadcrump>
 </h1>
 
