@@ -7,17 +7,17 @@
       <div class="card-header">Export</div>
       <div class="card-body" style="height:600px;">
         <button (click)="doExport()" class="btn btn-primary mb-3">Export</button>
-        <ngx-monaco-editor [ngModel]="export" [options]="{theme: 'vs-light', language: 'json'}" style="height:90%"></ngx-monaco-editor>
+        <ngx-monaco-editor [ngModel]="export()" [options]="{theme: 'vs-light', language: 'json'}" style="height:90%"></ngx-monaco-editor>
       </div>
     </div>
   </div>
   <div class="col-xl-6 mt-3 mt-xl-0">
-    <fusio-message [response]="response"></fusio-message>
+    <fusio-message [response]="response()"></fusio-message>
     <div class="card">
       <div class="card-header">Import</div>
       <div class="card-body" style="height:600px;">
         <button (click)="doImport()" class="btn btn-primary mb-3">Import</button>
-        <ngx-monaco-editor [(ngModel)]="import" [options]="{theme: 'vs-light', language: 'json'}" style="height:90%"></ngx-monaco-editor>
+        <ngx-monaco-editor [ngModel]="import()" (ngModelChange)="import.set($event)" [options]="{theme: 'vs-light', language: 'json'}" style="height:90%"></ngx-monaco-editor>
       </div>
     </div>
   </div>

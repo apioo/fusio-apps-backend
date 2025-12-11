@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, signal} from '@angular/core';
 import {ErrorService, MessageComponent} from "ngx-fusio-sdk";
 import {CommonMessage} from "fusio-sdk";
 import {ApiService} from "../../../api.service";
@@ -17,27 +17,27 @@ import {FormsModule} from "@angular/forms";
 })
 export class ListComponent {
 
-  response?: CommonMessage;
-  export: string = '';
-  import: string = '';
+  response = signal<CommonMessage|undefined>(undefined);
+  export = signal<string>('');
+  import = signal<string>('');
 
   constructor(private fusio: ApiService, private error: ErrorService) {
   }
 
   async doExport(): Promise<void> {
     const data = await this.fusio.getClient().backend().backup().export();
-    this.export = data.export || '';
+    this.export.set(data.export || '');
   }
 
   async doImport(): Promise<void> {
     try {
       const result = await this.fusio.getClient().backend().backup().import({
-        import: this.import
+        import: this.import()
       });
 
-      this.response = result;
+      this.response.set(result);
     } catch (error) {
-      this.response = this.error.convert(error);
+      this.response.set(this.error.convert(error));
     }
   }
 
