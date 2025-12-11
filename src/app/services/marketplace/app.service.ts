@@ -16,12 +16,11 @@ export class AppService extends Service<MarketplaceApp> {
   }
 
   async get(id: string): Promise<MarketplaceApp> {
-    const parts = id.split('-', 2);
-    if (parts.length !== 2) {
-      throw new Error('Provided an invalid id');
-    }
+    const pos = id.indexOf('-');
+    const user = id.substring(0, pos);
+    const name = id.substring(pos + 1);
 
-    return this.fusio.getClient().backend().marketplace().app().get(parts[0], parts[1]);
+    return this.fusio.getClient().backend().marketplace().app().get(user, name);
   }
 
   async create(entity: MarketplaceApp): Promise<CommonMessage> {

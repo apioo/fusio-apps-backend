@@ -16,12 +16,11 @@ export class BundleService extends Service<MarketplaceBundle> {
   }
 
   async get(id: string): Promise<MarketplaceBundle> {
-    const parts = id.split('-', 2);
-    if (parts.length !== 2) {
-      throw new Error('Provided an invalid id');
-    }
+    const pos = id.indexOf('-');
+    const user = id.substring(0, pos);
+    const name = id.substring(pos + 1);
 
-    return this.fusio.getClient().backend().marketplace().bundle().get(parts[0], parts[1]);
+    return this.fusio.getClient().backend().marketplace().bundle().get(user, name);
   }
 
   async create(entity: MarketplaceBundle): Promise<CommonMessage> {
