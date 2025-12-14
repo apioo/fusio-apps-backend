@@ -9,6 +9,7 @@
 @if (selected(); as selected) {
   <div class="btn-group" role="group">
     <a (click)="doEdit(selected.id)" class="btn btn-primary fusio-btn-update">Update</a>
+    <a (click)="doPublish(selected.id)" class="btn btn-secondary fusio-btn-update">Publish</a>
     <a (click)="doDelete(selected.id)" class="btn btn-danger fusio-btn-delete">Delete</a>
   </div>
   <div class="float-end">

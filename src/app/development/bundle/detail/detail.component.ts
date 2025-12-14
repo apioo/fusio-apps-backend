@@ -28,4 +28,16 @@ export class DetailComponent extends Detail<BackendBundle> {
     return this.service;
   }
 
+  async doPublish(id?: number) {
+    if (id === undefined) {
+      return;
+    }
+
+    try {
+      this.response.set(await this.service.publish('' + id));
+    } catch (error) {
+      this.response.set(this.error.convert(error));
+    }
+  }
+
 }

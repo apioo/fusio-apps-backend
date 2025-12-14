@@ -38,6 +38,10 @@ export class BundleService extends Service<BackendBundle> {
     return this.fusio.getClient().backend().bundle().delete('' + entity.id);
   }
 
+  async publish(id: string): Promise<CommonMessage> {
+    return this.fusio.getClient().backend().bundle().publish(id);
+  }
+
   newEntity(): BackendBundle {
     return {
       name: '',
