@@ -1,4 +1,4 @@
-import {Component, OnInit, signal} from '@angular/core';
+import {Component, computed, OnInit, signal} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {ChartOptions, Converter, PieChartOptions} from "../converter";
 import {FilterComponent} from "../../log/filter/filter.component";
@@ -19,7 +19,37 @@ import {ChartComponent} from "ngx-apexcharts";
 })
 export class ListComponent implements OnInit {
 
-  filter: Array<any> = [0, 16];
+  filter = signal<Array<any>>([
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+  ]);
+
+  collectionQuery = computed<Array<any>>(() => {
+    let query: Array<any> = [];
+    query.push(0);
+    query.push(16);
+    query.push(this.search());
+
+    this.filter().forEach((value) => {
+      if (value !== null && value !== undefined) {
+        query.push(value);
+      } else {
+        query.push('');
+      }
+    });
+
+    return query;
+  });
+
   chart = signal<ChartOptions|undefined>(undefined);
   pieChart = signal<PieChartOptions|undefined>(undefined);
   statistic = signal<string>('incoming_requests');
@@ -73,44 +103,58 @@ export class ListComponent implements OnInit {
       const statistic = params.get('statistic');
       if (statistic) {
         this.statistic.set(statistic);
-        this.doFilter();
       }
     });
 
-    this.doFilter();
+    this.route.queryParams.subscribe(async params => {
+      this.filter.set([
+        params['from'] || '',
+        params['to'] || '',
+        params['operation'] || '',
+        params['app'] || '',
+        params['user'] || '',
+        params['ip'] || '',
+        params['userAgent'] || '',
+        params['method'] || '',
+        params['path'] || '',
+        params['header'] || '',
+        params['body'] || '',
+      ]);
+      this.doFilter();
+    });
   }
 
   async doFilter() {
     if (this.statistic() === StatisticType.activities_per_user) {
-      const response = await this.fusio.getClient().backend().statistic().getActivitiesPerUser(...this.filter);
+      const response = await this.fusio.getClient().backend().statistic().getActivitiesPerUser(...this.collectionQuery());
       this.chart.set(Converter.convertChart(response));
       this.pieChart.set(undefined);
     } else if (this.statistic() === StatisticType.errors_per_operation) {
-      const response = await this.fusio.getClient().backend().statistic().getErrorsPerOperation(...this.filter);
+      const response = await this.fusio.getClient().backend().statistic().getErrorsPerOperation(...this.collectionQuery());
       this.chart.set(Converter.convertChart(response));
       this.pieChart.set(undefined);
     } else if (this.statistic() === StatisticType.incoming_requests) {
-      const response = await this.fusio.getClient().backend().statistic().getIncomingRequests(...this.filter);
+      const response = await this.fusio.getClient().backend().statistic().getIncomingRequests(...this.collectionQuery());
       this.chart.set(Converter.convertChart(response));
       this.pieChart.set(undefined);
     } else if (this.statistic() === StatisticType.incoming_transactions) {
-      const response = await this.fusio.getClient().backend().statistic().getIncomingTransactions(...this.filter);
+      const response = await this.fusio.getClient().backend().statistic().getIncomingTransactions(...this.collectionQuery());
       this.chart.set(Converter.convertChart(response));
       this.pieChart.set(undefined);
     } else if (this.statistic() === StatisticType.issued_tokens) {
-      const response = await this.fusio.getClient().backend().statistic().getIssuedTokens(...this.filter);
+      const response = await this.fusio.getClient().backend().statistic().getIssuedTokens(...this.collectionQuery());
       this.chart.set(Converter.convertChart(response));
       this.pieChart.set(undefined);
     } else if (this.statistic() === StatisticType.most_used_activities) {
-      const response = await this.fusio.getClient().backend().statistic().getMostUsedActivities(...this.filter);
+      const response = await this.fusio.getClient().backend().statistic().getMostUsedActivities(...this.collectionQuery());
       this.chart.set(Converter.convertChart(response));
       this.pieChart.set(undefined);
     } else if (this.statistic() === StatisticType.most_used_apps) {
-      const response = await this.fusio.getClient().backend().statistic().getMostUsedApps(...this.filter);
+      const response = await this.fusio.getClient().backend().statistic().getMostUsedApps(...this.collectionQuery());
       this.chart.set(Converter.convertChart(response));
       this.pieChart.set(undefined);
     } else if (this.statistic() === StatisticType.most_used_operations) {
-      const response = await this.fusio.getClient().backend().statistic().getMostUsedOperations(...this.filter);
+      const response = await this.fusio.getClient().backend().statistic().getMostUsedOperations(...this.collectionQuery());
       this.chart.set(Converter.convertChart(response));
       this.pieChart.set(undefined);
     } else if (this.statistic() === StatisticType.test_coverage) {
@@ -118,26 +162,25 @@ export class ListComponent implements OnInit {
       this.chart.set(undefined);
       this.pieChart.set(Converter.convertPieChart(response));
     } else if (this.statistic() === StatisticType.time_average) {
-      const response = await this.fusio.getClient().backend().statistic().getTimeAverage(...this.filter);
+      const response = await this.fusio.getClient().backend().statistic().getTimeAverage(...this.collectionQuery());
       this.chart.set(Converter.convertChart(response));
       this.pieChart.set(undefined);
     } else if (this.statistic() === StatisticType.time_per_operation) {
-      const response = await this.fusio.getClient().backend().statistic().getTimePerOperation(...this.filter);
+      const response = await this.fusio.getClient().backend().statistic().getTimePerOperation(...this.collectionQuery());
       this.chart.set(Converter.convertChart(response));
       this.pieChart.set(undefined);
     } else if (this.statistic() === StatisticType.used_points) {
-      const response = await this.fusio.getClient().backend().statistic().getUsedPoints(...this.filter);
+      const response = await this.fusio.getClient().backend().statistic().getUsedPoints(...this.collectionQuery());
       this.chart.set(Converter.convertChart(response));
       this.pieChart.set(undefined);
     } else if (this.statistic() === StatisticType.user_registrations) {
-      const response = await this.fusio.getClient().backend().statistic().getUserRegistrations(...this.filter);
+      const response = await this.fusio.getClient().backend().statistic().getUserRegistrations(...this.collectionQuery());
       this.chart.set(Converter.convertChart(response));
       this.pieChart.set(undefined);
     }
   }
 
   doSearch() {
-    this.filter = [0, 16, this.search()];
     this.doFilter();
   }
 
@@ -145,10 +188,23 @@ export class ListComponent implements OnInit {
     const modalRef = this.modalService.open(FilterComponent, {
       size: 'lg'
     });
-    modalRef.componentInstance.filter = this.filter.slice(3);
-    modalRef.closed.subscribe(async (filter) => {
-      this.filter = [0, 16, this.search(), ...filter];
-      await this.doFilter();
+    modalRef.componentInstance.filter = this.filter();
+    modalRef.closed.subscribe(async (filter: Array<any>) => {
+      await this.router.navigate([], {
+        queryParams: {
+          from: filter[0],
+          to: filter[1],
+          operation: filter[2],
+          app: filter[3],
+          user: filter[4],
+          ip: filter[5],
+          userAgent: filter[6],
+          method: filter[7],
+          path: filter[8],
+          header: filter[9],
+          body: filter[10],
+        }
+      });
     });
   }
 

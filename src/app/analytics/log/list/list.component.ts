@@ -18,19 +18,19 @@ import {FilterComponent} from "../filter/filter.component";
 })
 export class ListComponent extends List<BackendLog> {
 
-  filter = signal<Filter>({
-    from: undefined,
-    to: undefined,
-    operationId: undefined,
-    appId: undefined,
-    userId: undefined,
-    ip: undefined,
-    userAgent: undefined,
-    method: undefined,
-    path: undefined,
-    header: undefined,
-    body: undefined,
-  });
+  filter = signal<Array<any>>([
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+  ]);
 
   override collectionQuery = computed<Array<any>>(() => {
     let query: Array<any> = [];
@@ -43,19 +43,39 @@ export class ListComponent extends List<BackendLog> {
       query.push('');
     }
 
-    for (const [key, value] of Object.entries(this.filter())) {
-      if (value !== undefined && value !== null) {
+    this.filter().forEach((value) => {
+      if (value !== null && value !== undefined) {
         query.push(value);
       } else {
         query.push('');
       }
-    }
+    });
 
     return query;
   });
 
   constructor(private service: LogService, private modalService: NgbModal, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);
+  }
+
+  override async ngOnInit(): Promise<void> {
+    super.ngOnInit();
+
+    this.route.queryParams.subscribe(async params => {
+      this.filter.set([
+        params['from'] || '',
+        params['to'] || '',
+        params['operation'] || '',
+        params['app'] || '',
+        params['user'] || '',
+        params['ip'] || '',
+        params['userAgent'] || '',
+        params['method'] || '',
+        params['path'] || '',
+        params['header'] || '',
+        params['body'] || '',
+      ]);
+    });
   }
 
   protected getService(): LogService {
@@ -67,24 +87,23 @@ export class ListComponent extends List<BackendLog> {
       size: 'lg'
     });
     modalRef.componentInstance.filter = this.filter();
-    modalRef.closed.subscribe(async (filter: Filter) => {
-      this.filter.set(filter);
-      await this.doList();
+    modalRef.closed.subscribe(async (filter: Array<any>) => {
+      await this.router.navigate([], {
+        queryParams: {
+          from: filter[0],
+          to: filter[1],
+          operation: filter[2],
+          app: filter[3],
+          user: filter[4],
+          ip: filter[5],
+          userAgent: filter[6],
+          method: filter[7],
+          path: filter[8],
+          header: filter[9],
+          body: filter[10],
+        }
+      });
     });
   }
 
-}
-
-export interface Filter {
-  from?: string
-  to?: string
-  operationId?: number
-  appId?: number
-  userId?: number
-  ip?: string
-  userAgent?: string
-  method?: string
-  path?: string
-  header?: string
-  body?: string
 }
