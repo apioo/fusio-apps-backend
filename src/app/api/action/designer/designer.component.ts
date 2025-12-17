@@ -1,8 +1,9 @@
-import {Component, OnInit, signal, WritableSignal} from '@angular/core';
+import {Component, inject, OnInit, signal} from '@angular/core';
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {ErrorService, MessageComponent} from "ngx-fusio-sdk";
 import {
-  BackendAction, BackendActionConfig,
+  BackendAction,
+  BackendActionConfig,
   BackendActionExecuteRequest,
   BackendActionExecuteResponse,
   CommonFormContainer,
@@ -11,9 +12,9 @@ import {
 import {ApiService} from "../../../api.service";
 import {ConfigComponent} from "../../../shared/config/config.component";
 import {FormsModule} from "@angular/forms";
-import {NgbPopover} from "@ng-bootstrap/ng-bootstrap";
-import {EditorComponent} from "ngx-monaco-editor-v2";
+import {NgbOffcanvas} from "@ng-bootstrap/ng-bootstrap";
 import {JsonPipe, NgClass} from "@angular/common";
+import {Request} from "../request/request";
 
 @Component({
   selector: 'app-action-designer',
@@ -23,14 +24,14 @@ import {JsonPipe, NgClass} from "@angular/common";
     MessageComponent,
     ConfigComponent,
     FormsModule,
-    NgbPopover,
-    EditorComponent,
     NgClass,
     JsonPipe
   ],
   styleUrls: ['./designer.component.css']
 })
 export class DesignerComponent implements OnInit {
+
+  private offcanvasService = inject(NgbOffcanvas);
 
   form = signal<CommonFormContainer|undefined>(undefined);
   action = signal<BackendAction|undefined>(undefined);
@@ -43,7 +44,6 @@ export class DesignerComponent implements OnInit {
     parameters: '',
     headers: '',
   };
-  body: string = '';
 
   constructor(private fusio: ApiService, private route: ActivatedRoute, private error: ErrorService) {
   }
@@ -64,14 +64,9 @@ export class DesignerComponent implements OnInit {
     }
 
     try {
-      const request = Object.assign({}, this.request);
-      if (this.body) {
-        request.body = JSON.parse(this.body);
-      }
-
       await this.fusio.getClient().backend().action().update('' + action.id, action);
 
-      this.response.set(await this.fusio.getClient().backend().action().execute('' + action.id, request));
+      this.response.set(await this.fusio.getClient().backend().action().execute('' + action.id, this.request));
     } catch (error) {
       this.message.set(this.error.convert(error));
     }
@@ -112,6 +107,18 @@ export class DesignerComponent implements OnInit {
 
       return entity;
     });
+  }
+
+  openRequest() {
+    const offcanvasRef = this.offcanvasService.open(Request);
+    offcanvasRef.componentInstance.request = this.request;
+    offcanvasRef.result.then(
+      (result: BackendActionExecuteRequest) => {
+        this.request = result;
+      },
+      (reason) => {
+      },
+    )
   }
 
 }
