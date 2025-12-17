@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, signal} from '@angular/core';
 import {ErrorService, FormMapComponent, MessageComponent} from "ngx-fusio-sdk";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, RouterLink} from "@angular/router";
 import {ApiService} from "../../../api.service";
 import {BackendConnection, BackendHttpRequest, BackendHttpResponse, CommonMessage} from "fusio-sdk";
 import {ConnectionService} from "../../../services/connection.service";
@@ -24,46 +24,54 @@ import {FormsModule} from "@angular/forms";
 })
 export class HttpComponent implements OnInit {
 
-  selectedConnection?: BackendConnection;
+  selectedConnection = signal<BackendConnection|undefined>(undefined);
 
-  method = 'GET';
-  uri = '/';
-  headers: Record<string, string> = {};
-  body = '';
+  loading = signal<boolean>(false);
+  method = signal<string>('GET');
+  uri = signal<string>('/');
+  headers = signal<Record<string, string>>({});
+  body = signal<string>('');
 
-  message?: CommonMessage;
-  response?: BackendHttpResponse;
-  statusCode = 0;
+  message = signal<CommonMessage|undefined>(undefined);
+  response = signal<BackendHttpResponse|undefined>(undefined);
+  statusCode = signal<number>(0);
 
-  constructor(private api: ApiService, private connection: ConnectionService, private route: ActivatedRoute, private router: Router, private error: ErrorService) {
+  constructor(private api: ApiService, private connection: ConnectionService, private route: ActivatedRoute, private error: ErrorService) {
   }
 
   async ngOnInit(): Promise<void> {
     this.route.params.subscribe(async (params) => {
       if (params['connection']) {
-        this.selectedConnection = await this.connection.get(params['connection']);
+        this.selectedConnection.set(await this.connection.get(params['connection']));
       }
     });
   }
 
   async send() {
-    if (!this.selectedConnection) {
+    const connection = this.selectedConnection();
+    if (!connection) {
       return;
     }
 
     const payload: BackendHttpRequest = {
-      method: this.method,
-      uri: this.uri,
-      headers: this.headers,
-      body: this.body
+      method: this.method(),
+      uri: this.uri(),
+      headers: this.headers(),
+      body: this.body()
     };
 
+    this.loading.set(true);
+
     try {
-      this.response = await this.api.getClient().backend().connection().http().execute('' + this.selectedConnection.id, payload)
-      this.statusCode = this.response.statusCode || 0;
+      const response = await this.api.getClient().backend().connection().http().execute('' + connection.id, payload);
+
+      this.response.set(response);
+      this.statusCode.set(response.statusCode || 0);
     } catch (error) {
-      this.message = this.error.convert(error);
+      this.message.set(this.error.convert(error));
     }
+
+    this.loading.set(false);
   }
 
 }
