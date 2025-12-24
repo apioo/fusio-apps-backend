@@ -1,10 +1,10 @@
 import {CancellationToken, editor, languages, Position} from "monaco-editor";
 import {CompletionAbstract} from "./completion-abstract";
 
-export class PHPCompletion extends CompletionAbstract {
+export class PythonCompletion extends CompletionAbstract {
 
   get language() {
-    return 'php';
+    return 'python';
   }
 
   provideCompletionItems(model: editor.ITextModel, position: Position, context: languages.CompletionContext, token: CancellationToken): languages.ProviderResult<languages.CompletionList> {
@@ -25,31 +25,31 @@ export class PHPCompletion extends CompletionAbstract {
       endColumn: word.endColumn,
     };
 
-    if (textUntilPosition.endsWith("$request->")) {
+    if (textUntilPosition.endsWith("request.")) {
       suggestions = this.getRequestMethods(range);
-    } else if (textUntilPosition.endsWith("$request->getArguments()->")) {
+    } else if (textUntilPosition.endsWith("request.arguments.")) {
       suggestions = this.getRequestArgumentsMethods(range);
-    } else if (textUntilPosition.endsWith("$context->")) {
+    } else if (textUntilPosition.endsWith("context.")) {
       suggestions = this.getContextMethods(range);
-    } else if (textUntilPosition.endsWith("$context->getApp()->")) {
+    } else if (textUntilPosition.endsWith("context.app.")) {
       suggestions = this.getContextAppMethods(range);
-    } else if (textUntilPosition.endsWith("$context->getUser()->")) {
+    } else if (textUntilPosition.endsWith("context.user.")) {
       suggestions = this.getContextUserMethods(range);
-    } else if (textUntilPosition.endsWith("$connector->")) {
+    } else if (textUntilPosition.endsWith("connector.")) {
       suggestions = this.getConnectorMethods(range);
-    } else if (textUntilPosition.endsWith("$response->")) {
+    } else if (textUntilPosition.endsWith("response.")) {
       suggestions = this.getResponseMethods(range);
-    } else if (textUntilPosition.endsWith("$dispatcher->")) {
+    } else if (textUntilPosition.endsWith("dispatcher.")) {
       suggestions = this.getDispatcherMethods(range);
-    } else if (textUntilPosition.endsWith("$logger->")) {
+    } else if (textUntilPosition.endsWith("logger.")) {
       suggestions = this.getLoggerMethods(range);
-    } else if (textUntilPosition.endsWith("$connector->getConnection('") || textUntilPosition.endsWith("$connector->getConnection(\"")) {
+    } else if (textUntilPosition.endsWith("connector.get_connection('") || textUntilPosition.endsWith("connector.get_connection(\"")) {
       return this.getAvailableConnections(range);
-    } else if (textUntilPosition.endsWith("$connection->")) {
+    } else if (textUntilPosition.endsWith("connection.")) {
       suggestions = this.getConnectionMethods(range);
-    } else if (textUntilPosition.endsWith("$httpClient->")) {
+    } else if (textUntilPosition.endsWith("httpClient.")) {
       suggestions = this.getHttpClientMethods(range);
-    } else if (textUntilPosition.endsWith("$filesystem->")) {
+    } else if (textUntilPosition.endsWith("filesystem.")) {
       suggestions = this.getFilesystemMethods(range);
     }
 
