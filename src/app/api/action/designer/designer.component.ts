@@ -15,6 +15,7 @@ import {FormsModule} from "@angular/forms";
 import {NgbOffcanvas} from "@ng-bootstrap/ng-bootstrap";
 import {JsonPipe, NgClass} from "@angular/common";
 import {Request} from "../request/request";
+import {Editor} from "./editor/editor";
 
 @Component({
   selector: 'app-action-designer',
@@ -25,7 +26,8 @@ import {Request} from "../request/request";
     ConfigComponent,
     FormsModule,
     NgClass,
-    JsonPipe
+    JsonPipe,
+    Editor
   ],
   styleUrls: ['./designer.component.css']
 })
@@ -37,6 +39,7 @@ export class DesignerComponent implements OnInit {
   action = signal<BackendAction|undefined>(undefined);
   message = signal<CommonMessage|undefined>(undefined);
   response = signal<BackendActionExecuteResponse|undefined>(undefined);
+  actionClass = signal<string>('');
 
   request: BackendActionExecuteRequest = {
     method: 'GET',
@@ -78,6 +81,8 @@ export class DesignerComponent implements OnInit {
 
       const classString = this.action()?.class;
       if (classString) {
+        this.actionClass.set(classString);
+
         this.loadConfig(classString);
       }
     } catch (error) {
@@ -107,6 +112,36 @@ export class DesignerComponent implements OnInit {
 
       return entity;
     });
+  }
+
+  setConfigKey(key: string, value: string) {
+    this.action.update((entity) => {
+      if (entity === undefined) {
+        entity = {};
+      }
+
+      if (!entity.config) {
+        entity.config = {};
+      }
+
+      entity.config[key] = value;
+
+      return entity;
+    });
+  }
+
+  getConfigKey(key: string): string|undefined {
+    const action = this.action();
+    if (!action?.config) {
+      return;
+    }
+
+    const value = action?.config[key];
+    if (!value) {
+      return;
+    }
+
+    return value;
   }
 
   openRequest() {

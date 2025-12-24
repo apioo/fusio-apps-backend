@@ -1,7 +1,7 @@
-import {Component, effect, EventEmitter, input, Input, OnInit, output, Output, signal} from '@angular/core';
+import {Component, effect, input, output, signal} from '@angular/core';
 import {BackendDatabaseTableIndex} from "fusio-sdk";
 import {FormsModule} from "@angular/forms";
-import {CsvPipe} from "../../../../../shared/tag-editor/csv.pipe";
+import {CsvPipe} from "../../../../../../shared/tag-editor/csv.pipe";
 
 @Component({
   selector: 'app-connection-database-table-index',

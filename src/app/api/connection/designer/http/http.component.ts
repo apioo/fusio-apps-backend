@@ -1,9 +1,9 @@
 import {Component, OnInit, signal} from '@angular/core';
 import {ErrorService, FormMapComponent, MessageComponent} from "ngx-fusio-sdk";
 import {ActivatedRoute, RouterLink} from "@angular/router";
-import {ApiService} from "../../../api.service";
+import {ApiService} from "../../../../api.service";
 import {BackendConnection, BackendHttpRequest, BackendHttpResponse, CommonMessage} from "fusio-sdk";
-import {ConnectionService} from "../../../services/connection.service";
+import {ConnectionService} from "../../../../services/connection.service";
 import {KeyValuePipe, NgClass} from "@angular/common";
 import {EditorComponent} from "ngx-monaco-editor-v2";
 import {FormsModule} from "@angular/forms";

@@ -1,0 +1,55 @@
+
+<div class="input-group mb-3">
+  <select class="form-select" [ngModel]="selectedConnection()?.id" (ngModelChange)="selectConnection($event)">
+    @for (entry of entries(); track entry.id) {
+      <option [ngValue]="entry.id">{{entry.name}}</option>
+    }
+  </select>
+  <button class="btn btn-secondary" type="button" title="Copy connection string" ngxClipboard [cbContent]="connectionString()"><i class="bi bi-clipboard"></i></button>
+</div>
+
+@if (selectedConnection() === undefined) {
+  <div class="text-center bg-light p-4 fw-bold" style="font-size:14px;">Please select a connection for more details</div>
+}
+@else {
+  <h4 class="text-center bg-light p-2" style="font-size:14px;">Methods</h4>
+  <table class="table table-striped">
+    <tbody>
+      @for (entry of methods(); track $index) {
+        <tr>
+          @if (entry.link) {
+            @if (typeof entry.link === 'string') {
+              <td><a [href]="entry.link"><code>{{entry.name}}</code></a></td>
+            }
+            @else {
+              <td><a [routerLink]="entry.link"><code>{{entry.name}}</code></a></td>
+            }
+          }
+          @else {
+            <td><code>{{entry.name}}</code></td>
+          }
+        </tr>
+      }
+    </tbody>
+  </table>
+
+  @if (details(); as details) {
+    @if (details.length > 0) {
+      <h4 class="text-center bg-light p-2" style="font-size:14px;">Details</h4>
+      <table class="table table-striped">
+        <tbody>
+          @for (entry of details; track $index) {
+            <tr>
+              @if (entry.link) {
+                <td><a [routerLink]="entry.link">{{entry.name}}</a></td>
+              }
+              @else {
+                <td>{{entry.name}}</td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  }
+}

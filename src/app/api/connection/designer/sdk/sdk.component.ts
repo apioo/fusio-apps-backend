@@ -1,8 +1,8 @@
 import {Component, computed, OnInit, signal} from '@angular/core';
 import {ErrorService, MessageComponent} from "ngx-fusio-sdk";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
-import {ApiService} from "../../../api.service";
-import {ConnectionService} from "../../../services/connection.service";
+import {ApiService} from "../../../../api.service";
+import {ConnectionService} from "../../../../services/connection.service";
 import {BackendConnection, CommonMessage} from "fusio-sdk";
 import {TypeschemaEditorModule} from "ngx-typeschema-editor";
 

@@ -2,11 +2,11 @@ import {Component, computed, signal} from '@angular/core';
 import {ErrorService, Form, MessageComponent} from "ngx-fusio-sdk";
 import {BackendConnection, BackendDatabaseRow, BackendDatabaseTable} from "fusio-sdk";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
-import {RowService} from "../../../../../services/connection/database/row.service";
-import {TableService} from "../../../../../services/connection/database/table.service";
-import {ConnectionService} from "../../../../../services/connection.service";
-import {FormBreadcrump} from "../../../../../shared/form-breadcrump/form-breadcrump";
-import {FormButtons} from "../../../../../shared/form-buttons/form-buttons";
+import {RowService} from "../../../../../../services/connection/database/row.service";
+import {TableService} from "../../../../../../services/connection/database/table.service";
+import {ConnectionService} from "../../../../../../services/connection.service";
+import {FormBreadcrump} from "../../../../../../shared/form-breadcrump/form-breadcrump";
+import {FormButtons} from "../../../../../../shared/form-buttons/form-buttons";
 import {FormsModule} from "@angular/forms";
 
 @Component({

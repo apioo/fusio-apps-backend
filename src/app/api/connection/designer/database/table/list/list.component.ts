@@ -2,10 +2,10 @@ import {Component, signal} from '@angular/core';
 import {ErrorService, List, SearchComponent} from "ngx-fusio-sdk";
 import {BackendConnection, BackendDatabaseTable} from "fusio-sdk";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
-import {TableService} from "../../../../../services/connection/database/table.service";
-import {ConnectionService} from "../../../../../services/connection.service";
+import {TableService} from "../../../../../../services/connection/database/table.service";
+import {ConnectionService} from "../../../../../../services/connection.service";
 import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
-import {RowService} from "../../../../../services/connection/database/row.service";
+import {RowService} from "../../../../../../services/connection/database/row.service";
 
 @Component({
   selector: 'app-connection-database-table-list',

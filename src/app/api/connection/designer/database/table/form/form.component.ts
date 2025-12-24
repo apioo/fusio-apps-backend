@@ -2,14 +2,14 @@ import {Component, OnInit, signal} from '@angular/core';
 import {BackendConnection, BackendDatabaseTable} from "fusio-sdk";
 import {ErrorService, Form, MessageComponent} from "ngx-fusio-sdk";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
-import {TableService} from "../../../../../services/connection/database/table.service";
-import {ConnectionService} from "../../../../../services/connection.service";
-import {FormBreadcrump} from "../../../../../shared/form-breadcrump/form-breadcrump";
+import {TableService} from "../../../../../../services/connection/database/table.service";
+import {ConnectionService} from "../../../../../../services/connection.service";
+import {FormBreadcrump} from "../../../../../../shared/form-breadcrump/form-breadcrump";
 import {FormsModule} from "@angular/forms";
 import {ColumnComponent} from "../column/column.component";
 import {IndexComponent} from "../index/index.component";
 import {ForeignKeyComponent} from "../foreign-key/foreign-key.component";
-import {FormButtons} from "../../../../../shared/form-buttons/form-buttons";
+import {FormButtons} from "../../../../../../shared/form-buttons/form-buttons";
 
 @Component({
   selector: 'app-connection-database-table-form',

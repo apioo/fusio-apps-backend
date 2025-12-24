@@ -1,0 +1,28 @@
+
+<div class="row">
+  <div class="col-8">
+    <div class="card">
+      <div class="card-header">Action</div>
+      <div class="card-body">
+        <div style="width:100%;height:calc(100vh - 160px);">
+          <ngx-monaco-editor [ngModel]="code()" (ngModelChange)="codeChange.emit($event)" [options]="{theme: 'vs-light', language: lang(), readOnly: disabled()}" id="editor" name="editor" style="height:calc(100% - 40px)"></ngx-monaco-editor>
+          <div class="btn-group">
+            <button (click)="submitClick.emit(undefined)" class="btn btn-primary" type="button">Execute</button>
+            <button class="btn btn-secondary" (click)="requestClick.emit(undefined)">Request</button>
+            <button class="btn btn-secondary" (click)="showHelp()">Help</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="card">
+      <div class="card-header">Connection</div>
+      <div class="card-body">
+        <div style="height:calc(100vh - 160px);overflow:auto">
+          <app-action-designer-editor-connection [action]="action()" [lang]="lang()"></app-action-designer-editor-connection>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

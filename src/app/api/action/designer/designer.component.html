@@ -7,27 +7,41 @@
 
 <fusio-message [response]="message()"></fusio-message>
 
-<div class="row">
-  <div class="col-12">
-    <div class="card">
-      <div class="card-header">Action</div>
-      @if (form(); as form) {
-        @if (action(); as action) {
-          <div class="card-body">
-            <app-config [container]="form" [data]="action.config" (dataChange)="setConfig($event)"></app-config>
-            <div class="btn-group">
-              <button (click)="submit()" class="btn btn-primary" type="button">Execute</button>
-              <button class="btn btn-secondary" (click)="openRequest()">Request</button>
+@if (action(); as action) {
+  @if (actionClass() === 'Fusio.Adapter.Worker.Action.WorkerPHP' || actionClass() === 'Fusio.Adapter.Worker.Action.WorkerPHPLocal') {
+    <app-action-designer-editor [action]="action" lang="php" [code]="getConfigKey('code')" (codeChange)="setConfigKey('code', $event)" (submitClick)="submit()" (requestClick)="openRequest()"></app-action-designer-editor>
+  }
+  @else if (actionClass() === 'Fusio.Adapter.Worker.Action.WorkerJava') {
+    <app-action-designer-editor [action]="action" lang="java" [code]="getConfigKey('code')" (codeChange)="setConfigKey('code', $event)" (submitClick)="submit()" (requestClick)="openRequest()"></app-action-designer-editor>
+  }
+  @else if (actionClass() === 'Fusio.Adapter.Worker.Action.WorkerJavascript') {
+    <app-action-designer-editor [action]="action" lang="javascript" [code]="getConfigKey('code')" (codeChange)="setConfigKey('code', $event)" (submitClick)="submit()" (requestClick)="openRequest()"></app-action-designer-editor>
+  }
+  @else if (actionClass() === 'Fusio.Adapter.Worker.Action.WorkerPython') {
+    <app-action-designer-editor [action]="action" lang="python" [code]="getConfigKey('code')" (codeChange)="setConfigKey('code', $event)" (submitClick)="submit()" (requestClick)="openRequest()"></app-action-designer-editor>
+  }
+  @else {
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">Action</div>
+          @if (form(); as form) {
+            <div class="card-body">
+              <app-config [container]="form" [data]="action.config" (dataChange)="setConfig($event)"></app-config>
+              <div class="btn-group">
+                <button (click)="submit()" class="btn btn-primary" type="button">Execute</button>
+                <button class="btn btn-secondary" (click)="openRequest()">Request</button>
+              </div>
             </div>
-          </div>
-        }
-      }
+          }
+        </div>
+      </div>
     </div>
-  </div>
-</div>
+  }
+}
 
 @if (response(); as response) {
-  <div class="row" style="margin-top:1rem;">
+  <div class="row mt-3 mb-5">
     <div class="col-md-12">
       <div class="card">
         @if (response.statusCode) {

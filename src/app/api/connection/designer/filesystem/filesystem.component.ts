@@ -2,8 +2,8 @@ import {Component, signal} from '@angular/core';
 import {ErrorService, List, MessageComponent, Service} from "ngx-fusio-sdk";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {BackendConnection, BackendFile} from "fusio-sdk";
-import {FilesystemService} from "../../../services/connection/filesystem.service";
-import {ConnectionService} from "../../../services/connection.service";
+import {FilesystemService} from "../../../../services/connection/filesystem.service";
+import {ConnectionService} from "../../../../services/connection.service";
 import {DatePipe} from "@angular/common";
 import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
 
