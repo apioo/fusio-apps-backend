@@ -1,5 +1,5 @@
 #stage 1
-FROM node:18-alpine AS node
+FROM node:22-alpine AS node
 ENV NODE_OPTIONS=--openssl-legacy-provider
 WORKDIR /app
 COPY . .
