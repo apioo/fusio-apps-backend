@@ -13,5 +13,5 @@ ENV APP_KEY=""
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 COPY nginx/replace_env.sh /docker-entrypoint.d/replace_env.sh
 RUN chmod +x /docker-entrypoint.d/replace_env.sh
-COPY --from=node /app/dist/fusio /usr/share/nginx/html
-COPY --from=node /app/dist/fusio/index.html /usr/share/index.html
+COPY --from=node /app/dist/fusio/browser /usr/share/nginx/html
+COPY --from=node /app/dist/fusio/browser/index.html /usr/share/index.html
