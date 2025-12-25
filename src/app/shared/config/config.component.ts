@@ -1,20 +1,36 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {Specification} from "ngx-typeschema-editor/lib/model/Specification";
-import {CommonFormContainer} from "fusio-sdk";
+import {Component, effect, input, output, signal} from '@angular/core';
+import {
+  CommonFormContainer,
+  CommonFormElementInput,
+  CommonFormElementSelect,
+  CommonFormElementTag,
+  CommonFormElementTextArea
+} from "fusio-sdk";
+import {FormsModule} from "@angular/forms";
+import {EditorComponent} from "ngx-monaco-editor-v2";
+import {Specification, TypeschemaEditorModule} from "ngx-typeschema-editor";
+import {FormListComponent, FormMapComponent} from "ngx-fusio-sdk";
 
 @Component({
   selector: 'app-config',
   templateUrl: './config.component.html',
+  imports: [
+    FormsModule,
+    EditorComponent,
+    TypeschemaEditorModule,
+    FormListComponent,
+    FormMapComponent
+  ],
   styleUrls: ['./config.component.css']
 })
-export class ConfigComponent implements OnInit, OnChanges {
+export class ConfigComponent {
 
-  @Input() container?: CommonFormContainer;
-  @Input() data?: Record<string, any> = {};
-  @Input() disabled: boolean = false;
-  @Output() dataChange = new EventEmitter<Record<string, any>>();
+  container = input<CommonFormContainer|undefined>(undefined);
+  data = input<Record<string, any>|undefined>({});
+  disabled = input<boolean>(false);
+  dataChange = output<Record<string, any>>();
 
-  elements: Array<any> = [];
+  elements = signal<Array<CommonFormElementInput | CommonFormElementSelect | CommonFormElementTag | CommonFormElementTextArea>>([]);
 
   spec: Specification = {
     imports: [],
@@ -22,31 +38,25 @@ export class ConfigComponent implements OnInit, OnChanges {
     types: []
   };
 
-  constructor() { }
-
-  ngOnInit(): void {
-    this.loadElements(this.container);
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['container'] && changes['container'].currentValue) {
-      this.loadElements(changes['container'].currentValue);
-    }
+  constructor() {
+    effect(() => {
+      this.loadElements(this.container());
+    });
   }
 
   public doChange(key: string, value: any): void {
-    if (!this.data) {
-      this.data = {};
+    let data = this.data();
+    if (!data) {
+      data = {};
     }
 
-    this.data[key] = value;
-    this.dataChange.emit(this.data);
+    data[key] = value;
+    this.dataChange.emit(data);
   }
 
   private loadElements(container?: CommonFormContainer): void {
-    this.elements = [];
-
     let data: Record<string, any> = {};
+    let elements: Array<CommonFormElementInput | CommonFormElementSelect | CommonFormElementTag | CommonFormElementTextArea> = [];
     container?.element?.forEach((element) => {
       if (!element.name) {
         return;
@@ -78,12 +88,13 @@ export class ConfigComponent implements OnInit, OnChanges {
         };
       }
 
-      this.elements.push(element);
+      elements.push(element);
     });
 
-    if (!this.data) {
-      this.data = data;
-      this.dataChange.emit(this.data);
+    this.elements.set(elements);
+
+    if (!this.data()) {
+      this.dataChange.emit(data);
     }
   }
 

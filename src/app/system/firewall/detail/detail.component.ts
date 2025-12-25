@@ -1,12 +1,22 @@
 import {Component} from '@angular/core';
-import {Detail, ErrorService} from "ngx-fusio-sdk";
+import {Detail, ErrorService, MessageComponent} from "ngx-fusio-sdk";
 import {BackendFirewall} from "fusio-sdk";
 import {ActivatedRoute, Router} from "@angular/router";
 import {FirewallService} from "../../../services/firewall.service";
+import {DatePipe, JsonPipe} from "@angular/common";
+import {EditorComponent} from "ngx-monaco-editor-v2";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-firewall-detail',
   templateUrl: './detail.component.html',
+  imports: [
+    MessageComponent,
+    DatePipe,
+    EditorComponent,
+    FormsModule,
+    JsonPipe
+  ],
   styleUrls: ['./detail.component.css']
 })
 export class DetailComponent extends Detail<BackendFirewall> {

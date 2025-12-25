@@ -1,0 +1,50 @@
+
+<h1>
+  <a [routerLink]="['/', 'marketplace']">Marketplace</a> /
+  App
+</h1>
+
+<fusio-message [response]="response()"></fusio-message>
+
+<fusio-search
+  [searchTerm]="search()"
+  (search)="doSearch(1, $event)"
+  placeholder="app"
+  helpPath="development/marketplace/app/">
+</fusio-search>
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th style="width:50px"></th>
+    <th style="width:90%">Name</th>
+    <th style="width:150px">Version</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+    @for (entry of entries(); track entry.id) {
+      <tr>
+        <td><i class="bi bi-{{ entry.icon }}"></i></td>
+        <td>
+          @if (entry.author?.verified) {
+            <i class="bi bi-patch-check-fill text-primary me-1"></i>
+          }
+          <b>{{entry.author?.name}}/{{entry.name}}</b><br><small>{{entry.summary}}</small>
+        </td>
+        <td>{{entry.version}}</td>
+        <td>
+          <div class="btn-group" role="group">
+            <a [routerLink]="['/marketplace', 'app', entry.author?.name + '-' + entry.name]" class="btn btn-primary"><i class="bi bi-search"></i></a>
+          </div>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>
+<ngb-pagination
+  [page]="page()"
+  [pageSize]="pageSize()"
+  [collectionSize]="totalResults()"
+  [maxSize]="4"
+  [ellipses]="false"
+  (pageChange)="doSearch($event, search())"></ngb-pagination>

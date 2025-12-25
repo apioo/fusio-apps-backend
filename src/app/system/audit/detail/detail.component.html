@@ -1,57 +1,61 @@
 
 <h1>
-  <a [routerLink]="getListLink()">Audit</a> /
-  {{selected?.message}}
+  <a (click)="doList()">Audit</a> /
+  {{selected()?.message}}
 </h1>
 
-<fusio-message [response]="response"></fusio-message>
+<fusio-message [response]="response()"></fusio-message>
 
-<div *ngIf="selected">
+@if (selected(); as selected) {
   <div class="btn-group" role="group">
-    <a [routerLink]="getListLink()" class="btn btn-secondary fusio-btn-back">Back</a>
+    <a (click)="doList()" class="btn btn-secondary fusio-btn-back">Back</a>
   </div>
   <div class="float-end">
-    <button type="button" (click)="jsonView = !jsonView" class="btn btn-outline-secondary fusio-btn-json">JSON</button>
+    <button type="button" (click)="jsonView.set(!jsonView())" class="btn btn-outline-secondary fusio-btn-json">JSON</button>
   </div>
-  <div class="fusio-detail" *ngIf="!jsonView">
-    <div class="row">
-      <div class="col-lg-2 fw-bold">App</div>
-      <div class="col-lg-9">{{selected.app?.name}}</div>
-      <div class="col-lg-1"><button type="button" routerLink="/app/{{selected.app?.id}}" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
-    </div>
-    <div class="row">
-      <div class="col-lg-2 fw-bold">User</div>
-      <div class="col-lg-9">{{selected.user?.name}}</div>
-      <div class="col-lg-1"><button type="button" routerLink="/user/{{selected.user?.id}}" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
-    </div>
-    <div class="row">
-      <div class="col-lg-2 fw-bold">Event</div>
-      <div class="col-lg-10">{{selected.event}}</div>
-    </div>
-    <div class="row">
-      <div class="col-lg-2 fw-bold">IP</div>
-      <div class="col-lg-10">{{selected.ip}}</div>
-    </div>
-    <div class="row">
-      <div class="col-lg-2 fw-bold">Message</div>
-      <div class="col-lg-10">{{selected.message}}</div>
-    </div>
-    <div class="row">
-      <div class="col-lg-2 fw-bold">Date</div>
-      <div class="col-lg-10">{{selected.date|date:'short'}}</div>
-    </div>
-    <div class="row">
-      <div class="col-lg-2 fw-bold">Content</div>
-      <div class="col-lg-10">
-        <div style="height:600px;" class="mt-3">
-          <ngx-monaco-editor style="height:100%" name="json" [options]="{theme: 'vs-light', language: 'json', readOnly: true}" [ngModel]="selected.content|json"></ngx-monaco-editor>
+  @if (!jsonView()) {
+    <div class="fusio-detail">
+      <div class="row">
+        <div class="col-lg-2 fw-bold">App</div>
+        <div class="col-lg-9">{{selected.app?.name}}</div>
+        <div class="col-lg-1"><button type="button" routerLink="/app/{{selected.app?.id}}" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
+      </div>
+      <div class="row">
+        <div class="col-lg-2 fw-bold">User</div>
+        <div class="col-lg-9">{{selected.user?.name}}</div>
+        <div class="col-lg-1"><button type="button" routerLink="/user/{{selected.user?.id}}" class="btn btn-secondary float-end"><i class="bi bi-search"></i></button></div>
+      </div>
+      <div class="row">
+        <div class="col-lg-2 fw-bold">Event</div>
+        <div class="col-lg-10">{{selected.event}}</div>
+      </div>
+      <div class="row">
+        <div class="col-lg-2 fw-bold">IP</div>
+        <div class="col-lg-10">{{selected.ip}}</div>
+      </div>
+      <div class="row">
+        <div class="col-lg-2 fw-bold">Message</div>
+        <div class="col-lg-10">{{selected.message}}</div>
+      </div>
+      <div class="row">
+        <div class="col-lg-2 fw-bold">Date</div>
+        <div class="col-lg-10">{{selected.date|date:'short'}}</div>
+      </div>
+      <div class="row">
+        <div class="col-lg-2 fw-bold">Content</div>
+        <div class="col-lg-10">
+          <div style="height:600px;" class="mt-3">
+            <ngx-monaco-editor style="height:100%" name="json" [options]="{theme: 'vs-light', language: 'json', readOnly: true}" [ngModel]="selected.content|json"></ngx-monaco-editor>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="fusio-json" *ngIf="jsonView">
-    <div style="height:600px;" class="mt-3">
-      <ngx-monaco-editor style="height:100%" name="json" [options]="{theme: 'vs-light', language: 'json', readOnly: true}" [ngModel]="selected|json"></ngx-monaco-editor>
+  }
+  @if (jsonView()) {
+    <div class="fusio-json">
+      <div style="height:600px;" class="mt-3">
+        <ngx-monaco-editor style="height:100%" name="json" [options]="{theme: 'vs-light', language: 'json', readOnly: true}" [ngModel]="selected|json"></ngx-monaco-editor>
+      </div>
     </div>
-  </div>
-</div>
+  }
+}

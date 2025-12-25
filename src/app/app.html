@@ -1,0 +1,32 @@
+
+@if (!hasUrl()) {
+  <app-instance></app-instance>
+}
+
+@if (hasActiveInstance() || hasUrl()) {
+  <app-navigation [hasInstance]="!hasUrl()"></app-navigation>
+}
+
+@if (hasActiveInstance() || hasUrl()) {
+  <div class="fusio-container" [ngClass]="{'fusio-container-instance': !hasUrl}">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col">
+          @if (user) {
+            <div ngbDropdown class="fusio-header-profile">
+              <button type="button" class="btn" id="userMenu" ngbDropdownToggle>{{ user.name }} <i class="bi bi-person"></i></button>
+              <div ngbDropdownMenu aria-labelledby="userMenu">
+                @for (item of menu; track $index) {
+                  <button ngbDropdownItem routerLink="{{ item.path }}">{{ item.title }}</button>
+                }
+              </div>
+            </div>
+          }
+          <div class="fusio-content">
+            <router-outlet></router-outlet>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}

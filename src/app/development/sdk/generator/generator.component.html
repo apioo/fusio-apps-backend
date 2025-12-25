@@ -4,7 +4,7 @@
   Generator
 </h1>
 
-<fusio-message [response]="response"></fusio-message>
+<fusio-message [response]="response()"></fusio-message>
 
 <div class="row">
   <div class="col-xl-6">
@@ -16,8 +16,10 @@
             <label for="class" class="col-xl-2 col-form-label fw-bold">Format</label>
             <div class="col-xl-10">
               <div class="input-group">
-                <select id="class" name="class" [(ngModel)]="type" class="form-select">
-                  <option *ngFor="let type of types|keyvalue" [ngValue]="type.key">{{type.key}}</option>
+                <select id="class" name="class" [ngModel]="type()" (ngModelChange)="type.set($event)" class="form-select">
+                  @for (type of types()|keyvalue; track type.key) {
+                    <option [ngValue]="type.key">{{type.key}}</option>
+                  }
                 </select>
               </div>
             </div>
@@ -26,7 +28,7 @@
             <label for="namespace" class="col-xl-2 col-form-label fw-bold">Namespace</label>
             <div class="col-xl-10">
               <div class="input-group">
-                <input type="text" id="namespace" name="namespace" [(ngModel)]="namespace" class="form-control">
+                <input type="text" id="namespace" name="namespace" [ngModel]="namespace()" (ngModelChange)="namespace.set($event)" class="form-control">
               </div>
             </div>
           </div>
@@ -48,7 +50,7 @@
           <p>
           <p>We provide additional SDK languages like CSharp, Go, Java and Python through our <a href="https://sdkgen.app/">SDKgen</a>
             service, please register there to enable these languages. You then need to provide your credentials at the
-            <code>SDKGEN_CLIENT_ID</code> and <code>SDKGEN_CLIENT_SECRET</code> environment variable.</p>
+            <code>sdkgen_client_id</code> and <code>sdkgen_client_secret</code> system config.</p>
         </div>
       </div>
     </div>

@@ -1,0 +1,57 @@
+
+<h1>
+  <a [routerLink]="['/', 'connection']">Connection</a> /
+  <a [routerLink]="['/', 'connection', selectedConnection()?.id]">{{selectedConnection()?.name}}</a> /
+  <a (click)="doList()">Database</a> /
+  <a (click)="doDetail(entity().name)">{{ entity().name }}</a> /
+  <app-form-breadcrump [mode]="mode"></app-form-breadcrump>
+</h1>
+
+<form>
+  <fusio-message [response]="response()"></fusio-message>
+  <div class="mb-3 row">
+    <label for="name" class="col-lg-2 col-form-label fw-bold">Name</label>
+    <div class="col-lg-10">
+      <div class="input-group">
+        <input type="text" id="name" name="name" [ngModel]="entity().name" (ngModelChange)="set(entity, 'name', $event)" [disabled]="mode === 3" class="form-control">
+      </div>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="name" class="col-lg-2 col-form-label fw-bold">Columns</label>
+    <div class="col-lg-10">
+      @if (entity().columns; as columns) {
+        <app-connection-database-table-column [data]="columns" [disabled]="mode === 3" (dataChange)="set(entity, 'columns', $event)"></app-connection-database-table-column>
+      }
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="primaryKey" class="col-lg-2 col-form-label fw-bold">Primary-Key</label>
+    <div class="col-lg-10">
+      <select id="primaryKey" name="primaryKey" [ngModel]="entity().primaryKey" (ngModelChange)="set(entity, 'primaryKey', $event)" [disabled]="mode === 3" class="form-select">
+        @if (entity().columns; as columns) {
+          @for (column of columns; track column.name) {
+            <option [ngValue]="column.name">{{column.name}}</option>
+          }
+        }
+      </select>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="name" class="col-lg-2 col-form-label fw-bold">Indexes</label>
+    <div class="col-lg-10">
+      @if (entity().indexes; as indexes) {
+        <app-connection-database-table-index [data]="indexes" [disabled]="mode === 3" (dataChange)="set(entity, 'indexes', $event)"></app-connection-database-table-index>
+      }
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="name" class="col-lg-2 col-form-label fw-bold">Foreign Keys</label>
+    <div class="col-lg-10">
+      @if (entity().foreignKeys; as foreignKeys) {
+        <app-connection-database-table-foreign-key [data]="foreignKeys" [disabled]="mode === 3" (dataChange)="set(entity, 'foreignKeys', $event)"></app-connection-database-table-foreign-key>
+      }
+    </div>
+  </div>
+  <app-form-buttons [mode]="mode" (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)"></app-form-buttons>
+</form>

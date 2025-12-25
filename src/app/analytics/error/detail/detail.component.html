@@ -1,39 +1,43 @@
 
 <h1>
-  <a [routerLink]="getListLink()">Error</a> /
-  {{selected?.message}}
+  <a (click)="doList()">Error</a> /
+  {{selected()?.message}}
 </h1>
 
-<fusio-message [response]="response"></fusio-message>
+<fusio-message [response]="response()"></fusio-message>
 
-<div *ngIf="selected">
+@if (selected(); as selected) {
   <div class="btn-group" role="group">
     <a [routerLink]="['/', 'log', selected.logId]" class="btn btn-secondary fusio-btn-back">Log</a>
   </div>
   <div class="float-end">
-    <button type="button" (click)="jsonView = !jsonView" class="btn btn-outline-secondary fusio-btn-json">JSON</button>
+    <button type="button" (click)="jsonView.set(!jsonView())" class="btn btn-outline-secondary fusio-btn-json">JSON</button>
   </div>
-  <div class="fusio-detail" *ngIf="!jsonView">
-    <div class="row">
-      <div class="col-lg-2 fw-bold">Message</div>
-      <div class="col-lg-10">{{selected.message}}</div>
+  @if (!jsonView()) {
+    <div class="fusio-detail">
+      <div class="row">
+        <div class="col-lg-2 fw-bold">Message</div>
+        <div class="col-lg-10">{{selected.message}}</div>
+      </div>
+      <div class="row">
+        <div class="col-lg-2 fw-bold">File</div>
+        <div class="col-lg-10">{{selected.file}}</div>
+      </div>
+      <div class="row">
+        <div class="col-lg-2 fw-bold">Line</div>
+        <div class="col-lg-10">{{selected.line}}</div>
+      </div>
+      <div class="row">
+        <div class="col-lg-2 fw-bold">Trace</div>
+        <div class="col-lg-10"><pre>{{selected.trace}}</pre></div>
+      </div>
     </div>
-    <div class="row">
-      <div class="col-lg-2 fw-bold">File</div>
-      <div class="col-lg-10">{{selected.file}}</div>
+  }
+  @if (jsonView()) {
+    <div class="fusio-json">
+      <div style="height:600px;" class="mt-3">
+        <ngx-monaco-editor style="height:100%" name="json" [options]="{theme: 'vs-light', language: 'json'}" [ngModel]="selected|json"></ngx-monaco-editor>
+      </div>
     </div>
-    <div class="row">
-      <div class="col-lg-2 fw-bold">Line</div>
-      <div class="col-lg-10">{{selected.line}}</div>
-    </div>
-    <div class="row">
-      <div class="col-lg-2 fw-bold">Trace</div>
-      <div class="col-lg-10"><pre>{{selected.trace}}</pre></div>
-    </div>
-  </div>
-  <div class="fusio-json" *ngIf="jsonView">
-    <div style="height:600px;" class="mt-3">
-      <ngx-monaco-editor style="height:100%" name="json" [options]="{theme: 'vs-light', language: 'json'}" [ngModel]="selected|json"></ngx-monaco-editor>
-    </div>
-  </div>
-</div>
+  }
+}

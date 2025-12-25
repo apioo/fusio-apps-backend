@@ -1,20 +1,28 @@
-<div class="row mb-3" *ngFor="let row of result;">
-  <div class="col-3">
-    <select [id]="name + '_httpCode'" [name]="name + '_httpCode'" [(ngModel)]="row.code" (ngModelChange)="remove(); changeValue()" [disabled]="disabled" class="form-select">
-      <option *ngFor="let code of errorStatusCodes" [ngValue]="code.key">{{code.value}}</option>
-    </select>
+
+@for (row of result(); track $index) {
+  <div class="row mb-3">
+    <div class="col-3">
+      <select [id]="name() + '_httpCode'" [name]="name() + '_httpCode'" [ngModel]="row.code" (ngModelChange)="setCode($index, $event);remove();changeValue()" [disabled]="disabled()" class="form-select">
+        @for (code of errorStatusCodes; track code.key) {
+          <option [ngValue]="code.key">{{code.value}}</option>
+        }
+      </select>
+    </div>
+    <div class="col-9">
+      <app-schema-selector [name]="name() + '_schema_' + row.code" [data]="row.schema" (dataChange)="setSchema($index, $event);changeValue()" [disabled]="disabled()"></app-schema-selector>
+    </div>
   </div>
-  <div class="col-9">
-    <app-schema-selector [name]="name + '_schema_' + row.code" [data]="row.schema" (dataChange)="row.schema = $event; changeValue()" [disabled]="disabled"></app-schema-selector>
-  </div>
-</div>
+}
+
 <div class="row">
   <div class="col-3">
-    <select [id]="name + '_newHttpCode'" [name]="name + '_newHttpCode'" [(ngModel)]="newCode" [disabled]="disabled" class="form-select">
-      <option *ngFor="let code of getNotUsedCodes()" [ngValue]="code.key">{{code.value}}</option>
+    <select [id]="name() + '_newHttpCode'" [name]="name() + '_newHttpCode'" [ngModel]="newCode()" (ngModelChange)="newCode.set($event)" [disabled]="disabled()" class="form-select">
+      @for (code of getNotUsedCodes(); track code.key) {
+        <option [ngValue]="code.key">{{code.value}}</option>
+      }
     </select>
   </div>
   <div class="col-9">
-    <button class="btn btn-outline-secondary" (click)="add(); changeValue()" [disabled]="disabled"><i class="bi bi-plus"></i></button>
+    <button class="btn btn-outline-secondary" (click)="add();changeValue()" [disabled]="disabled()"><i class="bi bi-plus"></i></button>
   </div>
 </div>

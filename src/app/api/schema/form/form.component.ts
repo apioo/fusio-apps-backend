@@ -1,19 +1,32 @@
-import {Component} from '@angular/core';
-import {ErrorService, Form} from "ngx-fusio-sdk";
+import {Component, signal} from '@angular/core';
+import {ErrorService, Form, HelpService, MessageComponent} from "ngx-fusio-sdk";
 import {BackendSchema} from "fusio-sdk";
 import {ActivatedRoute, Router} from "@angular/router";
 import {SchemaService} from "../../../services/schema.service";
+import {FormBreadcrump} from "../../../shared/form-breadcrump/form-breadcrump";
+import {FormButtons} from "../../../shared/form-buttons/form-buttons";
+import {FormsModule} from "@angular/forms";
+import {NgbPopover} from "@ng-bootstrap/ng-bootstrap";
+import {ExportService, ImportService, Specification, TypeschemaEditorModule} from "ngx-typeschema-editor";
 
 @Component({
   selector: 'app-schema-form',
   templateUrl: './form.component.html',
+  imports: [
+    FormBreadcrump,
+    MessageComponent,
+    FormButtons,
+    FormsModule,
+    NgbPopover,
+    TypeschemaEditorModule
+  ],
   styleUrls: ['./form.component.css']
 })
 export class FormComponent extends Form<BackendSchema> {
 
-  schema: string = '';
+  spec = signal<Specification|undefined>(undefined);
 
-  constructor(private service: SchemaService, route: ActivatedRoute, router: Router, error: ErrorService) {
+  constructor(private service: SchemaService, private importService: ImportService, private exportService: ExportService, private help: HelpService, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);
   }
 
@@ -21,26 +34,45 @@ export class FormComponent extends Form<BackendSchema> {
     return this.service;
   }
 
-  override onLoad(): void {
-    if (this.entity && this.entity.source) {
-      this.schema = JSON.stringify(this.entity.source, null, 2);
+  override async onLoad(): Promise<void> {
+    const source = this.entity()?.source;
+    if (source) {
+      this.spec.set(await this.importService.transform('typeschema', JSON.stringify(source)));
+    } else {
+      this.spec.set({
+        imports: [],
+        operations: [],
+        types: [{
+          type: 'struct',
+          name: 'MyObject',
+          description: '',
+          properties: []
+        }],
+        root: 0
+      })
     }
   }
 
   protected override beforeCreate(entity: BackendSchema): BackendSchema {
-    if (this.schema) {
-      entity.source = JSON.parse(this.schema);
+    const spec = this.spec();
+    if (spec) {
+      entity.source = this.exportService.transform(spec);
     }
 
     return entity;
   }
 
   protected override beforeUpdate(entity: BackendSchema): BackendSchema {
-    if (this.schema) {
-      entity.source = JSON.parse(this.schema);
+    const spec = this.spec();
+    if (spec) {
+      entity.source = this.exportService.transform(spec);
     }
 
     return entity;
+  }
+
+  showHelp(path: string) {
+    this.help.showDialog(path);
   }
 
 }

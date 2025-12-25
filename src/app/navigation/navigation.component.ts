@@ -1,10 +1,16 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {GroupItem, NavigationService} from "../navigation.service";
 import {VersionService} from "../version.service";
+import {NgClass} from "@angular/common";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
+  imports: [
+    NgClass,
+    RouterLink
+  ],
   styleUrls: ['./navigation.component.css']
 })
 export class NavigationComponent implements OnInit {

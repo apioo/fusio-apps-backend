@@ -1,22 +1,34 @@
-import {Component} from '@angular/core';
-import {Detail, ErrorService} from "ngx-fusio-sdk";
+import {Component, signal} from '@angular/core';
+import {Detail, ErrorService, MessageComponent} from "ngx-fusio-sdk";
 import {BackendSchema} from "fusio-sdk";
-import {ApiService} from "../../../api.service";
 import {SchemaService} from "../../../services/schema.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {EditorComponent} from "ngx-monaco-editor-v2";
+import {FormsModule} from "@angular/forms";
+import {JsonPipe} from "@angular/common";
+import {ImportService, Specification, TypeschemaEditorModule} from "ngx-typeschema-editor";
 
 @Component({
   selector: 'app-schema-detail',
   templateUrl: './detail.component.html',
+  imports: [
+    MessageComponent,
+    EditorComponent,
+    FormsModule,
+    JsonPipe,
+    TypeschemaEditorModule
+  ],
   styleUrls: ['./detail.component.css']
 })
 export class DetailComponent extends Detail<BackendSchema> {
 
-  renderedId?: number;
-  preview?: string;
-  loading: boolean = false;
+  spec = signal<Specification>({
+    imports: [],
+    operations: [],
+    types: []
+  });
 
-  constructor(private service: SchemaService, private fusio: ApiService, route: ActivatedRoute, router: Router, error: ErrorService) {
+  constructor(private service: SchemaService, private importService: ImportService, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);
   }
 
@@ -24,18 +36,19 @@ export class DetailComponent extends Detail<BackendSchema> {
     return this.service;
   }
 
-  protected override onLoad() {
+  protected override async onLoad() {
     super.onLoad();
 
-    this.loading = true;
-    this.renderPreview('' + this.selected?.id);
-  }
+    try {
+      const source = this.selected()?.source;
+      if (source) {
+        const spec = await this.importService.transform('typeschema', JSON.stringify(source))
 
-  private async renderPreview(id: string) {
-    const response = await this.fusio.getClient().backend().schema().getPreview(id);
-
-    this.preview = response.preview;
-    this.loading = false;
+        this.spec.set(spec);
+      }
+    } catch (error) {
+      this.response.set(this.error.convert(error));
+    }
   }
 
 }

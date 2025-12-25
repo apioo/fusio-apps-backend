@@ -1,37 +1,36 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, effect, input, Input, OnChanges, OnInit, signal, SimpleChanges} from '@angular/core';
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-schema-link',
   templateUrl: './schema-link.component.html',
+  imports: [
+    RouterLink
+  ],
   styleUrls: ['./schema-link.component.css']
 })
-export class SchemaLinkComponent implements OnInit, OnChanges {
+export class SchemaLinkComponent {
 
-  @Input() data?: string = '';
+  data = input.required<string|undefined>();
 
-  scheme?: string = '';
-  value?: string = '';
+  scheme = signal<string>('');
+  value = signal<string>('');
 
-  ngOnInit(): void {
-    this.parse();
+  constructor() {
+    effect(() => {
+      const data = this.data();
+      if (!data) {
+        return;
+      }
+
+      const pos = data.indexOf('://');
+      if (pos === -1) {
+        return;
+      }
+
+      this.scheme.set(data.substring(0, pos));
+      this.value.set(data.substring(pos + 3));
+    });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    this.parse();
-  }
-
-  private parse() {
-    const data = this.data;
-    if (!data) {
-      return;
-    }
-
-    const pos = data.indexOf('://');
-    if (pos === -1) {
-      return;
-    }
-
-    this.scheme = data.substring(0, pos);
-    this.value = data.substring(pos + 3);
-  }
 }

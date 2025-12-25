@@ -15,6 +15,7 @@ export class FilesystemService extends Service<BackendFile> {
 
   public setConnection(connection: BackendConnection): void {
     this.connection = connection;
+    this.checkConfiguration();
   }
 
   private getConnection(): string {
@@ -25,12 +26,12 @@ export class FilesystemService extends Service<BackendFile> {
     return '' + this.connection.id;
   }
 
-  public isConfigured(): boolean {
+  public override isConfigured(): boolean {
     return this.connection !== undefined;
   }
 
   async getAll(parameters: Array<any>): Promise<CommonCollection<BackendFile>> {
-    return this.fusio.getClient().backend().connection().filesystem().getAll(this.getConnection());
+    return this.fusio.getClient().backend().connection().filesystem().getAll(this.getConnection(), ...parameters);
   }
 
   async get(id: string): Promise<BackendFile> {
@@ -62,7 +63,7 @@ export class FilesystemService extends Service<BackendFile> {
   }
 
   getLink(): Array<string> {
-    return ['/', 'filesystem', this.getConnection()];
+    return ['/', 'connection', this.getConnection(), 'filesystem'];
   }
 
 }

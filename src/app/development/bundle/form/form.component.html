@@ -1,0 +1,106 @@
+
+<h1>
+  <a (click)="doList()">Bundle</a> /
+  <a (click)="doDetail('~' + entity().name)">{{ entity().name }}</a> /
+  <app-form-breadcrump [mode]="mode"></app-form-breadcrump>
+</h1>
+
+<fusio-message [response]="response()"></fusio-message>
+
+<form>
+  <div class="mb-3 row">
+    <label for="name" class="col-lg-2 col-form-label fw-bold">Name</label>
+    <div class="col-lg-10">
+      <div class="input-group">
+        <input type="text" id="name" name="name" [ngModel]="entity().name" (ngModelChange)="set(entity, 'name', $event)" class="form-control">
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
+        <ng-template #nameHelp>Unique name of the bundle</ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="name" class="col-lg-2 col-form-label fw-bold">Version</label>
+    <div class="col-lg-10">
+      <div class="input-group">
+        <input type="text" id="version" name="version" [ngModel]="entity().version" (ngModelChange)="set(entity, 'version', $event)" class="form-control">
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="versionHelp"><i class="bi bi-question"></i></button>
+        <ng-template #versionHelp>Version of the bundle</ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="name" class="col-lg-2 col-form-label fw-bold">Icon</label>
+    <div class="col-lg-10">
+      <div class="input-group">
+        <select id="icon" name="icon" [ngModel]="entity().icon" (ngModelChange)="set(entity, 'icon', $event)" [disabled]="mode === 3" class="form-select">
+          @for (icon of icons; track $index) {
+            <option [ngValue]="icon">{{icon}}</option>
+          }
+        </select>
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="iconHelp"><i class="bi bi-question"></i></button>
+        <ng-template #iconHelp>Icon of the bundle</ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="name" class="col-lg-2 col-form-label fw-bold">Summary</label>
+    <div class="col-lg-10">
+      <div class="input-group">
+        <input type="text" id="summary" name="summary" [ngModel]="entity().summary" (ngModelChange)="set(entity, 'summary', $event)" class="form-control">
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="summaryHelp"><i class="bi bi-question"></i></button>
+        <ng-template #summaryHelp>Short summary of the bundle</ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="name" class="col-lg-2 col-form-label fw-bold">Description</label>
+    <div class="col-lg-10">
+      <div class="input-group">
+        <textarea id="description" name="description" [ngModel]="entity().description" (ngModelChange)="set(entity, 'description', $event)" class="form-control" rows="6"></textarea>
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="descriptionHelp"><i class="bi bi-question"></i></button>
+        <ng-template #descriptionHelp>Long description of the bundle, may also contain markdown syntax</ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="name" class="col-lg-2 col-form-label fw-bold">Cost</label>
+    <div class="col-lg-10">
+      <div class="input-group">
+        <input type="number" id="cost" name="cost" [ngModel]="entity().cost" (ngModelChange)="set(entity, 'cost', $event)" class="form-control">
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="costHelp"><i class="bi bi-question"></i></button>
+        <ng-template #costHelp>Optional cost of the bundle</ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="name" class="col-lg-2 col-form-label fw-bold">Actions</label>
+    <div class="col-lg-10">
+      <fusio-form-list name="actions" type="autocomplete" [service]="action" [useId]="true" [data]="getEntries('actions')" (dataChange)="setEntries('actions', $event)"></fusio-form-list>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="name" class="col-lg-2 col-form-label fw-bold">Schemas</label>
+    <div class="col-lg-10">
+      <fusio-form-list name="schemas" type="autocomplete" [service]="schema" [useId]="true" [data]="getEntries('schemas')" (dataChange)="setEntries('schemas', $event)"></fusio-form-list>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="name" class="col-lg-2 col-form-label fw-bold">Events</label>
+    <div class="col-lg-10">
+      <fusio-form-list name="events" type="autocomplete" [service]="event" [useId]="true" [data]="getEntries('events')" (dataChange)="setEntries('events', $event)"></fusio-form-list>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="name" class="col-lg-2 col-form-label fw-bold">Cronjobs</label>
+    <div class="col-lg-10">
+      <fusio-form-list name="cronjobs" type="autocomplete" [service]="cronjob" [useId]="true" [data]="getEntries('cronjobs')" (dataChange)="setEntries('cronjobs', $event)"></fusio-form-list>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="name" class="col-lg-2 col-form-label fw-bold">Triggers</label>
+    <div class="col-lg-10">
+      <fusio-form-list name="triggers" type="autocomplete" [service]="trigger" [useId]="true" [data]="getEntries('triggers')" (dataChange)="setEntries('triggers', $event)"></fusio-form-list>
+    </div>
+  </div>
+  <app-form-buttons [mode]="mode" (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="doList()" (onHelp)="showHelp('development/bundle')"></app-form-buttons>
+</form>

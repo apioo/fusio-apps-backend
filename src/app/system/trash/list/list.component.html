@@ -1,19 +1,21 @@
 
 <h1>Trash</h1>
 
-<fusio-message [response]="response"></fusio-message>
+<fusio-message [response]="response()"></fusio-message>
 
 <div class="fusio-search">
   <form (submit)="doSearch()">
     <div class="row">
       <div class="col-2">
-        <select name="statistic" [(ngModel)]="type" (change)="selectType()" class="form-select">
-          <option *ngFor="let type of types" [ngValue]="type">{{type}}</option>
+        <select name="statistic" [ngModel]="type()" (ngModelChange)="selectType($event)" class="form-select">
+          @for (type of types(); track $index) {
+            <option [ngValue]="type">{{type}}</option>
+          }
         </select>
       </div>
       <div class="col-10">
         <div class="input-group">
-          <input type="text" class="form-control" name="search" [(ngModel)]="search" placeholder="Search i.e. type" />
+          <input type="text" class="form-control" name="search" [ngModel]="search()" (ngModelChange)="search.set($event);doSearch()" placeholder="Search i.e. type" />
           <button type="button" (click)="showHelp('system/trash')" class="btn btn-secondary fusio-btn-help"><i class="bi bi-question"></i></button>
         </div>
       </div>
@@ -26,16 +28,18 @@
   <div class="card-body">
     <table class="table table-striped">
       <tbody>
-      <tr *ngFor="let row of entries">
-        <td>{{row.name}}</td>
-        <td><button (click)="doRestore(row)" type="button" class="btn btn-primary float-end"><i class="bi bi-arrow-clockwise"></i></button></td>
-      </tr>
+      @for (row of entries(); track $index) {
+        <tr>
+          <td>{{row.name}}</td>
+          <td><button (click)="doRestore(row)" type="button" class="btn btn-primary float-end"><i class="bi bi-arrow-clockwise"></i></button></td>
+        </tr>
+      }
       </tbody>
     </table>
     <ngb-pagination
-      [(page)]="page"
-      [pageSize]="pageSize"
-      [collectionSize]="totalResults"
-      (pageChange)="doSearch()"></ngb-pagination>
+      [page]="page()"
+      [pageSize]="pageSize()"
+      [collectionSize]="totalResults()"
+      (pageChange)="page.set($event);doSearch()"></ngb-pagination>
   </div>
 </div>

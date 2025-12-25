@@ -3,10 +3,16 @@ import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {AppService} from "../../../services/app.service";
 import {UserService} from "../../../services/user.service";
 import {Filter} from "../list/list.component";
+import {FormsModule} from "@angular/forms";
+import {FormAutocompleteComponent} from "ngx-fusio-sdk";
 
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
+  imports: [
+    FormsModule,
+    FormAutocompleteComponent
+  ],
   styleUrls: ['./filter.component.css']
 })
 export class FilterComponent {

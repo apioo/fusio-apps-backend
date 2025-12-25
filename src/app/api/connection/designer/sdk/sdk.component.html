@@ -1,0 +1,18 @@
+
+<h1>
+  <a [routerLink]="['/', 'connection']">Connection</a> /
+  <a [routerLink]="['/', 'connection', selectedConnection()?.id]">{{selectedConnection()?.name}}</a> /
+  SDK
+</h1>
+
+<fusio-message [response]="response()"></fusio-message>
+
+<div class="alert alert-info">
+  This specification describes the SDK API of the {{selectedConnection()?.name}} connection.
+  The specification is developed openly at <a href="https://app.typehub.cloud/d/sdkfabric/{{typehubName()}}">TypeHub</a>, feel free
+  to contribute changes in case an operation or type is missing.
+</div>
+
+@if (spec(); as spec) {
+  <typeschema-editor [specification]="spec" [operationEnabled]="true" [readonly]="true"></typeschema-editor>
+}

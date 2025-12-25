@@ -5,7 +5,9 @@
     <div class="card fusio-panel">
       <div class="card-header">Incoming request chart</div>
       <div class="card-body">
-        <apx-chart *ngIf="incomingRequests" [series]="incomingRequests.series" [chart]="{type: 'line', height: 240}" [xaxis]="incomingRequests.xaxis" [stroke]="{curve: 'smooth'}"></apx-chart>
+        @if (incomingRequests(); as incomingRequests) {
+          <apx-chart [series]="incomingRequests.series" [chart]="{type: 'line', height: 240}" [xaxis]="incomingRequests.xaxis" [stroke]="{curve: 'smooth'}"></apx-chart>
+        }
       </div>
     </div>
   </div>
@@ -13,7 +15,9 @@
     <div class="card fusio-panel">
       <div class="card-header">Most used operations</div>
       <div class="card-body">
-        <apx-chart *ngIf="mostUsedOperations" [series]="mostUsedOperations.series" [chart]="{type: 'line', height: 240}" [xaxis]="mostUsedOperations.xaxis" [stroke]="{curve: 'smooth'}"></apx-chart>
+        @if (mostUsedOperations(); as mostUsedOperations) {
+          <apx-chart [series]="mostUsedOperations.series" [chart]="{type: 'line', height: 240}" [xaxis]="mostUsedOperations.xaxis" [stroke]="{curve: 'smooth'}"></apx-chart>
+        }
       </div>
     </div>
   </div>
@@ -21,7 +25,9 @@
     <div class="card fusio-panel">
       <div class="card-header">Execution time per operation (ms)</div>
       <div class="card-body">
-        <apx-chart *ngIf="timePerOperation" [series]="timePerOperation.series" [chart]="{type: 'line', height: 240}" [xaxis]="timePerOperation.xaxis" [stroke]="{curve: 'smooth'}"></apx-chart>
+        @if (timePerOperation(); as timePerOperation) {
+          <apx-chart [series]="timePerOperation.series" [chart]="{type: 'line', height: 240}" [xaxis]="timePerOperation.xaxis" [stroke]="{curve: 'smooth'}"></apx-chart>
+        }
       </div>
     </div>
   </div>
@@ -29,7 +35,9 @@
     <div class="card fusio-panel">
       <div class="card-header">Test coverage</div>
       <div class="card-body">
-        <apx-chart *ngIf="testCoverage" [series]="testCoverage.series" [labels]="testCoverage.labels" [chart]="{type: 'donut', height: 240}" [stroke]="{curve: 'smooth'}"></apx-chart>
+        @if (testCoverage(); as testCoverage) {
+          <apx-chart [series]="testCoverage.series" [labels]="testCoverage.labels" [chart]="{type: 'donut', height: 240}" [stroke]="{curve: 'smooth'}"></apx-chart>
+        }
       </div>
     </div>
   </div>
@@ -37,7 +45,9 @@
     <div class="card fusio-panel">
       <div class="card-header">Errors per operation</div>
       <div class="card-body">
-        <apx-chart *ngIf="errorsPerOperation" [series]="errorsPerOperation.series" [chart]="{type: 'line', height: 240}" [xaxis]="errorsPerOperation.xaxis" [stroke]="{curve: 'smooth'}"></apx-chart>
+        @if (errorsPerOperation(); as errorsPerOperation) {
+          <apx-chart [series]="errorsPerOperation.series" [chart]="{type: 'line', height: 240}" [xaxis]="errorsPerOperation.xaxis" [stroke]="{curve: 'smooth'}"></apx-chart>
+        }
       </div>
     </div>
   </div>
@@ -45,7 +55,9 @@
     <div class="card fusio-panel">
       <div class="card-header">Incoming transactions</div>
       <div class="card-body">
-        <apx-chart *ngIf="incomingTransactions" [series]="incomingTransactions.series" [chart]="{type: 'line', height: 240}" [xaxis]="incomingTransactions.xaxis" [stroke]="{curve: 'smooth'}"></apx-chart>
+        @if (incomingTransactions(); as incomingTransactions) {
+          <apx-chart [series]="incomingTransactions.series" [chart]="{type: 'line', height: 240}" [xaxis]="incomingTransactions.xaxis" [stroke]="{curve: 'smooth'}"></apx-chart>
+        }
       </div>
     </div>
   </div>
@@ -53,7 +65,9 @@
     <div class="card fusio-panel">
       <div class="card-header">Most used activities</div>
       <div class="card-body">
-        <apx-chart *ngIf="mostUsedActivities" [series]="mostUsedActivities.series" [chart]="{type: 'line', height: 240}" [xaxis]="mostUsedActivities.xaxis" [stroke]="{curve: 'smooth'}"></apx-chart>
+        @if (mostUsedActivities(); as mostUsedActivities) {
+          <apx-chart [series]="mostUsedActivities.series" [chart]="{type: 'line', height: 240}" [xaxis]="mostUsedActivities.xaxis" [stroke]="{curve: 'smooth'}"></apx-chart>
+        }
       </div>
     </div>
   </div>
@@ -61,7 +75,9 @@
     <div class="card fusio-panel">
       <div class="card-header">Activities per user</div>
       <div class="card-body">
-        <apx-chart *ngIf="activitiesPerUser" [series]="activitiesPerUser.series" [chart]="{type: 'line', height: 240}" [xaxis]="activitiesPerUser.xaxis" [stroke]="{curve: 'smooth'}"></apx-chart>
+        @if (activitiesPerUser(); as activitiesPerUser) {
+          <apx-chart [series]="activitiesPerUser.series" [chart]="{type: 'line', height: 240}" [xaxis]="activitiesPerUser.xaxis" [stroke]="{curve: 'smooth'}"></apx-chart>
+        }
       </div>
     </div>
   </div>
@@ -69,7 +85,9 @@
     <div class="card fusio-panel">
       <div class="card-header">User registrations</div>
       <div class="card-body">
-        <apx-chart *ngIf="userRegistrations" [series]="userRegistrations.series" [chart]="{type: 'bar', height: 240}" [xaxis]="userRegistrations.xaxis" [stroke]="{curve: 'smooth'}"></apx-chart>
+        @if (userRegistrations(); as userRegistrations) {
+          <apx-chart [series]="userRegistrations.series" [chart]="{type: 'bar', height: 240}" [xaxis]="userRegistrations.xaxis" [stroke]="{curve: 'smooth'}"></apx-chart>
+        }
       </div>
     </div>
   </div>

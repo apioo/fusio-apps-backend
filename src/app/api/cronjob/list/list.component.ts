@@ -1,12 +1,20 @@
 import {Component} from '@angular/core';
-import {ErrorService, List} from "ngx-fusio-sdk";
+import {ErrorService, List, MessageComponent, SearchComponent} from "ngx-fusio-sdk";
 import {BackendCronjob} from "fusio-sdk";
 import {CronjobService} from "../../../services/cronjob.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
+import {ActionLinkComponent} from "../../../shared/action-link/action-link.component";
 
 @Component({
   selector: 'app-cronjob-list',
   templateUrl: './list.component.html',
+  imports: [
+    NgbPagination,
+    ActionLinkComponent,
+    MessageComponent,
+    SearchComponent
+  ],
   styleUrls: ['./list.component.css']
 })
 export class ListComponent extends List<BackendCronjob> {

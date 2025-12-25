@@ -1,20 +1,18 @@
 
 <h1>
-  <a [routerLink]="getListLink()">Connection</a> /
-  <a [routerLink]="getDetailLink('~' + entity?.name)">{{ entity?.name }}</a> /
-  <ng-container *ngIf="mode === 1">Create</ng-container>
-  <ng-container *ngIf="mode === 2">Update</ng-container>
-  <ng-container *ngIf="mode === 3">Delete</ng-container>
+  <a (click)="doList()">Connection</a> /
+  <a (click)="doDetail('~' + entity().name)">{{ entity().name }}</a> /
+  <app-form-breadcrump [mode]="mode"></app-form-breadcrump>
 </h1>
 
-<fusio-message [response]="response"></fusio-message>
+<fusio-message [response]="response()"></fusio-message>
 
-<form *ngIf="entity">
+<form>
   <div class="mb-3 row">
     <label for="name" class="col-lg-2 col-form-label fw-bold">Name</label>
     <div class="col-lg-10">
       <div class="input-group">
-        <input type="text" id="name" name="name" [(ngModel)]="entity.name" [disabled]="mode !== 1" class="form-control">
+        <input type="text" id="name" name="name" [ngModel]="entity().name" (ngModelChange)="set(entity, 'name', $event)" [disabled]="mode !== 1" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
         <ng-template #nameHelp>Unique name of the connection</ng-template>
       </div>
@@ -24,26 +22,29 @@
     <label for="class" class="col-lg-2 col-form-label fw-bold">Class</label>
     <div class="col-lg-10">
       <div class="input-group">
-        <input *ngIf="custom" type="text" id="class" name="class" [(ngModel)]="entity.class" (change)="loadConfig(entity.class)" [disabled]="mode === 3" class="form-control">
-        <select *ngIf="!custom" id="class" name="class" [(ngModel)]="entity.class" (change)="loadConfig(entity.class)" [disabled]="mode === 3" class="form-select">
-          <optgroup label="Basic">
-            <option *ngFor="let connection of basicConnections" [ngValue]="connection.class">{{connection.name}}</option>
-          </optgroup>
-          <optgroup label="SDK">
-            <option *ngFor="let connection of sdkConnections" [ngValue]="connection.class">{{connection.name}}</option>
-          </optgroup>
-        </select>
-        <button class="btn btn-outline-secondary" type="button" (click)="custom = !custom" [disabled]="mode === 3"><i class="bi bi-pen"></i></button>
+        @if (custom()) {
+          <input type="text" id="class" name="class" [ngModel]="entity().class" (ngModelChange)="set(entity, 'class', $event)" (change)="loadConfig(entity().class)" [disabled]="mode === 3" class="form-control">
+        }
+        @if (!custom()) {
+          <select id="class" name="class" [ngModel]="entity().class" (ngModelChange)="set(entity, 'class', $event)" (change)="loadConfig(entity().class)" [disabled]="mode === 3" class="form-select">
+            <optgroup label="Basic">
+              @for (connection of basicConnections(); track connection.class) {
+                <option [ngValue]="connection.class">{{connection.name}}</option>
+              }
+            </optgroup>
+            <optgroup label="SDK">
+              @for (connection of sdkConnections(); track connection.class) {
+                <option [ngValue]="connection.class">{{connection.name}}</option>
+              }
+            </optgroup>
+          </select>
+        }
+        <button class="btn btn-outline-secondary" type="button" (click)="custom.set(!custom)" [disabled]="mode === 3"><i class="bi bi-pen"></i></button>
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="classHelp"><i class="bi bi-question"></i></button>
         <ng-template #classHelp>Connection class which gets executed. Each action can provide additional configuration parameters which are loaded if a class was selected</ng-template>
       </div>
     </div>
   </div>
-  <app-config *ngIf="form" [container]="form" [data]="entity.config" (dataChange)="entity.config = $event" [disabled]="mode === 3"></app-config>
-  <div class="btn-group" role="group">
-    <ng-container *ngIf="mode === 1"><button type="button" class="btn btn-primary" (click)="doCreate(entity)">Create</button></ng-container>
-    <ng-container *ngIf="mode === 2"><button type="button" class="btn btn-primary" (click)="doUpdate(entity)">Update</button></ng-container>
-    <ng-container *ngIf="mode === 3"><button type="button" class="btn btn-danger" (click)="doDelete(entity)">Delete</button></ng-container>
-    <button type="button" class="btn btn-light" (click)="showHelp()">Help</button>
-  </div>
+  <app-config [container]="form()" [data]="entity().config" (dataChange)="set(entity, 'config', $event)" [disabled]="mode === 3"></app-config>
+  <app-form-buttons [mode]="mode" (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="doList()" (onHelp)="showHelp()"></app-form-buttons>
 </form>

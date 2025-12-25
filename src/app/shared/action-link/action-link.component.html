@@ -1,21 +1,19 @@
 
-<ng-container [ngSwitch]="scheme">
-  <ng-container *ngSwitchCase="'action'">
-    <a routerLink="/action/~{{value}}">{{value}}</a>
-  </ng-container>
-  <ng-container *ngSwitchCase="'php+class'">
-    <span>{{value}}</span>
-  </ng-container>
-  <ng-container *ngSwitchCase="'http'">
-    <a href="http://{{value}}">{{value}}</a>
-  </ng-container>
-  <ng-container *ngSwitchCase="'https'">
-    <a href="https://{{value}}">{{value}}</a>
-  </ng-container>
-  <ng-container *ngSwitchCase="'file'">
-    <span>{{value}}</span>
-  </ng-container>
-  <ng-container *ngSwitchDefault>
-    <span>{{data}}</span>
-  </ng-container>
-</ng-container>
+@if (scheme() === 'action') {
+  <a routerLink="/action/~{{value()}}">{{value()}}</a>
+}
+@else if (scheme() === 'php+class') {
+  <span>{{value()}}</span>
+}
+@else if (scheme() === 'http') {
+  <a href="http://{{value()}}">{{value()}}</a>
+}
+@else if (scheme() === 'https') {
+  <a href="https://{{value()}}">{{value()}}</a>
+}
+@else if (scheme() === 'file') {
+  <span>{{value()}}</span>
+}
+@else {
+  <span>{{data()}}</span>
+}

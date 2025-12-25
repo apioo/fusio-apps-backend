@@ -1,0 +1,61 @@
+@for (row of result(); track $index) {
+  <div class="row mb-3">
+    <div class="col-3">
+      <input type="text" placeholder="" [id]="name() + '_name_' + row.name" [name]="name() + '_name_' + row.name" [ngModel]="row.name" (ngModelChange)="setName($index, $event)" [disabled]="disabled()" class="form-control">
+    </div>
+    <div class="col-3">
+      <select [id]="name() + '_type_' + row.name" [name]="name() + '_type_' + row.name" [ngModel]="row.type" (ngModelChange)="setType($index, $event)" [disabled]="disabled()" class="form-select">
+        @for (type of types; track $index) {
+          <option [ngValue]="type.key">{{type.value}}</option>
+        }
+      </select>
+    </div>
+    <div class="col-3">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" [id]="name() + '_not_null_' + row.name" [name]="name() + '_not_null_' + row.name" [ngModel]="row.notNull" (ngModelChange)="setNotNull($index, $event)" [disabled]="disabled()">
+        <label class="form-check-label" [for]="name() + '_not_null_' + row.name">
+          Not Null
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" [id]="name() + '_auto_increment_' + row.name" [name]="name() + '_auto_increment_' + row.name" [ngModel]="row.autoIncrement" (ngModelChange)="setAutoIncrement($index, $event)" [disabled]="disabled() || row.type !== 'integer'">
+        <label class="form-check-label" [for]="name() + '_auto_increment_' + row.name">
+          Auto increment
+        </label>
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="input-group">
+        <input type="number" [id]="name() + '_length_' + row.name" [name]="name() + '_length_' + row.name" [ngModel]="row.length" (ngModelChange)="setLength($index, $event)" [disabled]="disabled()" placeholder="Length" class="form-control">
+        <button class="btn btn-outline-secondary" (click)="remove(row.name); changeValue()"><i class="bi bi-x"></i></button>
+      </div>
+    </div>
+  </div>
+}
+
+<div class="row">
+  <div class="col-3">
+    <input type="text" [id]="name() + '_name'" [name]="name() + '_name'" [ngModel]="newName()" (ngModelChange)="newName.set($event);changeValue()" [disabled]="disabled()" class="form-control">
+  </div>
+  <div class="col-3">
+    <select [id]="name() + '_type'" [name]="name() + '_type'" [ngModel]="newType()" (ngModelChange)="newType.set($event)" [disabled]="disabled()" class="form-select">
+      @for (type of types; track $index) {
+        <option [ngValue]="type.key">{{type.value}}</option>
+      }
+    </select>
+  </div>
+  <div class="col-3">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" [id]="name() + '_not_null'" [name]="name() + '_not_null'" [ngModel]="newNotNull()" (ngModelChange)="newNotNull.set($event)">
+      <label class="form-check-label" [for]="name() + '_not_null'">
+        Not Null
+      </label>
+    </div>
+  </div>
+  <div class="col-3">
+    <div class="input-group">
+      <input type="number" [id]="name() + '_length'" [name]="name() + '_length'" [ngModel]="newLength()" (ngModelChange)="newLength.set($event);changeValue()" [disabled]="disabled()" placeholder="Length" class="form-control">
+      <button class="btn btn-outline-secondary" (click)="add(); changeValue()"><i class="bi bi-plus"></i></button>
+    </div>
+  </div>
+</div>

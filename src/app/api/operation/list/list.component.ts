@@ -1,14 +1,24 @@
 import {Component} from '@angular/core';
-import {ErrorService, List} from "ngx-fusio-sdk";
+import {ErrorService, List, MessageComponent, SearchComponent} from "ngx-fusio-sdk";
 import {BackendOperation} from "fusio-sdk";
 import {OperationService} from "../../../services/operation.service";
 import {ActionService} from "../../../services/action.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ApiService} from "../../../api.service";
+import {ActionLinkComponent} from "../../../shared/action-link/action-link.component";
+import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
+import {OperationStatus} from "../../../shared/operation-status/operation-status";
 
 @Component({
   selector: 'app-operation-list',
   templateUrl: './list.component.html',
+  imports: [
+    MessageComponent,
+    SearchComponent,
+    ActionLinkComponent,
+    NgbPagination,
+    OperationStatus
+  ],
   styleUrls: ['./list.component.css']
 })
 export class ListComponent extends List<BackendOperation> {

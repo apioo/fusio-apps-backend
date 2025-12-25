@@ -1,0 +1,19 @@
+
+<div class="btn-group mb-5" role="group">
+  @if (mode() === 1) {
+    <button type="button" class="btn btn-primary" (click)="onCreate.emit()">Create</button>
+  }
+  @else if (mode() === 2) {
+    <button type="button" class="btn btn-primary" (click)="onUpdate.emit()">Update</button>
+  }
+  @else if (mode() === 3) {
+    <button type="button" class="btn btn-danger" (click)="onDelete.emit()">Delete</button>
+  }
+
+  @if (onBack.observed) {
+    <button type="button" class="btn btn-light fusio-btn-back" (click)="onBack.emit()">Back</button>
+  }
+  @if (onHelp.observed) {
+    <button type="button" class="btn btn-light" (click)="onHelp.emit()">Help</button>
+  }
+</div>

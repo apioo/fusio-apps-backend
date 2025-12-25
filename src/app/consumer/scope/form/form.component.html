@@ -1,20 +1,18 @@
 
 <h1>
-  <a [routerLink]="getListLink()">Scope</a> /
-  <a [routerLink]="getDetailLink('~' + entity?.name)">{{ entity?.name }}</a> /
-  <ng-container *ngIf="mode === 1">Create</ng-container>
-  <ng-container *ngIf="mode === 2">Update</ng-container>
-  <ng-container *ngIf="mode === 3">Delete</ng-container>
+  <a (click)="doList()">Scope</a> /
+  <a (click)="doDetail('~' + entity().name)">{{ entity().name }}</a> /
+  <app-form-breadcrump [mode]="mode"></app-form-breadcrump>
 </h1>
 
-<fusio-message [response]="response"></fusio-message>
+<fusio-message [response]="response()"></fusio-message>
 
-<form *ngIf="entity">
+<form>
   <div class="mb-3 row">
     <label for="name" class="col-lg-2 col-form-label fw-bold">Name</label>
     <div class="col-lg-10">
       <div class="input-group">
-        <input type="text" id="name" name="name" [(ngModel)]="entity.name" [disabled]="mode === 3" class="form-control">
+        <input type="text" id="name" name="name" [ngModel]="entity().name" (ngModelChange)="set(entity, 'name', $event)" [disabled]="mode === 3" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
         <ng-template #nameHelp>Unique name of the scope</ng-template>
       </div>
@@ -24,7 +22,7 @@
     <label for="description" class="col-lg-2 col-form-label fw-bold">Description</label>
     <div class="col-lg-10">
       <div class="input-group">
-        <input type="text" id="description" name="description" [(ngModel)]="entity.description" [disabled]="mode === 3" class="form-control">
+        <input type="text" id="description" name="description" [ngModel]="entity().description" (ngModelChange)="set(entity, 'description', $event)" [disabled]="mode === 3" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="descriptionHelp"><i class="bi bi-question"></i></button>
         <ng-template #descriptionHelp>Short description of the scope</ng-template>
       </div>
@@ -45,14 +43,16 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let operation of operations">
-          <td>{{operation.name}}</td>
-          <td>
-            <div class="form-check">
-              <input type="checkbox" name="get-{{operation.id}}" [(ngModel)]="operation.allow" [disabled]="mode === 3" class="form-check-input">
-            </div>
-          </td>
-        </tr>
+        @for (operation of operations(); track operation.id) {
+          <tr>
+            <td>{{operation.name}}</td>
+            <td>
+              <div class="form-check">
+                <input type="checkbox" name="get-{{operation.id}}" [(ngModel)]="operation.allow" [disabled]="mode === 3" class="form-check-input">
+              </div>
+            </td>
+          </tr>
+        }
         <tr>
           <td></td>
           <td>
@@ -63,9 +63,5 @@
       </table>
     </div>
   </div>
-  <div class="btn-group" role="group">
-    <ng-container *ngIf="mode === 1"><button type="button" class="btn btn-primary" (click)="doCreate(entity)">Create</button></ng-container>
-    <ng-container *ngIf="mode === 2"><button type="button" class="btn btn-primary" (click)="doUpdate(entity)">Update</button></ng-container>
-    <ng-container *ngIf="mode === 3"><button type="button" class="btn btn-danger" (click)="doDelete(entity)">Delete</button></ng-container>
-  </div>
+  <app-form-buttons [mode]="mode" (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="doList()" (onHelp)="showHelp('consumer/scope')"></app-form-buttons>
 </form>

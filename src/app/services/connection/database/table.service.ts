@@ -15,6 +15,7 @@ export class TableService extends Service<BackendDatabaseTable> {
 
   public setConnection(connection: BackendConnection): void {
     this.connection = connection;
+    this.checkConfiguration();
   }
 
   private getConnection(): string {
@@ -25,12 +26,12 @@ export class TableService extends Service<BackendDatabaseTable> {
     return '' + this.connection.id;
   }
 
-  public isConfigured(): boolean {
+  public override isConfigured(): boolean {
     return this.connection !== undefined;
   }
 
   async getAll(parameters: Array<any>): Promise<CommonCollection<BackendDatabaseTable>> {
-    return this.fusio.getClient().backend().connection().database().getTables(this.getConnection());
+    return this.fusio.getClient().backend().connection().database().getTables(this.getConnection(), ...parameters);
   }
 
   async get(id: string): Promise<BackendDatabaseTable> {

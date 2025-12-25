@@ -1,79 +1,35 @@
 
 <h1>Marketplace</h1>
 
-<fusio-message [response]="response"></fusio-message>
-
-<ul ngbNav #nav="ngbNav" [(activeId)]="selectedType" (activeIdChange)="changeTab()" class="nav-tabs">
-  <li [ngbNavItem]="'action'">
-    <button ngbNavLink>Actions</button>
-    <ng-template ngbNavContent>
-      <fusio-search [searchTerm]="actionSearch" (search)="doSearch($event)" placeholder="action" helpPath="development/marketplace/"></fusio-search>
-      <table class="table table-striped">
-        <thead>
-        <tr>
-          <th style="width:50px"></th>
-          <th style="width:90%">Name</th>
-          <th style="width:150px">Version</th>
-          <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let action of actions">
-          <td><i class="bi bi-{{ action.icon }}"></i></td>
-          <td><i class="bi bi-patch-check-fill text-primary me-1" *ngIf="action.author?.verified"></i><b>{{action.author?.name}}/{{action.name}}</b><br><small>{{action.summary}}</small></td>
-          <td>{{action.version}}</td>
-          <td>
-            <div class="btn-group" role="group">
-              <a [routerLink]="['/marketplace/', selectedType, action.author?.name, action.name]" class="btn btn-primary"><i class="bi bi-search"></i></a>
-            </div>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-      <ngb-pagination
-        [(page)]="actionPage"
-        [pageSize]="actionPageSize"
-        [collectionSize]="actionTotalResults"
-        [maxSize]="8"
-        [ellipses]="true"
-        (pageChange)="doPageChange($event)"></ngb-pagination>
-    </ng-template>
-  </li>
-  <li [ngbNavItem]="'app'">
-    <button ngbNavLink>Apps</button>
-    <ng-template ngbNavContent>
-      <fusio-search [searchTerm]="appSearch" (search)="doSearch($event)" placeholder="app" helpPath="development/marketplace/"></fusio-search>
-      <table class="table table-striped">
-        <thead>
-        <tr>
-          <th style="width:50px"></th>
-          <th style="width:90%">Name</th>
-          <th style="width:150px">Version</th>
-          <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let app of apps">
-          <td><i class="bi bi-{{ app.icon }}"></i></td>
-          <td><i class="bi bi-patch-check-fill text-primary me-1" *ngIf="app.author?.verified"></i><b>{{app.author?.name}}/{{app.name}}</b><br><small>{{app.summary}}</small></td>
-          <td>{{app.version}}</td>
-          <td>
-            <div class="btn-group" role="group">
-              <a [routerLink]="['/marketplace/', selectedType, app.author?.name, app.name]" class="btn btn-primary"><i class="bi bi-search"></i></a>
-            </div>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-      <ngb-pagination
-        [(page)]="appPage"
-        [pageSize]="appPageSize"
-        [collectionSize]="appTotalResults"
-        [maxSize]="8"
-        [ellipses]="true"
-        (pageChange)="doPageChange($event)"></ngb-pagination>
-    </ng-template>
-  </li>
-</ul>
-
-<div [ngbNavOutlet]="nav" class="mt-2"></div>
+<div class="row">
+  <div class="col-4">
+    <div class="card">
+      <div class="card-header">Bundle</div>
+      <div class="card-body">
+        <p>Browse and install bundles from the Fusio marketplace. A bundle contains action, schema, event, cronjob and
+        trigger configurations which you can install to solve specific use cases.</p>
+        <a [routerLink]="['/', 'marketplace', 'bundle']" class="btn btn-primary">Bundles</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="card">
+      <div class="card-header">App</div>
+      <div class="card-body">
+        <p>Browse and install apps from the Fusio marketplace. An app is a small javascript based app which works with the
+          Fusio API like the developer portal. By default all apps are installed under <code>public/apps</code>.</p>
+        <a [routerLink]="['/', 'marketplace', 'app']" class="btn btn-primary">Apps</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="card">
+      <div class="card-header">Submit</div>
+      <div class="card-body">
+        <p>If you want to submit bundles from your local Fusio instance to the marketplace you can create and submit
+          bundles at the following panel.</p>
+        <a [routerLink]="['/', 'bundle']" class="btn btn-primary">Submit</a>
+      </div>
+    </div>
+  </div>
+</div>

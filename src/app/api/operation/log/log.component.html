@@ -4,6 +4,7 @@
   <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
 </div>
 <div class="modal-body">
+  <fusio-message [response]="response()"></fusio-message>
   <table class="table table-striped">
     <thead>
     <tr>
@@ -13,11 +14,13 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let log of logs?.entry">
-      <td><span class="badge text-bg-dark">{{log.method}}</span></td>
-      <td>{{log.userAgent}}</td>
-      <td><a (click)="detail(log)" class="btn btn-light"><i class="bi bi-search"></i></a></td>
-    </tr>
+    @for (log of logs()?.entry; track log.id) {
+      <tr>
+        <td><span class="badge text-bg-dark">{{log.method}}</span></td>
+        <td>{{log.userAgent}}</td>
+        <td><a (click)="detail(log)" class="btn btn-light"><i class="bi bi-search"></i></a></td>
+      </tr>
+    }
     </tbody>
   </table>
 </div>

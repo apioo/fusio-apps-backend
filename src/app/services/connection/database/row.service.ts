@@ -16,6 +16,7 @@ export class RowService extends Service<BackendDatabaseRow> {
 
   public setConnection(connection: BackendConnection): void {
     this.connection = connection;
+    this.checkConfiguration();
   }
 
   private getConnection(): string {
@@ -28,6 +29,11 @@ export class RowService extends Service<BackendDatabaseRow> {
 
   public setTable(table: BackendDatabaseTable): void {
     this.table = table;
+    this.checkConfiguration();
+  }
+
+  public resetTable(): void {
+    this.table = undefined;
   }
 
   private getTable(): string {
@@ -38,7 +44,7 @@ export class RowService extends Service<BackendDatabaseRow> {
     return this.table.name || '';
   }
 
-  public isConfigured(): boolean {
+  public override isConfigured(): boolean {
     return this.connection !== undefined && this.table !== undefined;
   }
 

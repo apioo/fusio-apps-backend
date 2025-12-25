@@ -2,10 +2,12 @@
 <h1>Account</h1>
 
 <nav class="fusio-tabs">
-  <ul ngbNav [(activeId)]="active" class="nav-tabs">
-    <li [ngbNavItem]="item.title" *ngFor="let item of items">
-      <a ngbNavLink [routerLink]="item.path" class="nav-link">{{item.title}}</a>
-    </li>
+  <ul ngbNav [activeId]="active()" class="nav-tabs">
+    @for (item of items(); track $index) {
+      <li [ngbNavItem]="item.title">
+        <a ngbNavLink [routerLink]="item.path" class="nav-link">{{item.title}}</a>
+      </li>
+    }
   </ul>
 </nav>
 <div class="mt-3">

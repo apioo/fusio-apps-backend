@@ -47,7 +47,7 @@ export class NavigationService {
             },
             {
               "title": "Operation",
-              "icon": "bi-router",
+              "icon": "bi-terminal",
               "path": "/operation",
               "scope": "backend.operation"
             },
@@ -116,6 +116,12 @@ export class NavigationService {
               "icon": "bi-bug",
               "path": "/test",
               "scope": "backend.test"
+            },
+            {
+              "title": "Bundle",
+              "icon": "bi-box",
+              "path": "/bundle",
+              "scope": "backend.bundle"
             }
           ]
         },

@@ -1,63 +1,63 @@
 
 <div class="row">
   <div class="col-3">
-    <select [id]="name + '_scheme'" [name]="name + '_scheme'" [(ngModel)]="scheme" (ngModelChange)="changeScheme()" [disabled]="disabled" class="form-select">
-      <option *ngFor="let scheme of schemes" [ngValue]="scheme.key">{{scheme.value}}</option>
+    <select [id]="name() + '_scheme'" [name]="name() + '_scheme'" [ngModel]="scheme()" (ngModelChange)="scheme.set($event);changeScheme()" [disabled]="disabled()" class="form-select">
+      @for (scheme of schemes; track scheme.key) {
+        <option [ngValue]="scheme.key">{{scheme.value}}</option>
+      }
     </select>
   </div>
   <div class="col-9">
-    <ng-container [ngSwitch]="scheme">
-      <ng-container *ngSwitchCase="'schema'">
-        <fusio-form-autocomplete name="outgoing" [service]="schema" [useTilde]="true" [data]="value" (dataChange)="value = $event; changeValue()" [disabled]="disabled">
-          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="schemeHelp"><i class="bi bi-question"></i></button>
-          <ng-template #schemeHelp>Loads a schema from the internal schema store. Type a name to select a fitting schema. If you can not find a fitting schema you can also create a new schema at the schema panel.</ng-template>
-        </fusio-form-autocomplete>
-      </ng-container>
-      <ng-container *ngSwitchCase="'php+class'">
-        <div class="input-group">
-          <input type="text" [id]="name + '_value'" [name]="name + '_value'" [(ngModel)]="value" (ngModelChange)="changeValue()" [disabled]="disabled" class="form-control">
-          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="schemeHelp"><i class="bi bi-question"></i></button>
-          <ng-template #schemeHelp>Loads a schema from a PHP class i.e. <code>App.Model.MyModel</code>.</ng-template>
-        </div>
-      </ng-container>
-      <ng-container *ngSwitchCase="'http'">
-        <div class="input-group">
-          <input type="text" [id]="name + '_value'" [name]="name + '_value'" [(ngModel)]="value" (ngModelChange)="changeValue()" [disabled]="disabled" class="form-control">
-          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="schemeHelp"><i class="bi bi-question"></i></button>
-          <ng-template #schemeHelp>Loads a schema from a HTTP url.</ng-template>
-        </div>
-      </ng-container>
-      <ng-container *ngSwitchCase="'https'">
-        <div class="input-group">
-          <input type="text" [id]="name + '_value'" [name]="name + '_value'" [(ngModel)]="value" (ngModelChange)="changeValue()" [disabled]="disabled" class="form-control">
-          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="schemeHelp"><i class="bi bi-question"></i></button>
-          <ng-template #schemeHelp>Loads a schema from a HTTPS url.</ng-template>
-        </div>
-      </ng-container>
-      <ng-container *ngSwitchCase="'file'">
-        <div class="input-group">
-          <input type="text" [id]="name + '_value'" [name]="name + '_value'" [(ngModel)]="value" (ngModelChange)="changeValue()" [disabled]="disabled" class="form-control">
-          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="schemeHelp"><i class="bi bi-question"></i></button>
-          <ng-template #schemeHelp>Loads a schema from a local file.</ng-template>
-        </div>
-      </ng-container>
-      <ng-container *ngSwitchCase="'mime'">
-        <div class="input-group">
-          <select [id]="name + '_value'" [name]="name + '_value'" [(ngModel)]="value" (ngModelChange)="changeValue()" [disabled]="disabled" class="form-select">
-            <option value="application/octet-stream">application/octet-stream</option>
-            <option value="application/x-www-form-urlencoded">application/x-www-form-urlencoded</option>
-            <option value="application/json">application/json</option>
-            <option value="multipart/form-data">multipart/form-data</option>
-            <option value="text/plain">text/plain</option>
-            <option value="application/xml">application/xml</option>
-          </select>
-          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="schemeHelp"><i class="bi bi-question"></i></button>
-          <ng-template #schemeHelp>Describes the schema by content type.</ng-template>
-        </div>
-      </ng-container>
-      <ng-container *ngSwitchCase="'typehub'">
-      </ng-container>
-    </ng-container>
+    @if (scheme() === 'schema') {
+      <fusio-form-autocomplete [name]="name() + '_value'" [service]="schema" [useTilde]="true" [data]="value()" (dataChange)="value.set($event);changeValue()" [disabled]="disabled()">
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="schemeHelp"><i class="bi bi-question"></i></button>
+        <ng-template #schemeHelp>Loads a schema from the internal schema store. Type a name to select a fitting schema. If you can not find a fitting schema you can also create a new schema at the schema panel.</ng-template>
+      </fusio-form-autocomplete>
+    }
+    @else if (scheme() === 'php+class') {
+      <div class="input-group">
+        <input type="text" [id]="name() + '_value'" [name]="name() + '_value'" [ngModel]="value()" (ngModelChange)="value.set($event);changeValue()" [disabled]="disabled()" class="form-control">
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="schemeHelp"><i class="bi bi-question"></i></button>
+        <ng-template #schemeHelp>Loads a schema from a PHP class i.e. <code>App.Model.MyModel</code>.</ng-template>
+      </div>
+    }
+    @else if (scheme() === 'http') {
+      <div class="input-group">
+        <input type="text" [id]="name() + '_value'" [name]="name() + '_value'" [ngModel]="value()" (ngModelChange)="value.set($event);changeValue()" [disabled]="disabled()" class="form-control">
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="schemeHelp"><i class="bi bi-question"></i></button>
+        <ng-template #schemeHelp>Loads a schema from a HTTP url.</ng-template>
+      </div>
+    }
+    @else if (scheme() === 'https') {
+      <div class="input-group">
+        <input type="text" [id]="name() + '_value'" [name]="name() + '_value'" [ngModel]="value()" (ngModelChange)="value.set($event);changeValue()" [disabled]="disabled()" class="form-control">
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="schemeHelp"><i class="bi bi-question"></i></button>
+        <ng-template #schemeHelp>Loads a schema from a HTTPS url.</ng-template>
+      </div>
+    }
+    @else if (scheme() === 'file') {
+      <div class="input-group">
+        <input type="text" [id]="name() + '_value'" [name]="name() + '_value'" [ngModel]="value()" (ngModelChange)="value.set($event);changeValue()" [disabled]="disabled()" class="form-control">
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="schemeHelp"><i class="bi bi-question"></i></button>
+        <ng-template #schemeHelp>Loads a schema from a local file.</ng-template>
+      </div>
+    }
+    @else if (scheme() === 'mime') {
+      <div class="input-group">
+        <select [id]="name() + '_value'" [name]="name() + '_value'" [ngModel]="value()" (ngModelChange)="value.set($event);changeValue()" [disabled]="disabled()" class="form-select">
+          <option value="application/octet-stream">application/octet-stream</option>
+          <option value="application/x-www-form-urlencoded">application/x-www-form-urlencoded</option>
+          <option value="application/json">application/json</option>
+          <option value="multipart/form-data">multipart/form-data</option>
+          <option value="text/plain">text/plain</option>
+          <option value="application/xml">application/xml</option>
+        </select>
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="schemeHelp"><i class="bi bi-question"></i></button>
+        <ng-template #schemeHelp>Describes the schema by content type.</ng-template>
+      </div>
+    }
+    @else if (scheme() === 'typehub') {
+    }
   </div>
 </div>
 

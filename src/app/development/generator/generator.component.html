@@ -1,7 +1,7 @@
 
 <h1>Generator</h1>
 
-<fusio-message [response]="response"></fusio-message>
+<fusio-message [response]="response()"></fusio-message>
 
 <div class="row">
   <div class="col-xl-6">
@@ -13,7 +13,7 @@
             <label for="path" class="col-xl-2 col-form-label fw-bold">Base-Path</label>
             <div class="col-xl-10">
               <div class="input-group">
-                <input type="text" id="path" name="path" [(ngModel)]="provider.path" class="form-control">
+                <input type="text" id="path" name="path" [ngModel]="provider().path" (ngModelChange)="setPath($event)" class="form-control">
                 <button class="btn btn-outline-secondary" type="button" [ngbPopover]="basePathHelp"><i class="bi bi-question"></i></button>
                 <ng-template #basePathHelp>Base-Path of the API endpoint i.e. <code>/acme/news</code>. The provider creates all routes under this path</ng-template>
               </div>
@@ -22,14 +22,14 @@
           <div class="mb-3 row">
             <label for="scopes" class="col-xl-2 col-form-label fw-bold">Scopes</label>
             <div class="col-xl-10">
-              <app-tag-editor name="scopes" [data]="provider.scopes" (dataChange)="provider.scopes = $event"></app-tag-editor>
+              <app-tag-editor name="scopes" [data]="provider().scopes" (dataChange)="setScopes($event)"></app-tag-editor>
             </div>
           </div>
           <div class="mb-3 row">
             <label for="public" class="col-xl-2 col-form-label fw-bold">Public</label>
             <div class="col-xl-10">
               <div class="form-check form-switch">
-                <input type="checkbox" id="public" name="public" [(ngModel)]="provider.public" class="form-check-input">
+                <input type="checkbox" id="public" name="public" [ngModel]="provider().public" (ngModelChange)="setPublic($event)" class="form-check-input">
               </div>
             </div>
           </div>
@@ -37,18 +37,22 @@
             <label for="class" class="col-xl-2 col-form-label fw-bold">Class</label>
             <div class="col-xl-10">
               <div class="input-group">
-                <select id="class" name="class" [(ngModel)]="selected" (change)="loadConfig()" class="form-select">
-                  <option *ngFor="let provider of providers" [ngValue]="provider.class">{{provider.name}}</option>
+                <select id="class" name="class" [ngModel]="selected()" (ngModelChange)="selected.set($event);loadConfig()" class="form-select">
+                  @for (provider of providers(); track provider.class) {
+                    <option [ngValue]="provider.class">{{provider.name}}</option>
+                  }
                 </select>
                 <button class="btn btn-outline-secondary" type="button" [ngbPopover]="classHelp"><i class="bi bi-question"></i></button>
                 <ng-template #classHelp>Action class which gets executed. Each action can provide additional configuration parameters which are loaded if a class was selected</ng-template>
               </div>
             </div>
           </div>
-          <app-config *ngIf="form" [container]="form" [data]="provider.config" (dataChange)="provider.config = $event"></app-config>
+          @if (form(); as form) {
+            <app-config [container]="form" [data]="provider().config" (dataChange)="setConfig($event)"></app-config>
+          }
           <div class="btn-group">
-            <button type="button" class="btn btn-primary" (click)="submit()" [disabled]="response?.success === true">Execute</button>
-            <button type="button" class="btn btn-secondary" (click)="loadChangelog()" [disabled]="response?.success === true">Changelog</button>
+            <button type="button" class="btn btn-primary" (click)="submit()" [disabled]="response()?.success === true">Execute</button>
+            <button type="button" class="btn btn-secondary" (click)="loadChangelog()" [disabled]="response()?.success === true">Changelog</button>
           </div>
         </form>
       </div>
@@ -57,48 +61,56 @@
   <div class="col-xl-6 mt-3 mt-xl-0">
     <div class="card">
       <div class="card-header">Changelog</div>
-      <div class="card-body" *ngIf="changelog">
-        <table class="table">
-          <thead>
-          <tr>
-            <th>Operation</th>
-            <th>Method</th>
-            <th>Path</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr *ngFor="let operation of changelog.operations">
-            <td>{{operation.name}}</td>
-            <td><code>{{operation.httpMethod}}</code></td>
-            <td><code>{{operation.httpPath}}</code></td>
-          </tr>
-          </tbody>
-        </table>
-        <table class="table">
-          <thead>
-          <tr>
-            <th>Action</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr *ngFor="let action of changelog.actions">
-            <td>{{action.name}}</td>
-          </tr>
-          </tbody>
-        </table>
-        <table class="table">
-          <thead>
-          <tr>
-            <th>Schema</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr *ngFor="let schema of changelog.schemas">
-            <td>{{schema.name}}</td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
+      @if (changelog(); as changelog) {
+        <div class="card-body">
+          <table class="table">
+            <thead>
+            <tr>
+              <th>Operation</th>
+              <th>Method</th>
+              <th>Path</th>
+            </tr>
+            </thead>
+            <tbody>
+            @for (operation of changelog.operations; track $index) {
+              <tr>
+                <td>{{operation.name}}</td>
+                <td><code>{{operation.httpMethod}}</code></td>
+                <td><code>{{operation.httpPath}}</code></td>
+              </tr>
+            }
+            </tbody>
+          </table>
+          <table class="table">
+            <thead>
+            <tr>
+              <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            @for (action of changelog.actions; track $index) {
+              <tr>
+                <td>{{action.name}}</td>
+              </tr>
+            }
+            </tbody>
+          </table>
+          <table class="table">
+            <thead>
+            <tr>
+              <th>Schema</th>
+            </tr>
+            </thead>
+            <tbody>
+            @for (schema of changelog.schemas; track $index) {
+              <tr>
+                <td>{{schema.name}}</td>
+              </tr>
+            }
+            </tbody>
+          </table>
+        </div>
+      }
     </div>
   </div>
 </div>

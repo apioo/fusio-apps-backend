@@ -1,13 +1,12 @@
 
 <h1>Schema</h1>
 
-<fusio-message [response]="response"></fusio-message>
+<fusio-message [response]="response()"></fusio-message>
 
 <fusio-search
-  [searchTerm]="search"
-  [buttons]="[{routerLink: '/schema/designer/-/new', icon: 'bi-bag-plus'}]"
+  [searchTerm]="search()"
   (search)="doSearch(1, $event)"
-  (newClick)="router.navigate(getNewLink())"
+  (newClick)="doNew()"
   placeholder="schema"
   helpPath="api/schema/">
 </fusio-search>
@@ -19,23 +18,24 @@
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let entry of entries">
-    <td>{{entry.name}}</td>
-    <td>
-      <div class="btn-group" role="group">
-        <a [routerLink]="getDetailLink(entry.id)" class="btn btn-primary"><i class="bi bi-search"></i></a>
-        <a [routerLink]="getEditLink(entry.id)" class="btn btn-secondary"><i class="bi bi-pen"></i></a>
-        <a [routerLink]="['/', 'schema', 'designer', entry.id]" class="btn btn-secondary"><i class="bi bi-terminal"></i></a>
-        <a [routerLink]="getDeleteLink(entry.id)" class="btn btn-danger"><i class="bi bi-x"></i></a>
-      </div>
-    </td>
-  </tr>
+  @for (entry of entries(); track entry.id) {
+    <tr>
+      <td>{{entry.name}}</td>
+      <td>
+        <div class="btn-group" role="group">
+          <a (click)="doDetail(entry.id)" class="btn btn-primary"><i class="bi bi-search"></i></a>
+          <a (click)="doEdit(entry.id)" class="btn btn-secondary"><i class="bi bi-pen"></i></a>
+          <a (click)="doDelete(entry.id)" class="btn btn-danger"><i class="bi bi-x"></i></a>
+        </div>
+      </td>
+    </tr>
+  }
   </tbody>
 </table>
 <ngb-pagination
-  [(page)]="page"
-  [pageSize]="pageSize"
-  [collectionSize]="totalResults"
+  [page]="page()"
+  [pageSize]="pageSize()"
+  [collectionSize]="totalResults()"
   [maxSize]="4"
   [ellipses]="false"
-  (pageChange)="doSearch($event)"></ngb-pagination>
+  (pageChange)="doSearch($event, search())"></ngb-pagination>

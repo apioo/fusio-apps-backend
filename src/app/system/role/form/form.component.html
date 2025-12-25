@@ -1,20 +1,18 @@
 
 <h1>
-  <a [routerLink]="getListLink()">Role</a> /
-  <a [routerLink]="getDetailLink('~' + entity?.name)">{{ entity?.name }}</a> /
-  <ng-container *ngIf="mode === 1">Create</ng-container>
-  <ng-container *ngIf="mode === 2">Update</ng-container>
-  <ng-container *ngIf="mode === 3">Delete</ng-container>
+  <a (click)="doList()">Role</a> /
+  <a (click)="doDetail('~' + entity().name)">{{ entity().name }}</a> /
+  <app-form-breadcrump [mode]="mode"></app-form-breadcrump>
 </h1>
 
-<fusio-message [response]="response"></fusio-message>
+<fusio-message [response]="response()"></fusio-message>
 
-<form *ngIf="entity">
+<form>
   <div class="mb-3 row">
     <label for="name" class="col-lg-2 col-form-label fw-bold">Name</label>
     <div class="col-lg-10">
       <div class="input-group">
-        <input type="text" id="name" name="name" [(ngModel)]="entity.name" [disabled]="mode === 3" class="form-control">
+        <input type="text" id="name" name="name" [ngModel]="entity().name" (ngModelChange)="set(entity, 'name', $event)" [disabled]="mode === 3" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
         <ng-template #nameHelp>Unique name of the role</ng-template>
       </div>
@@ -23,13 +21,9 @@
   <div class="mb-3 row">
     <label for="category" class="col-lg-2 col-form-label fw-bold">Category</label>
     <div class="col-lg-10">
-      <fusio-form-autocomplete name="category" [service]="category" [data]="entity.categoryId" (dataChangeId)="entity.categoryId = $event" [disabled]="mode === 3"></fusio-form-autocomplete>
+      <fusio-form-autocomplete name="category" [service]="category" [data]="entity().categoryId" (dataChangeId)="set(entity, 'categoryId', $event)" [disabled]="mode === 3"></fusio-form-autocomplete>
     </div>
   </div>
-  <app-scope-categories [scopes]="entity.scopes" (dataChange)="entity.scopes = $event"></app-scope-categories>
-  <div class="btn-group mt-3" role="group">
-    <ng-container *ngIf="mode === 1"><button type="button" class="btn btn-primary" (click)="doCreate(entity)">Create</button></ng-container>
-    <ng-container *ngIf="mode === 2"><button type="button" class="btn btn-primary" (click)="doUpdate(entity)">Update</button></ng-container>
-    <ng-container *ngIf="mode === 3"><button type="button" class="btn btn-danger" (click)="doDelete(entity)">Delete</button></ng-container>
-  </div>
+  <app-scope-categories [scopes]="entity().scopes" (dataChange)="set(entity, 'scopes', $event)"></app-scope-categories>
+  <app-form-buttons [mode]="mode" (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="doList()" (onHelp)="showHelp('system/role')"></app-form-buttons>
 </form>

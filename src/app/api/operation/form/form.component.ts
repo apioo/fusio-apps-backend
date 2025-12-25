@@ -1,14 +1,35 @@
 import {Component} from '@angular/core';
-import {ErrorService, Form} from "ngx-fusio-sdk";
+import {ErrorService, Form, HelpService, MessageComponent} from "ngx-fusio-sdk";
 import {BackendOperation} from "fusio-sdk";
 import {OperationService} from "../../../services/operation.service";
 import {ActionService} from "../../../services/action.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {SchemaService} from "../../../services/schema.service";
+import {FormBreadcrump} from "../../../shared/form-breadcrump/form-breadcrump";
+import {FormButtons} from "../../../shared/form-buttons/form-buttons";
+import {FormsModule} from "@angular/forms";
+import {NgbPopover} from "@ng-bootstrap/ng-bootstrap";
+import {TagEditorComponent} from "../../../shared/tag-editor/tag-editor.component";
+import {OperationParametersComponent} from "../../../shared/operation-parameters/operation-parameters.component";
+import {SchemaSelectorComponent} from "../../../shared/schema-selector/schema-selector.component";
+import {OperationThrowsComponent} from "../../../shared/operation-throws/operation-throws.component";
+import {ActionSelectorComponent} from "../../../shared/action-selector/action-selector.component";
 
 @Component({
   selector: 'app-operation-modal',
   templateUrl: './form.component.html',
+  imports: [
+    FormBreadcrump,
+    MessageComponent,
+    FormButtons,
+    FormsModule,
+    NgbPopover,
+    TagEditorComponent,
+    OperationParametersComponent,
+    SchemaSelectorComponent,
+    OperationThrowsComponent,
+    ActionSelectorComponent
+  ],
   styleUrls: ['./form.component.css']
 })
 export class FormComponent extends Form<BackendOperation> {
@@ -36,7 +57,7 @@ export class FormComponent extends Form<BackendOperation> {
     {key: 205, value: 'Reset Content'},
   ]
 
-  constructor(private service: OperationService, public action: ActionService, public schema: SchemaService, route: ActivatedRoute, router: Router, error: ErrorService) {
+  constructor(private service: OperationService, private help: HelpService, public action: ActionService, public schema: SchemaService, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);
   }
 
@@ -45,17 +66,26 @@ export class FormComponent extends Form<BackendOperation> {
   }
 
   public isDisabled(): boolean {
-    if (!this.entity) {
+    const entity = this.entity();
+    if (!entity) {
       return false;
     }
 
-    return this.mode === 3 || (this.entity.stability === 2 || this.entity.stability === 3);
+    return this.mode === 3 || (entity.stability === 2 || entity.stability === 3);
   }
 
   changeHttpMethod(): void {
-    if (this.entity && this.entity.incoming && (this.entity.httpMethod === 'GET' || this.entity.httpMethod === 'DELETE')) {
-      delete this.entity.incoming;
+    const entity = this.entity();
+    if (entity && entity.incoming && (entity.httpMethod === 'GET' || entity.httpMethod === 'DELETE')) {
+      this.entity.update((operation) => {
+        delete operation.incoming;
+        return operation;
+      });
     }
+  }
+
+  showHelp(path: string) {
+    this.help.showDialog(path);
   }
 
 }

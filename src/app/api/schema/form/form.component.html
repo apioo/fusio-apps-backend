@@ -1,36 +1,30 @@
 
 <h1>
-  <a [routerLink]="getListLink()">Schema</a> /
-  <a [routerLink]="getDetailLink('~' + entity?.name)">{{ entity?.name }}</a> /
-  <ng-container *ngIf="mode === 1">Create</ng-container>
-  <ng-container *ngIf="mode === 2">Update</ng-container>
-  <ng-container *ngIf="mode === 3">Delete</ng-container>
+  <a (click)="doList()">Schema</a> /
+  <a (click)="doDetail('~' + entity().name)">{{ entity().name }}</a> /
+  <app-form-breadcrump [mode]="mode"></app-form-breadcrump>
 </h1>
 
-<fusio-message [response]="response"></fusio-message>
+<fusio-message [response]="response()"></fusio-message>
 
-<form *ngIf="entity">
+<form>
   <div class="mb-3 row">
     <label for="name" class="col-lg-2 col-form-label fw-bold">Name</label>
     <div class="col-lg-10">
       <div class="input-group">
-        <input type="text" id="name" name="name" [(ngModel)]="entity.name" [disabled]="mode === 3" class="form-control">
+        <input type="text" id="name" name="name" [ngModel]="entity().name" (ngModelChange)="set(entity, 'name', $event)" [disabled]="mode === 3" class="form-control">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
         <ng-template #nameHelp>Unique name of the schema</ng-template>
       </div>
     </div>
   </div>
-  <div class="mb-3 row">
-    <label class="col-lg-2 col-form-label fw-bold">Schema</label>
-    <div class="col-lg-10">
-      <div style="height:500px;border:1px solid #ced4da">
-        <ngx-monaco-editor style="height:100%" name="schema" [options]="{theme: 'vs-light', language: 'json', readOnly: mode === 3}" [(ngModel)]="schema" [disabled]="mode === 3"></ngx-monaco-editor>
+  @if (spec(); as specification) {
+    <div class="mb-3 row">
+      <label class="col-lg-2 col-form-label fw-bold">Schema</label>
+      <div class="col-lg-10">
+        <typeschema-editor [specification]="specification" [importEnabled]="true" (change)="spec.set($event)"></typeschema-editor>
       </div>
     </div>
-  </div>
-  <div class="btn-group" role="group">
-    <ng-container *ngIf="mode === 1"><button type="button" class="btn btn-primary" (click)="doCreate(entity)">Create</button></ng-container>
-    <ng-container *ngIf="mode === 2"><button type="button" class="btn btn-primary" (click)="doUpdate(entity)">Update</button></ng-container>
-    <ng-container *ngIf="mode === 3"><button type="button" class="btn btn-danger" (click)="doDelete(entity)">Delete</button></ng-container>
-  </div>
+  }
+  <app-form-buttons [mode]="mode" (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="doList()" (onHelp)="showHelp('api/schema')"></app-form-buttons>
 </form>
