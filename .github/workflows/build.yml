@@ -20,4 +20,4 @@ jobs:
         with:
           name: fusio
           include-hidden-files: true
-          path: dist/fusio
+          path: dist/fusio/browser
