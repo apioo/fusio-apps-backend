@@ -43,7 +43,7 @@ export class ListComponent implements OnInit {
       if (value !== null && value !== undefined) {
         query.push(value);
       } else {
-        query.push('');
+        query.push(undefined);
       }
     });
 
@@ -94,6 +94,15 @@ export class ListComponent implements OnInit {
   }, {
     name: 'User registrations',
     value: StatisticType.user_registrations
+  }, {
+    name: 'Requests per IP',
+    value: StatisticType.requests_per_ip
+  }, {
+    name: 'Requests per operation',
+    value: StatisticType.requests_per_operation
+  }, {
+    name: 'Requests per user',
+    value: StatisticType.requests_per_user
   }];
 
   constructor(private fusio: ApiService, private help: HelpService, private route: ActivatedRoute, private router: Router, private modalService: NgbModal) { }
@@ -108,17 +117,17 @@ export class ListComponent implements OnInit {
 
     this.route.queryParams.subscribe(async params => {
       this.filter.set([
-        params['from'] || '',
-        params['to'] || '',
-        params['operation'] || '',
-        params['app'] || '',
-        params['user'] || '',
-        params['ip'] || '',
-        params['userAgent'] || '',
-        params['method'] || '',
-        params['path'] || '',
-        params['header'] || '',
-        params['body'] || '',
+        params['from'],
+        params['to'],
+        params['operation'],
+        params['app'],
+        params['user'],
+        params['ip'],
+        params['userAgent'],
+        params['method'],
+        params['path'],
+        params['header'],
+        params['body'],
       ]);
       this.doFilter();
     });
@@ -177,6 +186,18 @@ export class ListComponent implements OnInit {
       const response = await this.fusio.getClient().backend().statistic().getUserRegistrations(...this.collectionQuery());
       this.chart.set(Converter.convertChart(response));
       this.pieChart.set(undefined);
+    } else if (this.statistic() === StatisticType.requests_per_ip) {
+      const response = await this.fusio.getClient().backend().statistic().getRequestsPerIP(...this.collectionQuery());
+      this.chart.set(Converter.convertChart(response));
+      this.pieChart.set(undefined);
+    } else if (this.statistic() === StatisticType.requests_per_operation) {
+      const response = await this.fusio.getClient().backend().statistic().getRequestsPerOperation(...this.collectionQuery());
+      this.chart.set(Converter.convertChart(response));
+      this.pieChart.set(undefined);
+    } else if (this.statistic() === StatisticType.requests_per_user) {
+      const response = await this.fusio.getClient().backend().statistic().getRequestsPerUser(...this.collectionQuery());
+      this.chart.set(Converter.convertChart(response));
+      this.pieChart.set(undefined);
     }
   }
 
@@ -208,8 +229,10 @@ export class ListComponent implements OnInit {
     });
   }
 
-  selectStatistic(statistic: string) {
-    this.router.navigate(['/statistic/' + statistic]);
+  async selectStatistic(statistic: string) {
+    this.router.navigate(['/statistic/' + statistic]).then(() => {
+      this.doFilter();
+    });
   }
 
   showHelp(path: string) {
@@ -246,4 +269,7 @@ enum StatisticType {
   time_per_operation = 'time_per_operation',
   used_points = 'used_points',
   user_registrations = 'user_registrations',
+  requests_per_ip = 'requests_per_ip',
+  requests_per_operation = 'requests_per_operation',
+  requests_per_user = 'requests_per_user',
 }
