@@ -41,11 +41,11 @@ export class Connection extends List<BackendConnection> {
     if (this.lang() === 'java') {
       let variable = 'var client';
       if (connection.class === 'Fusio.Impl.Connection.System' || connection.class === 'Fusio.Adapter.Sql.Connection.Sql' || connection.class === 'Fusio.Adapter.Sql.Connection.SqlAdvanced') {
-        variable = 'var connection';
+        variable = 'def connection';
       } else if (connection.class === 'Fusio.Adapter.Http.Connection.Http') {
-        variable = 'var httpClient';
+        variable = 'def httpClient';
       } else if (connection.class === 'Fusio.Adapter.File.Connection.Filesystem') {
-        variable = 'var filesystem';
+        variable = 'def filesystem';
       }
 
       return variable + ' = connector.getConnection("' + connection.name + '");';
