@@ -1,0 +1,8 @@
+version: '3'
+services:
+  backend:
+    image: fusio/apps-backend
+    environment:
+      API_URL: "https://demo.fusio-project.org"
+    ports:
+      - "8080:80"
