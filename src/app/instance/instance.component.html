@@ -1,9 +1,9 @@
 
 <div class="fusio-instance" style="z-index:1001">
-  @if (instances.length === 0) {
+  @if (instances().length === 0) {
     <div class="alert alert-info">Create and select a Fusio instance.</div>
   }
-  @for (instance of instances; track $index) {
+  @for (instance of instances(); track $index) {
     <div class="list-group">
       <button class="list-group-item list-group-item-action rounded-0 text-nowrap overflow-hidden" (click)="selectInstance($index)" [ngClass]="{'active': getActiveIndex() === $index}">{{ instance.host }}</button>
     </div>

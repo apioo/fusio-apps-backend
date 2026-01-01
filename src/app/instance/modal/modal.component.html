@@ -6,8 +6,8 @@
   <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
 </div>
 <div class="modal-body">
-  @if (error) {
-    <div class="alert alert-danger">{{ error }}</div>
+  @if (error()) {
+    <div class="alert alert-danger">{{ error() }}</div>
   }
   @if (instance) {
     <form>

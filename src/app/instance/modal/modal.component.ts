@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, signal} from '@angular/core';
 import {NgbActiveModal, NgbPopover} from "@ng-bootstrap/ng-bootstrap";
 import {Instance} from "../../instance-manager";
 import {ConsumerUserJWT, ConsumerUserLogin, SystemAbout} from "fusio-sdk";
@@ -17,7 +17,7 @@ import {FormsModule} from "@angular/forms";
 export class ModalComponent implements OnInit {
 
   instance?: Instance;
-  error?: string;
+  error = signal<string|undefined>(undefined);
 
   constructor(public modal: NgbActiveModal, private httpClient: HttpClient) {
   }
@@ -32,16 +32,16 @@ export class ModalComponent implements OnInit {
   }
 
   submit() {
-    this.error = undefined;
+    this.error.set(undefined);
 
     const url = this.instance?.url;
     if (!url) {
-      this.error = 'Provided no url';
+      this.error.set('Provided no url');
       return;
     }
 
     if (!URL.canParse(url)) {
-      this.error = 'Provided an invalid url: ' + url;
+      this.error.set('Provided an invalid url: ' + url);
       return;
     }
 
@@ -49,7 +49,7 @@ export class ModalComponent implements OnInit {
       next: (about) => {
         const apiVersion = about.apiVersion;
         if (!apiVersion || apiVersion.indexOf('.') === -1) {
-          this.error = 'It looks like the provided url is not a Fusio instance';
+          this.error.set('It looks like the provided url is not a Fusio instance');
           return;
         }
 
@@ -64,21 +64,21 @@ export class ModalComponent implements OnInit {
             this.httpClient.post<ConsumerUserJWT>(link.href + 'consumer/login', payload).subscribe({
               next: (token) => {
                 if (!token.token) {
-                  this.error = 'Could not obtain token for provided username and password';
+                  this.error.set('Could not obtain token for provided username and password');
                   return;
                 }
 
                 this.modal.close(this.instance);
               },
               error: (error: HttpErrorResponse) => {
-                this.error = 'Could not obtain token for provided username and password' + (error.status > 0 ? ', got: ' + error.status : '');
+                this.error.set('Could not obtain token for provided username and password' + (error.status > 0 ? ', got: ' + error.status : ''));
               }
             });
           }
         });
       },
       error: (error: HttpErrorResponse) => {
-        this.error = 'It looks like the provided url is not a Fusio instance' + (error.status > 0 ? ', got: ' + error.status : '');
+        this.error.set('It looks like the provided url is not a Fusio instance' + (error.status > 0 ? ', got: ' + error.status : ''));
       }
     });
   }

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, signal} from '@angular/core';
 import {ApiService} from "../api.service";
 import {ConfigService, Mode, UserService} from "ngx-fusio-sdk";
 import {Router} from "@angular/router";
@@ -18,7 +18,7 @@ import {NgClass} from "@angular/common";
 })
 export class InstanceComponent implements OnInit {
 
-  instances: Array<Instance> = []
+  instances = signal<Array<Instance>>([]);
 
   constructor(private fusio: ApiService, private user: UserService, private config: ConfigService, private router: Router, private modalService: NgbModal) {
   }
@@ -28,7 +28,7 @@ export class InstanceComponent implements OnInit {
   }
 
   loadInstances(): void {
-    this.instances = InstanceManager.getInstances();
+    this.instances.set(InstanceManager.getInstances());
   }
 
   getActiveIndex(): number|null {

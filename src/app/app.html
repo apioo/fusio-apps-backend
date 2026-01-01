@@ -5,10 +5,7 @@
 
 @if (hasActiveInstance() || hasUrl()) {
   <app-navigation [hasInstance]="!hasUrl()"></app-navigation>
-}
-
-@if (hasActiveInstance() || hasUrl()) {
-  <div class="fusio-container" [ngClass]="{'fusio-container-instance': !hasUrl}">
+  <div class="fusio-container" [ngClass]="{'fusio-container-instance': !hasUrl()}">
     <div class="container-fluid">
       <div class="row">
         <div class="col">
