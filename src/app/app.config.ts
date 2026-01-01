@@ -6,6 +6,7 @@ import {
 } from '@angular/core';
 import {provideRouter} from '@angular/router';
 import {provideHttpClient, withFetch} from "@angular/common/http";
+import {PathLocationStrategy} from "@angular/common";
 import {ApiService} from "./api.service";
 
 import {routes} from './app.routes';
@@ -37,9 +38,10 @@ export const appConfig: ApplicationConfig = {
       provide: NGX_MONACO_EDITOR_CONFIG,
       useFactory: () => {
         const api = inject(ApiService);
+        const location = inject(PathLocationStrategy);
 
         return {
-          baseUrl: window.location.origin + '/assets/monaco/min/vs',
+          baseUrl: window.location.origin + location.getBaseHref() + 'assets/monaco/min/vs',
           onMonacoLoad: () => {
             const monaco = (<any>window).monaco;
             monaco.languages.registerCompletionItemProvider('java', new JavaCompletion(api))
