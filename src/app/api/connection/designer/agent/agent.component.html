@@ -1,0 +1,119 @@
+
+<h1>
+  <a [routerLink]="['/', 'connection']">Connection</a> /
+  <a [routerLink]="['/', 'connection', selectedConnection()?.id]">{{selectedConnection()?.name}}</a> /
+  Agent
+</h1>
+
+<fusio-message [response]="response()"></fusio-message>
+
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link" [ngClass]="{'active': intent() !== 'action' && intent() !== 'schema'}" [routerLink]="['/', 'connection', selectedConnection()?.id, 'agent']">General</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" [ngClass]="{'active': intent() === 'action'}" [routerLink]="['/', 'connection', selectedConnection()?.id, 'agent', 'action']">Action</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" [ngClass]="{'active': intent() === 'schema'}" [routerLink]="['/', 'connection', selectedConnection()?.id, 'agent', 'schema']">Schema</a>
+  </li>
+</ul>
+
+
+<div class="row">
+  <div class="col-xl-6">
+    <div style="max-width:1024px">
+      @if (messages().length === 0) {
+        <div class="text-center p-4 fw-bold">
+          @if (intent() === 'action') {
+            Describe the business logic of a new action.
+          }
+          @else if (intent() === 'schema') {
+            Describe the structure of a new schema.
+          }
+          @else {
+            Ask anything about your Fusio instance.
+          }
+        </div>
+      }
+
+      @for (message of messages(); track message.id) {
+        @if (message.origin === 1) {
+          <div class="bg-light p-3 rounded-4 mb-2">
+            @if (message.message.type === 'text') {
+              {{message.message.content}}
+            }
+            @else if (message.message.type === 'object') {
+              <pre><code [highlight]="message.message.payload|json" language="json"></code></pre>
+            }
+            @else {
+              <pre>{{message.message|json}}</pre>
+            }
+          </div>
+        }
+        @else {
+          <div class="mb-2">
+            @if (message.message.type === 'text') {
+              <markdown [data]="message.message.content"></markdown>
+            }
+            @else if (message.message.type === 'object') {
+              @if (intent() === 'action') {
+                <div class="d-grid">
+                  <button class="btn btn-primary" type="button" (click)="loadAction(message.message.payload)">Load generated code ({{(message.message.payload|json).length}})</button>
+                </div>
+              }
+              @else if (intent() === 'schema') {
+                <pre>{{message.message|json}}</pre>
+              }
+              @else {
+                <pre>{{message.message|json}}</pre>
+              }
+            }
+            @else {
+              <pre>{{message.message|json}}</pre>
+            }
+          </div>
+        }
+      }
+      <div id="messages-bottom"></div>
+      <div class="sticky-bottom p-2 mt-3 bg-light">
+        @if (loading()) {
+          <div class="spinner-grow mb-3" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        }
+        <form (submit)="doSend()">
+          <div class="mb-3">
+            <textarea id="input" name="input" [ngModel]="input()" (ngModelChange)="input.set($event)" placeholder="Send a message ..." class="form-control" rows="6"></textarea>
+          </div>
+          <div class="btn-group mt-3">
+            <button class="btn btn-primary" (click)="doSend()">Send</button>
+            <button class="btn btn-danger" (click)="doReset()">Reset</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-6">
+    @if (intent() === 'action' && action()) {
+      <input type="text" id="action-name" name="action-name" [ngModel]="action()?.name" [disabled]="true" class="form-control mb-3">
+      <div style="width:100%;height:500px;border:1px solid #ced4da">
+        <ngx-monaco-editor [ngModel]="code()" (ngModelChange)="code.set($event)" [options]="{theme: 'vs-light', language: 'php', readOnly: false}" id="action-code" name="action-code" style="height:100%"></ngx-monaco-editor>
+      </div>
+      <div class="btn-group mt-3">
+        <button class="btn btn-primary" type="button" (click)="executeAction()" [disabled]="actionLoading()">
+          @if (actionLoading()) {
+            <span class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span>
+            <span role="status">Executing ...</span>
+          }
+          @else {
+            <span role="status">Execute</span>
+          }
+        </button>
+      </div>
+      @if (actionResponse(); as actionResponse) {
+        <app-action-designer-response [response]="actionResponse"></app-action-designer-response>
+      }
+    }
+  </div>
+</div>

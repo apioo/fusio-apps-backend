@@ -18,6 +18,7 @@ import {JavaCompletion} from "./editor/java-completion";
 import {PHPCompletion} from "./editor/php-completion";
 import {JavascriptCompletion} from "./editor/javascript-completion";
 import {PythonCompletion} from "./editor/python-completion";
+import {provideHighlightOptions} from "ngx-highlightjs";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -26,6 +27,20 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(withFetch()),
     provideMarkdown(),
+    provideHighlightOptions({
+      coreLibraryLoader: () => import('highlight.js/lib/core'),
+      lineNumbersLoader: () => import('ngx-highlightjs/line-numbers'),
+      languages: {
+        go: () => import('highlight.js/lib/languages/go'),
+        java: () => import('highlight.js/lib/languages/java'),
+        javascript: () => import('highlight.js/lib/languages/javascript'),
+        json: () => import('highlight.js/lib/languages/json'),
+        php: () => import('highlight.js/lib/languages/php'),
+        python: () => import('highlight.js/lib/languages/python'),
+        typescript: () => import('highlight.js/lib/languages/typescript'),
+        xml: () => import('highlight.js/lib/languages/xml')
+      },
+    }),
     {
       provide: SDK,
       useExisting: ApiService

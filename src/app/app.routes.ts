@@ -108,6 +108,7 @@ import {ListComponent as AuditList} from "./system/audit/list/list.component";
 import {DetailComponent as AuditDetail} from "./system/audit/detail/detail.component";
 import {ListComponent as BackupList} from "./system/backup/list/list.component";
 import {ListComponent as TrashList} from "./system/trash/list/list.component";
+import {AgentComponent} from "./api/connection/designer/agent/agent.component";
 
 export const routes: Routes = [
   { path: '', component: DashboardList, canActivate: [isAuthenticated] },
@@ -131,6 +132,8 @@ export const routes: Routes = [
       { path: ':connection/filesystem', component: FilesystemComponent, canActivate: [isAuthenticated] },
       { path: ':connection/http', component: HttpComponent, canActivate: [isAuthenticated] },
       { path: ':connection/sdk', component: SdkComponent, canActivate: [isAuthenticated] },
+      { path: ':connection/agent', component: AgentComponent, canActivate: [isAuthenticated] },
+      { path: ':connection/agent/:intent', component: AgentComponent, canActivate: [isAuthenticated] },
     ] },
   { path: 'event', canActivate: [isAuthenticated], children: EntityRoute.getAll(EventList, EventDetail, EventForm) },
   { path: 'cronjob', canActivate: [isAuthenticated], children: EntityRoute.getAll(CronjobList, CronjobDetail, CronjobForm) },
