@@ -37,7 +37,7 @@
     "apexcharts": "^5.0.0",
     "bootstrap": "^5.3.0",
     "bootstrap-icons": "^1.10.5",
-    "fusio-sdk": "^6.4.0",
+    "fusio-sdk": "^6.4.1",
     "marked": "^16.0.0",
     "monaco-editor": "^0.52.0",
     "ngx-apexcharts": "^0.8.0",

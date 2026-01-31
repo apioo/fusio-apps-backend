@@ -3,8 +3,11 @@ import {ErrorService, MessageComponent} from "ngx-fusio-sdk";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {ApiService} from "../../../../api.service";
 import {ConnectionService} from "../../../../services/connection.service";
-import {BackendAction, BackendActionExecuteResponse, BackendConnection, BackendSchema, CommonMessage} from "fusio-sdk";
-import {TypeschemaEditorModule} from "ngx-typeschema-editor";
+import {
+  BackendAction, BackendActionExecuteResponse,
+  BackendActionExecuteResponseBody, BackendConnection, BackendSchema, CommonMessage
+} from "fusio-sdk";
+import {ImportService, Specification, TypeschemaEditorModule} from "ngx-typeschema-editor";
 import {HttpClient} from "@angular/common/http";
 import {JsonPipe, NgClass} from "@angular/common";
 import {FormsModule} from "@angular/forms";
@@ -32,15 +35,6 @@ import {Response} from "../../../action/designer/response/response";
 })
 export class AgentComponent implements OnInit {
 
-  options = {
-    headers: {
-      Authorization: 'Bearer '
-    },
-    params: {
-      intent: ''
-    }
-  };
-
   selectedConnection = signal<BackendConnection|undefined>(undefined);
 
   intent = signal<string>('general');
@@ -50,13 +44,19 @@ export class AgentComponent implements OnInit {
   response = signal<CommonMessage|undefined>(undefined);
 
   action = signal<BackendAction|undefined>(undefined);
-  code = signal<string>('');
   actionResponse = signal<BackendActionExecuteResponse|undefined>(undefined);
   actionLoading = signal<boolean>(false);
+  code = signal<string>('');
 
   schema = signal<BackendSchema|undefined>(undefined);
+  schemaLoading = signal<boolean>(false);
+  spec = signal<Specification>({
+    imports: [],
+    operations: [],
+    types: []
+  });
 
-  constructor(private api: ApiService, private connection: ConnectionService, private route: ActivatedRoute, private error: ErrorService, private httpClient: HttpClient) {
+  constructor(private api: ApiService, private connection: ConnectionService, private importService: ImportService, private route: ActivatedRoute, private error: ErrorService, private httpClient: HttpClient) {
   }
 
   async ngOnInit(): Promise<void> {
@@ -81,7 +81,7 @@ export class AgentComponent implements OnInit {
     });
   }
 
-  doSend() {
+  async doSend() {
     const message = this.input();
     if (!message) {
       return;
@@ -89,13 +89,10 @@ export class AgentComponent implements OnInit {
 
     const intent = this.intent();
 
-    const body = {
-      intent: intent,
-      input: {
-        type: 'text',
-        content: message,
-      }
-    };
+    const connectionId = this.selectedConnection()?.id;
+    if (!connectionId) {
+      return;
+    }
 
     this.messages.update((messages) => {
       messages.push({
@@ -108,80 +105,88 @@ export class AgentComponent implements OnInit {
       return messages;
     });
 
+    this.input.set('');
     this.loading.set(true);
 
-    this.httpClient.post<any>(this.api.getBaseUrl() + '/backend/connection/' + this.selectedConnection()?.id + '/agent', body, this.options).subscribe({
-      next: (response) => {
-        this.loading.set(false);
+    try {
+      const response = await this.api.getClient().backend().connection().agent().send('' + connectionId, {
+        intent: intent,
+        input: {
+          type: 'text',
+          content: message,
+        }
+      });
 
+      const output = response.output;
+      if (output) {
         if (intent === 'action') {
-          const action = this.parseJsonResponse<BackendAction>(response.output);
-          if (action) {
-            this.loadAction(action);
+          if (output.type === 'text' && output.content) {
+            this.loadAction(output.content);
           }
         } else if (intent === 'schema') {
-          const schema = this.parseJsonResponse<BackendSchema>(response.output);
-          if (schema) {
-            this.loadSchema(schema);
+          if (output.type === 'object' && output.payload) {
+            await this.loadSchema(output.payload);
           }
         }
 
         this.messages.update((messages) => {
           messages.push({
             origin: 2,
-            message: response.output,
+            message: output,
           });
           return messages;
         });
 
         this.scrollToBottom();
-      },
-      error: (err) => {
-        this.loading.set(false);
-        this.response.set(this.error.convert(err));
       }
-    });
-
-    this.input.set('');
-  }
-
-  load() {
-    const options = this.options;
-    options.params = {
-      intent: this.intent()
+    } catch (error) {
+      this.response.set(this.error.convert(error));
     }
 
-    this.httpClient.get<any>(this.api.getBaseUrl() + '/backend/connection/' + this.selectedConnection()?.id + '/agent', options).subscribe({
-      next: (response) => {
-        this.loading.set(false);
-        this.messages.set(response.entry || []);
-
-        this.scrollToBottom();
-      },
-      error: (err) => {
-        this.loading.set(false);
-        this.response.set(this.error.convert(err));
-      }
-    });
+    this.loading.set(false);
+    this.actionResponse.set(undefined);
+    this.actionLoading.set(false);
   }
 
-  doReset() {
-    this.httpClient.delete<any>(this.api.getBaseUrl() + '/backend/connection/' + this.selectedConnection()?.id + '/agent', this.options).subscribe({
-      next: (response) => {
-        this.loading.set(false);
-        this.response.set(response);
-        this.resetAction();
-        this.resetSchema();
-        this.load();
-      },
-      error: (err) => {
-        this.loading.set(false);
-        this.response.set(this.error.convert(err));
-        this.resetAction();
-        this.resetSchema();
-        this.load();
-      }
-    });
+  async load() {
+    const intent = this.intent();
+
+    const connectionId = this.selectedConnection()?.id;
+    if (!connectionId) {
+      return;
+    }
+
+    try {
+      const collection = await this.api.getClient().backend().connection().agent().get('' + connectionId, intent);
+
+      this.loading.set(false);
+      this.messages.set(collection.entry || []);
+
+      this.scrollToBottom();
+    } catch (error) {
+      this.loading.set(false);
+      this.response.set(this.error.convert(error));
+    }
+  }
+
+  async doReset() {
+    const connectionId = this.selectedConnection()?.id;
+    if (!connectionId) {
+      return;
+    }
+
+    try {
+      const response = await this.api.getClient().backend().connection().agent().reset('' + connectionId);
+
+      this.response.set(response);
+    } catch (error) {
+      this.response.set(this.error.convert(error));
+    }
+
+    this.loading.set(false);
+    this.resetAction();
+    this.resetSchema();
+    this.load();
   }
 
   scrollToBottom(): void {
@@ -193,15 +198,20 @@ export class AgentComponent implements OnInit {
     }, 500);
   }
 
-  loadAction(action: BackendAction) {
-    this.action.set(action);
+  loadAction(content: string) {
+    const name = this.extractName(content);
+    const code = this.extractCode(content);
 
-    if (action.config) {
-      const code = action.config['code'];
-      if (typeof code === 'string') {
-        this.code.set(code);
-      }
-    }
+    const action: BackendAction = {
+      name: name,
+      class: 'Fusio.Adapter.Worker.Action.WorkerPHPLocal',
+      config: {
+        code: code
+      },
+    };
+
+    this.action.set(action);
+    this.code.set(code);
   }
 
   async executeAction() {
@@ -253,29 +263,108 @@ export class AgentComponent implements OnInit {
 
   resetAction() {
     this.action.set(undefined);
-    this.code.set('');
     this.actionResponse.set(undefined);
     this.actionLoading.set(false);
+    this.code.set('');
   }
 
-  loadSchema(schema: BackendSchema) {
+  async loadSchema(schema: BackendSchema) {
     this.schema.set(schema);
+
+    if (schema.source) {
+      const spec = await this.importService.transform('typeschema', JSON.stringify(schema.source))
+
+      this.spec.set(spec);
+    }
+  }
+
+  async saveSchema() {
+    const schema = this.schema();
+    if (!schema) {
+      return;
+    }
+
+    const name = schema.name;
+    if (!name) {
+      return;
+    }
+
+    this.schemaLoading.set(true);
+
+    try {
+      let existing: BackendSchema|undefined = undefined;
+      try {
+        existing = await this.api.getClient().backend().schema().get('~' + name);
+      } catch (error) {
+        // action does not exist
+      }
+
+      let response: CommonMessage;
+      if (existing) {
+        response = await this.api.getClient().backend().schema().update('' + existing.id, existing);
+      } else {
+        response = await this.api.getClient().backend().schema().create(schema);
+      }
+
+      this.response.set(response);
+    } catch (error) {
+      this.response.set(this.error.convert(error));
+    }
+
+    this.schemaLoading.set(false);
   }
 
   resetSchema() {
     this.schema.set(undefined);
+    this.schemaLoading.set(false);
+    this.spec.set({
+      imports: [],
+      operations: [],
+      types: []
+    });
   }
 
-  private parseJsonResponse<T>(output: any): T|undefined {
-    if (output.type === 'object' && typeof output.payload === 'object') {
-      return output.payload;
+  private extractName(content: string): string {
+    const result = content.match(/Action: ([A-Za-z0-9-]+)/im);
+    if (!result) {
+      return '';
     }
 
-    return undefined;
+    return result[1] || '';
   }
 
-  submit() {
+  private extractCode(content: string): string {
+    let captured = false;
+    let code = '';
 
+    const lines = content.split("\n");
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      if (line === '<?php') {
+        captured = true;
+      }
+
+      if (captured) {
+        code+= line + "\n";
+      }
+
+      if (line === '};') {
+        break;
+      }
+    }
+
+    return code;
+  }
+
+  getErrorMessage(response: BackendActionExecuteResponseBody): string|null {
+    if (response['success'] === false && response['title'] && response['message']) {
+      let message = 'Try to fix the following error:' + "\n";
+      message+= 'Error: ' + response['title'] + "\n";
+      message+= 'Message: ' + response['message'] + "\n";
+      return message;
+    }
+
+    return null;
   }
 
 }

@@ -54,16 +54,20 @@
         @else {
           <div class="mb-2">
             @if (message.message.type === 'text') {
-              <markdown [data]="message.message.content"></markdown>
-            }
-            @else if (message.message.type === 'object') {
               @if (intent() === 'action') {
                 <div class="d-grid">
-                  <button class="btn btn-primary" type="button" (click)="loadAction(message.message.payload)">Load generated code ({{(message.message.payload|json).length}})</button>
+                  <button class="btn btn-primary" type="button" (click)="loadAction(message.message.content)">Generated code ({{message.message.content.length}} chars)</button>
                 </div>
               }
-              @else if (intent() === 'schema') {
-                <pre>{{message.message|json}}</pre>
+              @else {
+                <markdown [data]="message.message.content"></markdown>
+              }
+            }
+            @else if (message.message.type === 'object') {
+              @if (intent() === 'schema') {
+                <div class="d-grid">
+                  <button class="btn btn-primary" type="button" (click)="loadSchema(message.message.payload)">Generated schema ({{(message.message.payload|json).length}} chars)</button>
+                </div>
               }
               @else {
                 <pre>{{message.message|json}}</pre>
@@ -82,7 +86,7 @@
             <span class="visually-hidden">Loading...</span>
           </div>
         }
-        <form (submit)="doSend()">
+        <form>
           <div class="mb-3">
             <textarea id="input" name="input" [ngModel]="input()" (ngModelChange)="input.set($event)" placeholder="Send a message ..." class="form-control" rows="6"></textarea>
           </div>
@@ -113,7 +117,27 @@
       </div>
       @if (actionResponse(); as actionResponse) {
         <app-action-designer-response [response]="actionResponse"></app-action-designer-response>
+        @if (actionResponse.statusCode === 500 && actionResponse.body && getErrorMessage(actionResponse.body); as errorMessage) {
+          <div class="btn-group mb-3">
+            <button class="btn btn-primary" (click)="input.set(errorMessage);doSend();">Fix</button>
+          </div>
+        }
       }
+    }
+    @if (intent() === 'schema' && schema()) {
+      <input type="text" id="schema-name" name="schema-name" [ngModel]="schema()?.name" [disabled]="true" class="form-control mb-3">
+      <typeschema-editor [specification]="spec()" [readonly]="true"></typeschema-editor>
+      <div class="btn-group mt-3 mb-3">
+        <button class="btn btn-primary" type="button" (click)="saveSchema()" [disabled]="schemaLoading()">
+          @if (schemaLoading()) {
+            <span class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span>
+            <span role="status">Saving ...</span>
+          }
+          @else {
+            <span role="status">Save</span>
+          }
+        </button>
+      </div>
     }
   </div>
 </div>
