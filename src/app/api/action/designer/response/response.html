@@ -1,0 +1,13 @@
+
+<div class="row mt-3 mb-3">
+  <div class="col-md-12">
+    <div class="card">
+      @if (response().statusCode; as statusCode) {
+        <div class="card-header" [ngClass]="{'text-bg-success': statusCode >= 200 && statusCode < 300, 'text-bg-warning': statusCode >= 400 && statusCode < 500, 'text-bg-danger': statusCode >= 500 && statusCode < 600}">Response @if (statusCode > 0) {<span> - {{statusCode}}</span>}</div>
+      }
+      <div class="card-body">
+        <pre>{{ response().body|json }}</pre>
+      </div>
+    </div>
+  </div>
+</div>

@@ -23,6 +23,8 @@ export class LinkService {
       return ['/', 'connection', '' + connection.id, 'http'];
     } else if (connection.class?.startsWith('Fusio.Adapter.SdkFabric.Connection.')) {
       return ['/', 'connection', '' + connection.id, 'sdk'];
+    } else if (['Fusio.Adapter.Ai.Connection.Agent'].includes(connection.class)) {
+      return ['/', 'connection', '' + connection.id, 'agent'];
     }
 
     return [];

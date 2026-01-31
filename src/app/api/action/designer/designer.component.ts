@@ -16,6 +16,7 @@ import {NgbOffcanvas} from "@ng-bootstrap/ng-bootstrap";
 import {JsonPipe, NgClass} from "@angular/common";
 import {Request} from "../request/request";
 import {Editor} from "./editor/editor";
+import {Response} from "./response/response";
 
 @Component({
   selector: 'app-action-designer',
@@ -25,8 +26,7 @@ import {Editor} from "./editor/editor";
     MessageComponent,
     ConfigComponent,
     FormsModule,
-    NgClass,
-    JsonPipe,
+    Response,
     Editor
   ],
   styleUrls: ['./designer.component.css']
