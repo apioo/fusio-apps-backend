@@ -4,7 +4,7 @@ import {BackendToken} from "fusio-sdk";
 import {TokenService} from "../../../services/token.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {DatePipe, JsonPipe} from "@angular/common";
-import {EditorComponent} from "ngx-monaco-editor-v2";
+import {EditorComponent} from "ngx-monaco-editor-v2-alternative";
 import {FormsModule} from "@angular/forms";
 
 @Component({

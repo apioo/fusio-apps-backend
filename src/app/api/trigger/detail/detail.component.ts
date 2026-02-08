@@ -4,7 +4,7 @@ import {BackendTrigger} from "fusio-sdk";
 import {ActivatedRoute, Router} from "@angular/router";
 import {TriggerService} from "../../../services/trigger.service";
 import {ActionLinkComponent} from "../../../shared/action-link/action-link.component";
-import {EditorComponent} from "ngx-monaco-editor-v2";
+import {EditorComponent} from "ngx-monaco-editor-v2-alternative";
 import {FormsModule} from "@angular/forms";
 import {JsonPipe} from "@angular/common";
 

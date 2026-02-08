@@ -6,7 +6,7 @@ import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {ConnectionService} from "../../../services/connection.service";
 import {LinkService} from "../../../services/connection/link.service";
 import {NgbAlert} from "@ng-bootstrap/ng-bootstrap";
-import {EditorComponent} from "ngx-monaco-editor-v2";
+import {EditorComponent} from "ngx-monaco-editor-v2-alternative";
 import {FormsModule} from "@angular/forms";
 import {JsonPipe} from "@angular/common";
 

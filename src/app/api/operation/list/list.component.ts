@@ -8,6 +8,7 @@ import {ApiService} from "../../../api.service";
 import {ActionLinkComponent} from "../../../shared/action-link/action-link.component";
 import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
 import {OperationStatus} from "../../../shared/operation-status/operation-status";
+import {Taxonomy} from "../../../shared/taxonomy/taxonomy";
 
 @Component({
   selector: 'app-operation-list',
@@ -17,7 +18,8 @@ import {OperationStatus} from "../../../shared/operation-status/operation-status
     SearchComponent,
     ActionLinkComponent,
     NgbPagination,
-    OperationStatus
+    OperationStatus,
+    Taxonomy
   ],
   styleUrls: ['./list.component.css']
 })

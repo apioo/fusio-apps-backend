@@ -13,7 +13,7 @@ import {JsonPipe, NgClass} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {MarkdownComponent} from "ngx-markdown";
 import {Highlight} from "ngx-highlightjs";
-import {EditorComponent} from "ngx-monaco-editor-v2";
+import {EditorComponent} from "ngx-monaco-editor-v2-alternative";
 import {Response} from "../../../action/designer/response/response";
 
 @Component({

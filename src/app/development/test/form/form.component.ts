@@ -6,7 +6,7 @@ import {TestService} from "../../../services/test.service";
 import {NgbPopover} from "@ng-bootstrap/ng-bootstrap";
 import {FormBreadcrump} from "../../../shared/form-breadcrump/form-breadcrump";
 import {FormsModule} from "@angular/forms";
-import {EditorComponent} from "ngx-monaco-editor-v2";
+import {EditorComponent} from "ngx-monaco-editor-v2-alternative";
 import {FormButtons} from "../../../shared/form-buttons/form-buttons";
 
 @Component({

@@ -18,9 +18,11 @@ import {ListComponent as ActionList} from "./api/action/list/list.component";
 import {DetailComponent as ActionDetail} from "./api/action/detail/detail.component";
 import {FormComponent as ActionForm} from "./api/action/form/form.component";
 import {DesignerComponent as ActionDesigner} from "./api/action/designer/designer.component";
+import {Commit as ActionCommit} from "./api/action/commit/commit";
 import {ListComponent as SchemaList} from "./api/schema/list/list.component";
 import {DetailComponent as SchemaDetail} from "./api/schema/detail/detail.component";
 import {FormComponent as SchemaForm} from "./api/schema/form/form.component";
+import {Commit as SchemaCommit} from "./api/schema/commit/commit";
 import {ListComponent as ConnectionList} from "./api/connection/list/list.component";
 import {DetailComponent as ConnectionDetail} from "./api/connection/detail/detail.component";
 import {FormComponent as ConnectionForm} from "./api/connection/form/form.component";
@@ -124,7 +126,9 @@ export const routes: Routes = [
   { path: 'operation', canActivate: [isAuthenticated], children: EntityRoute.getAll(OperationList, OperationDetail, OperationForm) },
   { path: 'action', canActivate: [isAuthenticated], children: EntityRoute.getAll(ActionList, ActionDetail, ActionForm) },
   { path: 'action/designer/:id', component: ActionDesigner, canActivate: [isAuthenticated] },
+  { path: 'action/commit/:id', component: ActionCommit, canActivate: [isAuthenticated] },
   { path: 'schema', canActivate: [isAuthenticated], children: EntityRoute.getAll(SchemaList, SchemaDetail, SchemaForm) },
+  { path: 'schema/commit/:id', component: SchemaCommit, canActivate: [isAuthenticated] },
   { path: 'connection', canActivate: [isAuthenticated], children: [
       ...EntityRoute.getAll(ConnectionList, ConnectionDetail, ConnectionForm),
       { path: ':connection/database', canActivate: [isAuthenticated], children: EntityRoute.getAll(TableList, TableDetail, TableForm) },

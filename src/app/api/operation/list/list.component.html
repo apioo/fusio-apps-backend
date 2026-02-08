@@ -10,36 +10,46 @@
   placeholder="/acme/endpoint"
   helpPath="api/operation/">
 </fusio-search>
-<table class="table table-striped">
-  <thead>
-  <tr>
-    <th style="width:100px">Status</th>
-    <th style="width:40%">Name</th>
-    <th style="width:40%">Action</th>
-    <th></th>
-  </tr>
-  </thead>
-  <tbody>
-  @for (entry of entries(); track entry.id) {
-    <tr>
-      <td><app-operation-status [active]="entry.active" [public]="entry.public"></app-operation-status></td>
-      <td><a href="{{baseUrl}}{{entry.httpPath}}" class="font-monospace">{{entry.name}}</a></td>
-      <td><app-action-link [data]="entry.action"></app-action-link></td>
-      <td>
-        <div class="btn-group float-end" role="group">
-          <a (click)="doDetail(entry.id)" class="btn btn-primary"><i class="bi bi-search"></i></a>
-          <a (click)="doEdit(entry.id)" class="btn btn-secondary"><i class="bi bi-pen"></i></a>
-          <a (click)="doDelete(entry.id)" class="btn btn-danger"><i class="bi bi-x"></i></a>
-        </div>
-      </td>
-    </tr>
-  }
-  </tbody>
-</table>
-<ngb-pagination
-  [page]="page()"
-  [pageSize]="pageSize()"
-  [collectionSize]="totalResults()"
-  [maxSize]="4"
-  [ellipses]="false"
-  (pageChange)="doSearch($event, search())"></ngb-pagination>
+
+<div class="row">
+  <div class="col-xl-2">
+    <app-taxonomy></app-taxonomy>
+  </div>
+  <div class="col-xl-10">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th style="width:20px"><input type="checkbox" class="form-check-input"></th>
+        <th style="width:100px">Status</th>
+        <th style="width:40%">Name</th>
+        <th style="width:40%">Action</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (entry of entries(); track entry.id) {
+          <tr>
+            <td><input type="checkbox" class="form-check-input"></td>
+            <td><app-operation-status [active]="entry.active" [public]="entry.public"></app-operation-status></td>
+            <td><a href="{{baseUrl}}{{entry.httpPath}}" class="font-monospace">{{entry.name}}</a></td>
+            <td><app-action-link [data]="entry.action"></app-action-link></td>
+            <td>
+              <div class="btn-group float-end" role="group">
+                <a (click)="doDetail(entry.id)" class="btn btn-primary"><i class="bi bi-search"></i></a>
+                <a (click)="doEdit(entry.id)" class="btn btn-secondary"><i class="bi bi-pen"></i></a>
+                <a (click)="doDelete(entry.id)" class="btn btn-danger"><i class="bi bi-x"></i></a>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+    <ngb-pagination
+      [page]="page()"
+      [pageSize]="pageSize()"
+      [collectionSize]="totalResults()"
+      [maxSize]="4"
+      [ellipses]="false"
+      (pageChange)="doSearch($event, search())"></ngb-pagination>
+  </div>
+</div>

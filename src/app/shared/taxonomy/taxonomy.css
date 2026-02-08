@@ -1,0 +1,58 @@
+
+.fusio-taxonomy {
+}
+
+[ngTree] {
+  min-width: 16rem;
+  border-radius: 0.5rem;
+  padding: 0;
+  margin: 0;
+}
+[ngTreeItem] {
+  cursor: pointer;
+  list-style: none;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.2rem;
+}
+[ngTreeItem][aria-disabled='true'] {
+  opacity: 0.5;
+  cursor: default;
+}
+[ngTreeItem]:focus,
+[ngTreeItem]:hover {
+  background-color: #eee;
+}
+[ngTreeItem]:focus {
+  outline: 1px solid color-mix(in srgb, rgba(var(--bs-link-color-rgb), var(--bs-link-opacity,1)) 60%, transparent);
+}
+[ngTreeItem][aria-selected='true'],
+[ngTreeItem][aria-selected='true'] .expand-icon {
+  background-color: rgba(var(--bs-link-color-rgb), var(--bs-link-opacity,1));
+  background-clip: text;
+  color: transparent;
+}
+
+.fusio-symbols-outlined {
+  margin: 0;
+  width: 18px;
+}
+.expand-icon {
+  transition: transform 0.2s ease;
+}
+[ngTreeItem][aria-expanded='true'] .expand-icon {
+  transform: rotate(90deg);
+}
+.selected-icon {
+  visibility: hidden;
+  margin-left: auto;
+}
+[ngTreeItem][aria-current] .selected-icon,
+[ngTreeItem][aria-selected='true'] .selected-icon {
+  visibility: visible;
+}
+li[aria-expanded='false'] + ul[role='group'] {
+  display: none;
+}

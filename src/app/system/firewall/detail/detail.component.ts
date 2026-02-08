@@ -4,7 +4,7 @@ import {BackendFirewall} from "fusio-sdk";
 import {ActivatedRoute, Router} from "@angular/router";
 import {FirewallService} from "../../../services/firewall.service";
 import {DatePipe, JsonPipe} from "@angular/common";
-import {EditorComponent} from "ngx-monaco-editor-v2";
+import {EditorComponent} from "ngx-monaco-editor-v2-alternative";
 import {FormsModule} from "@angular/forms";
 
 @Component({

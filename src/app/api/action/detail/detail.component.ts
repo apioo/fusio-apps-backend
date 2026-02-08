@@ -3,7 +3,7 @@ import {Detail, ErrorService, MessageComponent} from "ngx-fusio-sdk";
 import {BackendAction} from "fusio-sdk";
 import {ActionService} from "../../../services/action.service";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
-import {EditorComponent} from "ngx-monaco-editor-v2";
+import {EditorComponent} from "ngx-monaco-editor-v2-alternative";
 import {FormsModule} from "@angular/forms";
 import {JsonPipe} from "@angular/common";
 

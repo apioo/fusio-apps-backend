@@ -5,7 +5,7 @@ import {ApiService} from "../../../../api.service";
 import {BackendConnection, BackendHttpRequest, BackendHttpResponse, CommonMessage} from "fusio-sdk";
 import {ConnectionService} from "../../../../services/connection.service";
 import {KeyValuePipe, NgClass} from "@angular/common";
-import {EditorComponent} from "ngx-monaco-editor-v2";
+import {EditorComponent} from "ngx-monaco-editor-v2-alternative";
 import {FormsModule} from "@angular/forms";
 
 @Component({

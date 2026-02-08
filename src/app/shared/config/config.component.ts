@@ -7,7 +7,7 @@ import {
   CommonFormElementTextArea
 } from "fusio-sdk";
 import {FormsModule} from "@angular/forms";
-import {EditorComponent} from "ngx-monaco-editor-v2";
+import {EditorComponent} from "ngx-monaco-editor-v2-alternative";
 import {Specification, TypeschemaEditorModule} from "ngx-typeschema-editor";
 import {FormListComponent, FormMapComponent} from "ngx-fusio-sdk";
 

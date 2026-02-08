@@ -3,9 +3,9 @@ import {Detail, ErrorService, MessageComponent, ScopesComponent} from "ngx-fusio
 import {BackendRole} from "fusio-sdk";
 import {ActivatedRoute, Router} from "@angular/router";
 import {RoleService} from "../../../services/role.service";
-import {EditorComponent} from "ngx-monaco-editor-v2";
 import {FormsModule} from "@angular/forms";
 import {JsonPipe} from "@angular/common";
+import {EditorComponent} from "ngx-monaco-editor-v2-alternative";
 
 @Component({
   selector: 'app-role-detail',

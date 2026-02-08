@@ -1,5 +1,5 @@
 import {Component, inject, input, output} from '@angular/core';
-import {EditorComponent} from "ngx-monaco-editor-v2";
+import {EditorComponent} from "ngx-monaco-editor-v2-alternative";
 import {FormsModule} from "@angular/forms";
 import {ConnectionService} from "../../../../services/connection.service";
 import {Connection} from "./connection/connection";

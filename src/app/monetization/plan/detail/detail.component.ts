@@ -5,7 +5,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {PlanService} from "../../../services/plan.service";
 import {MarkdownComponent} from "ngx-markdown";
 import {CurrencyPipe, JsonPipe} from "@angular/common";
-import {EditorComponent} from "ngx-monaco-editor-v2";
+import {EditorComponent} from "ngx-monaco-editor-v2-alternative";
 import {FormsModule} from "@angular/forms";
 
 @Component({
