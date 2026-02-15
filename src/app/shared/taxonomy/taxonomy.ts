@@ -1,6 +1,7 @@
-import {Component, signal} from '@angular/core';
+import {Component, inject, OnInit, output, signal} from '@angular/core';
 import {NgTemplateOutlet} from '@angular/common';
 import {Tree, TreeItem, TreeItemGroup} from '@angular/aria/tree';
+import {TaxonomyNode, TreeBuilder} from "../../services/taxonomy/tree-builder.service";
 
 @Component({
   selector: 'app-taxonomy',
@@ -8,9 +9,11 @@ import {Tree, TreeItem, TreeItemGroup} from '@angular/aria/tree';
   templateUrl: './taxonomy.html',
   styleUrl: './taxonomy.css',
 })
-export class Taxonomy {
+export class Taxonomy implements OnInit {
 
-  readonly nodes: TreeNode[] = [
+  select = output<Array<string>>();
+
+  nodes = signal<Array<TaxonomyNode>>([
     {
       name: 'Project A',
       value: 'project_a',
@@ -22,15 +25,14 @@ export class Taxonomy {
       expanded: true,
     },
     {name: 'Draft', value: 'draft'},
-  ];
-  readonly selected = signal(['angular.json']);
+  ]);
+
+  treeBuilder = inject(TreeBuilder);
+
+  readonly selected = signal<Array<string>>([]);
+
+  async ngOnInit(): Promise<void> {
+    //this.nodes.set(await this.treeBuilder.build());
+  }
 
 }
-
-type TreeNode = {
-  name: string;
-  value: string;
-  children?: TreeNode[];
-  disabled?: boolean;
-  expanded?: boolean;
-};

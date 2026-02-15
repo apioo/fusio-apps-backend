@@ -1,10 +1,15 @@
 
-<ul ngTree #tree="ngTree" [(values)]="selected" class="fusio-taxonomy">
-  <ng-template
-    [ngTemplateOutlet]="treeNodes"
-    [ngTemplateOutletContext]="{nodes: nodes, parent: tree}"
-  />
-</ul>
+@if (nodes(); as nodes) {
+  <div class="col-xl-2">
+    <ul ngTree #tree="ngTree" [(values)]="selected" (valuesChange)="select.emit(selected())" class="fusio-taxonomy">
+      <ng-template
+        [ngTemplateOutlet]="treeNodes"
+        [ngTemplateOutletContext]="{nodes: nodes, parent: tree}"
+      />
+    </ul>
+  </div>
+}
+
 <ng-template #treeNodes let-nodes="nodes" let-parent="parent">
   @for (node of nodes; track node.value) {
     <li
