@@ -4,8 +4,12 @@ import {ActivatedRoute, RouterLink} from "@angular/router";
 import {ApiService} from "../../../../api.service";
 import {ConnectionService} from "../../../../services/connection.service";
 import {
-  BackendAction, BackendActionExecuteResponse,
-  BackendActionExecuteResponseBody, BackendConnection, BackendSchema, CommonMessage
+  BackendAction,
+  BackendActionExecuteResponse,
+  BackendActionExecuteResponseBody,
+  BackendConnection,
+  BackendSchema,
+  CommonMessage
 } from "fusio-sdk";
 import {ImportService, Specification, TypeschemaEditorModule} from "ngx-typeschema-editor";
 import {HttpClient} from "@angular/common/http";
@@ -15,6 +19,14 @@ import {MarkdownComponent} from "ngx-markdown";
 import {Highlight} from "ngx-highlightjs";
 import {EditorComponent} from "ngx-monaco-editor-v2-alternative";
 import {Response} from "../../../action/designer/response/response";
+import {
+  NgbAccordionBody,
+  NgbAccordionButton,
+  NgbAccordionCollapse,
+  NgbAccordionDirective,
+  NgbAccordionHeader,
+  NgbAccordionItem
+} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-connection-agent',
@@ -29,7 +41,13 @@ import {Response} from "../../../action/designer/response/response";
     Response,
     MarkdownComponent,
     NgClass,
-    Highlight
+    Highlight,
+    NgbAccordionDirective,
+    NgbAccordionItem,
+    NgbAccordionHeader,
+    NgbAccordionButton,
+    NgbAccordionCollapse,
+    NgbAccordionBody
   ],
   styleUrls: ['./agent.component.css']
 })
@@ -56,12 +74,15 @@ export class AgentComponent implements OnInit {
     types: []
   });
 
+  architectLoading = signal<boolean>(false);
+  architect = signal<Architect|undefined>(undefined);
+
   constructor(private api: ApiService, private connection: ConnectionService, private importService: ImportService, private route: ActivatedRoute, private error: ErrorService, private httpClient: HttpClient) {
   }
 
   async ngOnInit(): Promise<void> {
     this.route.params.subscribe(async (params) => {
-      if (params['intent'] === 'action' || params['intent'] === 'schema') {
+      if (params['intent'] === 'action' || params['intent'] === 'schema' || params['intent'] === 'architect') {
         this.intent.set(params['intent']);
       } else {
         this.intent.set('');
@@ -127,6 +148,10 @@ export class AgentComponent implements OnInit {
           if (output.type === 'object' && output.payload) {
             await this.loadSchema(output.payload);
           }
+        } else if (intent === 'architect') {
+          if (output.type === 'object' && output.payload) {
+            this.loadArchitect(output.payload);
+          }
         }
 
         this.messages.update((messages) => {
@@ -186,6 +211,7 @@ export class AgentComponent implements OnInit {
     this.loading.set(false);
     this.resetAction();
     this.resetSchema();
+    this.resetArchitect();
     this.load();
   }
 
@@ -324,6 +350,54 @@ export class AgentComponent implements OnInit {
     });
   }
 
+  loadArchitect(architect: Architect) {
+    this.architect.set(architect);
+  }
+
+  async executeArchitect() {
+    const architect = this.architect();
+    if (!architect) {
+      return;
+    }
+
+    this.architectLoading.set(true);
+
+    try {
+      architect.operations.forEach((operation) => {
+
+        operation.incoming
+        operation.outgoing
+
+      });
+
+      // create schemas
+
+
+      // create actions
+
+
+      // create operations
+
+
+
+      // create tables
+
+
+
+
+      //this.response.set(response);
+    } catch (error) {
+      this.response.set(this.error.convert(error));
+    }
+
+    this.architectLoading.set(false);
+  }
+
+  resetArchitect() {
+    this.architect.set(undefined);
+    this.architectLoading.set(false);
+  }
+
   private extractName(content: string): string {
     const result = content.match(/Action: ([A-Za-z0-9-]+)/im);
     if (!result) {
@@ -367,4 +441,47 @@ export class AgentComponent implements OnInit {
     return null;
   }
 
+}
+
+interface Architect {
+  operations: Array<Operation>
+  tables: Array<Table>
+}
+
+interface Operation {
+  name: string
+  active: boolean
+  public: boolean
+  stability: number
+  description: string
+  httpMethod: string
+  httpPath: string
+  httpCode: number
+  parameters: Record<string, Parameter>
+  incoming: string
+  outgoing: string
+  action: string
+}
+
+interface Parameter {
+  description: string
+  type: string
+}
+
+interface Table {
+  name: string
+  columns: Array<Column>
+  primaryKey: string
+}
+
+interface Column {
+  name: string
+  type: string
+  length: number
+  notNull: boolean
+  autoIncrement: boolean
+  precision: number
+  scale: number
+  default: string
+  comment: string
 }
