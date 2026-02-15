@@ -137,13 +137,6 @@ pre
   margin-left:180px;
 }
 
-@media (max-width:767px) {
-  .fusio-container
-  {
-    margin-left:110px;
-  }
-}
-
 .fusio-container-instance
 {
   margin-left:360px;
