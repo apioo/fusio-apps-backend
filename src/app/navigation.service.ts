@@ -86,6 +86,12 @@ export class NavigationService {
               "icon": "bi-disc",
               "path": "/trigger",
               "scope": "backend.trigger"
+            },
+            {
+              "title": "Agent",
+              "icon": "bi-robot",
+              "path": "/agent",
+              "scope": "backend.agent"
             }
           ]
         },
@@ -230,6 +236,12 @@ export class NavigationService {
               "icon": "bi-record",
               "path": "/category",
               "scope": "backend.category"
+            },
+            {
+              "title": "Taxonomy",
+              "icon": "bi-tag",
+              "path": "/taxonomy",
+              "scope": "backend.taxonomy"
             },
             {
               "title": "Role",
