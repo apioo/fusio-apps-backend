@@ -1,0 +1,67 @@
+
+<h1>
+  <a [routerLink]="['/', 'agent']">Agent</a> /
+  <a [routerLink]="['/', 'agent', agent?.id]">{{agent?.name}}</a> /
+  Message
+</h1>
+
+<fusio-message [response]="response()"></fusio-message>
+
+@if (agent) {
+  <div class="row">
+    <div class="col-3">
+      <ul>
+        @for (chat of chats(); track chat.id) {
+          @if (chat.content && chat.content.type === 'text' && chat.content && 'content' in chat.content) {
+            <li><a (click)="loadChat(chat)">{{ chat.content.content }}</a></li>
+          }
+        }
+      </ul>
+    </div>
+    <div class="col-9">
+      @if (selected(); as selected) {
+        @if (agent.type === 0) {
+          <app-agent-message-general [agent]="agent" [origin]="selected"></app-agent-message-general>
+        }
+        @else if (agent?.type === 1) {
+          <app-agent-message-architect [agent]="agent" [origin]="selected"></app-agent-message-architect>
+        }
+        @else if (agent?.type === 2) {
+          <app-agent-message-action [agent]="agent" [origin]="selected"></app-agent-message-action>
+        }
+        @else if (agent?.type === 3) {
+          <app-agent-message-schema [agent]="agent" [origin]="selected"></app-agent-message-schema>
+        }
+        @else {
+          <ngb-alert type="error">This agent contains a not supported agent type</ngb-alert>
+        }
+      }
+      @else {
+        <div class="text-center p-4 fw-bold">
+          @if (agent.type === 0) {
+            Ask anything about your Fusio instance.<br>
+            <small class="text-body-secondary">Example: Show me the 5 latest users</small>
+          }
+          @else if (agent?.type === 1) {
+            Describe what you want to build from a high level view.<br>
+            <small class="text-body-secondary">Example: Build a forum system where a user can manage threads and comments</small>
+          }
+          @else if (agent?.type === 2) {
+            Describe the business logic of a new action.<br>
+            <small class="text-body-secondary">Example: Use the "System" connection and return the latest 10 entries from the "fusio_log" table</small>
+          }
+          @else if (agent?.type === 3) {
+            Describe the structure of a new schema.<br>
+            <small class="text-body-secondary">Example: A Product with common properties</small>
+          }
+          @else {
+            <ngb-alert type="error">This agent contains a not supported agent type</ngb-alert>
+          }
+        </div>
+      }
+    </div>
+  </div>
+}
+@else {
+
+}

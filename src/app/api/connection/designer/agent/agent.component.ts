@@ -3,30 +3,11 @@ import {ErrorService, MessageComponent} from "ngx-fusio-sdk";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {ApiService} from "../../../../api.service";
 import {ConnectionService} from "../../../../services/connection.service";
-import {
-  BackendAction,
-  BackendActionExecuteResponse,
-  BackendActionExecuteResponseBody,
-  BackendConnection,
-  BackendSchema,
-  CommonMessage
-} from "fusio-sdk";
-import {ImportService, Specification, TypeschemaEditorModule} from "ngx-typeschema-editor";
-import {HttpClient} from "@angular/common/http";
-import {JsonPipe, NgClass} from "@angular/common";
+import {TypeschemaEditorModule} from "ngx-typeschema-editor";
 import {FormsModule} from "@angular/forms";
-import {MarkdownComponent} from "ngx-markdown";
-import {Highlight} from "ngx-highlightjs";
-import {EditorComponent} from "ngx-monaco-editor-v2-alternative";
-import {Response} from "../../../action/designer/response/response";
-import {
-  NgbAccordionBody,
-  NgbAccordionButton,
-  NgbAccordionCollapse,
-  NgbAccordionDirective,
-  NgbAccordionHeader,
-  NgbAccordionItem
-} from "@ng-bootstrap/ng-bootstrap";
+import {Input} from "../../../agent/message/input/input";
+import {Row} from "../../../agent/message/row/row";
+import {BackendAgentContentText, BackendAgentMessage, BackendConnection, CommonMessage} from "fusio-sdk";
 
 @Component({
   selector: 'app-connection-agent',
@@ -35,19 +16,9 @@ import {
     RouterLink,
     MessageComponent,
     TypeschemaEditorModule,
-    JsonPipe,
     FormsModule,
-    EditorComponent,
-    Response,
-    MarkdownComponent,
-    NgClass,
-    Highlight,
-    NgbAccordionDirective,
-    NgbAccordionItem,
-    NgbAccordionHeader,
-    NgbAccordionButton,
-    NgbAccordionCollapse,
-    NgbAccordionBody
+    Input,
+    Row
   ],
   styleUrls: ['./agent.component.css']
 })
@@ -55,45 +26,20 @@ export class AgentComponent implements OnInit {
 
   selectedConnection = signal<BackendConnection|undefined>(undefined);
 
-  intent = signal<string>('general');
-  messages = signal<Array<any>>([]);
-  input = signal<string>('');
+  messages = signal<Array<BackendAgentMessage>>([]);
   loading = signal<boolean>(false);
   response = signal<CommonMessage|undefined>(undefined);
 
-  action = signal<BackendAction|undefined>(undefined);
-  actionResponse = signal<BackendActionExecuteResponse|undefined>(undefined);
-  actionLoading = signal<boolean>(false);
-  code = signal<string>('');
-
-  schema = signal<BackendSchema|undefined>(undefined);
-  schemaLoading = signal<boolean>(false);
-  spec = signal<Specification>({
-    imports: [],
-    operations: [],
-    types: []
-  });
-
-  architectLoading = signal<boolean>(false);
-  architect = signal<Architect|undefined>(undefined);
-
-  constructor(private api: ApiService, private connection: ConnectionService, private importService: ImportService, private route: ActivatedRoute, private error: ErrorService, private httpClient: HttpClient) {
+  constructor(private api: ApiService, private connection: ConnectionService, private route: ActivatedRoute, private error: ErrorService) {
   }
 
   async ngOnInit(): Promise<void> {
     this.route.params.subscribe(async (params) => {
-      if (params['intent'] === 'action' || params['intent'] === 'schema' || params['intent'] === 'architect') {
-        this.intent.set(params['intent']);
-      } else {
-        this.intent.set('');
-      }
-
       if (params['connection']) {
         const connection = await this.connection.get(params['connection']);
         if (connection) {
           try {
             this.selectedConnection.set(connection);
-            this.load();
           } catch (error) {
             this.response.set(this.error.convert(error));
           }
@@ -102,62 +48,38 @@ export class AgentComponent implements OnInit {
     });
   }
 
-  async doSend() {
-    const message = this.input();
-    if (!message) {
-      return;
-    }
-
-    const intent = this.intent();
-
+  async doSend(input: string) {
     const connectionId = this.selectedConnection()?.id;
     if (!connectionId) {
       return;
     }
 
+    const content: BackendAgentContentText = {
+      type: 'text',
+      content: input,
+    };
+
     this.messages.update((messages) => {
       messages.push({
-        origin: 1,
-        message: {
-          type: 'text',
-          content: message,
-        },
+        role: "user",
+        content: content,
       });
       return messages;
     });
 
-    this.input.set('');
     this.loading.set(true);
 
     try {
       const response = await this.api.getClient().backend().connection().agent().send('' + connectionId, {
-        intent: intent,
-        input: {
-          type: 'text',
-          content: message,
-        }
+        input: content
       });
 
       const output = response.output;
       if (output) {
-        if (intent === 'action') {
-          if (output.type === 'text' && output.content) {
-            this.loadAction(output.content);
-          }
-        } else if (intent === 'schema') {
-          if (output.type === 'object' && output.payload) {
-            await this.loadSchema(output.payload);
-          }
-        } else if (intent === 'architect') {
-          if (output.type === 'object' && output.payload) {
-            this.loadArchitect(output.payload);
-          }
-        }
-
         this.messages.update((messages) => {
           messages.push({
-            origin: 2,
-            message: output,
+            role: "assistant",
+            content: output,
           });
           return messages;
         });
@@ -169,50 +91,6 @@ export class AgentComponent implements OnInit {
     }
 
     this.loading.set(false);
-    this.actionResponse.set(undefined);
-    this.actionLoading.set(false);
-  }
-
-  async load() {
-    const intent = this.intent();
-
-    const connectionId = this.selectedConnection()?.id;
-    if (!connectionId) {
-      return;
-    }
-
-    try {
-      const collection = await this.api.getClient().backend().connection().agent().get('' + connectionId, intent);
-
-      this.loading.set(false);
-      this.messages.set(collection.entry || []);
-
-      this.scrollToBottom();
-    } catch (error) {
-      this.loading.set(false);
-      this.response.set(this.error.convert(error));
-    }
-  }
-
-  async doReset() {
-    const connectionId = this.selectedConnection()?.id;
-    if (!connectionId) {
-      return;
-    }
-
-    try {
-      const response = await this.api.getClient().backend().connection().agent().reset('' + connectionId);
-
-      this.response.set(response);
-    } catch (error) {
-      this.response.set(this.error.convert(error));
-    }
-
-    this.loading.set(false);
-    this.resetAction();
-    this.resetSchema();
-    this.resetArchitect();
-    this.load();
   }
 
   scrollToBottom(): void {
@@ -224,264 +102,4 @@ export class AgentComponent implements OnInit {
     }, 500);
   }
 
-  loadAction(content: string) {
-    const name = this.extractName(content);
-    const code = this.extractCode(content);
-
-    const action: BackendAction = {
-      name: name,
-      class: 'Fusio.Adapter.Worker.Action.WorkerPHPLocal',
-      config: {
-        code: code
-      },
-    };
-
-    this.action.set(action);
-    this.code.set(code);
-  }
-
-  async executeAction() {
-    const action = this.action();
-    if (!action) {
-      return;
-    }
-
-    const code = this.code();
-    if (!code) {
-      return;
-    }
-
-    const name = action.name;
-    if (!name) {
-      return;
-    }
-
-    this.actionLoading.set(true);
-
-    try {
-      let existing: BackendAction|undefined = undefined;
-      try {
-        existing = await this.api.getClient().backend().action().get('~' + name);
-      } catch (error) {
-        // action does not exist
-      }
-
-      let response: CommonMessage;
-      if (existing) {
-        if (!existing.config) {
-          existing.config = {};
-        }
-
-        existing.config['code'] = code;
-
-        response = await this.api.getClient().backend().action().update('' + existing.id, existing);
-      } else {
-        response = await this.api.getClient().backend().action().create(action);
-      }
-
-      this.actionResponse.set(await this.api.getClient().backend().action().execute('' + response.id, {}));
-    } catch (error) {
-      this.response.set(this.error.convert(error));
-    }
-
-    this.actionLoading.set(false);
-  }
-
-  resetAction() {
-    this.action.set(undefined);
-    this.actionResponse.set(undefined);
-    this.actionLoading.set(false);
-    this.code.set('');
-  }
-
-  async loadSchema(schema: BackendSchema) {
-    this.schema.set(schema);
-
-    if (schema.source) {
-      const spec = await this.importService.transform('typeschema', JSON.stringify(schema.source))
-
-      this.spec.set(spec);
-    }
-  }
-
-  async saveSchema() {
-    const schema = this.schema();
-    if (!schema) {
-      return;
-    }
-
-    const name = schema.name;
-    if (!name) {
-      return;
-    }
-
-    this.schemaLoading.set(true);
-
-    try {
-      let existing: BackendSchema|undefined = undefined;
-      try {
-        existing = await this.api.getClient().backend().schema().get('~' + name);
-      } catch (error) {
-        // action does not exist
-      }
-
-      let response: CommonMessage;
-      if (existing) {
-        response = await this.api.getClient().backend().schema().update('' + existing.id, existing);
-      } else {
-        response = await this.api.getClient().backend().schema().create(schema);
-      }
-
-      this.response.set(response);
-    } catch (error) {
-      this.response.set(this.error.convert(error));
-    }
-
-    this.schemaLoading.set(false);
-  }
-
-  resetSchema() {
-    this.schema.set(undefined);
-    this.schemaLoading.set(false);
-    this.spec.set({
-      imports: [],
-      operations: [],
-      types: []
-    });
-  }
-
-  loadArchitect(architect: Architect) {
-    this.architect.set(architect);
-  }
-
-  async executeArchitect() {
-    const architect = this.architect();
-    if (!architect) {
-      return;
-    }
-
-    this.architectLoading.set(true);
-
-    try {
-      architect.operations.forEach((operation) => {
-
-        operation.incoming
-        operation.outgoing
-
-      });
-
-      // create schemas
-
-
-      // create actions
-
-
-      // create operations
-
-
-
-      // create tables
-
-
-
-
-      //this.response.set(response);
-    } catch (error) {
-      this.response.set(this.error.convert(error));
-    }
-
-    this.architectLoading.set(false);
-  }
-
-  resetArchitect() {
-    this.architect.set(undefined);
-    this.architectLoading.set(false);
-  }
-
-  private extractName(content: string): string {
-    const result = content.match(/Action: ([A-Za-z0-9-]+)/im);
-    if (!result) {
-      return '';
-    }
-
-    return result[1] || '';
-  }
-
-  private extractCode(content: string): string {
-    let captured = false;
-    let code = '';
-
-    const lines = content.split("\n");
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i];
-      if (line === '<?php') {
-        captured = true;
-      }
-
-      if (captured) {
-        code+= line + "\n";
-      }
-
-      if (line === '};') {
-        break;
-      }
-    }
-
-    return code;
-  }
-
-  getErrorMessage(response: BackendActionExecuteResponseBody): string|null {
-    if (response['success'] === false && response['title'] && response['message']) {
-      let message = 'Try to fix the following error:' + "\n";
-      message+= 'Error: ' + response['title'] + "\n";
-      message+= 'Message: ' + response['message'] + "\n";
-      return message;
-    }
-
-    return null;
-  }
-
-}
-
-interface Architect {
-  operations: Array<Operation>
-  tables: Array<Table>
-}
-
-interface Operation {
-  name: string
-  active: boolean
-  public: boolean
-  stability: number
-  description: string
-  httpMethod: string
-  httpPath: string
-  httpCode: number
-  parameters: Record<string, Parameter>
-  incoming: string
-  outgoing: string
-  action: string
-}
-
-interface Parameter {
-  description: string
-  type: string
-}
-
-interface Table {
-  name: string
-  columns: Array<Column>
-  primaryKey: string
-}
-
-interface Column {
-  name: string
-  type: string
-  length: number
-  notNull: boolean
-  autoIncrement: boolean
-  precision: number
-  scale: number
-  default: string
-  comment: string
 }

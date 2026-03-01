@@ -1,0 +1,16 @@
+
+<fusio-message [response]="response()"></fusio-message>
+
+<div class="row">
+  <div class="col-xl-6">
+    <div style="max-width:1024px">
+      @for (message of messages(); track $index) {
+        <app-agent-message-row [message]="message"></app-agent-message-row>
+      }
+      <div id="messages-bottom"></div>
+      <app-agent-message-input [loading]="loading()" (send)="doSend($event)"></app-agent-message-input>
+    </div>
+  </div>
+  <div class="col-xl-6">
+  </div>
+</div>

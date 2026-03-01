@@ -1,0 +1,38 @@
+
+<fusio-message [response]="response()"></fusio-message>
+
+<div class="row">
+  <div class="col-xl-6">
+    <div style="max-width:1024px">
+      @for (message of messages(); track $index) {
+        @if (message.role === 'assistant' && message.content && message.content.type === 'object' && 'payload' in message.content && message.content.payload) {
+          <div class="mb-2">
+            <div class="d-grid">
+              <button class="btn btn-primary" type="button" (click)="loadSchema(message.content.payload)">Generated schema ({{(message.content.payload|json).length}} chars)</button>
+            </div>
+          </div>
+        }
+        @else {
+          <app-agent-message-row [message]="message"></app-agent-message-row>
+        }
+      }
+      <div id="messages-bottom"></div>
+      <app-agent-message-input [loading]="loading()" (send)="doSend($event)"></app-agent-message-input>
+    </div>
+  </div>
+  <div class="col-xl-6">
+    <input type="text" id="schema-name" name="schema-name" [ngModel]="schema()?.name" [disabled]="true" class="form-control mb-3">
+    <typeschema-editor [specification]="spec()" [readonly]="true"></typeschema-editor>
+    <div class="btn-group mt-3 mb-3">
+      <button class="btn btn-primary" type="button" (click)="saveSchema()" [disabled]="schemaLoading()">
+        @if (schemaLoading()) {
+          <span class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span>
+          <span role="status">Saving ...</span>
+        }
+        @else {
+          <span role="status">Save</span>
+        }
+      </button>
+    </div>
+  </div>
+</div>

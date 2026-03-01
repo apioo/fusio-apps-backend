@@ -1,0 +1,55 @@
+
+<h1>
+  <a (click)="doList()">Agent</a> /
+  <a (click)="doDetail('~' + entity().name)">{{ entity().name }}</a> /
+  <app-form-breadcrump [mode]="mode"></app-form-breadcrump>
+</h1>
+
+<fusio-message [response]="response()"></fusio-message>
+
+<form>
+  <div class="mb-3 row">
+    <label for="name" class="col-lg-2 col-form-label fw-bold">Name</label>
+    <div class="col-lg-10">
+      <div class="input-group">
+        <input type="text" id="name" name="name" [ngModel]="entity().name" (ngModelChange)="set(entity, 'name', $event)" [disabled]="mode === 3" class="form-control">
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
+        <ng-template #nameHelp>Unique name of the agent</ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="description" class="col-lg-2 col-form-label fw-bold">Description</label>
+    <div class="col-lg-10">
+      <div class="input-group">
+        <input type="text" id="description" name="description" [ngModel]="entity().description" (ngModelChange)="set(entity, 'description', $event)" [disabled]="mode === 3" class="form-control">
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
+        <ng-template #nameHelp>Description of the agent</ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="introduction" class="col-lg-2 col-form-label fw-bold">Introduction</label>
+    <div class="col-lg-10">
+      <textarea id="introduction" name="introduction" [ngModel]="entity().introduction" (ngModelChange)="set(entity, 'introduction', $event)" [disabled]="mode === 3" rows="5" class="form-control"></textarea>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="tools" class="col-lg-2 col-form-label fw-bold">Tools</label>
+    <div class="col-lg-10">
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="outgoing" class="col-lg-2 col-form-label fw-bold">Outgoing</label>
+    <div class="col-lg-10">
+      <app-schema-selector name="outgoing" [data]="entity().outgoing" (dataChange)="set(entity, 'outgoing', $event)" [disabled]="mode === 3"></app-schema-selector>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="action" class="col-lg-2 col-form-label fw-bold">Action</label>
+    <div class="col-lg-10">
+      <app-action-selector name="action" [data]="entity().action" (dataChange)="set(entity, 'action', $event)" [disabled]="mode === 3"></app-action-selector>
+    </div>
+  </div>
+  <app-form-buttons [mode]="mode" (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="doList()" (onHelp)="showHelp('api/trigger')"></app-form-buttons>
+</form>

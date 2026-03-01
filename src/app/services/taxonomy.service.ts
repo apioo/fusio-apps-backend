@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {FusioService, Service} from "ngx-fusio-sdk";
 import {
-  BackendCategory,
-  BackendCategoryCreate,
-  BackendCategoryUpdate,
+  BackendTaxonomy,
+  BackendTaxonomyCreate,
+  BackendTaxonomyUpdate,
   CommonCollection,
   CommonMessage
 } from "fusio-sdk";
@@ -11,40 +11,40 @@ import {
 @Injectable({
   providedIn: 'root'
 })
-export class TaxonomyService extends Service<BackendCategory> {
+export class TaxonomyService extends Service<BackendTaxonomy> {
 
   constructor(private fusio: FusioService) {
     super();
   }
 
-  async getAll(parameters: Array<any>): Promise<CommonCollection<BackendCategory>> {
-    return this.fusio.getClient().backend().category().getAll(...parameters);
+  async getAll(parameters: Array<any>): Promise<CommonCollection<BackendTaxonomy>> {
+    return this.fusio.getClient().backend().taxonomy().getAll(...parameters);
   }
 
-  async get(id: string): Promise<BackendCategory> {
-    return this.fusio.getClient().backend().category().get(id);
+  async get(id: string): Promise<BackendTaxonomy> {
+    return this.fusio.getClient().backend().taxonomy().get(id);
   }
 
-  async create(entity: BackendCategory): Promise<CommonMessage> {
-    return this.fusio.getClient().backend().category().create(<BackendCategoryCreate> entity);
+  async create(entity: BackendTaxonomy): Promise<CommonMessage> {
+    return this.fusio.getClient().backend().taxonomy().create(<BackendTaxonomyCreate> entity);
   }
 
-  async update(entity: BackendCategory): Promise<CommonMessage> {
-    return this.fusio.getClient().backend().category().update('' + entity.id, <BackendCategoryUpdate> entity);
+  async update(entity: BackendTaxonomy): Promise<CommonMessage> {
+    return this.fusio.getClient().backend().taxonomy().update('' + entity.id, <BackendTaxonomyUpdate> entity);
   }
 
-  async delete(entity: BackendCategory): Promise<CommonMessage> {
-    return this.fusio.getClient().backend().category().delete('' + entity.id);
+  async delete(entity: BackendTaxonomy): Promise<CommonMessage> {
+    return this.fusio.getClient().backend().taxonomy().delete('' + entity.id);
   }
 
-  newEntity(): BackendCategory {
+  newEntity(): BackendTaxonomy {
     return {
       name: '',
     };
   }
 
   getLink(): Array<string> {
-    return ['/', 'category'];
+    return ['/', 'taxonomy'];
   }
 
 }

@@ -1,0 +1,192 @@
+
+<fusio-message [response]="response()"></fusio-message>
+
+<div class="row">
+  <div class="col-xl-6">
+    <div style="max-width:1024px">
+      @for (message of messages(); track $index) {
+        @if (message.role === 'assistant' && message.content && message.content.type === 'object' && 'payload' in message.content && message.content.payload) {
+          <div class="mb-2">
+            <div class="d-grid">
+              <button class="btn btn-primary" type="button" (click)="loadBlueprint(message.content.payload)">Generated blueprint ({{(message.content.payload|json).length}} chars)</button>
+            </div>
+          </div>
+        }
+        @else {
+          <app-agent-message-row [message]="message"></app-agent-message-row>
+        }
+      }
+      <div id="messages-bottom"></div>
+      <app-agent-message-input [loading]="loading()" (send)="doSend($event)"></app-agent-message-input>
+    </div>
+  </div>
+  <div class="col-xl-6">
+    @if (blueprint(); as blueprint) {
+      @if (blueprint.operations.length > 0) {
+        @for (operation of blueprint.operations; track $index) {
+          <div ngbAccordion>
+            <div ngbAccordionItem class="rounded-0" [collapsed]="$index !== 0">
+              <h2 ngbAccordionHeader>
+                <button ngbAccordionButton>{{ operation.httpMethod }} - {{ operation.httpPath }}</button>
+              </h2>
+              <div ngbAccordionCollapse>
+                <div ngbAccordionBody>
+                  <ng-template>
+                    <div class="fusio-detail">
+                      <div class="row">
+                        <div class="col-lg-2 fw-bold">Status</div>
+                        <div class="col-lg-10">
+                          <app-operation-status [active]="operation.active" [public]="operation.public"></app-operation-status>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-lg-2 fw-bold">Stability</div>
+                        <div class="col-lg-10">
+                          @if (operation.stability === 0) {
+                            <span class="badge bg-warning fusio-operation-stability">Deprecated</span>
+                          }
+                          @if (operation.stability === 1) {
+                            <span class="badge bg-success fusio-operation-stability">Experimental</span>
+                          }
+                          @if (operation.stability === 2) {
+                            <span class="badge bg-info fusio-operation-stability">Stable</span>
+                          }
+                          @if (operation.stability === 3) {
+                            <span class="badge bg-secondary fusio-operation-stability">Legacy</span>
+                          }
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-lg-2 fw-bold">Name</div>
+                        <div class="col-lg-10"><code class="fusio-operation-name">{{operation.name}}</code></div>
+                      </div>
+                      <div class="row">
+                        <div class="col-lg-2 fw-bold">Description</div>
+                        <div class="col-lg-10"><span class="fusio-operation-description">{{operation.description}}</span></div>
+                      </div>
+                      <div class="row">
+                        <div class="col-lg-2 fw-bold">HTTP-Method</div>
+                        <div class="col-lg-10"><span class="badge text-bg-dark fusio-operation-http-method">{{operation.httpMethod}}</span></div>
+                      </div>
+                      <div class="row">
+                        <div class="col-lg-2 fw-bold">HTTP-Path</div>
+                        <div class="col-lg-10"><code class="fusio-operation-http-path">{{operation.httpPath}}</code></div>
+                      </div>
+                      <div class="row">
+                        <div class="col-lg-2 fw-bold">HTTP-Code</div>
+                        <div class="col-lg-10"><span class="badge text-bg-dark fusio-operation-http-code">{{operation.httpCode}}</span></div>
+                      </div>
+                      @if (operation.parameters) {
+                        <div class="row">
+                          <div class="col-lg-2 fw-bold">Parameters</div>
+                          <div class="col-lg-10">
+                            <table class="table">
+                              <thead>
+                              <tr>
+                                <th style="width:20%">Name</th>
+                                <th style="width:10%">Type</th>
+                                <th>Description</th>
+                              </tr>
+                              </thead>
+                              <tbody>
+                                @for (entry of operation.parameters | keyvalue; track entry.key) {
+                                  <tr>
+                                    <td>{{entry.key}}</td>
+                                    <td>{{entry.value.type}}</td>
+                                    <td>{{entry.value.description}}</td>
+                                  </tr>
+                                }
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      }
+                      @if (operation.incoming) {
+                        <div class="row">
+                          <div class="col-lg-2 fw-bold">Incoming</div>
+                          <div class="col-lg-10">{{ operation.incoming }}</div>
+                        </div>
+                      }
+                      <div class="row">
+                        <div class="col-lg-2 fw-bold">Outgoing</div>
+                        <div class="col-lg-10">{{ operation.outgoing }}</div>
+                      </div>
+                      <div class="row">
+                        <div class="col-lg-2 fw-bold">Action</div>
+                        <div class="col-lg-10">{{ operation.action }}</div>
+                      </div>
+                    </div>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      }
+      <hr>
+      @if (blueprint.tables.length > 0) {
+        @for (table of blueprint.tables; track $index) {
+          <div ngbAccordion>
+            <div ngbAccordionItem class="rounded-0">
+              <h2 ngbAccordionHeader>
+                <button ngbAccordionButton>{{ table.name }}</button>
+              </h2>
+              <div ngbAccordionCollapse>
+                <div ngbAccordionBody>
+                  <ng-template>
+                    <table class="table font-monospace">
+                      <colgroup>
+                        <col>
+                        <col style="width:20%">
+                        <col style="width:15%">
+                        <col style="width:15%">
+                      </colgroup>
+                      <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Length</th>
+                        <th>Not-Null</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                        @for (column of table.columns; track $index) {
+                          <tr>
+                            <td>
+                              @if (column.name === table.primaryKey) {
+                                <span class="fw-bold">{{column.name}}</span>
+                              }
+                              @if (column.name !== table.primaryKey) {
+                                {{column.name}}
+                              }
+                            </td>
+                            <td>{{column.type}}</td>
+                            <td>{{column.length}}</td>
+                            <td>{{column.notNull}}</td>
+                          </tr>
+                        }
+                      </tbody>
+                    </table>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      }
+      @if (blueprint.operations.length > 0 || blueprint.tables.length > 0) {
+        <div class="btn-group mt-3 mb-3">
+          <button class="btn btn-primary" type="button" (click)="executeBlueprint()" [disabled]="architectLoading()">
+            @if (architectLoading()) {
+              <span class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span>
+              <span role="status">Executing ...</span>
+            }
+            @else {
+              <span role="status">Execute</span>
+            }
+          </button>
+        </div>
+      }
+    }
+  </div>
+</div>
