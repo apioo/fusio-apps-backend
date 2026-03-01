@@ -1,12 +1,5 @@
 import {Injectable} from '@angular/core';
-import {FusioService, Service} from "ngx-fusio-sdk";
-import {
-  BackendCategory,
-  BackendCategoryCreate,
-  BackendCategoryUpdate,
-  CommonCollection,
-  CommonMessage
-} from "fusio-sdk";
+import {BackendTaxonomy} from "fusio-sdk";
 import {TaxonomyService} from "../taxonomy.service";
 
 @Injectable({
@@ -37,20 +30,26 @@ export class TreeBuilder {
     sessionStorage.removeItem(TreeBuilder.CACHE_KEY);
   }
 
-  private buildTree(entries: Array<BackendCategory>): Array<TaxonomyNode> {
+  private buildTree(entries: Array<BackendTaxonomy>, parent?: number): Array<TaxonomyNode> {
+    const result: Array<TaxonomyNode> = [];
+    entries.forEach((taxonomy) => {
+      if (!taxonomy.id || !taxonomy.name) {
+        return;
+      }
 
-    entries.forEach(() => {
+      if (taxonomy.parentId !== parent) {
+        return;
+      }
 
+      result.push({
+        name: taxonomy.name,
+        value: '' + taxonomy.id,
+        children: this.buildTree(entries, taxonomy.id),
+        expanded: parent === undefined,
+      });
     });
 
-    return [];
-  }
-
-  private getByParent(parentId: number, entries: Array<BackendCategory>) {
-    return entries.filter((entry) => {
-      entry.id === parentId
-    });
-
+    return result;
   }
 
 }

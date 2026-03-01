@@ -13,26 +13,14 @@ export class Taxonomy implements OnInit {
 
   select = output<Array<string>>();
 
-  nodes = signal<Array<TaxonomyNode>>([
-    {
-      name: 'Project A',
-      value: 'project_a',
-      children: [
-        {name: 'Feature A', value: 'feature_a'},
-        {name: 'Feature B', value: 'feature_b'},
-        {name: 'Feature C', value: 'feature_c'},
-      ],
-      expanded: true,
-    },
-    {name: 'Draft', value: 'draft'},
-  ]);
+  nodes = signal<Array<TaxonomyNode>>([]);
 
   treeBuilder = inject(TreeBuilder);
 
   readonly selected = signal<Array<string>>([]);
 
   async ngOnInit(): Promise<void> {
-    //this.nodes.set(await this.treeBuilder.build());
+    this.nodes.set(await this.treeBuilder.build());
   }
 
 }
