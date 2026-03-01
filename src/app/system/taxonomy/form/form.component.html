@@ -21,7 +21,7 @@
   <div class="mb-3 row">
     <label for="parent" class="col-lg-2 col-form-label fw-bold">Parent</label>
     <div class="col-lg-10">
-      <fusio-form-autocomplete [name]="'parent'" [service]="service" [useId]="true" [data]="entity().parentId" (dataChange)="set(entity, 'parentId', $event !== null ? parseInt($event) : null)" [disabled]="mode === 3">
+      <fusio-form-autocomplete [name]="'parent'" [service]="service" [useId]="true" [data]="entity().parentId" (dataChangeId)="set(entity, 'parentId', $event)" [disabled]="mode === 3">
         <button class="btn btn-outline-secondary" type="button" (click)="set(entity, 'parentId', null)"><i class="bi bi-trash"></i></button>
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="parentHelp"><i class="bi bi-question"></i></button>
         <ng-template #parentHelp>Select a parent taxonomy</ng-template>
