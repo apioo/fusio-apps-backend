@@ -9,6 +9,15 @@
 
 <form>
   <div class="mb-3 row">
+    <label for="parent" class="col-lg-2 col-form-label fw-bold">Connection</label>
+    <div class="col-lg-10">
+      <fusio-form-autocomplete name="parent" [service]="connection" [useId]="true" [data]="entity().connection" (dataChangeId)="set(entity, 'connection', $event)" [disabled]="mode === 3">
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="parentHelp"><i class="bi bi-question"></i></button>
+        <ng-template #parentHelp>Select an agent connection which is used by this agent</ng-template>
+      </fusio-form-autocomplete>
+    </div>
+  </div>
+  <div class="mb-3 row">
     <label for="name" class="col-lg-2 col-form-label fw-bold">Name</label>
     <div class="col-lg-10">
       <div class="input-group">
