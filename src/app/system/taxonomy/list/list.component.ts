@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
 import {ErrorService, List, MessageComponent, SearchComponent} from "ngx-fusio-sdk";
-import {BackendCategory} from "fusio-sdk";
-import {CategoryService} from "../../../services/category.service";
+import {BackendTaxonomy} from "fusio-sdk";
 import {ActivatedRoute, Router} from "@angular/router";
 import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
+import {TaxonomyService} from "../../../services/taxonomy.service";
 
 @Component({
   selector: 'app-taxonomy-list',
@@ -15,13 +15,13 @@ import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
   ],
   styleUrls: ['./list.component.css']
 })
-export class ListComponent extends List<BackendCategory> {
+export class ListComponent extends List<BackendTaxonomy> {
 
-  constructor(private service: CategoryService, route: ActivatedRoute, router: Router, error: ErrorService) {
+  constructor(private service: TaxonomyService, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);
   }
 
-  protected getService(): CategoryService {
+  protected getService(): TaxonomyService {
     return this.service;
   }
 
