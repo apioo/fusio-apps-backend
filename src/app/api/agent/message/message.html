@@ -23,13 +23,13 @@
         @if (agent.type === 0) {
           <app-agent-message-general [agent]="agent" [origin]="selected"></app-agent-message-general>
         }
-        @else if (agent?.type === 1) {
+        @else if (agent.type === 1) {
           <app-agent-message-architect [agent]="agent" [origin]="selected"></app-agent-message-architect>
         }
-        @else if (agent?.type === 2) {
+        @else if (agent.type === 2) {
           <app-agent-message-action [agent]="agent" [origin]="selected"></app-agent-message-action>
         }
-        @else if (agent?.type === 3) {
+        @else if (agent.type === 3) {
           <app-agent-message-schema [agent]="agent" [origin]="selected"></app-agent-message-schema>
         }
         @else {
@@ -42,15 +42,15 @@
             Ask anything about your Fusio instance.<br>
             <small class="text-body-secondary">Example: Show me the 5 latest users</small>
           }
-          @else if (agent?.type === 1) {
+          @else if (agent.type === 1) {
             Describe what you want to build from a high level view.<br>
             <small class="text-body-secondary">Example: Build a forum system where a user can manage threads and comments</small>
           }
-          @else if (agent?.type === 2) {
+          @else if (agent.type === 2) {
             Describe the business logic of a new action.<br>
             <small class="text-body-secondary">Example: Use the "System" connection and return the latest 10 entries from the "fusio_log" table</small>
           }
-          @else if (agent?.type === 3) {
+          @else if (agent.type === 3) {
             Describe the structure of a new schema.<br>
             <small class="text-body-secondary">Example: A Product with common properties</small>
           }

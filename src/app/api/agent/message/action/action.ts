@@ -1,21 +1,21 @@
-import {Component, signal} from '@angular/core';
+import {Component, input, signal} from '@angular/core';
 import {EditorComponent} from "ngx-monaco-editor-v2-alternative";
 import {FormsModule} from "@angular/forms";
-import {JsonPipe} from "@angular/common";
 import {Response} from "../../../action/designer/response/response";
 import {TypeschemaEditorModule} from "ngx-typeschema-editor";
 import {
   BackendAction,
   BackendActionExecuteResponse,
   BackendActionExecuteResponseBody,
+  BackendAgent,
   BackendAgentContentBinary,
   BackendAgentContentChoice,
   BackendAgentContentObject,
   BackendAgentContentText,
   BackendAgentContentToolCall,
+  BackendAgentMessage,
   CommonMessage
 } from "fusio-sdk";
-import {Highlight} from "ngx-highlightjs";
 import {ChatAbstract} from "../chat-abstract";
 import {ErrorService, MessageComponent} from "ngx-fusio-sdk";
 import {Input} from "../input/input";
@@ -27,10 +27,8 @@ import {ApiService} from "../../../../api.service";
   imports: [
     EditorComponent,
     FormsModule,
-    JsonPipe,
     Response,
     TypeschemaEditorModule,
-    Highlight,
     MessageComponent,
     Input,
     Row

@@ -1,11 +1,12 @@
-import {Component} from '@angular/core';
+import {Component, input} from '@angular/core';
 import {ChatAbstract} from "../chat-abstract";
 import {
+  BackendAgent,
   BackendAgentContentBinary,
   BackendAgentContentChoice,
   BackendAgentContentObject,
   BackendAgentContentText,
-  BackendAgentContentToolCall
+  BackendAgentContentToolCall, BackendAgentMessage
 } from "fusio-sdk";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ErrorService, MessageComponent} from "ngx-fusio-sdk";

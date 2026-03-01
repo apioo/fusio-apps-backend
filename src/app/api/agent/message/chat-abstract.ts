@@ -14,6 +14,7 @@ import {ErrorService} from "ngx-fusio-sdk";
 
 @Component({
   selector: 'app-agent-chat-abstract',
+  template: ''
 })
 export abstract class ChatAbstract implements OnInit {
 

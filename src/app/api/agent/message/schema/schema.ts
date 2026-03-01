@@ -1,10 +1,11 @@
-import {Component, signal} from '@angular/core';
+import {Component, input, signal} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {JsonPipe} from "@angular/common";
 import {ErrorService, MessageComponent} from "ngx-fusio-sdk";
 import {TypeschemaEditorModule} from "ngx-typeschema-editor";
 import {ChatAbstract} from "../chat-abstract";
 import {
+  BackendAgent,
   BackendAgentContentBinary,
   BackendAgentContentChoice,
   BackendAgentContentObject,

@@ -1,14 +1,15 @@
-import {Component, signal} from '@angular/core';
+import {Component, input, signal} from '@angular/core';
 import {ChatAbstract} from "../chat-abstract";
 import {Input} from "../input/input";
 import {ErrorService, MessageComponent} from "ngx-fusio-sdk";
 import {Row} from "../row/row";
 import {
+  BackendAgent,
   BackendAgentContentBinary,
   BackendAgentContentChoice,
   BackendAgentContentObject,
   BackendAgentContentText,
-  BackendAgentContentToolCall,
+  BackendAgentContentToolCall, BackendAgentMessage,
   CommonMessage
 } from "fusio-sdk";
 import {ApiService} from "../../../../api.service";
