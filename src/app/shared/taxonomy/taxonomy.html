@@ -1,53 +1,15 @@
 
 @if (nodes(); as nodes) {
-  <div class="col-xl-2">
-    <ul ngTree #tree="ngTree" [(values)]="selected" (valuesChange)="select.emit(selected())" class="fusio-taxonomy">
-      <ng-template
-        [ngTemplateOutlet]="treeNodes"
-        [ngTemplateOutletContext]="{nodes: nodes, parent: tree}"
-      />
-    </ul>
+  <div class="list-group">
+    <ng-template [ngTemplateOutlet]="treeNodes" [ngTemplateOutletContext]="{nodes: nodes}" />
   </div>
 }
 
-<ng-template #treeNodes let-nodes="nodes" let-parent="parent">
+<ng-template #treeNodes let-nodes="nodes">
   @for (node of nodes; track node.value) {
-    <li
-      ngTreeItem
-      [parent]="parent"
-      [value]="node.value"
-      [label]="node.name"
-      [disabled]="node.disabled"
-      [(expanded)]="node.expanded"
-      #treeItem="ngTreeItem"
-    >
-      <span aria-hidden="true" class="fusio-symbols-outlined expand-icon" translate="no">
-        @if (node.children) {
-          <i class="bi bi-arrow-right"></i>
-        }
-      </span>
-      <span aria-hidden="true" class="fusio-symbols-outlined" translate="no">
-        @if (node.children) {
-          <i class="bi bi-folder2"></i>
-        }
-        @else {
-          <i class="bi bi-folder2"></i>
-        }
-      </span>
-      {{ node.name }}
-      <span aria-hidden="true" class="fusio-symbols-outlined selected-icon" translate="no">
-        <i class="bi bi-check"></i>
-      </span>
-    </li>
-    @if (node.children) {
-      <ul role="group">
-        <ng-template ngTreeItemGroup [ownedBy]="treeItem" #group="ngTreeItemGroup">
-          <ng-template
-            [ngTemplateOutlet]="treeNodes"
-            [ngTemplateOutletContext]="{nodes: node.children, parent: group}"
-          />
-        </ng-template>
-      </ul>
+    <button type="button" class="list-group-item list-group-item-action" [ngClass]="{'active': node.value == selected()}" (click)="doSelect(node)">{{ node.name }}</button>
+    @if (node.children && node.children.length > 0) {
+      <ng-template [ngTemplateOutlet]="treeNodes" [ngTemplateOutletContext]="{nodes: node.children}" />
     }
   }
 </ng-template>

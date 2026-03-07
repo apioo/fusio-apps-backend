@@ -10,34 +10,53 @@
   placeholder="event"
   helpPath="api/event/">
 </fusio-search>
-<table class="table table-striped">
-  <thead>
-  <tr>
-    <th style="width:50%">Name</th>
-    <th style="width:50%">Description</th>
-    <th></th>
-  </tr>
-  </thead>
-  <tbody>
-  @for (entry of entries(); track entry.id) {
-    <tr>
-      <td>{{entry.name}}</td>
-      <td>{{entry.description}}</td>
-      <td>
-        <div class="btn-group" role="group">
-          <a (click)="doDetail(entry.id)" class="btn btn-primary"><i class="bi bi-search"></i></a>
-          <a (click)="doEdit(entry.id)" class="btn btn-secondary"><i class="bi bi-pen"></i></a>
-          <a (click)="doDelete(entry.id)" class="btn btn-danger"><i class="bi bi-x"></i></a>
-        </div>
-      </td>
-    </tr>
+
+<div class="row">
+  @if (hasTaxonomy()) {
+    <div class="col-xl-2">
+      <app-taxonomy (select)="doSearch(1, $event ? 'taxonomy_id:' + $event : '')"></app-taxonomy>
+    </div>
   }
-  </tbody>
-</table>
-<ngb-pagination
-  [page]="page()"
-  [pageSize]="pageSize()"
-  [collectionSize]="totalResults()"
-  [maxSize]="4"
-  [ellipses]="false"
-  (pageChange)="doSearch($event, search())"></ngb-pagination>
+  <div class="col-xl-10" [ngClass]="{'col-xl-10': hasTaxonomy(), 'col-12': !hasTaxonomy()}">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th style="width:20px"><input type="checkbox" class="form-check-input" [ngModel]="selectAll()" (ngModelChange)="toggleSelectAll()"></th>
+        <th style="width:50%">Name</th>
+        <th style="width:50%">Description</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (entry of entries(); track entry.id) {
+          <tr>
+            <td>
+              @if (entry.id) {
+                <input type="checkbox" class="form-check-input" [ngModel]="selected()[entry.id]" (ngModelChange)="doSelect(entry);">
+              }
+            </td>
+            <td>{{entry.name}}</td>
+            <td>{{entry.description}}</td>
+            <td>
+              <div class="btn-group" role="group">
+                <a (click)="doDetail(entry.id)" class="btn btn-primary"><i class="bi bi-search"></i></a>
+                <a (click)="doEdit(entry.id)" class="btn btn-secondary"><i class="bi bi-pen"></i></a>
+                <a (click)="doDelete(entry.id)" class="btn btn-danger"><i class="bi bi-x"></i></a>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+    <div class="btn-group float-start me-2" role="group">
+      <button (click)="doBatchTaxonomy()" [disabled]="batchDisabled()" class="btn btn-secondary"><i class="bi bi-tag"></i></button>
+    </div>
+    <ngb-pagination
+      [page]="page()"
+      [pageSize]="pageSize()"
+      [collectionSize]="totalResults()"
+      [maxSize]="4"
+      [ellipses]="false"
+      (pageChange)="doSearch($event, search())"></ngb-pagination>
+  </div>
+</div>

@@ -7,19 +7,21 @@
   [searchTerm]="search()"
   (search)="doSearch(1, $event)"
   (newClick)="doNew()"
-  placeholder="/acme/endpoint"
+  placeholder="my.operation OR http_path:/acme/endpoint"
   helpPath="api/operation/">
 </fusio-search>
 
 <div class="row">
-  <div class="col-xl-2">
-    <app-taxonomy></app-taxonomy>
-  </div>
-  <div class="col-xl-10">
+  @if (hasTaxonomy()) {
+    <div class="col-xl-2">
+      <app-taxonomy (select)="doSearch(1, $event ? 'taxonomy_id:' + $event : '')"></app-taxonomy>
+    </div>
+  }
+  <div class="col-xl-10" [ngClass]="{'col-xl-10': hasTaxonomy(), 'col-12': !hasTaxonomy()}">
     <table class="table table-striped">
       <thead>
       <tr>
-        <th style="width:20px"><input type="checkbox" class="form-check-input"></th>
+        <th style="width:20px"><input type="checkbox" class="form-check-input" [ngModel]="selectAll()" (ngModelChange)="toggleSelectAll()"></th>
         <th style="width:100px">Status</th>
         <th style="width:40%">Name</th>
         <th style="width:40%">Action</th>
@@ -29,7 +31,11 @@
       <tbody>
         @for (entry of entries(); track entry.id) {
           <tr>
-            <td><input type="checkbox" class="form-check-input"></td>
+            <td>
+              @if (entry.id) {
+                <input type="checkbox" class="form-check-input" [ngModel]="selected()[entry.id]" (ngModelChange)="doSelect(entry);">
+              }
+            </td>
             <td><app-operation-status [active]="entry.active" [public]="entry.public"></app-operation-status></td>
             <td><a href="{{baseUrl}}{{entry.httpPath}}" class="font-monospace">{{entry.name}}</a></td>
             <td><app-action-link [data]="entry.action"></app-action-link></td>
@@ -44,6 +50,9 @@
         }
       </tbody>
     </table>
+    <div class="btn-group float-start me-2" role="group">
+      <button (click)="doBatchTaxonomy()" [disabled]="batchDisabled()" class="btn btn-secondary"><i class="bi bi-tag"></i></button>
+    </div>
     <ngb-pagination
       [page]="page()"
       [pageSize]="pageSize()"

@@ -9,6 +9,8 @@ export class TreeBuilder {
 
   private static CACHE_KEY: string = 'fusio_taxonomy_tree';
 
+  private hasTaxonomy: boolean|undefined = undefined;
+
   constructor(private taxonomy: TaxonomyService) {
   }
 
@@ -21,6 +23,8 @@ export class TreeBuilder {
     const response = await this.taxonomy.getAll([0, 1024]);
     const tree = this.buildTree(response.entry || []);
 
+    this.hasTaxonomy = undefined;
+
     sessionStorage.setItem(TreeBuilder.CACHE_KEY, JSON.stringify(tree));
 
     return tree;
@@ -28,6 +32,13 @@ export class TreeBuilder {
 
   clear(): void {
     sessionStorage.removeItem(TreeBuilder.CACHE_KEY);
+  }
+
+  async has(): Promise<boolean> {
+    if (this.hasTaxonomy === undefined) {
+      this.hasTaxonomy = (await this.build()).length > 0;
+    }
+    return this.hasTaxonomy;
   }
 
   private buildTree(entries: Array<BackendTaxonomy>, parent?: number): Array<TaxonomyNode> {
@@ -41,11 +52,12 @@ export class TreeBuilder {
         return;
       }
 
+      const children = this.buildTree(entries, taxonomy.id);
+
       result.push({
         name: taxonomy.name,
         value: '' + taxonomy.id,
-        children: this.buildTree(entries, taxonomy.id),
-        expanded: parent === undefined,
+        children: children.length > 0 ? children : undefined,
       });
     });
 
@@ -58,6 +70,4 @@ export type TaxonomyNode = {
   name: string;
   value: string;
   children?: TaxonomyNode[];
-  disabled?: boolean;
-  expanded?: boolean;
 };

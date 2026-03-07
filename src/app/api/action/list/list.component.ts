@@ -1,10 +1,15 @@
-import {Component} from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import {ErrorService, List, MessageComponent, SearchComponent} from "ngx-fusio-sdk";
-import {BackendAction, BackendActionCollection, Client} from "fusio-sdk";
-import {FormComponent} from "../form/form.component";
+import {BackendAction} from "fusio-sdk";
 import {ActionService} from "../../../services/action.service";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
+import {Mover, TaxonomyType} from "../../../services/taxonomy/mover.service";
+import {Taxonomy} from "../../../shared/taxonomy/taxonomy";
+import {NgClass} from "@angular/common";
+import {TreeBuilder} from "../../../services/taxonomy/tree-builder.service";
+import {TaxonomyList} from "../../../abstract/taxonomy-list";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-action-list',
@@ -13,18 +18,26 @@ import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
     MessageComponent,
     SearchComponent,
     RouterLink,
-    NgbPagination
+    NgbPagination,
+    Taxonomy,
+    NgClass,
+    ReactiveFormsModule,
+    FormsModule
   ],
   styleUrls: ['./list.component.css']
 })
-export class ListComponent extends List<BackendAction> {
+export class ListComponent extends TaxonomyList<BackendAction> {
 
-  constructor(private service: ActionService, route: ActivatedRoute, router: Router, error: ErrorService) {
+  constructor(private _service: ActionService, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);
   }
 
   protected getService(): ActionService {
-    return this.service;
+    return this._service;
+  }
+
+  getTaxonomyType(): TaxonomyType {
+    return 'actions';
   }
 
 }
