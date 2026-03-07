@@ -28,12 +28,12 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 })
 export class ListComponent extends TaxonomyList<BackendAction> {
 
-  constructor(private _service: ActionService, route: ActivatedRoute, router: Router, error: ErrorService) {
+  constructor(private service: ActionService, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);
   }
 
   protected getService(): ActionService {
-    return this._service;
+    return this.service;
   }
 
   getTaxonomyType(): TaxonomyType {
