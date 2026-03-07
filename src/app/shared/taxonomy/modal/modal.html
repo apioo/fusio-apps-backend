@@ -9,7 +9,7 @@
       <div class="col-12">
         <fusio-form-autocomplete name="taxonomy" [service]="service" [useId]="true" [data]="taxonomyId()" (dataChangeId)="taxonomyId.set($event)">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="taxonomyHelp"><i class="bi bi-question"></i></button>
-          <ng-template #taxonomyHelp>Select a taxonomy</ng-template>
+          <ng-template #taxonomyHelp>Select a taxonomy to organize your entities. If no taxonomy is available you can create a new taxonomy under System / Taxonomy</ng-template>
         </fusio-form-autocomplete>
       </div>
     </div>
