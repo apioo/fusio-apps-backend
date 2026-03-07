@@ -1,1 +1,37 @@
-<p>commit works!</p>
+
+<h1>
+  <a [routerLink]="['/', 'action']">Action</a> /
+  <a [routerLink]="['/', 'action', '~' + action()?.name]">{{ action()?.name }}</a> /
+  Commits
+</h1>
+
+<fusio-message [response]="response()"></fusio-message>
+
+<fusio-search
+  [searchTerm]="search()"
+  (search)="doSearch(1, $event)"
+  (newClick)="doNew()"
+  placeholder="action commit"
+  helpPath="api/action/">
+</fusio-search>
+
+<ul class="list-group mt-3 mb-3">
+  @for (entry of commits(); track entry.commit.id) {
+    <li class="list-group-item justify-content-between align-items-start">
+      <div class="overflow-auto">
+        <div class="fw-bold">{{ entry.commit.commitHash|slice:0:8 }}</div>
+        <div style="width:100%;height:350px;border:1px solid #ced4da">
+          <ngx-monaco-diff-editor style="height:100%" [options]="{theme: 'vs-light'}" [originalModel]="entry.original" [modifiedModel]="entry.modified"></ngx-monaco-diff-editor>
+        </div>
+        <small class="text-muted">by <a [routerLink]="['/user/', entry.commit.user?.id]">{{ entry.commit.user?.name }}</a> on {{ entry.commit.insertDate|date:'short' }}</small>
+      </div>
+    </li>
+  }
+</ul>
+<ngb-pagination
+  [page]="page()"
+  [pageSize]="pageSize()"
+  [collectionSize]="totalResults()"
+  [maxSize]="4"
+  [ellipses]="false"
+  (pageChange)="doSearch($event, search())"></ngb-pagination>

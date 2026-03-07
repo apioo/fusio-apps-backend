@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {ErrorService, MessageComponent, SearchComponent} from "ngx-fusio-sdk";
 import {BackendSchema} from "fusio-sdk";
 import {SchemaService} from "../../../services/schema.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
 import {TaxonomyType} from "../../../services/taxonomy/mover.service";
 import {TaxonomyList} from "../../../abstract/taxonomy-list";
@@ -20,7 +20,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     Taxonomy,
     NgClass,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    RouterLink
   ],
   styleUrls: ['./list.component.css']
 })
