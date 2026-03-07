@@ -15,6 +15,7 @@ export class ActionLinkComponent {
 
   scheme = signal<string>('');
   value = signal<string>('');
+  action = signal<string>('');
 
   constructor() {
     effect(() => {
@@ -23,13 +24,21 @@ export class ActionLinkComponent {
         return;
       }
 
-      const pos = data.indexOf('://');
+      let pos = data.indexOf('://');
       if (pos === -1) {
         return;
       }
 
       this.scheme.set(data.substring(0, pos));
       this.value.set(data.substring(pos + 3));
+
+      let action = data.substring(pos + 3);
+      pos = action.indexOf('@');
+      if (pos !== -1) {
+        action = action.substring(0, pos);
+      }
+
+      this.action.set(action);
     });
   }
 
