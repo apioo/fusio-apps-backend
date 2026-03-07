@@ -17,7 +17,7 @@
       <app-taxonomy (select)="doSearch(1, $event ? 'taxonomy_id:' + $event : '')"></app-taxonomy>
     </div>
   }
-  <div class="col-xl-10" [ngClass]="{'col-xl-10': hasTaxonomy(), 'col-12': !hasTaxonomy()}">
+  <div [ngClass]="{'col-xl-10': hasTaxonomy(), 'col-12': !hasTaxonomy()}">
     <table class="table table-striped">
       <thead>
       <tr>
