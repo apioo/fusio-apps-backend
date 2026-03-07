@@ -24,8 +24,6 @@ import {TreeBuilder} from "../../../services/taxonomy/tree-builder.service";
 })
 export class FormComponent extends Form<BackendTaxonomy> {
 
-  protected readonly parseInt = parseInt;
-
   constructor(public service: TaxonomyService, private treeBuilder: TreeBuilder, private help: HelpService, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);
   }
