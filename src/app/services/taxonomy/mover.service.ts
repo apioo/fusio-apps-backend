@@ -42,7 +42,7 @@ export class Mover {
     } else if (type === 'actions') {
       payload.actions = ids;
     } else if (type === 'schemas') {
-      payload.actions = ids;
+      payload.schemas = ids;
     } else if (type === 'events') {
       payload.events = ids;
     } else if (type === 'cronjobs') {
