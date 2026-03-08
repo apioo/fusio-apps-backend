@@ -33,6 +33,7 @@ export class ActionSelectorComponent {
 
   scheme = signal<string>('');
   value = signal<string>('');
+  action = signal<string>('');
 
   schemes = [{
     key: 'action',
@@ -51,14 +52,22 @@ export class ActionSelectorComponent {
     value: 'File'
   }];
 
-  constructor(public action: ActionService) {
+  constructor(public actionService: ActionService) {
     effect(() => {
       const data = this.data();
       if (data) {
-        const pos = data.indexOf('://');
+        let pos = data.indexOf('://');
         if (pos > 0) {
           this.scheme.set(data.substring(0, pos));
           this.value.set(data.substring(pos + 3));
+
+          let action = data.substring(pos + 3);
+          pos = action.indexOf('@');
+          if (pos !== -1) {
+            action = action.substring(0, pos);
+          }
+
+          this.action.set(action);
         }
       }
       if (!this.scheme()) {
