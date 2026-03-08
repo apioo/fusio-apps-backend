@@ -47,6 +47,7 @@ import {FormComponent as TriggerForm} from "./api/trigger/form/form.component";
 import {ListComponent as AgentList} from "./api/agent/list/list.component";
 import {DetailComponent as AgentDetail} from "./api/agent/detail/detail.component";
 import {FormComponent as AgentForm} from "./api/agent/form/form.component";
+import {Message as AgentMessage} from "./api/agent/message/message";
 import {GeneratorComponent} from "./development/generator/generator.component";
 import {ListComponent as MarketplaceList} from "./development/marketplace/list/list.component";
 import {ListComponent as MarketplaceBundleList} from "./development/marketplace/bundle/list/list.component";
@@ -149,6 +150,8 @@ export const routes: Routes = [
   { path: 'cronjob', canActivate: [isAuthenticated], children: EntityRoute.getAll(CronjobList, CronjobDetail, CronjobForm) },
   { path: 'trigger', canActivate: [isAuthenticated], children: EntityRoute.getAll(TriggerList, TriggerDetail, TriggerForm) },
   { path: 'agent', canActivate: [isAuthenticated], children: EntityRoute.getAll(AgentList, AgentDetail, AgentForm) },
+  { path: 'agent/:id/message', canActivate: [isAuthenticated], component: AgentMessage },
+  { path: 'agent/:id/message/:chat_id', canActivate: [isAuthenticated], component: AgentMessage },
 
   { path: 'generator', component: GeneratorComponent, canActivate: [isAuthenticated] },
   { path: 'marketplace', component: MarketplaceList, canActivate: [isAuthenticated] },

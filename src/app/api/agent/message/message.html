@@ -1,25 +1,26 @@
 
 <h1>
   <a [routerLink]="['/', 'agent']">Agent</a> /
-  <a [routerLink]="['/', 'agent', agent?.id]">{{agent?.name}}</a> /
+  <a [routerLink]="['/', 'agent', agent()?.id]">{{agent()?.name}}</a> /
   Message
 </h1>
 
 <fusio-message [response]="response()"></fusio-message>
 
-@if (agent) {
+@if (agent(); as agent) {
   <div class="row">
-    <div class="col-3">
-      <ul>
+    <div class="col-xl-3">
+      <div class="list-group">
+        <button type="button" class="list-group-item list-group-item-action list-group-item-success" [routerLink]="['/', 'agent', agent?.id, 'message']">New Chat</button>
         @for (chat of chats(); track chat.id) {
           @if (chat.content && chat.content.type === 'text' && chat.content && 'content' in chat.content) {
-            <li><a (click)="loadChat(chat)">{{ chat.content.content }}</a></li>
+            <button type="button" class="list-group-item list-group-item-action overflow-hidden" [ngClass]="{'active': chat.id === selected()}" (click)="loadChat(chat)">{{ chat.content.content }}</button>
           }
         }
-      </ul>
+      </div>
     </div>
-    <div class="col-9">
-      @if (selected(); as selected) {
+    <div class="col-xl-9">
+      @if (getSelected(); as selected) {
         @if (agent.type === 0) {
           <app-agent-message-general [agent]="agent" [origin]="selected"></app-agent-message-general>
         }
@@ -39,26 +40,28 @@
       @else {
         <div class="text-center p-4 fw-bold">
           @if (agent.type === 0) {
-            Ask anything about your Fusio instance.<br>
+            {{ agent.description }}<br>
             <small class="text-body-secondary">Example: Show me the 5 latest users</small>
           }
           @else if (agent.type === 1) {
-            Describe what you want to build from a high level view.<br>
-            <small class="text-body-secondary">Example: Build a forum system where a user can manage threads and comments</small>
+            {{ agent.description }}<br>
+            <small class="text-body-secondary"><span class="badge text-bg-primary">Architect</span> Example: Build a forum system where a user can manage threads and comments</small>
           }
           @else if (agent.type === 2) {
-            Describe the business logic of a new action.<br>
-            <small class="text-body-secondary">Example: Use the "System" connection and return the latest 10 entries from the "fusio_log" table</small>
+            {{ agent.description }}<br>
+            <small class="text-body-secondary"><span class="badge text-bg-primary">Action</span> Example: Use the "System" connection and return the latest 10 entries from the "fusio_log" table</small>
           }
           @else if (agent.type === 3) {
-            Describe the structure of a new schema.<br>
-            <small class="text-body-secondary">Example: A Product with common properties</small>
+            {{ agent.description }}<br>
+            <small class="text-body-secondary"><span class="badge text-bg-primary">Schema</span> Example: A Product with common properties</small>
           }
           @else {
             <ngb-alert type="error">This agent contains a not supported agent type</ngb-alert>
           }
         </div>
       }
+      <div id="messages-bottom"></div>
+      <app-agent-message-input [loading]="loading()" (send)="doSend($event)"></app-agent-message-input>
     </div>
   </div>
 }
