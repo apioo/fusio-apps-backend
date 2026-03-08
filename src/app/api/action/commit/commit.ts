@@ -87,7 +87,7 @@ export class Commit extends List<BackendActionCommit> {
         language: 'java',
         code: commit.config?.['code'],
       };
-    } else if (action.class === 'Fusio.Adapter.Worker.Action.WorkerJavaScript') {
+    } else if (action.class === 'Fusio.Adapter.Worker.Action.WorkerJavascript') {
       return {
         language: 'javascript',
         code: commit.config?.['code'],
