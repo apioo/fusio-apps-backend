@@ -46,6 +46,16 @@
   <div class="mb-3 row">
     <label for="tools" class="col-lg-2 col-form-label fw-bold">Tools</label>
     <div class="col-lg-10">
+      <ul class="list-group" style="max-height:400px;overflow:auto">
+        @for (tool of tools(); track tool.name) {
+          @if (tool.name) {
+            <li class="list-group-item">
+              <input class="form-check-input me-1" type="checkbox" [ngModel]="selected()[tool.name]" (ngModelChange)="select(tool.name, $event)" [name]="'tool-' + tool.name" [id]="'tool-' + tool.name">
+              <label class="form-check-label" [for]="'tool-' + tool.name"><span class="badge text-bg-primary me-1">{{ tool.name }}</span><br>{{ tool.description }}</label>
+            </li>
+          }
+        }
+      </ul>
     </div>
   </div>
   <div class="mb-3 row">

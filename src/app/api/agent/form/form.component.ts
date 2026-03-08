@@ -1,6 +1,6 @@
-import {Component} from '@angular/core';
+import {Component, signal} from '@angular/core';
 import {ErrorService, Form, FormAutocompleteComponent, HelpService, MessageComponent} from "ngx-fusio-sdk";
-import {BackendAgent} from "fusio-sdk";
+import {BackendAgent, BackendAgentTool, BackendAgentTools} from "fusio-sdk";
 import {ActivatedRoute, Router} from "@angular/router";
 import {EventService} from "../../../services/event.service";
 import {FormBreadcrump} from "../../../shared/form-breadcrump/form-breadcrump";
@@ -11,6 +11,7 @@ import {ActionSelectorComponent} from "../../../shared/action-selector/action-se
 import {AgentService} from "../../../services/agent.service";
 import {SchemaSelectorComponent} from "../../../shared/schema-selector/schema-selector.component";
 import {ConnectionService} from "../../../services/connection.service";
+import {ApiService} from "../../../api.service";
 
 @Component({
   selector: 'app-agent-form',
@@ -29,7 +30,11 @@ import {ConnectionService} from "../../../services/connection.service";
 })
 export class FormComponent extends Form<BackendAgent> {
 
-  constructor(private service: AgentService, private help: HelpService, public connection: ConnectionService, public event: EventService, route: ActivatedRoute, router: Router, error: ErrorService) {
+  tools = signal<Array<BackendAgentTool>>([]);
+
+  selected = signal<Record<string, boolean>>({});
+
+  constructor(private service: AgentService, private api: ApiService, private help: HelpService, public connection: ConnectionService, public event: EventService, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);
   }
 
@@ -41,4 +46,48 @@ export class FormComponent extends Form<BackendAgent> {
     this.help.showDialog(path);
   }
 
+  protected override async onLoad() {
+    try {
+      const response = await this.api.getClient().backend().agent().getTools();
+      const tools = response.tools || [];
+      this.tools.set(tools);
+
+      const selected: Record<string, boolean> = {};
+      this.entity().tools?.forEach((toolName: string) => {
+        selected[toolName] = true;
+      });
+      this.selected.set(selected);
+    } catch (error) {
+      this.response.set(this.error.convert(error));
+    }
+  }
+
+  protected override beforeCreate(entity: BackendAgent): BackendAgent {
+    entity.tools = this.getSelectedTools();
+    return entity;
+  }
+
+  protected override beforeUpdate(entity: BackendAgent): BackendAgent {
+    entity.tools = this.getSelectedTools();
+    return entity;
+  }
+
+  select(toolName: string, select: boolean) {
+    this.selected.update((selected) => {
+      selected[toolName] = select;
+      return selected;
+    });
+  }
+
+  getSelectedTools(): Array<string> {
+    const tools: Array<string> = [];
+    const selected = this.selected();
+    for (const [key, value] of Object.entries(selected)) {
+      if (value) {
+        tools.push(key);
+      }
+    }
+
+    return tools;
+  }
 }

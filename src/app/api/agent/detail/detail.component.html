@@ -9,6 +9,7 @@
 @if (selected(); as selected) {
   <div class="btn-group" role="group">
     <a (click)="doEdit(selected.id)" class="btn btn-primary fusio-btn-update">Update</a>
+    <a routerLink="/agent/{{selected.id}}/message" class="btn btn-secondary fusio-btn-designer">Message</a>
     <a (click)="doDelete(selected.id)" class="btn btn-danger fusio-btn-delete">Delete</a>
   </div>
   <div class="float-end">
@@ -30,7 +31,17 @@
       </div>
       <div class="row">
         <div class="col-lg-2 fw-bold">Tools</div>
-        <div class="col-lg-10">{{selected.tools}}</div>
+        <div class="col-lg-10">
+          <ul class="list-group" style="max-height:400px;overflow:auto">
+            @for (tool of tools(); track tool.name) {
+              @if (tool.name) {
+                <li class="list-group-item">
+                  <label class="form-check-label" [for]="'tool-' + tool.name"><span class="badge text-bg-primary me-1">{{ tool.name }}</span><br>{{ tool.description }}</label>
+                </li>
+              }
+            }
+          </ul>
+        </div>
       </div>
       <div class="row">
         <div class="col-lg-2 fw-bold">Outgoing</div>
