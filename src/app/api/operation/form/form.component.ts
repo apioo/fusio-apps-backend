@@ -71,7 +71,7 @@ export class FormComponent extends Form<BackendOperation> {
       return false;
     }
 
-    return this.mode === 3 || (entity.stability === 2 || entity.stability === 3);
+    return this.mode === 3 || (entity.stability === 0 || entity.stability === 2 || entity.stability === 3);
   }
 
   changeHttpMethod(): void {
