@@ -1,4 +1,4 @@
-import {Component, input, OnInit, signal} from '@angular/core';
+import {Component, computed, input, resource, signal} from '@angular/core';
 import {
   BackendAgent,
   BackendAgentContentBinary,
@@ -6,7 +6,9 @@ import {
   BackendAgentContentObject,
   BackendAgentContentText,
   BackendAgentContentToolCall,
+  BackendAgentInput,
   BackendAgentMessage,
+  BackendAgentOutput,
   CommonMessage
 } from "fusio-sdk";
 import {ApiService} from "../../../api.service";
@@ -16,56 +18,49 @@ import {ErrorService} from "ngx-fusio-sdk";
   selector: 'app-agent-chat-abstract',
   template: ''
 })
-export abstract class ChatAbstract implements OnInit {
+export abstract class ChatAbstract {
 
   agent = input.required<BackendAgent>();
-  origin = input.required<BackendAgentMessage>();
+  parent = input.required<BackendAgentMessage>();
 
-  messages = signal<Array<BackendAgentMessage>>([]);
+  output = signal<BackendAgentOutput|undefined>(undefined);
   loading = signal<boolean>(false);
   response = signal<CommonMessage|undefined>(undefined);
 
-  protected constructor(protected api: ApiService, protected error: ErrorService) {
-  }
+  messagesResource = resource<Array<BackendAgentMessage>, { agent: BackendAgent, parent: BackendAgentMessage, output: BackendAgentOutput|undefined }>({
+    params: () => ({
+      agent: this.agent(),
+      parent: this.parent(),
+      output: this.output(),
+    }),
+    loader: async (params) => {
+      const messages: Array<BackendAgentMessage> = [];
+      messages.push(params.params.parent);
 
-  ngOnInit(): void {
-    this.messages.update((messages) => {
-      messages.push(this.origin());
-      return messages;
-    });
+      const agentId = params.params.agent.id;
+      const parentId = params.params.parent.id;
+      if (agentId && parentId) {
+        const collection = await this.api.getClient().backend().agent().message().getAll('' + agentId, parentId);
+        const entries = collection.entry || [];
 
-    this.loadMessages();
-  }
-
-  async loadMessages() {
-    const agentId = this.agent().id;
-    if (!agentId) {
-      return;
-    }
-
-    const originId = this.origin().id;
-    if (!originId) {
-      return;
-    }
-
-    try {
-      const collection = await this.api.getClient().backend().agent().message().getAll('' + agentId, originId);
-      const messages = collection.entry || [];
-
-      messages.forEach((message) => {
-        this.messages.update((messages) => {
+        entries.forEach((message) => {
           messages.push(message);
-          return messages;
         });
-      });
+      }
 
-      this.loading.set(false);
-
-      this.scrollToBottom();
-    } catch (error) {
-      this.loading.set(false);
-      this.response.set(this.error.convert(error));
+      return messages;
     }
+  });
+
+  messages = computed<Array<BackendAgentMessage>|undefined>(() => {
+    if (this.messagesResource.hasValue()) {
+      return this.messagesResource.value();
+    }
+
+    return undefined;
+  });
+
+  protected constructor(protected api: ApiService, protected error: ErrorService) {
   }
 
   async doSend(message: string) {
@@ -78,6 +73,7 @@ export abstract class ChatAbstract implements OnInit {
       return;
     }
 
+    /*
     this.messages.update((messages) => {
       messages.push({
         role: 'user',
@@ -88,33 +84,27 @@ export abstract class ChatAbstract implements OnInit {
       });
       return messages;
     });
+    */
 
     this.loading.set(true);
 
     this.preOutput();
 
+    const parentId = this.parent().id;
+
     try {
-      const response = await this.api.getClient().backend().agent().message().submit('' + agentId, {
+      const input: BackendAgentInput = {
         input: {
           type: 'text',
           content: message,
         }
-      });
+      };
 
-      const output = response.output;
-      if (output) {
-        this.messages.update((messages) => {
-          messages.push({
-            role: 'assistant',
-            content: output,
-          });
-          return messages;
-        });
+      const output = await this.api.getClient().backend().agent().message().submit('' + agentId, input, parentId);
 
-        this.onOutput(output);
+      this.output.set(output);
 
-        this.scrollToBottom();
-      }
+      this.scrollToBottom();
     } catch (error) {
       this.response.set(this.error.convert(error));
     }

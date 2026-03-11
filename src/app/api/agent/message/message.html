@@ -14,24 +14,24 @@
         <button type="button" class="list-group-item list-group-item-action list-group-item-success" [routerLink]="['/', 'agent', agent?.id, 'message']">New Chat</button>
         @for (chat of chats(); track chat.id) {
           @if (chat.content && chat.content.type === 'text' && chat.content && 'content' in chat.content) {
-            <button type="button" class="list-group-item list-group-item-action overflow-hidden" [ngClass]="{'active': chat.id === selected()}" (click)="loadChat(chat)">{{ chat.content.content }}</button>
+            <button type="button" class="list-group-item list-group-item-action overflow-hidden text-nowrap" [ngClass]="{'active': chat.id === selected()}" (click)="loadChat(chat)">{{ chat.content.content }}</button>
           }
         }
       </div>
     </div>
     <div class="col-xl-9">
-      @if (getSelected(); as selected) {
+      @if (selected(); as selected) {
         @if (agent.type === 0) {
-          <app-agent-message-general [agent]="agent" [origin]="selected"></app-agent-message-general>
+          <app-agent-message-general [agent]="agent" [parent]="selected"></app-agent-message-general>
         }
         @else if (agent.type === 1) {
-          <app-agent-message-architect [agent]="agent" [origin]="selected"></app-agent-message-architect>
+          <app-agent-message-architect [agent]="agent" [parent]="selected"></app-agent-message-architect>
         }
         @else if (agent.type === 2) {
-          <app-agent-message-action [agent]="agent" [origin]="selected"></app-agent-message-action>
+          <app-agent-message-action [agent]="agent" [parent]="selected"></app-agent-message-action>
         }
         @else if (agent.type === 3) {
-          <app-agent-message-schema [agent]="agent" [origin]="selected"></app-agent-message-schema>
+          <app-agent-message-schema [agent]="agent" [parent]="selected"></app-agent-message-schema>
         }
         @else {
           <ngb-alert type="error">This agent contains a not supported agent type</ngb-alert>
@@ -59,9 +59,9 @@
             <ngb-alert type="error">This agent contains a not supported agent type</ngb-alert>
           }
         </div>
+        <div id="messages-bottom"></div>
+        <app-agent-message-input [loading]="loading()" (send)="doSend($event)"></app-agent-message-input>
       }
-      <div id="messages-bottom"></div>
-      <app-agent-message-input [loading]="loading()" (send)="doSend($event)"></app-agent-message-input>
     </div>
   </div>
 }

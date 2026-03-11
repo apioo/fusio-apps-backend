@@ -6,7 +6,7 @@
     <div style="max-width:1024px">
       @for (message of messages(); track $index) {
         @if (message.role === "assistant" && message.content && message.content.type === 'text' && 'content' in message.content && message.content.content) {
-          <div class="mb-2">
+          <div class="mb-2 mt-2">
             <div class="d-grid">
               <button class="btn btn-primary" type="button" (click)="loadAction(message.content.content)">Generated action ({{message.content.content.length}} chars)</button>
             </div>

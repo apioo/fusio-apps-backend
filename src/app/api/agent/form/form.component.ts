@@ -30,6 +30,13 @@ import {ApiService} from "../../../api.service";
 })
 export class FormComponent extends Form<BackendAgent> {
 
+  types = [
+    {key: 0, value: 'General'},
+    {key: 1, value: 'Operation'},
+    {key: 2, value: 'Action'},
+    {key: 3, value: 'Schema'}
+  ]
+
   tools = signal<Array<BackendAgentTool>>([]);
 
   selected = signal<Record<string, boolean>>({});

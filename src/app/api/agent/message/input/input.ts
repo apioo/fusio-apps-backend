@@ -3,10 +3,10 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-agent-message-input',
-    imports: [
-        FormsModule,
-        ReactiveFormsModule
-    ],
+  imports: [
+    FormsModule,
+    ReactiveFormsModule
+  ],
   templateUrl: './input.html',
   styleUrl: './input.css',
 })

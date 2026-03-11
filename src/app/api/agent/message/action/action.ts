@@ -1,4 +1,4 @@
-import {Component, input, signal} from '@angular/core';
+import {Component, signal} from '@angular/core';
 import {EditorComponent} from "ngx-monaco-editor-v2-alternative";
 import {FormsModule} from "@angular/forms";
 import {Response} from "../../../action/designer/response/response";
@@ -7,13 +7,11 @@ import {
   BackendAction,
   BackendActionExecuteResponse,
   BackendActionExecuteResponseBody,
-  BackendAgent,
   BackendAgentContentBinary,
   BackendAgentContentChoice,
   BackendAgentContentObject,
   BackendAgentContentText,
   BackendAgentContentToolCall,
-  BackendAgentMessage,
   CommonMessage
 } from "fusio-sdk";
 import {ChatAbstract} from "../chat-abstract";

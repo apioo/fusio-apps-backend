@@ -1,4 +1,4 @@
-import {Component, OnInit, signal} from '@angular/core';
+import {Component, computed, OnInit, signal} from '@angular/core';
 import {ApiService} from "../../../api.service";
 import {AgentService} from "../../../services/agent.service";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
@@ -32,10 +32,19 @@ export class Message implements OnInit {
 
   agent = signal<BackendAgent|undefined>(undefined);
   chats = signal<Array<BackendAgentMessage>>([]);
-  selected = signal<number|undefined>(undefined);
-  messages = signal<Array<BackendAgentMessage>>([]);
   loading = signal<boolean>(false);
   response = signal<CommonMessage|undefined>(undefined);
+
+  selectedId = signal<number|undefined>(undefined);
+  selected = computed<BackendAgentMessage|undefined>((): BackendAgentMessage|undefined => {
+    let result = undefined;
+    this.chats().forEach((chat) => {
+      if (chat.id === this.selectedId()) {
+        result = chat;
+      }
+    });
+    return result;
+  });
 
   constructor(protected api: ApiService, private agentService: AgentService, private route: ActivatedRoute, private router: Router, protected error: ErrorService) {
   }
@@ -50,10 +59,9 @@ export class Message implements OnInit {
         }
       }
       if (params['chat_id']) {
-        this.selected.set(parseInt(params['chat_id']));
-        this.loadMessages();
+        this.selectedId.set(parseInt(params['chat_id']));
       } else {
-        this.selected.set(undefined);
+        this.selectedId.set(undefined);
       }
     });
   }
@@ -75,45 +83,13 @@ export class Message implements OnInit {
     }
   }
 
-  getSelected(): BackendAgentMessage|undefined {
-    let result = undefined;
-    this.chats().forEach((chat) => {
-      if (chat.id === this.selected()) {
-        result = chat;
-      }
-    });
-    return result;
-  }
-
-  loadChat(chat: BackendAgentMessage) {
+  async loadChat(chat: BackendAgentMessage) {
     const agent = this.agent();
     if (!agent) {
       return;
     }
 
-    this.router.navigate(['/agent', agent.id, 'message', chat.id]);
-  }
-
-  async loadMessages() {
-    const agentId = this.agent()?.id;
-    if (!agentId) {
-      return;
-    }
-
-    const selected = this.selected();
-    if (!selected) {
-      return;
-    }
-
-    try {
-      const collection = await this.api.getClient().backend().agent().message().getAll('' + agentId, selected);
-
-      this.loading.set(false);
-      this.messages.set(collection.entry || []);
-    } catch (error) {
-      this.loading.set(false);
-      this.response.set(this.error.convert(error));
-    }
+    await this.router.navigate(['/agent', agent.id, 'message', chat.id]);
   }
 
   async doSend(message: string) {
@@ -121,6 +97,8 @@ export class Message implements OnInit {
     if (!agentId) {
       return;
     }
+
+    const selected = this.selectedId();
 
     const payload: BackendAgentInput = {
       input: {
@@ -130,9 +108,11 @@ export class Message implements OnInit {
     };
 
     try {
-      const output = await this.api.getClient().backend().agent().message().submit('' + agentId, payload);
+      const output = await this.api.getClient().backend().agent().message().submit('' + agentId, payload, selected);
 
       this.loading.set(false);
+
+      await this.router.navigate(['/agent', agentId, 'message', output.id]);
     } catch (error) {
       this.loading.set(false);
     }
