@@ -17,7 +17,7 @@
         }
       }
       <div id="messages-bottom"></div>
-      <app-agent-message-input [loading]="loading()" (send)="doSend($event)"></app-agent-message-input>
+      <app-agent-message-input [loading]="messagesResource.isLoading() || loading()" (send)="doSend($event)"></app-agent-message-input>
     </div>
   </div>
   <div class="col-xl-6">
@@ -37,23 +37,6 @@
                         <div class="col-lg-2 fw-bold">Status</div>
                         <div class="col-lg-10">
                           <app-operation-status [active]="operation.active" [public]="operation.public"></app-operation-status>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-lg-2 fw-bold">Stability</div>
-                        <div class="col-lg-10">
-                          @if (operation.stability === 0) {
-                            <span class="badge bg-warning fusio-operation-stability">Deprecated</span>
-                          }
-                          @if (operation.stability === 1) {
-                            <span class="badge bg-success fusio-operation-stability">Experimental</span>
-                          }
-                          @if (operation.stability === 2) {
-                            <span class="badge bg-info fusio-operation-stability">Stable</span>
-                          }
-                          @if (operation.stability === 3) {
-                            <span class="badge bg-secondary fusio-operation-stability">Legacy</span>
-                          }
                         </div>
                       </div>
                       <div class="row">
@@ -89,11 +72,11 @@
                               </tr>
                               </thead>
                               <tbody>
-                                @for (entry of operation.parameters | keyvalue; track entry.key) {
+                                @for (entry of operation.parameters; track $index) {
                                   <tr>
-                                    <td>{{entry.key}}</td>
-                                    <td>{{entry.value.type}}</td>
-                                    <td>{{entry.value.description}}</td>
+                                    <td>{{entry.name}}</td>
+                                    <td>{{entry.type}}</td>
+                                    <td>{{entry.description}}</td>
                                   </tr>
                                 }
                               </tbody>
@@ -104,16 +87,22 @@
                       @if (operation.incoming) {
                         <div class="row">
                           <div class="col-lg-2 fw-bold">Incoming</div>
-                          <div class="col-lg-10">{{ operation.incoming }}</div>
+                          <div class="col-lg-10">
+                            <button class="btn btn-success" (click)="generateSchema(operation.incoming)">Generate ({{operation.incoming.length}} chars)</button>
+                          </div>
                         </div>
                       }
                       <div class="row">
                         <div class="col-lg-2 fw-bold">Outgoing</div>
-                        <div class="col-lg-10">{{ operation.outgoing }}</div>
+                        <div class="col-lg-10">
+                          <button class="btn btn-success" (click)="generateSchema(operation.outgoing)">Generate ({{operation.outgoing.length}} chars)</button>
+                        </div>
                       </div>
                       <div class="row">
                         <div class="col-lg-2 fw-bold">Action</div>
-                        <div class="col-lg-10">{{ operation.action }}</div>
+                        <div class="col-lg-10">
+                          <button class="btn btn-success" (click)="generateAction(operation.action)">Generate ({{operation.action.length}} chars)</button>
+                        </div>
                       </div>
                     </div>
                   </ng-template>
@@ -124,57 +113,11 @@
         }
       }
       <hr>
-      @if (blueprint.tables.length > 0) {
-        @for (table of blueprint.tables; track $index) {
-          <div ngbAccordion>
-            <div ngbAccordionItem class="rounded-0">
-              <h2 ngbAccordionHeader>
-                <button ngbAccordionButton>{{ table.name }}</button>
-              </h2>
-              <div ngbAccordionCollapse>
-                <div ngbAccordionBody>
-                  <ng-template>
-                    <table class="table font-monospace">
-                      <colgroup>
-                        <col>
-                        <col style="width:20%">
-                        <col style="width:15%">
-                        <col style="width:15%">
-                      </colgroup>
-                      <thead>
-                      <tr>
-                        <th>Name</th>
-                        <th>Type</th>
-                        <th>Length</th>
-                        <th>Not-Null</th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                        @for (column of table.columns; track $index) {
-                          <tr>
-                            <td>
-                              @if (column.name === table.primaryKey) {
-                                <span class="fw-bold">{{column.name}}</span>
-                              }
-                              @if (column.name !== table.primaryKey) {
-                                {{column.name}}
-                              }
-                            </td>
-                            <td>{{column.type}}</td>
-                            <td>{{column.length}}</td>
-                            <td>{{column.notNull}}</td>
-                          </tr>
-                        }
-                      </tbody>
-                    </table>
-                  </ng-template>
-                </div>
-              </div>
-            </div>
-          </div>
-        }
+      @if (blueprint.schema) {
+        <button class="btn btn-success" (click)="generateDatabase(blueprint.schema)">Generate ({{blueprint.schema.length}} chars)</button>
+        <hr>
       }
-      @if (blueprint.operations.length > 0 || blueprint.tables.length > 0) {
+      @if (blueprint.operations.length > 0) {
         <div class="btn-group mt-3 mb-3">
           <button class="btn btn-primary" type="button" (click)="executeBlueprint()" [disabled]="architectLoading()">
             @if (architectLoading()) {

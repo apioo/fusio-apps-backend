@@ -9,17 +9,17 @@
 
 @if (agent(); as agent) {
   <div class="row">
-    <div class="col-xl-3">
+    <div class="col-xl-2">
       <button type="button" class="btn btn-success mb-3" [routerLink]="['/', 'agent', agent?.id, 'message']">New Chat</button>
       <div class="list-group">
         @for (chat of chats(); track chat.id) {
           @if (chat.content && chat.content.type === 'text' && chat.content && 'content' in chat.content) {
-            <button type="button" class="list-group-item list-group-item-action overflow-hidden text-nowrap text-truncate" [ngClass]="{'active': chat.id === selectedId()}" (click)="loadChat(chat)">{{ chat.content.content }}</button>
+            <button type="button" class="list-group-item list-group-item-action overflow-hidden text-nowrap text-truncate" [ngClass]="{'active': chat.id === selectedId()}" [title]="chat.content.content" (click)="loadChat(chat)">{{ chat.content.content }}</button>
           }
         }
       </div>
     </div>
-    <div class="col-xl-9">
+    <div class="col-xl-10">
       @if (selected(); as selected) {
         @if (agent.type === 0) {
           <app-agent-message-general [agent]="agent" [parent]="selected"></app-agent-message-general>
@@ -33,6 +33,9 @@
         @else if (agent.type === 3) {
           <app-agent-message-schema [agent]="agent" [parent]="selected"></app-agent-message-schema>
         }
+        @else if (agent.type === 4) {
+          <app-agent-message-database [agent]="agent" [parent]="selected"></app-agent-message-database>
+        }
         @else {
           <ngb-alert type="error">This agent contains a not supported agent type</ngb-alert>
         }
@@ -43,7 +46,7 @@
           <app-agent-message-type [value]="agent.type"></app-agent-message-type>
         </div>
         <div id="messages-bottom"></div>
-        <app-agent-message-input [loading]="loading()" (send)="doSend($event)"></app-agent-message-input>
+        <app-agent-message-input [loading]="loading()" [text]="prompt()" (send)="doSend($event)"></app-agent-message-input>
       }
     </div>
   </div>

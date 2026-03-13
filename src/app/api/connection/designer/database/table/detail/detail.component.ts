@@ -7,6 +7,7 @@ import {ConnectionService} from "../../../../../../services/connection.service";
 import {EditorComponent} from "ngx-monaco-editor-v2-alternative";
 import {FormsModule} from "@angular/forms";
 import {JsonPipe} from "@angular/common";
+import {DatabaseTable} from "../../../../../../shared/database-table/database-table";
 
 @Component({
   selector: 'app-connection-database-table-detail',
@@ -15,7 +16,8 @@ import {JsonPipe} from "@angular/common";
     RouterLink,
     EditorComponent,
     FormsModule,
-    JsonPipe
+    JsonPipe,
+    DatabaseTable
   ],
   styleUrls: ['./detail.component.css']
 })

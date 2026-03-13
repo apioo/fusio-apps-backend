@@ -4,7 +4,7 @@ import {JsonPipe} from "@angular/common";
 import {ErrorService, MessageComponent} from "ngx-fusio-sdk";
 import {ExportService, Specification, TypeschemaEditorModule} from "ngx-typeschema-editor";
 import {ChatAbstract} from "../chat-abstract";
-import {BackendAgentMessage, BackendSchema, BackendSchemaSource, CommonMessage} from "fusio-sdk";
+import {BackendAgentMessage, BackendSchema, CommonMessage} from "fusio-sdk";
 import {Input} from "../input/input";
 import {Row} from "../row/row";
 import {ApiService} from "../../../../api.service";

@@ -12,6 +12,7 @@ import {Architect} from "./architect/architect";
 import {NgClass} from "@angular/common";
 import {Input} from "./input/input";
 import {Type} from "./type/type";
+import {Database} from "./database/database";
 
 @Component({
   selector: 'app-message',
@@ -25,7 +26,8 @@ import {Type} from "./type/type";
     NgbAlert,
     NgClass,
     Input,
-    Type
+    Type,
+    Database
   ],
   templateUrl: './message.html',
   styleUrl: './message.css',
@@ -36,6 +38,8 @@ export class Message implements OnInit {
   chats = signal<Array<BackendAgentMessage>>([]);
   loading = signal<boolean>(false);
   response = signal<CommonMessage|undefined>(undefined);
+
+  prompt = signal<string>('');
 
   selectedId = signal<number|undefined>(undefined);
   selected = computed<BackendAgentMessage|undefined>((): BackendAgentMessage|undefined => {
@@ -64,6 +68,16 @@ export class Message implements OnInit {
         this.selectedId.set(parseInt(params['chat_id']));
       } else {
         this.selectedId.set(undefined);
+      }
+    });
+
+    this.route.queryParams.subscribe((params) => {
+      const prompt = params['prompt'] || '';
+      if (prompt) {
+        const item = sessionStorage.getItem(prompt);
+        if (item !== null) {
+          this.prompt.set(item);
+        }
       }
     });
   }

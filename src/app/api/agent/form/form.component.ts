@@ -32,9 +32,10 @@ export class FormComponent extends Form<BackendAgent> {
 
   types = [
     {key: 0, value: 'General'},
-    {key: 1, value: 'Operation'},
+    {key: 1, value: 'Architect'},
     {key: 2, value: 'Action'},
-    {key: 3, value: 'Schema'}
+    {key: 3, value: 'Schema'},
+    {key: 4, value: 'Database'}
   ]
 
   tools = signal<Array<BackendAgentTool>>([]);

@@ -1,19 +1,11 @@
-import {Component, input, signal} from '@angular/core';
+import {Component, OnInit, signal} from '@angular/core';
 import {ChatAbstract} from "../chat-abstract";
 import {Input} from "../input/input";
 import {ErrorService, MessageComponent} from "ngx-fusio-sdk";
 import {Row} from "../row/row";
-import {
-  BackendAgent,
-  BackendAgentContentBinary,
-  BackendAgentContentChoice,
-  BackendAgentContentObject,
-  BackendAgentContentText,
-  BackendAgentContentToolCall, BackendAgentMessage,
-  CommonMessage
-} from "fusio-sdk";
+import {BackendAgentMessage} from "fusio-sdk";
 import {ApiService} from "../../../../api.service";
-import {JsonPipe, KeyValuePipe} from "@angular/common";
+import {JsonPipe} from "@angular/common";
 import {
   NgbAccordionBody,
   NgbAccordionButton,
@@ -23,8 +15,8 @@ import {
   NgbAccordionItem
 } from "@ng-bootstrap/ng-bootstrap";
 import {OperationStatus} from "../../../../shared/operation-status/operation-status";
-import {TableService} from "../../../../services/connection/database/table.service";
 import {OperationService} from "../../../../services/operation.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-agent-message-architect',
@@ -32,7 +24,6 @@ import {OperationService} from "../../../../services/operation.service";
     Input,
     MessageComponent,
     Row,
-    KeyValuePipe,
     NgbAccordionBody,
     NgbAccordionButton,
     NgbAccordionCollapse,
@@ -45,18 +36,26 @@ import {OperationService} from "../../../../services/operation.service";
   templateUrl: './architect.html',
   styleUrl: './architect.css',
 })
-export class Architect extends ChatAbstract {
+export class Architect extends ChatAbstract implements OnInit {
 
   architectLoading = signal<boolean>(false);
   blueprint = signal<Blueprint|undefined>(undefined);
 
-  constructor(api: ApiService, error: ErrorService, private tableService: TableService, private operationService: OperationService) {
+  actionAgentId = signal<number|undefined>(undefined);
+  schemaAgentId = signal<number|undefined>(undefined);
+  databaseAgentId = signal<number|undefined>(undefined);
+
+  constructor(api: ApiService, error: ErrorService, private operationService: OperationService, private router: Router) {
     super(api, error);
   }
 
-  onOutput(output: BackendAgentContentBinary | BackendAgentContentChoice | BackendAgentContentObject | BackendAgentContentText | BackendAgentContentToolCall): void {
-    if (output.type === 'object' && output.payload) {
-      this.loadBlueprint(output.payload);
+  async ngOnInit(): Promise<void> {
+    this.detectAgentIds();
+  }
+
+  onLoad(message: BackendAgentMessage): void {
+    if (message.content && message.content.type === 'object' && message.content.payload) {
+      this.loadBlueprint(message.content.payload);
     }
   }
 
@@ -73,13 +72,8 @@ export class Architect extends ChatAbstract {
     this.architectLoading.set(true);
 
     try {
-
+      /*
       const responses: Array<CommonMessage> = [];
-
-      // create tables
-      blueprint.tables.forEach(async (table) => {
-        responses.push(await this.tableService.create(table));
-      });
 
       // create schemas
       blueprint.operations.forEach((operation) => {
@@ -88,6 +82,7 @@ export class Architect extends ChatAbstract {
         operation.outgoing
 
       });
+      */
 
       this.response.set({
         success: true,
@@ -100,11 +95,61 @@ export class Architect extends ChatAbstract {
     this.architectLoading.set(false);
   }
 
+  private async detectAgentIds() {
+    try {
+      const response = await this.api.getClient().backend().agent().getAll(0, 16, 'type:2 OR type:3 OR type:4');
+      if (response.entry) {
+        for (let i = 0; i < response.entry?.length; i++) {
+          const entry = response.entry[i];
+          if (this.actionAgentId() === undefined && entry.type === 2) {
+            this.actionAgentId.set(entry.id);
+          } else if (this.schemaAgentId() === undefined && entry.type === 3) {
+            this.schemaAgentId.set(entry.id);
+          } else if (this.databaseAgentId() === undefined && entry.type === 4) {
+            this.databaseAgentId.set(entry.id);
+          }
+        }
+      }
+    } catch (error) {
+      this.response.set(this.error.convert(error));
+    }
+  }
+
+  async generateAction(prompt: string) {
+    sessionStorage.setItem('action_prompt', prompt);
+
+    await this.router.navigate(['/agent', this.actionAgentId(), 'message'], {
+      queryParams: {
+        prompt: 'action_prompt'
+      }
+    });
+  }
+
+  async generateSchema(prompt: string) {
+    sessionStorage.setItem('schema_prompt', prompt);
+
+    await this.router.navigate(['/agent', this.schemaAgentId(), 'message'], {
+      queryParams: {
+        prompt: 'schema_prompt'
+      }
+    });
+  }
+
+  async generateDatabase(prompt: string) {
+    sessionStorage.setItem('database_prompt', prompt);
+
+    await this.router.navigate(['/agent', this.databaseAgentId(), 'message'], {
+      queryParams: {
+        prompt: 'database_prompt'
+      }
+    });
+  }
+
 }
 
 interface Blueprint {
   operations: Array<Operation>
-  tables: Array<Table>
+  schema: string
 }
 
 interface Operation {
@@ -116,31 +161,14 @@ interface Operation {
   httpMethod: string
   httpPath: string
   httpCode: number
-  parameters: Record<string, Parameter>
+  parameters: Array<Parameter>
   incoming: string
   outgoing: string
   action: string
 }
 
 interface Parameter {
+  name: string
+  type: string
   description: string
-  type: string
-}
-
-interface Table {
-  name: string
-  columns: Array<Column>
-  primaryKey: string
-}
-
-interface Column {
-  name: string
-  type: string
-  length: number
-  notNull: boolean
-  autoIncrement: boolean
-  precision: number
-  scale: number
-  default: string
-  comment: string
 }

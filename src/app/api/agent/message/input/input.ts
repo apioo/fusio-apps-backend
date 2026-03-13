@@ -1,4 +1,4 @@
-import {Component, input, output, signal} from '@angular/core';
+import {Component, effect, input, OnInit, output, signal} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 @Component({
@@ -10,10 +10,16 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
   templateUrl: './input.html',
   styleUrl: './input.css',
 })
-export class Input {
+export class Input implements OnInit {
 
   loading = input.required<boolean>();
+  text = input<string>('');
+
   input = signal<string>('');
   send = output<string>();
+
+  ngOnInit(): void {
+    this.input.set(this.text());
+  }
 
 }
