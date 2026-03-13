@@ -1,6 +1,6 @@
 
 @if (message(); as message) {
-  <div [ngClass]="{'bg-light p-3 rounded-4 mb-2': message.role === 'user', 'mb-2': message.role !== 'user'}">
+  <div class="mb-2" [ngClass]="{'bg-light p-3 rounded-4': message.role === 'user'}">
     @if (message.content) {
       @if (message.content.type === 'text' && 'content' in message.content && message.content.content) {
         @if (message.role === 'user') {

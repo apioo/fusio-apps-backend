@@ -7,6 +7,6 @@
       <app-agent-message-row [message]="message"></app-agent-message-row>
     }
     <div id="messages-bottom"></div>
-    <app-agent-message-input [loading]="messagesResource.isLoading()" (send)="doSend($event)"></app-agent-message-input>
+    <app-agent-message-input [loading]="messagesResource.isLoading() || loading()" (send)="doSend($event)"></app-agent-message-input>
   </div>
 </div>

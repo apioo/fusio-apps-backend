@@ -11,7 +11,7 @@ import {
   BackendAgentContentChoice,
   BackendAgentContentObject,
   BackendAgentContentText,
-  BackendAgentContentToolCall,
+  BackendAgentContentToolCall, BackendAgentMessage, BackendAgentOutput,
   CommonMessage
 } from "fusio-sdk";
 import {ChatAbstract} from "../chat-abstract";
@@ -45,9 +45,9 @@ export class Action extends ChatAbstract {
     super(api, error);
   }
 
-  onOutput(output: BackendAgentContentBinary | BackendAgentContentChoice | BackendAgentContentObject | BackendAgentContentText | BackendAgentContentToolCall): void {
-    if (output.type === 'text' && output.content) {
-      this.loadAction(output.content);
+  onLoad(message: BackendAgentMessage): void {
+    if (message.content && message.content.type === 'text' && message.content.content) {
+      this.loadAction(message.content.content);
     }
   }
 

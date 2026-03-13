@@ -1,19 +1,10 @@
-import {Component, signal} from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {JsonPipe} from "@angular/common";
 import {ErrorService, MessageComponent} from "ngx-fusio-sdk";
-import {TypeschemaEditorModule} from "ngx-typeschema-editor";
+import {ExportService, Specification, TypeschemaEditorModule} from "ngx-typeschema-editor";
 import {ChatAbstract} from "../chat-abstract";
-import {
-  BackendAgentContentBinary,
-  BackendAgentContentChoice,
-  BackendAgentContentObject,
-  BackendAgentContentText,
-  BackendAgentContentToolCall,
-  BackendAgentMessage,
-  BackendSchema,
-  CommonMessage
-} from "fusio-sdk";
+import {BackendAgentMessage, BackendSchema, BackendSchemaSource, CommonMessage} from "fusio-sdk";
 import {Input} from "../input/input";
 import {Row} from "../row/row";
 import {ApiService} from "../../../../api.service";
@@ -33,29 +24,24 @@ import {ApiService} from "../../../../api.service";
 })
 export class Schema extends ChatAbstract {
 
-  schema = signal<BackendSchema|undefined>(undefined);
+  schema = signal<Document|undefined>(undefined);
   schemaLoading = signal<boolean>(false);
-  spec = signal<any>(undefined);
+
+  exportService = inject(ExportService);
 
   constructor(api: ApiService, error: ErrorService) {
     super(api, error);
   }
 
-  onOutput(output: BackendAgentContentBinary | BackendAgentContentChoice | BackendAgentContentObject | BackendAgentContentText | BackendAgentContentToolCall): void {
-    if (output.type === 'object' && output.payload) {
-      this.loadSchema(output.payload);
+  async onLoad(message: BackendAgentMessage): Promise<void> {
+    if (message.content && message.content.type === 'object' && message.content.payload) {
+      await this.loadSchema(message.content.payload);
     }
   }
 
-  isSchemaPayload(message: BackendAgentMessage): boolean {
-    return message.role === 'assistant' && message.content?.type === 'object';
-  }
-
-  async loadSchema(schema: any) {
-    this.schema.set(schema);
-
-    if (schema.source) {
-      //this.spec.set(spec);
+  async loadSchema(schema: Document) {
+    if (schema.name && schema.types) {
+      this.schema.set(schema);
     }
   }
 
@@ -77,14 +63,21 @@ export class Schema extends ChatAbstract {
       try {
         existing = await this.api.getClient().backend().schema().get('~' + name);
       } catch (error) {
-        // action does not exist
+        // schema does not exist
       }
+
+      const source = this.exportService.transform(schema);
 
       let response: CommonMessage;
       if (existing) {
+        existing.source = source;
+
         response = await this.api.getClient().backend().schema().update('' + existing.id, existing);
       } else {
-        response = await this.api.getClient().backend().schema().create(schema);
+        response = await this.api.getClient().backend().schema().create({
+          name: name,
+          source: source
+        });
       }
 
       this.response.set(response);
@@ -95,4 +88,8 @@ export class Schema extends ChatAbstract {
     this.schemaLoading.set(false);
   }
 
+}
+
+interface Document extends Specification {
+  name: string
 }

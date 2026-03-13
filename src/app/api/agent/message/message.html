@@ -10,11 +10,11 @@
 @if (agent(); as agent) {
   <div class="row">
     <div class="col-xl-3">
+      <button type="button" class="btn btn-success mb-3" [routerLink]="['/', 'agent', agent?.id, 'message']">New Chat</button>
       <div class="list-group">
-        <button type="button" class="list-group-item list-group-item-action list-group-item-success" [routerLink]="['/', 'agent', agent?.id, 'message']">New Chat</button>
         @for (chat of chats(); track chat.id) {
           @if (chat.content && chat.content.type === 'text' && chat.content && 'content' in chat.content) {
-            <button type="button" class="list-group-item list-group-item-action overflow-hidden text-nowrap" [ngClass]="{'active': chat.id === selected()}" (click)="loadChat(chat)">{{ chat.content.content }}</button>
+            <button type="button" class="list-group-item list-group-item-action overflow-hidden text-nowrap text-truncate" [ngClass]="{'active': chat.id === selectedId()}" (click)="loadChat(chat)">{{ chat.content.content }}</button>
           }
         }
       </div>
@@ -39,32 +39,12 @@
       }
       @else {
         <div class="text-center p-4 fw-bold">
-          @if (agent.type === 0) {
-            {{ agent.description }}<br>
-            <small class="text-body-secondary">Example: Show me the 5 latest users</small>
-          }
-          @else if (agent.type === 1) {
-            {{ agent.description }}<br>
-            <small class="text-body-secondary"><span class="badge text-bg-primary">Architect</span> Example: Build a forum system where a user can manage threads and comments</small>
-          }
-          @else if (agent.type === 2) {
-            {{ agent.description }}<br>
-            <small class="text-body-secondary"><span class="badge text-bg-primary">Action</span> Example: Use the "System" connection and return the latest 10 entries from the "fusio_log" table</small>
-          }
-          @else if (agent.type === 3) {
-            {{ agent.description }}<br>
-            <small class="text-body-secondary"><span class="badge text-bg-primary">Schema</span> Example: A Product with common properties</small>
-          }
-          @else {
-            <ngb-alert type="error">This agent contains a not supported agent type</ngb-alert>
-          }
+          {{ agent.description }}<br>
+          <app-agent-message-type [value]="agent.type"></app-agent-message-type>
         </div>
         <div id="messages-bottom"></div>
         <app-agent-message-input [loading]="loading()" (send)="doSend($event)"></app-agent-message-input>
       }
     </div>
   </div>
-}
-@else {
-
 }

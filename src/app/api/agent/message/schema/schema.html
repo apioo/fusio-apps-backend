@@ -17,12 +17,14 @@
         }
       }
       <div id="messages-bottom"></div>
-      <app-agent-message-input [loading]="loading()" (send)="doSend($event)"></app-agent-message-input>
+      <app-agent-message-input [loading]="messagesResource.isLoading() || loading()" (send)="doSend($event)"></app-agent-message-input>
     </div>
   </div>
   <div class="col-xl-6">
     <input type="text" id="schema-name" name="schema-name" [ngModel]="schema()?.name" [disabled]="true" class="form-control mb-3">
-    <typeschema-editor [specification]="spec()" [readonly]="true"></typeschema-editor>
+    @if (schema(); as schema) {
+      <typeschema-editor [specification]="schema" [readonly]="true"></typeschema-editor>
+    }
     <div class="btn-group mt-3 mb-3">
       <button class="btn btn-primary" type="button" (click)="saveSchema()" [disabled]="schemaLoading()">
         @if (schemaLoading()) {

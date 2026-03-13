@@ -11,6 +11,7 @@ import {Schema} from "./schema/schema";
 import {Architect} from "./architect/architect";
 import {NgClass} from "@angular/common";
 import {Input} from "./input/input";
+import {Type} from "./type/type";
 
 @Component({
   selector: 'app-message',
@@ -23,7 +24,8 @@ import {Input} from "./input/input";
     MessageComponent,
     NgbAlert,
     NgClass,
-    Input
+    Input,
+    Type
   ],
   templateUrl: './message.html',
   styleUrl: './message.css',
@@ -107,6 +109,8 @@ export class Message implements OnInit {
       }
     };
 
+    this.loading.set(true);
+
     try {
       const output = await this.api.getClient().backend().agent().message().submit('' + agentId, payload, selected);
 
@@ -114,6 +118,7 @@ export class Message implements OnInit {
 
       await this.router.navigate(['/agent', agentId, 'message', output.id]);
     } catch (error) {
+      this.response.set(this.error.convert(error));
       this.loading.set(false);
     }
   }

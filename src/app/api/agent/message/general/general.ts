@@ -6,7 +6,7 @@ import {
   BackendAgentContentChoice,
   BackendAgentContentObject,
   BackendAgentContentText,
-  BackendAgentContentToolCall, BackendAgentMessage
+  BackendAgentContentToolCall, BackendAgentMessage, BackendAgentOutput
 } from "fusio-sdk";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ErrorService, MessageComponent} from "ngx-fusio-sdk";
@@ -34,7 +34,7 @@ export class General extends ChatAbstract {
     super(api, error);
   }
 
-  onOutput(output: BackendAgentContentBinary | BackendAgentContentChoice | BackendAgentContentObject | BackendAgentContentText | BackendAgentContentToolCall): void {
+  onLoad(message: BackendAgentMessage): void {
   }
 
 }

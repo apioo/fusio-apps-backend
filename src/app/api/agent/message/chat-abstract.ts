@@ -1,16 +1,5 @@
 import {Component, computed, input, resource, signal} from '@angular/core';
-import {
-  BackendAgent,
-  BackendAgentContentBinary,
-  BackendAgentContentChoice,
-  BackendAgentContentObject,
-  BackendAgentContentText,
-  BackendAgentContentToolCall,
-  BackendAgentInput,
-  BackendAgentMessage,
-  BackendAgentOutput,
-  CommonMessage
-} from "fusio-sdk";
+import {BackendAgent, BackendAgentInput, BackendAgentMessage, BackendAgentOutput, CommonMessage} from "fusio-sdk";
 import {ApiService} from "../../../api.service";
 import {ErrorService} from "ngx-fusio-sdk";
 
@@ -43,9 +32,18 @@ export abstract class ChatAbstract {
         const collection = await this.api.getClient().backend().agent().message().getAll('' + agentId, parentId);
         const entries = collection.entry || [];
 
+        let lastMessage: BackendAgentMessage|undefined;
         entries.forEach((message) => {
           messages.push(message);
+
+          if (message.role === 'assistant') {
+            lastMessage = message;
+          }
         });
+
+        if (lastMessage) {
+          this.onLoad(lastMessage);
+        }
       }
 
       return messages;
@@ -72,19 +70,6 @@ export abstract class ChatAbstract {
     if (!agentId) {
       return;
     }
-
-    /*
-    this.messages.update((messages) => {
-      messages.push({
-        role: 'user',
-        content: {
-          type: 'text',
-          content: message,
-        },
-      });
-      return messages;
-    });
-    */
 
     this.loading.set(true);
 
@@ -114,7 +99,7 @@ export abstract class ChatAbstract {
     this.loading.set(false);
   }
 
-  abstract onOutput(output: BackendAgentContentBinary | BackendAgentContentChoice | BackendAgentContentObject | BackendAgentContentText | BackendAgentContentToolCall): void;
+  abstract onLoad(message: BackendAgentMessage): void;
 
   protected preOutput(): void {
   }
