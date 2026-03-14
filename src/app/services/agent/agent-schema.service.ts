@@ -12,11 +12,7 @@ export class AgentSchemaService extends AgentAbstract<Schema> {
 
   transform(content: BackendAgentContent): Schema|undefined {
     const object = this.getJson(content) as Schema;
-    if (!object.name) {
-      return;
-    }
-
-    if (!object.types || !Array.isArray(object.types)) {
+    if (!object || !object.name || !object.types || !Array.isArray(object.types)) {
       return;
     }
 
@@ -42,15 +38,19 @@ export class AgentSchemaService extends AgentAbstract<Schema> {
     if (existing) {
       existing.source = source;
 
+      indicator.request('Schema update: ' + existing.name);
+
       response = await this.api.getClient().backend().schema().update('' + existing.id, existing);
     } else {
+      indicator.request('Schema create: ' + name);
+
       response = await this.api.getClient().backend().schema().create({
         name: name,
         source: source
       });
     }
 
-    indicator.push(response);
+    indicator.response(response);
 
     return response;
   }

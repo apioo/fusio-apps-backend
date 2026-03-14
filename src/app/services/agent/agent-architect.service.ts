@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {AgentAbstract, BackendAgentContent, ExecutionIndicator} from "./agent";
-import {BackendOperation, CommonMessage} from "fusio-sdk";
+import {BackendOperation, BackendOperationParameters, CommonMessage} from "fusio-sdk";
 import {AgentActionService} from "./agent-action.service";
 import {AgentSchemaService} from "./agent-schema.service";
 import {AgentDatabaseService} from "./agent-database.service";
@@ -18,7 +18,7 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
 
   transform(content: BackendAgentContent): Blueprint|undefined {
     const object = this.getJson(content) as Blueprint;
-    if (!object.operations || !Array.isArray(object.operations)) {
+    if (!object || !object.operations || !Array.isArray(object.operations)) {
       return;
     }
 
@@ -48,48 +48,33 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
 
     let response: CommonMessage|undefined;
     for (let i = 0; i < model.operations.length; i++) {
-      const operation = model.operations[i];
-
       try {
-        const incoming = await this.resolveSchema(options.schemaAgentId, operation.incoming, indicator);
-        if (incoming) {
-          operation.incoming = incoming;
-        } else {
+        const operation = await this.transformOperation(model.operations[i], indicator, options);
+        if (!operation) {
           continue;
         }
 
-        const outgoing = await this.resolveSchema(options.schemaAgentId, operation.outgoing, indicator);
-        if (outgoing) {
-          operation.outgoing = outgoing;
-        } else {
-          continue;
+        let existing: BackendOperation|undefined = undefined;
+        try {
+          existing = await this.api.getClient().backend().operation().get('~' + operation.name);
+        } catch (error) {
+          // operation does not exist
         }
 
-        const action = await this.resolveAction(options.actionAgentId, operation.action, indicator);
-        if (action) {
-          operation.action = action;
+        if (existing) {
+          indicator.request('Operation update: ' + existing.name);
+
+          response = await this.api.getClient().backend().operation().update('' + existing.id, operation);
         } else {
-          continue;
+          indicator.request('Operation create: ' + operation.name);
+
+          response = await this.api.getClient().backend().operation().create(operation);
         }
+
+        indicator.response(response);
       } catch (error) {
-        indicator.push(this.error.convert(error));
-        continue;
+        indicator.response(this.error.convert(error));
       }
-
-      let existing: BackendOperation|undefined = undefined;
-      try {
-        existing = await this.api.getClient().backend().schema().get('~' + operation.name);
-      } catch (error) {
-        // operation does not exist
-      }
-
-      if (existing) {
-        response = await this.api.getClient().backend().schema().update('' + existing.id, operation);
-      } else {
-        response = await this.api.getClient().backend().schema().create(operation);
-      }
-
-      indicator.push(response);
     }
 
     return {
@@ -98,7 +83,49 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
     };
   }
 
+  private async transformOperation(operation: Operation, indicator: ExecutionIndicator, options: Options): Promise<BackendOperation|undefined> {
+    let incoming: string|undefined = undefined;
+    if (operation.incoming) {
+      incoming = await this.resolveSchema(options.schemaAgentId, operation.incoming, indicator);
+    }
+
+    const outgoing = await this.resolveSchema(options.schemaAgentId, operation.outgoing, indicator);
+    if (!outgoing) {
+      return;
+    }
+
+    const action = await this.resolveAction(options.actionAgentId, operation.action, indicator);
+    if (!action) {
+      return;
+    }
+
+    const parameters: BackendOperationParameters = {};
+    operation.parameters.forEach((parameter) => {
+      parameters[parameter.name] = {
+        type: parameter.type,
+        description: parameter.description,
+      };
+    });
+
+    return {
+      name: operation.name,
+      active: operation.active,
+      public: operation.public,
+      stability: 1,
+      description: operation.description,
+      httpMethod: operation.httpMethod,
+      httpPath: operation.httpPath,
+      httpCode: operation.httpCode,
+      parameters: parameters,
+      incoming: incoming,
+      outgoing: outgoing,
+      action: action,
+    };
+  }
+
   private async invokeSchemaAgent(agentId: number, prompt: string, indicator: ExecutionIndicator): Promise<CommonMessage|undefined> {
+    indicator.request('Schema agent request: ' + prompt);
+
     const content = await this.schema.prompt(agentId, prompt);
     if (!content) {
       return;
@@ -113,6 +140,8 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
   }
 
   private async invokeActionAgent(agentId: number, prompt: string, indicator: ExecutionIndicator): Promise<CommonMessage|undefined> {
+    indicator.request('Action agent request: ' + prompt);
+
     const content = await this.action.prompt(agentId, prompt);
     if (!content) {
       return;
@@ -127,6 +156,8 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
   }
 
   private async invokeDatabaseAgent(agentId: number, prompt: string, connectionId: number, indicator: ExecutionIndicator): Promise<CommonMessage|undefined> {
+    indicator.request('Database agent request: ' + prompt);
+
     const content = await this.database.prompt(agentId, prompt);
     if (!content) {
       return;

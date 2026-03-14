@@ -12,7 +12,7 @@ export class AgentDatabaseService extends AgentAbstract<Database, Options> {
 
   transform(content: BackendAgentContent): Database|undefined {
     const object = this.getJson(content) as Database;
-    if (!object.tables || !Array.isArray(object.tables)) {
+    if (!object || !object.tables || !Array.isArray(object.tables)) {
       return;
     }
 
@@ -32,10 +32,13 @@ export class AgentDatabaseService extends AgentAbstract<Database, Options> {
     for (let i = 0; i < model.tables.length; i++) {
       try {
         const table = model.tables[i];
+
+        indicator.request('Table create: ' + table.name);
+
         const response = await this.api.getClient().backend().connection().database().createTable('' + connectionId, table);
-        indicator.push(response);
+        indicator.response(response);
       } catch (error) {
-        indicator.push(this.error.convert(error));
+        indicator.response(this.error.convert(error));
       }
     }
 

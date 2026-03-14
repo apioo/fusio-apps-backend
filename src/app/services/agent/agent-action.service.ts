@@ -43,8 +43,12 @@ export class AgentActionService extends AgentAbstract<Action> {
 
       existing.config['code'] = model.code;
 
+      indicator.request('Action update: ' + existing.name);
+
       response = await this.api.getClient().backend().action().update('' + existing.id, existing);
     } else {
+      indicator.request('Action create: ' + name);
+
       response = await this.api.getClient().backend().action().create({
         name: name,
         class: 'Fusio.Adapter.Worker.Action.WorkerPHPLocal',
@@ -54,7 +58,7 @@ export class AgentActionService extends AgentAbstract<Action> {
       });
     }
 
-    indicator.push(response);
+    indicator.response(response);
 
     return response;
   }

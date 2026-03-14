@@ -3,7 +3,7 @@ import {ChatAbstract} from "../chat-abstract";
 import {Input} from "../input/input";
 import {FormAutocompleteComponent, MessageComponent} from "ngx-fusio-sdk";
 import {Row} from "../row/row";
-import {JsonPipe} from "@angular/common";
+import {JsonPipe, NgClass} from "@angular/common";
 import {
   NgbAccordionBody,
   NgbAccordionButton,
@@ -18,6 +18,7 @@ import {AgentArchitectService, Blueprint, Options} from "../../../../services/ag
 import {Agent} from "../../../../services/agent/agent";
 import {ConnectionService} from "../../../../services/connection.service";
 import {AgentService} from "../../../../services/agent.service";
+import {exec} from "apexcharts";
 
 @Component({
   selector: 'app-agent-message-architect',
@@ -35,6 +36,7 @@ import {AgentService} from "../../../../services/agent.service";
     JsonPipe,
     FormAutocompleteComponent,
     NgbPopover,
+    NgClass,
   ],
   templateUrl: './architect.html',
   styleUrl: './architect.css',
@@ -57,22 +59,22 @@ export class Architect extends ChatAbstract<Blueprint, Options> {
   protected override getOptions(): Options | undefined {
     const connectionId = this.connectionId();
     if (!connectionId) {
-      throw new Error('Please select a connection, where the defined database schema is created');
+      throw new Error('Please select a connection where the database schema will be created');
     }
 
     const actionAgentId = this.actionAgentId();
     if (!actionAgentId) {
-      throw new Error('Please select an action agent, which is used to generate the action');
+      throw new Error('Please select an action agent which generates the action');
     }
 
     const schemaAgentId = this.schemaAgentId();
     if (!schemaAgentId) {
-      throw new Error('Please select a schema agent, which is used to generate the schema');
+      throw new Error('Please select a schema agent which generates the schema');
     }
 
     const databaseAgentId = this.databaseAgentId();
     if (!databaseAgentId) {
-      throw new Error('Please select a database agent, which is used to generate the tables');
+      throw new Error('Please select a database agent which generates the tables');
     }
 
     return {

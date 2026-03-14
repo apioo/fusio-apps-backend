@@ -77,14 +77,46 @@ export class ExecutionIndicator {
   constructor(private callback: Function) {
   }
 
-  push(message?: CommonMessage) {
-    if (!message) {
+  request(message: string) {
+    const result: Message = {
+      level: 'info',
+      message: '> ' + message,
+    };
+
+    this.callback.apply(null, [result]);
+  }
+
+  response(message?: CommonMessage) {
+    if (!message || !message.message) {
       return;
     }
 
-    this.callback.apply(message);
+    let result: Message|undefined = undefined;
+    if (message.success === true) {
+      result = {
+        level: 'success',
+        message: '< ' + message.message,
+      };
+    } else if (message.success === false) {
+      result = {
+        level: 'danger',
+        message: '< ' + message.message,
+      };
+    }
+
+    if (result !== undefined) {
+      this.callback.apply(null, [result]);
+    }
   }
 
 }
+
+export interface Message
+{
+  level: Level,
+  message: string,
+}
+
+export type Level = 'info'|'danger'|'success';
 
 export type BackendAgentContent = BackendAgentContentBinary | BackendAgentContentChoice | BackendAgentContentObject | BackendAgentContentText | BackendAgentContentToolCall;

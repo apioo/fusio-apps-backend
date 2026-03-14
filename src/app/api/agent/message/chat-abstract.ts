@@ -2,7 +2,7 @@ import {Component, computed, inject, input, resource, signal} from '@angular/cor
 import {BackendAgent, BackendAgentMessage, CommonMessage} from "fusio-sdk";
 import {ApiService} from "../../../api.service";
 import {ErrorService} from "ngx-fusio-sdk";
-import {Agent, BackendAgentContent, ExecutionIndicator} from "../../../services/agent/agent";
+import {Agent, BackendAgentContent, ExecutionIndicator, Level, Message} from "../../../services/agent/agent";
 
 @Component({
   selector: 'app-agent-chat-abstract',
@@ -18,7 +18,7 @@ export abstract class ChatAbstract<TModel, TOptions = undefined> {
   output = signal<BackendAgentContent|undefined>(undefined);
   loading = signal<boolean>(false);
   executeLoading = signal<boolean>(false);
-  executeMessages = signal<Array<CommonMessage>>([]);
+  executeMessages = signal<Array<Message>>([]);
   response = signal<CommonMessage|undefined>(undefined);
 
   messagesResource = resource<Array<BackendAgentMessage>, { agent: BackendAgent, parent: BackendAgentMessage, output: BackendAgentContent|undefined }>({
@@ -102,6 +102,7 @@ export abstract class ChatAbstract<TModel, TOptions = undefined> {
       return;
     }
 
+    this.executeMessages.set([]);
     this.model.set(this.getAgent().transform(content));
 
     this.onLoad();
@@ -116,10 +117,10 @@ export abstract class ChatAbstract<TModel, TOptions = undefined> {
     this.executeLoading.set(true);
 
     try {
-      const indicator = new ExecutionIndicator((message: CommonMessage) => {
-        this.executeMessages.update((messages) => {
-          messages.push(message);
-          return messages;
+      const executeMessages = this.executeMessages;
+      const indicator = new ExecutionIndicator((message: Message) => {
+        executeMessages.update((messages) => {
+          return messages.concat([message]);
         });
       });
 
@@ -160,4 +161,10 @@ export abstract class ChatAbstract<TModel, TOptions = undefined> {
     }, 500);
   }
 
+}
+
+interface LogEntry
+{
+  level: Level,
+  message: string,
 }

@@ -22,158 +22,162 @@
   </div>
   <div class="col-xl-6">
     @if (executeLoading()) {
-      <ul>
-        @for (message of executeMessages(); track $index) {
-          <li>
-            @if (message.success === true) {
-              <i class="bi bi-check text-success"></i> {{ message.message }}
-            }
-            @if (message.success === false) {
-              <i class="bi bi-x text-danger"></i> {{ message.message }}
-            }
-          </li>
+      <p class="text-center mt-3 font-monospace">Executing blueprint ...</p>
+      <div class="d-flex justify-content-center mt-3 mb-3">
+        <div class="spinner-border" role="status"></div>
+      </div>
+    }
+    @if (executeMessages().length > 0 && executeMessages(); as messages) {
+      <ul class="list-group mb-3">
+        @for (executeMessage of messages; track $index) {
+          <li [class]="'list-group-item list-group-item-' + executeMessage.level + ' font-monospace overflow-hidden text-nowrap text-truncate'" [title]="executeMessage.message">{{ executeMessage.message }}</li>
         }
       </ul>
+      <div class="btn-group mb-3">
+        <button class="btn btn-primary" type="button" (click)="executeMessages.set([])">Clear</button>
+      </div>
     }
-    <div class="mb-3">
-      <label for="connection" class="form-label">Connection</label>
-      <fusio-form-autocomplete name="connection" id="connection" [service]="connection" [useId]="true" [data]="connectionId()" (dataChangeId)="connectionId.set($event)">
-        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="connectionHelp"><i class="bi bi-question"></i></button>
-        <ng-template #connectionHelp>The target database connection where all tables are created.</ng-template>
-      </fusio-form-autocomplete>
-    </div>
-    <div class="mb-3">
-      <label for="actionAgent" class="form-label">Action-Agent</label>
-      <fusio-form-autocomplete name="actionAgent" id="actionAgent" [service]="agentService" [useId]="true" [data]="actionAgentId()" (dataChangeId)="actionAgentId.set($event)">
-        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="actionAgentHelp"><i class="bi bi-question"></i></button>
-        <ng-template #actionAgentHelp>The agent which is used to create actions.</ng-template>
-      </fusio-form-autocomplete>
-    </div>
-    <div class="mb-3">
-      <label for="schemaAgent" class="form-label">Schema-Agent</label>
-      <fusio-form-autocomplete name="schemaAgent" id="schemaAgent" [service]="agentService" [useId]="true" [data]="schemaAgentId()" (dataChangeId)="schemaAgentId.set($event)">
-        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="schemaAgentHelp"><i class="bi bi-question"></i></button>
-        <ng-template #schemaAgentHelp>The agent which is used to create schemas.</ng-template>
-      </fusio-form-autocomplete>
-    </div>
-    <div class="mb-3">
-      <label for="databaseAgent" class="form-label">Database-Agent</label>
-      <fusio-form-autocomplete name="databaseAgent" id="databaseAgent" [service]="agentService" [useId]="true" [data]="databaseAgentId()" (dataChangeId)="databaseAgentId.set($event)">
-        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="databaseAgentHelp"><i class="bi bi-question"></i></button>
-        <ng-template #databaseAgentHelp>The agent which is used to create tables.</ng-template>
-      </fusio-form-autocomplete>
-    </div>
-    @if (model(); as blueprint) {
-      @if (blueprint.operations.length > 0) {
-        @for (operation of blueprint.operations; track $index) {
-          <div ngbAccordion>
-            <div ngbAccordionItem class="rounded-0" [collapsed]="true">
-              <h2 ngbAccordionHeader>
-                <button ngbAccordionButton>{{ operation.httpMethod }} - {{ operation.httpPath }}</button>
-              </h2>
-              <div ngbAccordionCollapse>
-                <div ngbAccordionBody>
-                  <ng-template>
-                    <div class="fusio-detail">
-                      <div class="row">
-                        <div class="col-lg-2 fw-bold">Status</div>
-                        <div class="col-lg-10">
-                          <app-operation-status [active]="operation.active" [public]="operation.public"></app-operation-status>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-lg-2 fw-bold">Name</div>
-                        <div class="col-lg-10"><code class="fusio-operation-name">{{operation.name}}</code></div>
-                      </div>
-                      <div class="row">
-                        <div class="col-lg-2 fw-bold">Description</div>
-                        <div class="col-lg-10"><span class="fusio-operation-description">{{operation.description}}</span></div>
-                      </div>
-                      <div class="row">
-                        <div class="col-lg-2 fw-bold">HTTP-Method</div>
-                        <div class="col-lg-10"><span class="badge text-bg-dark fusio-operation-http-method">{{operation.httpMethod}}</span></div>
-                      </div>
-                      <div class="row">
-                        <div class="col-lg-2 fw-bold">HTTP-Path</div>
-                        <div class="col-lg-10"><code class="fusio-operation-http-path">{{operation.httpPath}}</code></div>
-                      </div>
-                      <div class="row">
-                        <div class="col-lg-2 fw-bold">HTTP-Code</div>
-                        <div class="col-lg-10"><span class="badge text-bg-dark fusio-operation-http-code">{{operation.httpCode}}</span></div>
-                      </div>
-                      @if (operation.parameters) {
+    @else if (!executeLoading()) {
+      <div class="mb-3">
+        <label for="connection" class="form-label">Connection</label>
+        <fusio-form-autocomplete name="connection" id="connection" [service]="connection" [useId]="true" [data]="connectionId()" (dataChangeId)="connectionId.set($event)">
+          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="connectionHelp"><i class="bi bi-question"></i></button>
+          <ng-template #connectionHelp>The target database connection where all tables are created.</ng-template>
+        </fusio-form-autocomplete>
+      </div>
+      <div class="mb-3">
+        <label for="actionAgent" class="form-label">Action-Agent</label>
+        <fusio-form-autocomplete name="actionAgent" id="actionAgent" [service]="agentService" [useId]="true" [data]="actionAgentId()" (dataChangeId)="actionAgentId.set($event)">
+          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="actionAgentHelp"><i class="bi bi-question"></i></button>
+          <ng-template #actionAgentHelp>The agent which is used to create actions.</ng-template>
+        </fusio-form-autocomplete>
+      </div>
+      <div class="mb-3">
+        <label for="schemaAgent" class="form-label">Schema-Agent</label>
+        <fusio-form-autocomplete name="schemaAgent" id="schemaAgent" [service]="agentService" [useId]="true" [data]="schemaAgentId()" (dataChangeId)="schemaAgentId.set($event)">
+          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="schemaAgentHelp"><i class="bi bi-question"></i></button>
+          <ng-template #schemaAgentHelp>The agent which is used to create schemas.</ng-template>
+        </fusio-form-autocomplete>
+      </div>
+      <div class="mb-3">
+        <label for="databaseAgent" class="form-label">Database-Agent</label>
+        <fusio-form-autocomplete name="databaseAgent" id="databaseAgent" [service]="agentService" [useId]="true" [data]="databaseAgentId()" (dataChangeId)="databaseAgentId.set($event)">
+          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="databaseAgentHelp"><i class="bi bi-question"></i></button>
+          <ng-template #databaseAgentHelp>The agent which is used to create tables.</ng-template>
+        </fusio-form-autocomplete>
+      </div>
+      @if (model(); as blueprint) {
+        @if (blueprint.operations.length > 0) {
+          @for (operation of blueprint.operations; track $index) {
+            <div ngbAccordion>
+              <div ngbAccordionItem class="rounded-0" [collapsed]="true">
+                <h2 ngbAccordionHeader>
+                  <button ngbAccordionButton>{{ operation.httpMethod }} - {{ operation.httpPath }}</button>
+                </h2>
+                <div ngbAccordionCollapse>
+                  <div ngbAccordionBody>
+                    <ng-template>
+                      <div class="fusio-detail">
                         <div class="row">
-                          <div class="col-lg-2 fw-bold">Parameters</div>
+                          <div class="col-lg-2 fw-bold">Status</div>
                           <div class="col-lg-10">
-                            <table class="table">
-                              <thead>
-                              <tr>
-                                <th style="width:20%">Name</th>
-                                <th style="width:10%">Type</th>
-                                <th>Description</th>
-                              </tr>
-                              </thead>
-                              <tbody>
-                                @for (entry of operation.parameters; track $index) {
-                                  <tr>
-                                    <td>{{entry.name}}</td>
-                                    <td>{{entry.type}}</td>
-                                    <td>{{entry.description}}</td>
-                                  </tr>
-                                }
-                              </tbody>
-                            </table>
+                            <app-operation-status [active]="operation.active" [public]="operation.public"></app-operation-status>
                           </div>
                         </div>
-                      }
-                      @if (operation.incoming) {
                         <div class="row">
-                          <div class="col-lg-2 fw-bold">Incoming</div>
+                          <div class="col-lg-2 fw-bold">Name</div>
+                          <div class="col-lg-10"><code class="fusio-operation-name">{{operation.name}}</code></div>
+                        </div>
+                        <div class="row">
+                          <div class="col-lg-2 fw-bold">Description</div>
+                          <div class="col-lg-10"><span class="fusio-operation-description">{{operation.description}}</span></div>
+                        </div>
+                        <div class="row">
+                          <div class="col-lg-2 fw-bold">HTTP-Method</div>
+                          <div class="col-lg-10"><span class="badge text-bg-dark fusio-operation-http-method">{{operation.httpMethod}}</span></div>
+                        </div>
+                        <div class="row">
+                          <div class="col-lg-2 fw-bold">HTTP-Path</div>
+                          <div class="col-lg-10"><code class="fusio-operation-http-path">{{operation.httpPath}}</code></div>
+                        </div>
+                        <div class="row">
+                          <div class="col-lg-2 fw-bold">HTTP-Code</div>
+                          <div class="col-lg-10"><span class="badge text-bg-dark fusio-operation-http-code">{{operation.httpCode}}</span></div>
+                        </div>
+                        @if (operation.parameters) {
+                          <div class="row">
+                            <div class="col-lg-2 fw-bold">Parameters</div>
+                            <div class="col-lg-10">
+                              <table class="table">
+                                <thead>
+                                <tr>
+                                  <th style="width:20%">Name</th>
+                                  <th style="width:10%">Type</th>
+                                  <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                  @for (entry of operation.parameters; track $index) {
+                                    <tr>
+                                      <td>{{entry.name}}</td>
+                                      <td>{{entry.type}}</td>
+                                      <td>{{entry.description}}</td>
+                                    </tr>
+                                  }
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        }
+                        @if (operation.incoming) {
+                          <div class="row">
+                            <div class="col-lg-2 fw-bold">Incoming</div>
+                            <div class="col-lg-10">
+                              {{operation.incoming}}
+                            </div>
+                          </div>
+                        }
+                        <div class="row">
+                          <div class="col-lg-2 fw-bold">Outgoing</div>
                           <div class="col-lg-10">
-                            {{operation.incoming}}
+                            {{operation.outgoing}}
                           </div>
                         </div>
-                      }
-                      <div class="row">
-                        <div class="col-lg-2 fw-bold">Outgoing</div>
-                        <div class="col-lg-10">
-                          {{operation.outgoing}}
+                        <div class="row">
+                          <div class="col-lg-2 fw-bold">Action</div>
+                          <div class="col-lg-10">
+                            {{operation.action}}
+                          </div>
                         </div>
                       </div>
-                      <div class="row">
-                        <div class="col-lg-2 fw-bold">Action</div>
-                        <div class="col-lg-10">
-                          {{operation.action}}
-                        </div>
-                      </div>
-                    </div>
-                  </ng-template>
+                    </ng-template>
+                  </div>
                 </div>
               </div>
             </div>
+          }
+        }
+        @if (blueprint.database) {
+          <div class="card mt-3">
+            <div class="card-header">Database</div>
+            <div class="card-body">
+              {{blueprint.database}}
+            </div>
           </div>
         }
-      }
-      @if (blueprint.database) {
-        <div class="card mt-3">
-          <div class="card-header">Database</div>
-          <div class="card-body">
-            {{blueprint.database}}
+        @if (blueprint.operations.length > 0) {
+          <div class="btn-group mt-3 mb-3">
+            <button class="btn btn-primary" type="button" (click)="execute()" [disabled]="executeLoading()">
+              @if (executeLoading()) {
+                <span class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span>
+                <span role="status">Executing ...</span>
+              }
+              @else {
+                <span role="status">Execute</span>
+              }
+            </button>
           </div>
-        </div>
-      }
-      @if (blueprint.operations.length > 0) {
-        <div class="btn-group mt-3 mb-3">
-          <button class="btn btn-primary" type="button" (click)="execute()" [disabled]="executeLoading()">
-            @if (executeLoading()) {
-              <span class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span>
-              <span role="status">Executing ...</span>
-            }
-            @else {
-              <span role="status">Execute</span>
-            }
-          </button>
-        </div>
+        }
       }
     }
   </div>
