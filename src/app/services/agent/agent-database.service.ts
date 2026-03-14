@@ -1,11 +1,14 @@
-import {Injectable} from '@angular/core';
-import {AgentAbstract, BackendAgentContent} from "./agent";
+import {inject, Injectable} from '@angular/core';
+import {AgentAbstract, BackendAgentContent, ExecutionIndicator} from "./agent";
 import {BackendDatabaseTable, CommonMessage} from "fusio-sdk";
+import {ErrorService} from "ngx-fusio-sdk";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AgentDatabaseService extends AgentAbstract<Database, Options> {
+
+  protected error = inject(ErrorService);
 
   transform(content: BackendAgentContent): Database|undefined {
     const object = this.getJson(content) as Database;
@@ -16,7 +19,7 @@ export class AgentDatabaseService extends AgentAbstract<Database, Options> {
     return object;
   }
 
-  async execute(model: Database, options: Options): Promise<CommonMessage|undefined> {
+  async execute(model: Database, indicator: ExecutionIndicator, options: Options): Promise<CommonMessage|undefined> {
     const connectionId = options.connectionId;
     if (!connectionId) {
       return;
@@ -26,19 +29,21 @@ export class AgentDatabaseService extends AgentAbstract<Database, Options> {
       return;
     }
 
-    let responses: Array<CommonMessage> = [];
-
     for (let i = 0; i < model.tables.length; i++) {
-      const table = model.tables[i];
-      const response = await this.api.getClient().backend().connection().database().createTable('' + connectionId, table);
-      if (response.success === true) {
-        responses.push(response);
+      try {
+        const table = model.tables[i];
+        const response = await this.api.getClient().backend().connection().database().createTable('' + connectionId, table);
+        if (response.success === true) {
+          indicator.push(response);
+        }
+      } catch (error) {
+        indicator.push(this.error.convert(error));
       }
     }
 
     return {
       success: true,
-      message: 'Successfully created ' + responses.length + ' tables',
+      message: 'Successfully created tables',
     };
   }
 

@@ -2,7 +2,7 @@ import {Component, computed, inject, input, resource, signal} from '@angular/cor
 import {BackendAgent, BackendAgentMessage, CommonMessage} from "fusio-sdk";
 import {ApiService} from "../../../api.service";
 import {ErrorService} from "ngx-fusio-sdk";
-import {Agent, BackendAgentContent} from "../../../services/agent/agent";
+import {Agent, BackendAgentContent, ExecutionIndicator} from "../../../services/agent/agent";
 
 @Component({
   selector: 'app-agent-chat-abstract',
@@ -18,6 +18,7 @@ export abstract class ChatAbstract<TModel, TOptions = undefined> {
   output = signal<BackendAgentContent|undefined>(undefined);
   loading = signal<boolean>(false);
   executeLoading = signal<boolean>(false);
+  executeMessages = signal<Array<CommonMessage>>([]);
   response = signal<CommonMessage|undefined>(undefined);
 
   messagesResource = resource<Array<BackendAgentMessage>, { agent: BackendAgent, parent: BackendAgentMessage, output: BackendAgentContent|undefined }>({
@@ -86,6 +87,8 @@ export abstract class ChatAbstract<TModel, TOptions = undefined> {
 
       this.output.set(content);
 
+      this.onSend();
+
       this.scrollToBottom();
     } catch (error) {
       this.response.set(this.error.convert(error));
@@ -100,6 +103,8 @@ export abstract class ChatAbstract<TModel, TOptions = undefined> {
     }
 
     this.model.set(this.getAgent().transform(content));
+
+    this.onLoad();
   }
 
   async execute(): Promise<void> {
@@ -111,9 +116,16 @@ export abstract class ChatAbstract<TModel, TOptions = undefined> {
     this.executeLoading.set(true);
 
     try {
+      const indicator = new ExecutionIndicator((message: CommonMessage) => {
+        this.executeMessages.update((messages) => {
+          messages.push(message);
+          return messages;
+        });
+      });
+
       const options = this.getOptions();
 
-      const response = await this.getAgent().execute(model, options);
+      const response = await this.getAgent().execute(model, indicator, options);
       this.response.set(response);
 
       if (response) {
@@ -124,6 +136,12 @@ export abstract class ChatAbstract<TModel, TOptions = undefined> {
     }
 
     this.executeLoading.set(false);
+  }
+
+  protected onLoad(): void {
+  }
+
+  protected onSend(): void {
   }
 
   protected onExecute(message: CommonMessage): void {

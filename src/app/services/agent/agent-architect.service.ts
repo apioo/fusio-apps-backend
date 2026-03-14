@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
-import {AgentAbstract, BackendAgentContent} from "./agent";
-import {BackendOperation, BackendSchema, CommonMessage} from "fusio-sdk";
+import {AgentAbstract, BackendAgentContent, ExecutionIndicator} from "./agent";
+import {BackendOperation, CommonMessage} from "fusio-sdk";
 import {AgentActionService} from "./agent-action.service";
 import {AgentSchemaService} from "./agent-schema.service";
 import {AgentDatabaseService} from "./agent-database.service";
@@ -23,7 +23,7 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
     return object;
   }
 
-  async execute(model: Blueprint, options: Options): Promise<CommonMessage|undefined> {
+  async execute(model: Blueprint, indicator: ExecutionIndicator, options: Options): Promise<CommonMessage|undefined> {
     const connectionId = options.connectionId;
     if (!connectionId) {
       return;
@@ -40,12 +40,9 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
       return;
     }
 
-    let responses: Array<CommonMessage> = [];
-
     if (model.database) {
-      const response = await this.invokeDatabaseAgent(options.databaseAgentId, model.database, options.connectionId);
+      const response = await this.invokeDatabaseAgent(options.databaseAgentId, model.database, options.connectionId, indicator);
       if (response && response.success === true) {
-        responses.push(response);
       } else {
         throw new Error('Agent could not create database for: ' + model.database);
       }
@@ -55,21 +52,24 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
     for (let i = 0; i < model.operations.length; i++) {
       const operation = model.operations[i];
 
-      response = await this.invokeSchemaAgent(options.schemaAgentId, operation.incoming);
+      response = await this.invokeSchemaAgent(options.schemaAgentId, operation.incoming, indicator);
+      indicator.push(response);
       if (response && response.success === true && response.id) {
         operation.incoming = response.id;
       } else {
         throw new Error('Agent could not create schema for: ' + operation.incoming);
       }
 
-      response = await this.invokeSchemaAgent(options.schemaAgentId, operation.outgoing);
+      response = await this.invokeSchemaAgent(options.schemaAgentId, operation.outgoing, indicator);
+      indicator.push(response);
       if (response && response.success === true && response.id) {
         operation.outgoing = response.id;
       } else {
         throw new Error('Agent could not create schema for: ' + operation.outgoing);
       }
 
-      response = await this.invokeActionAgent(options.actionAgentId, operation.action);
+      response = await this.invokeActionAgent(options.actionAgentId, operation.action, indicator);
+      indicator.push(response);
       if (response && response.success === true && response.id) {
         operation.action = response.id;
       } else {
@@ -89,7 +89,7 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
         response = await this.api.getClient().backend().schema().create(operation);
       }
 
-      responses.push(response);
+      indicator.push(response);
     }
 
     return {
@@ -98,7 +98,7 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
     };
   }
 
-  private async invokeSchemaAgent(agentId: number, prompt: string): Promise<CommonMessage|undefined> {
+  private async invokeSchemaAgent(agentId: number, prompt: string, indicator: ExecutionIndicator): Promise<CommonMessage|undefined> {
     const content = await this.schema.prompt(agentId, prompt);
     if (!content) {
       return;
@@ -109,10 +109,10 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
       return;
     }
 
-    return await this.schema.execute(model);
+    return await this.schema.execute(model, indicator);
   }
 
-  private async invokeActionAgent(agentId: number, prompt: string): Promise<CommonMessage|undefined> {
+  private async invokeActionAgent(agentId: number, prompt: string, indicator: ExecutionIndicator): Promise<CommonMessage|undefined> {
     const content = await this.action.prompt(agentId, prompt);
     if (!content) {
       return;
@@ -123,10 +123,10 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
       return;
     }
 
-    return await this.action.execute(model);
+    return await this.action.execute(model, indicator);
   }
 
-  private async invokeDatabaseAgent(agentId: number, prompt: string, connectionId: number): Promise<CommonMessage|undefined> {
+  private async invokeDatabaseAgent(agentId: number, prompt: string, connectionId: number, indicator: ExecutionIndicator): Promise<CommonMessage|undefined> {
     const content = await this.database.prompt(agentId, prompt);
     if (!content) {
       return;
@@ -137,7 +137,7 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
       return;
     }
 
-    return await this.database.execute(model, {
+    return await this.database.execute(model, indicator, {
       connectionId: connectionId
     });
   }

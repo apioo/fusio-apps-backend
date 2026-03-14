@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {BackendAction, CommonMessage} from "fusio-sdk";
-import {AgentAbstract, BackendAgentContent} from "./agent";
+import {AgentAbstract, BackendAgentContent, ExecutionIndicator} from "./agent";
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +22,7 @@ export class AgentActionService extends AgentAbstract<Action> {
     };
   }
 
-  async execute(model: Action): Promise<CommonMessage|undefined> {
+  async execute(model: Action, indicator: ExecutionIndicator): Promise<CommonMessage|undefined> {
     const name = model.name;
     if (!name) {
       return;

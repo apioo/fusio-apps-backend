@@ -1,10 +1,8 @@
-import {Component, inject, OnInit, signal} from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import {ChatAbstract} from "../chat-abstract";
 import {Input} from "../input/input";
-import {ErrorService, FormAutocompleteComponent, MessageComponent} from "ngx-fusio-sdk";
+import {FormAutocompleteComponent, MessageComponent} from "ngx-fusio-sdk";
 import {Row} from "../row/row";
-import {BackendAgentMessage} from "fusio-sdk";
-import {ApiService} from "../../../../api.service";
 import {JsonPipe} from "@angular/common";
 import {
   NgbAccordionBody,
@@ -12,14 +10,12 @@ import {
   NgbAccordionCollapse,
   NgbAccordionDirective,
   NgbAccordionHeader,
-  NgbAccordionItem, NgbPopover
+  NgbAccordionItem,
+  NgbPopover
 } from "@ng-bootstrap/ng-bootstrap";
 import {OperationStatus} from "../../../../shared/operation-status/operation-status";
-import {OperationService} from "../../../../services/operation.service";
-import {Router} from "@angular/router";
 import {AgentArchitectService, Blueprint, Options} from "../../../../services/agent/agent-architect.service";
 import {Agent} from "../../../../services/agent/agent";
-import {AgentDatabaseService, Database as DatabaseModel} from "../../../../services/agent/agent-database.service";
 import {ConnectionService} from "../../../../services/connection.service";
 import {AgentService} from "../../../../services/agent.service";
 
@@ -38,12 +34,12 @@ import {AgentService} from "../../../../services/agent.service";
     OperationStatus,
     JsonPipe,
     FormAutocompleteComponent,
-    NgbPopover
+    NgbPopover,
   ],
   templateUrl: './architect.html',
   styleUrl: './architect.css',
 })
-export class Architect extends ChatAbstract<Blueprint, Options> implements OnInit {
+export class Architect extends ChatAbstract<Blueprint, Options> {
 
   connectionId = signal<number|undefined>(undefined);
   actionAgentId = signal<number|undefined>(undefined);
@@ -53,12 +49,6 @@ export class Architect extends ChatAbstract<Blueprint, Options> implements OnIni
   architectAgent = inject(AgentArchitectService);
   connection = inject(ConnectionService);
   agentService = inject(AgentService);
-
-  async ngOnInit(): Promise<void> {
-    window.setTimeout(() => {
-      this.detectAgentIds();
-    }, 500);
-  }
 
   getAgent(): Agent<Blueprint, Options> {
     return this.architectAgent;
@@ -93,28 +83,27 @@ export class Architect extends ChatAbstract<Blueprint, Options> implements OnIni
     };
   }
 
-  private async detectAgentIds() {
-    try {
-      const response = await this.api.getClient().backend().agent().getAll(0, 16, 'type:2 OR type:3 OR type:4');
-      if (response.entry) {
-        for (let i = 0; i < response.entry?.length; i++) {
-          const entry = response.entry[i];
-          const id = entry.id;
-          if (!id) {
-            continue;
-          }
+  /**
+   * For UX we try to pre-select the fitting agents, a user can then also select different agents
+   */
+  protected override async onLoad() {
+    const response = await this.api.getClient().backend().agent().getAll(0, 16, 'type:2 OR type:3 OR type:4');
+    if (response.entry) {
+      for (let i = 0; i < response.entry?.length; i++) {
+        const entry = response.entry[i];
+        const id = entry.id;
+        if (!id) {
+          continue;
+        }
 
-          if (this.actionAgentId() === undefined && entry.type === 2) {
-            this.actionAgentId.set(id);
-          } else if (this.schemaAgentId() === undefined && entry.type === 3) {
-            this.schemaAgentId.set(id);
-          } else if (this.databaseAgentId() === undefined && entry.type === 4) {
-            this.databaseAgentId.set(id);
-          }
+        if (this.actionAgentId() === undefined && entry.type === 2) {
+          this.actionAgentId.set(id);
+        } else if (this.schemaAgentId() === undefined && entry.type === 3) {
+          this.schemaAgentId.set(id);
+        } else if (this.databaseAgentId() === undefined && entry.type === 4) {
+          this.databaseAgentId.set(id);
         }
       }
-    } catch (error) {
-      this.response.set(this.error.convert(error));
     }
   }
 

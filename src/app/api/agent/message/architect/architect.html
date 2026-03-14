@@ -39,14 +39,14 @@
       <label for="schemaAgent" class="form-label">Schema-Agent</label>
       <fusio-form-autocomplete name="schemaAgent" id="schemaAgent" [service]="agentService" [useId]="true" [data]="schemaAgentId()" (dataChangeId)="schemaAgentId.set($event)">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="schemaAgentHelp"><i class="bi bi-question"></i></button>
-        <ng-template #schemaAgentHelp>The agent which is used to create actions.</ng-template>
+        <ng-template #schemaAgentHelp>The agent which is used to create schemas.</ng-template>
       </fusio-form-autocomplete>
     </div>
     <div class="mb-3">
       <label for="databaseAgent" class="form-label">Database-Agent</label>
       <fusio-form-autocomplete name="databaseAgent" id="databaseAgent" [service]="agentService" [useId]="true" [data]="databaseAgentId()" (dataChangeId)="databaseAgentId.set($event)">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="databaseAgentHelp"><i class="bi bi-question"></i></button>
-        <ng-template #databaseAgentHelp>The agent which is used to create actions.</ng-template>
+        <ng-template #databaseAgentHelp>The agent which is used to create tables.</ng-template>
       </fusio-form-autocomplete>
     </div>
     @if (model(); as blueprint) {
@@ -161,6 +161,20 @@
           </button>
         </div>
       }
+    }
+    @if (executeLoading()) {
+      <ul>
+        @for (message of executeMessages(); track $index) {
+          <li>
+            @if (message.success === true) {
+              <i class="bi bi-check text-success"></i> {{ message.message }}
+            }
+            @if (message.success === false) {
+              <i class="bi bi-x text-danger"></i> {{ message.message }}
+            }
+          </li>
+        }
+      </ul>
     }
   </div>
 </div>

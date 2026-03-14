@@ -25,7 +25,7 @@ export interface Agent<TModel, TOptions = undefined> {
   /**
    * Executes the provided model, mostly this means that we create or update the model
    */
-  execute(model: TModel, options?: TOptions): Promise<CommonMessage|undefined>;
+  execute(model: TModel, indicator: ExecutionIndicator, options?: TOptions): Promise<CommonMessage|undefined>;
 
 }
 
@@ -52,7 +52,7 @@ export abstract class AgentAbstract<TModel, TOptions = undefined> implements Age
 
   abstract transform(content: BackendAgentContent): TModel|undefined;
 
-  abstract execute(model: TModel, options?: TOptions): Promise<CommonMessage|undefined>;
+  abstract execute(model: TModel, indicator: ExecutionIndicator, options?: TOptions): Promise<CommonMessage|undefined>;
 
   protected getText(content: BackendAgentContent): string|undefined {
     if (content.type === 'text' && content.content) {
@@ -68,6 +68,21 @@ export abstract class AgentAbstract<TModel, TOptions = undefined> implements Age
     }
 
     return;
+  }
+
+}
+
+export class ExecutionIndicator {
+
+  constructor(private callback: Function) {
+  }
+
+  push(message?: CommonMessage) {
+    if (!message) {
+      return;
+    }
+
+    this.callback.apply(message);
   }
 
 }
