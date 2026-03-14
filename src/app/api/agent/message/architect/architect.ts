@@ -3,7 +3,7 @@ import {ChatAbstract} from "../chat-abstract";
 import {Input} from "../input/input";
 import {FormAutocompleteComponent, MessageComponent} from "ngx-fusio-sdk";
 import {Row} from "../row/row";
-import {JsonPipe, NgClass} from "@angular/common";
+import {JsonPipe} from "@angular/common";
 import {
   NgbAccordionBody,
   NgbAccordionButton,
@@ -18,7 +18,6 @@ import {AgentArchitectService, Blueprint, Options} from "../../../../services/ag
 import {Agent} from "../../../../services/agent/agent";
 import {ConnectionService} from "../../../../services/connection.service";
 import {AgentService} from "../../../../services/agent.service";
-import {exec} from "apexcharts";
 
 @Component({
   selector: 'app-agent-message-architect',
@@ -36,7 +35,6 @@ import {exec} from "apexcharts";
     JsonPipe,
     FormAutocompleteComponent,
     NgbPopover,
-    NgClass,
   ],
   templateUrl: './architect.html',
   styleUrl: './architect.css',
