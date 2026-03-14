@@ -8,7 +8,7 @@
         @if (message.role === 'assistant' && message.content && message.content.type === 'object' && 'payload' in message.content && message.content.payload) {
           <div class="mb-2">
             <div class="d-grid">
-              <button class="btn btn-primary" type="button" (click)="loadBlueprint(message.content.payload)">Generated blueprint ({{(message.content.payload|json).length}} chars)</button>
+              <button class="btn btn-primary" type="button" (click)="load(message.content.payload)">Generated blueprint ({{(message.content.payload|json).length}} chars)</button>
             </div>
           </div>
         }
@@ -21,11 +21,39 @@
     </div>
   </div>
   <div class="col-xl-6">
-    @if (blueprint(); as blueprint) {
+    <div class="mb-3">
+      <label for="connection" class="form-label">Connection</label>
+      <fusio-form-autocomplete name="connection" id="connection" [service]="connection" [useId]="true" [data]="connectionId()" (dataChangeId)="connectionId.set($event)">
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="connectionHelp"><i class="bi bi-question"></i></button>
+        <ng-template #connectionHelp>The target database connection where all tables are created.</ng-template>
+      </fusio-form-autocomplete>
+    </div>
+    <div class="mb-3">
+      <label for="actionAgent" class="form-label">Action-Agent</label>
+      <fusio-form-autocomplete name="actionAgent" id="actionAgent" [service]="agentService" [useId]="true" [data]="actionAgentId()" (dataChangeId)="actionAgentId.set($event)">
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="actionAgentHelp"><i class="bi bi-question"></i></button>
+        <ng-template #actionAgentHelp>The agent which is used to create actions.</ng-template>
+      </fusio-form-autocomplete>
+    </div>
+    <div class="mb-3">
+      <label for="schemaAgent" class="form-label">Schema-Agent</label>
+      <fusio-form-autocomplete name="schemaAgent" id="schemaAgent" [service]="agentService" [useId]="true" [data]="schemaAgentId()" (dataChangeId)="schemaAgentId.set($event)">
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="schemaAgentHelp"><i class="bi bi-question"></i></button>
+        <ng-template #schemaAgentHelp>The agent which is used to create actions.</ng-template>
+      </fusio-form-autocomplete>
+    </div>
+    <div class="mb-3">
+      <label for="databaseAgent" class="form-label">Database-Agent</label>
+      <fusio-form-autocomplete name="databaseAgent" id="databaseAgent" [service]="agentService" [useId]="true" [data]="databaseAgentId()" (dataChangeId)="databaseAgentId.set($event)">
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="databaseAgentHelp"><i class="bi bi-question"></i></button>
+        <ng-template #databaseAgentHelp>The agent which is used to create actions.</ng-template>
+      </fusio-form-autocomplete>
+    </div>
+    @if (model(); as blueprint) {
       @if (blueprint.operations.length > 0) {
         @for (operation of blueprint.operations; track $index) {
           <div ngbAccordion>
-            <div ngbAccordionItem class="rounded-0" [collapsed]="$index !== 0">
+            <div ngbAccordionItem class="rounded-0" [collapsed]="true">
               <h2 ngbAccordionHeader>
                 <button ngbAccordionButton>{{ operation.httpMethod }} - {{ operation.httpPath }}</button>
               </h2>
@@ -88,20 +116,20 @@
                         <div class="row">
                           <div class="col-lg-2 fw-bold">Incoming</div>
                           <div class="col-lg-10">
-                            <button class="btn btn-success" (click)="generateSchema(operation.incoming)">Generate ({{operation.incoming.length}} chars)</button>
+                            {{operation.incoming}}
                           </div>
                         </div>
                       }
                       <div class="row">
                         <div class="col-lg-2 fw-bold">Outgoing</div>
                         <div class="col-lg-10">
-                          <button class="btn btn-success" (click)="generateSchema(operation.outgoing)">Generate ({{operation.outgoing.length}} chars)</button>
+                          {{operation.outgoing}}
                         </div>
                       </div>
                       <div class="row">
                         <div class="col-lg-2 fw-bold">Action</div>
                         <div class="col-lg-10">
-                          <button class="btn btn-success" (click)="generateAction(operation.action)">Generate ({{operation.action.length}} chars)</button>
+                          {{operation.action}}
                         </div>
                       </div>
                     </div>
@@ -112,15 +140,18 @@
           </div>
         }
       }
-      <hr>
-      @if (blueprint.schema) {
-        <button class="btn btn-success" (click)="generateDatabase(blueprint.schema)">Generate ({{blueprint.schema.length}} chars)</button>
-        <hr>
+      @if (blueprint.database) {
+        <div class="card mt-3">
+          <div class="card-header">Database</div>
+          <div class="card-body">
+            {{blueprint.database}}
+          </div>
+        </div>
       }
       @if (blueprint.operations.length > 0) {
         <div class="btn-group mt-3 mb-3">
-          <button class="btn btn-primary" type="button" (click)="executeBlueprint()" [disabled]="architectLoading()">
-            @if (architectLoading()) {
+          <button class="btn btn-primary" type="button" (click)="execute()" [disabled]="executeLoading()">
+            @if (executeLoading()) {
               <span class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span>
               <span role="status">Executing ...</span>
             }

@@ -1,7 +1,7 @@
-import {Component, OnInit, signal} from '@angular/core';
+import {Component, inject, OnInit, signal} from '@angular/core';
 import {ChatAbstract} from "../chat-abstract";
 import {Input} from "../input/input";
-import {ErrorService, MessageComponent} from "ngx-fusio-sdk";
+import {ErrorService, FormAutocompleteComponent, MessageComponent} from "ngx-fusio-sdk";
 import {Row} from "../row/row";
 import {BackendAgentMessage} from "fusio-sdk";
 import {ApiService} from "../../../../api.service";
@@ -12,11 +12,16 @@ import {
   NgbAccordionCollapse,
   NgbAccordionDirective,
   NgbAccordionHeader,
-  NgbAccordionItem
+  NgbAccordionItem, NgbPopover
 } from "@ng-bootstrap/ng-bootstrap";
 import {OperationStatus} from "../../../../shared/operation-status/operation-status";
 import {OperationService} from "../../../../services/operation.service";
 import {Router} from "@angular/router";
+import {AgentArchitectService, Blueprint, Options} from "../../../../services/agent/agent-architect.service";
+import {Agent} from "../../../../services/agent/agent";
+import {AgentDatabaseService, Database as DatabaseModel} from "../../../../services/agent/agent-database.service";
+import {ConnectionService} from "../../../../services/connection.service";
+import {AgentService} from "../../../../services/agent.service";
 
 @Component({
   selector: 'app-agent-message-architect',
@@ -31,68 +36,61 @@ import {Router} from "@angular/router";
     NgbAccordionHeader,
     NgbAccordionItem,
     OperationStatus,
-    JsonPipe
+    JsonPipe,
+    FormAutocompleteComponent,
+    NgbPopover
   ],
   templateUrl: './architect.html',
   styleUrl: './architect.css',
 })
-export class Architect extends ChatAbstract implements OnInit {
+export class Architect extends ChatAbstract<Blueprint, Options> implements OnInit {
 
-  architectLoading = signal<boolean>(false);
-  blueprint = signal<Blueprint|undefined>(undefined);
-
+  connectionId = signal<number|undefined>(undefined);
   actionAgentId = signal<number|undefined>(undefined);
   schemaAgentId = signal<number|undefined>(undefined);
   databaseAgentId = signal<number|undefined>(undefined);
 
-  constructor(api: ApiService, error: ErrorService, private operationService: OperationService, private router: Router) {
-    super(api, error);
-  }
+  architectAgent = inject(AgentArchitectService);
+  connection = inject(ConnectionService);
+  agentService = inject(AgentService);
 
   async ngOnInit(): Promise<void> {
-    this.detectAgentIds();
+    window.setTimeout(() => {
+      this.detectAgentIds();
+    }, 500);
   }
 
-  onLoad(message: BackendAgentMessage): void {
-    if (message.content && message.content.type === 'object' && message.content.payload) {
-      this.loadBlueprint(message.content.payload);
-    }
+  getAgent(): Agent<Blueprint, Options> {
+    return this.architectAgent;
   }
 
-  loadBlueprint(blueprint: Blueprint) {
-    this.blueprint.set(blueprint);
-  }
-
-  async executeBlueprint() {
-    const blueprint = this.blueprint();
-    if (!blueprint) {
-      return;
+  protected override getOptions(): Options | undefined {
+    const connectionId = this.connectionId();
+    if (!connectionId) {
+      throw new Error('Please select a connection, where the defined database schema is created');
     }
 
-    this.architectLoading.set(true);
-
-    try {
-      /*
-      const responses: Array<CommonMessage> = [];
-
-      // create schemas
-      blueprint.operations.forEach((operation) => {
-
-        operation.incoming
-        operation.outgoing
-
-      });
-      */
-
-      this.response.set({
-        success: true,
-        message: '',
-      });
-    } catch (error) {
-      this.response.set(this.error.convert(error));
+    const actionAgentId = this.actionAgentId();
+    if (!actionAgentId) {
+      throw new Error('Please select an action agent, which is used to generate the action');
     }
 
-    this.architectLoading.set(false);
+    const schemaAgentId = this.schemaAgentId();
+    if (!schemaAgentId) {
+      throw new Error('Please select a schema agent, which is used to generate the schema');
+    }
+
+    const databaseAgentId = this.databaseAgentId();
+    if (!databaseAgentId) {
+      throw new Error('Please select a database agent, which is used to generate the tables');
+    }
+
+    return {
+      connectionId: connectionId,
+      actionAgentId: actionAgentId,
+      schemaAgentId: schemaAgentId,
+      databaseAgentId: databaseAgentId,
+    };
   }
 
   private async detectAgentIds() {
@@ -101,12 +99,17 @@ export class Architect extends ChatAbstract implements OnInit {
       if (response.entry) {
         for (let i = 0; i < response.entry?.length; i++) {
           const entry = response.entry[i];
+          const id = entry.id;
+          if (!id) {
+            continue;
+          }
+
           if (this.actionAgentId() === undefined && entry.type === 2) {
-            this.actionAgentId.set(entry.id);
+            this.actionAgentId.set(id);
           } else if (this.schemaAgentId() === undefined && entry.type === 3) {
-            this.schemaAgentId.set(entry.id);
+            this.schemaAgentId.set(id);
           } else if (this.databaseAgentId() === undefined && entry.type === 4) {
-            this.databaseAgentId.set(entry.id);
+            this.databaseAgentId.set(id);
           }
         }
       }
@@ -115,60 +118,4 @@ export class Architect extends ChatAbstract implements OnInit {
     }
   }
 
-  async generateAction(prompt: string) {
-    sessionStorage.setItem('action_prompt', prompt);
-
-    await this.router.navigate(['/agent', this.actionAgentId(), 'message'], {
-      queryParams: {
-        prompt: 'action_prompt'
-      }
-    });
-  }
-
-  async generateSchema(prompt: string) {
-    sessionStorage.setItem('schema_prompt', prompt);
-
-    await this.router.navigate(['/agent', this.schemaAgentId(), 'message'], {
-      queryParams: {
-        prompt: 'schema_prompt'
-      }
-    });
-  }
-
-  async generateDatabase(prompt: string) {
-    sessionStorage.setItem('database_prompt', prompt);
-
-    await this.router.navigate(['/agent', this.databaseAgentId(), 'message'], {
-      queryParams: {
-        prompt: 'database_prompt'
-      }
-    });
-  }
-
-}
-
-interface Blueprint {
-  operations: Array<Operation>
-  schema: string
-}
-
-interface Operation {
-  name: string
-  active: boolean
-  public: boolean
-  stability: number
-  description: string
-  httpMethod: string
-  httpPath: string
-  httpCode: number
-  parameters: Array<Parameter>
-  incoming: string
-  outgoing: string
-  action: string
-}
-
-interface Parameter {
-  name: string
-  type: string
-  description: string
 }

@@ -1,16 +1,20 @@
 import {Component, inject, signal} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {JsonPipe} from "@angular/common";
-import {ErrorService, FormAutocompleteComponent, MessageComponent} from "ngx-fusio-sdk";
+import {FormAutocompleteComponent, MessageComponent} from "ngx-fusio-sdk";
 import {TypeschemaEditorModule} from "ngx-typeschema-editor";
 import {ChatAbstract} from "../chat-abstract";
-import {BackendAgentMessage, BackendDatabaseTable, CommonMessage} from "fusio-sdk";
 import {Input} from "../input/input";
 import {Row} from "../row/row";
-import {ApiService} from "../../../../api.service";
 import {DatabaseTable} from "../../../../shared/database-table/database-table";
 import {ConnectionService} from "../../../../services/connection.service";
 import {NgbPopover} from "@ng-bootstrap/ng-bootstrap";
+import {Agent} from "../../../../services/agent/agent";
+import {
+  AgentDatabaseService,
+  Database as DatabaseModel,
+  Options
+} from "../../../../services/agent/agent-database.service";
 
 @Component({
   selector: 'app-agent-message-database',
@@ -28,67 +32,26 @@ import {NgbPopover} from "@ng-bootstrap/ng-bootstrap";
   templateUrl: './database.html',
   styleUrl: './database.css',
 })
-export class Database extends ChatAbstract {
+export class Database extends ChatAbstract<DatabaseModel, Options> {
 
   connectionId = signal<number|undefined>(undefined);
-  schema = signal<Schema|undefined>(undefined);
-  schemaLoading = signal<boolean>(false);
 
+  databaseAgent = inject(AgentDatabaseService);
   connection = inject(ConnectionService);
 
-  constructor(api: ApiService, error: ErrorService) {
-    super(api, error);
+  getAgent(): Agent<DatabaseModel, Options> {
+    return this.databaseAgent;
   }
 
-  async onLoad(message: BackendAgentMessage): Promise<void> {
-    if (message.content && message.content.type === 'object' && message.content.payload) {
-      await this.loadTables(message.content.payload);
-    }
-  }
-
-  async loadTables(schema: Schema) {
-    if (schema.tables && schema.tables.length > 0) {
-      this.schema.set(schema);
-    }
-  }
-
-  async createTables() {
+  protected override getOptions(): Options|undefined {
     const connectionId = this.connectionId();
     if (!connectionId) {
-      return;
+      throw new Error('Please select a connection');
     }
 
-    const schema = this.schema();
-    if (!schema || !schema.tables) {
-      return;
-    }
-
-    this.schemaLoading.set(true);
-
-    try {
-      let responses: Array<CommonMessage> = [];
-
-      for (let i = 0; i < schema.tables.length; i++) {
-        const table = schema.tables[i];
-        const response = await this.api.getClient().backend().connection().database().createTable('' + connectionId, table);
-        if (response.success === true) {
-          responses.push(response);
-        }
-      }
-
-      this.response.set({
-        success: true,
-        message: 'Successfully created ' + responses.length + ' tables',
-      });
-    } catch (error) {
-      this.response.set(this.error.convert(error));
-    }
-
-    this.schemaLoading.set(false);
+    return {
+      connectionId: connectionId
+    };
   }
 
-}
-
-interface Schema {
-  tables: Array<BackendDatabaseTable>
 }

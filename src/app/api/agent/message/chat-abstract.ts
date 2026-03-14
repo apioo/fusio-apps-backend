@@ -1,22 +1,26 @@
-import {Component, computed, input, resource, signal} from '@angular/core';
-import {BackendAgent, BackendAgentInput, BackendAgentMessage, BackendAgentOutput, CommonMessage} from "fusio-sdk";
+import {Component, computed, inject, input, resource, signal} from '@angular/core';
+import {BackendAgent, BackendAgentMessage, CommonMessage} from "fusio-sdk";
 import {ApiService} from "../../../api.service";
 import {ErrorService} from "ngx-fusio-sdk";
+import {Agent, BackendAgentContent} from "../../../services/agent/agent";
 
 @Component({
   selector: 'app-agent-chat-abstract',
   template: ''
 })
-export abstract class ChatAbstract {
+export abstract class ChatAbstract<TModel, TOptions = undefined> {
 
   agent = input.required<BackendAgent>();
   parent = input.required<BackendAgentMessage>();
 
-  output = signal<BackendAgentOutput|undefined>(undefined);
+  model = signal<TModel|undefined>(undefined);
+
+  output = signal<BackendAgentContent|undefined>(undefined);
   loading = signal<boolean>(false);
+  executeLoading = signal<boolean>(false);
   response = signal<CommonMessage|undefined>(undefined);
 
-  messagesResource = resource<Array<BackendAgentMessage>, { agent: BackendAgent, parent: BackendAgentMessage, output: BackendAgentOutput|undefined }>({
+  messagesResource = resource<Array<BackendAgentMessage>, { agent: BackendAgent, parent: BackendAgentMessage, output: BackendAgentContent|undefined }>({
     params: () => ({
       agent: this.agent(),
       parent: this.parent(),
@@ -41,8 +45,8 @@ export abstract class ChatAbstract {
           }
         });
 
-        if (lastMessage) {
-          this.onLoad(lastMessage);
+        if (lastMessage && lastMessage.content) {
+          this.load(lastMessage.content);
         }
       }
 
@@ -58,8 +62,10 @@ export abstract class ChatAbstract {
     return undefined;
   });
 
-  protected constructor(protected api: ApiService, protected error: ErrorService) {
-  }
+  protected api = inject(ApiService);
+  protected error = inject(ErrorService);
+
+  abstract getAgent(): Agent<TModel, TOptions>;
 
   async doSend(message: string) {
     if (!message) {
@@ -73,38 +79,58 @@ export abstract class ChatAbstract {
 
     this.loading.set(true);
 
-    this.preOutput();
-
     const parentId = this.parent().id;
 
     try {
-      const input: BackendAgentInput = {
-        input: {
-          type: 'text',
-          content: message,
-        }
-      };
+      const content = await this.getAgent().prompt(agentId, message, parentId);
 
-      const output = await this.api.getClient().backend().agent().message().submit('' + agentId, input, parentId);
-
-      this.output.set(output);
+      this.output.set(content);
 
       this.scrollToBottom();
     } catch (error) {
       this.response.set(this.error.convert(error));
     }
 
-    this.postOutput();
-
     this.loading.set(false);
   }
 
-  abstract onLoad(message: BackendAgentMessage): void;
+  load(content?: BackendAgentContent): void {
+    if (!content) {
+      return;
+    }
 
-  protected preOutput(): void {
+    this.model.set(this.getAgent().transform(content));
   }
 
-  protected postOutput(): void {
+  async execute(): Promise<void> {
+    const model = this.model();
+    if (!model) {
+      return;
+    }
+
+    this.executeLoading.set(true);
+
+    try {
+      const options = this.getOptions();
+
+      const response = await this.getAgent().execute(model, options);
+      this.response.set(response);
+
+      if (response) {
+        this.onExecute(response);
+      }
+    } catch (error) {
+      this.response.set(this.error.convert(error));
+    }
+
+    this.executeLoading.set(false);
+  }
+
+  protected onExecute(message: CommonMessage): void {
+  }
+
+  protected getOptions(): TOptions|undefined {
+    return;
   }
 
   scrollToBottom(): void {

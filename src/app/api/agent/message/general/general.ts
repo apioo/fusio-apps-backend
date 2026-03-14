@@ -1,4 +1,4 @@
-import {Component, input} from '@angular/core';
+import {Component, inject, input} from '@angular/core';
 import {ChatAbstract} from "../chat-abstract";
 import {
   BackendAgent,
@@ -14,6 +14,9 @@ import {TypeschemaEditorModule} from "ngx-typeschema-editor";
 import {Input} from "../input/input";
 import {Row} from "../row/row";
 import {ApiService} from "../../../../api.service";
+import {Action as ActionModel, AgentActionService} from "../../../../services/agent/agent-action.service";
+import {Agent, BackendAgentContent} from "../../../../services/agent/agent";
+import {AgentGeneralService} from "../../../../services/agent/agent-general.service";
 
 @Component({
   selector: 'app-agent-message-general',
@@ -28,13 +31,12 @@ import {ApiService} from "../../../../api.service";
   templateUrl: './general.html',
   styleUrl: './general.css',
 })
-export class General extends ChatAbstract {
+export class General extends ChatAbstract<BackendAgentContent> {
 
-  constructor(api: ApiService, error: ErrorService) {
-    super(api, error);
-  }
+  generalAgent = inject(AgentGeneralService);
 
-  onLoad(message: BackendAgentMessage): void {
+  getAgent(): Agent<BackendAgentContent> {
+    return this.generalAgent;
   }
 
 }

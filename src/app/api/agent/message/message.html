@@ -46,7 +46,7 @@
           <app-agent-message-type [value]="agent.type"></app-agent-message-type>
         </div>
         <div id="messages-bottom"></div>
-        <app-agent-message-input [loading]="loading()" [text]="prompt()" (send)="doSend($event)"></app-agent-message-input>
+        <app-agent-message-input [loading]="loading()" (send)="doSend($event)"></app-agent-message-input>
       }
     </div>
   </div>

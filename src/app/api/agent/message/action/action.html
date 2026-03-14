@@ -8,7 +8,7 @@
         @if (message.role === "assistant" && message.content && message.content.type === 'text' && 'content' in message.content && message.content.content) {
           <div class="mb-2">
             <div class="d-grid">
-              <button class="btn btn-primary" type="button" (click)="loadAction(message.content.content)">Generated action ({{message.content.content.length}} chars)</button>
+              <button class="btn btn-primary" type="button" (click)="load(message.content)">Generated action ({{message.content.content.length}} chars)</button>
             </div>
           </div>
         }
@@ -21,21 +21,23 @@
     </div>
   </div>
   <div class="col-xl-6">
-    <input type="text" id="action-name" name="action-name" [ngModel]="action()?.name" [disabled]="true" class="form-control mb-3">
-    <div style="width:100%;height:500px;border:1px solid #ced4da">
-      <ngx-monaco-editor [ngModel]="code()" (ngModelChange)="code.set($event)" [options]="{theme: 'vs-light', language: 'php', readOnly: false}" id="action-code" name="action-code" style="height:100%"></ngx-monaco-editor>
-    </div>
-    <div class="btn-group mt-3">
-      <button class="btn btn-primary" type="button" (click)="executeAction()" [disabled]="actionLoading()">
-        @if (actionLoading()) {
-          <span class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span>
-          <span role="status">Executing ...</span>
-        }
-        @else {
-          <span role="status">Execute</span>
-        }
-      </button>
-    </div>
+    @if (model(); as model) {
+      <input type="text" id="action-name" name="action-name" [ngModel]="model.name" [disabled]="true" class="form-control mb-3">
+      <div style="width:100%;height:500px;border:1px solid #ced4da">
+        <ngx-monaco-editor [ngModel]="model.code" [options]="{theme: 'vs-light', language: 'php', readOnly: false}" id="action-code" name="action-code" style="height:100%"></ngx-monaco-editor>
+      </div>
+      <div class="btn-group mt-3">
+        <button class="btn btn-primary" type="button" (click)="execute()" [disabled]="executeLoading()">
+          @if (executeLoading()) {
+            <span class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span>
+            <span role="status">Executing ...</span>
+          }
+          @else {
+            <span role="status">Execute</span>
+          }
+        </button>
+      </div>
+    }
     @if (actionResponse(); as actionResponse) {
       <app-action-designer-response [response]="actionResponse"></app-action-designer-response>
       @if (actionResponse.statusCode === 500 && actionResponse.body && getErrorMessage(actionResponse.body); as errorMessage) {

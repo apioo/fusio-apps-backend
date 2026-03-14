@@ -39,8 +39,6 @@ export class Message implements OnInit {
   loading = signal<boolean>(false);
   response = signal<CommonMessage|undefined>(undefined);
 
-  prompt = signal<string>('');
-
   selectedId = signal<number|undefined>(undefined);
   selected = computed<BackendAgentMessage|undefined>((): BackendAgentMessage|undefined => {
     let result = undefined;
@@ -68,16 +66,6 @@ export class Message implements OnInit {
         this.selectedId.set(parseInt(params['chat_id']));
       } else {
         this.selectedId.set(undefined);
-      }
-    });
-
-    this.route.queryParams.subscribe((params) => {
-      const prompt = params['prompt'] || '';
-      if (prompt) {
-        const item = sessionStorage.getItem(prompt);
-        if (item !== null) {
-          this.prompt.set(item);
-        }
       }
     });
   }
