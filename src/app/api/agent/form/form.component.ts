@@ -1,13 +1,12 @@
 import {Component, signal} from '@angular/core';
 import {ErrorService, Form, FormAutocompleteComponent, HelpService, MessageComponent} from "ngx-fusio-sdk";
-import {BackendAgent, BackendAgentTool, BackendAgentTools} from "fusio-sdk";
+import {BackendAgent, BackendAgentTool} from "fusio-sdk";
 import {ActivatedRoute, Router} from "@angular/router";
 import {EventService} from "../../../services/event.service";
 import {FormBreadcrump} from "../../../shared/form-breadcrump/form-breadcrump";
 import {FormButtons} from "../../../shared/form-buttons/form-buttons";
 import {FormsModule} from "@angular/forms";
 import {NgbPopover} from "@ng-bootstrap/ng-bootstrap";
-import {ActionSelectorComponent} from "../../../shared/action-selector/action-selector.component";
 import {AgentService} from "../../../services/agent.service";
 import {SchemaSelectorComponent} from "../../../shared/schema-selector/schema-selector.component";
 import {ConnectionService} from "../../../services/connection.service";
@@ -22,7 +21,6 @@ import {ApiService} from "../../../api.service";
     FormButtons,
     FormsModule,
     NgbPopover,
-    ActionSelectorComponent,
     SchemaSelectorComponent,
     FormAutocompleteComponent
   ],

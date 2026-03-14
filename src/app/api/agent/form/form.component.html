@@ -78,11 +78,5 @@
       <app-schema-selector name="outgoing" [data]="entity().outgoing" (dataChange)="set(entity, 'outgoing', $event)" [disabled]="mode === 3"></app-schema-selector>
     </div>
   </div>
-  <div class="mb-3 row">
-    <label for="action" class="col-lg-2 col-form-label fw-bold">Action</label>
-    <div class="col-lg-10">
-      <app-action-selector name="action" [data]="entity().action" (dataChange)="set(entity, 'action', $event)" [disabled]="mode === 3"></app-action-selector>
-    </div>
-  </div>
   <app-form-buttons [mode]="mode" (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="doList()" (onHelp)="showHelp('api/trigger')"></app-form-buttons>
 </form>
