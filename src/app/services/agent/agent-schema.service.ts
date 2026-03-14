@@ -8,7 +8,7 @@ import {ExportService, Specification} from "ngx-typeschema-editor";
 })
 export class AgentSchemaService extends AgentAbstract<Schema> {
 
-  exportService = inject(ExportService);
+  protected exportService = inject(ExportService);
 
   transform(content: BackendAgentContent): Schema|undefined {
     const object = this.getJson(content) as Schema;
@@ -49,6 +49,8 @@ export class AgentSchemaService extends AgentAbstract<Schema> {
         source: source
       });
     }
+
+    indicator.push(response);
 
     return response;
   }

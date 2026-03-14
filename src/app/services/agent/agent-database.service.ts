@@ -33,9 +33,7 @@ export class AgentDatabaseService extends AgentAbstract<Database, Options> {
       try {
         const table = model.tables[i];
         const response = await this.api.getClient().backend().connection().database().createTable('' + connectionId, table);
-        if (response.success === true) {
-          indicator.push(response);
-        }
+        indicator.push(response);
       } catch (error) {
         indicator.push(this.error.convert(error));
       }

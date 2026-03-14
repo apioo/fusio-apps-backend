@@ -54,6 +54,8 @@ export class AgentActionService extends AgentAbstract<Action> {
       });
     }
 
+    indicator.push(response);
+
     return response;
   }
 

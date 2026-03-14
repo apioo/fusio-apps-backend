@@ -21,6 +21,20 @@
     </div>
   </div>
   <div class="col-xl-6">
+    @if (executeLoading()) {
+      <ul>
+        @for (message of executeMessages(); track $index) {
+          <li>
+            @if (message.success === true) {
+              <i class="bi bi-check text-success"></i> {{ message.message }}
+            }
+            @if (message.success === false) {
+              <i class="bi bi-x text-danger"></i> {{ message.message }}
+            }
+          </li>
+        }
+      </ul>
+    }
     <div class="mb-3">
       <label for="connection" class="form-label">Connection</label>
       <fusio-form-autocomplete name="connection" id="connection" [service]="connection" [useId]="true" [data]="connectionId()" (dataChangeId)="connectionId.set($event)">
@@ -161,20 +175,6 @@
           </button>
         </div>
       }
-    }
-    @if (executeLoading()) {
-      <ul>
-        @for (message of executeMessages(); track $index) {
-          <li>
-            @if (message.success === true) {
-              <i class="bi bi-check text-success"></i> {{ message.message }}
-            }
-            @if (message.success === false) {
-              <i class="bi bi-x text-danger"></i> {{ message.message }}
-            }
-          </li>
-        }
-      </ul>
     }
   </div>
 </div>

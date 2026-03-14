@@ -4,15 +4,17 @@ import {BackendOperation, CommonMessage} from "fusio-sdk";
 import {AgentActionService} from "./agent-action.service";
 import {AgentSchemaService} from "./agent-schema.service";
 import {AgentDatabaseService} from "./agent-database.service";
+import {ErrorService} from "ngx-fusio-sdk";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
 
-  action = inject(AgentActionService);
-  schema = inject(AgentSchemaService);
-  database = inject(AgentDatabaseService);
+  protected action = inject(AgentActionService);
+  protected schema = inject(AgentSchemaService);
+  protected database = inject(AgentDatabaseService);
+  protected error = inject(ErrorService);
 
   transform(content: BackendAgentContent): Blueprint|undefined {
     const object = this.getJson(content) as Blueprint;
@@ -41,39 +43,37 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
     }
 
     if (model.database) {
-      const response = await this.invokeDatabaseAgent(options.databaseAgentId, model.database, options.connectionId, indicator);
-      if (response && response.success === true) {
-      } else {
-        throw new Error('Agent could not create database for: ' + model.database);
-      }
+      await this.invokeDatabaseAgent(options.databaseAgentId, model.database, options.connectionId, indicator);
     }
 
     let response: CommonMessage|undefined;
     for (let i = 0; i < model.operations.length; i++) {
       const operation = model.operations[i];
 
-      response = await this.invokeSchemaAgent(options.schemaAgentId, operation.incoming, indicator);
-      indicator.push(response);
-      if (response && response.success === true && response.id) {
-        operation.incoming = response.id;
-      } else {
-        throw new Error('Agent could not create schema for: ' + operation.incoming);
-      }
+      try {
+        const incoming = await this.resolveSchema(options.schemaAgentId, operation.incoming, indicator);
+        if (incoming) {
+          operation.incoming = incoming;
+        } else {
+          continue;
+        }
 
-      response = await this.invokeSchemaAgent(options.schemaAgentId, operation.outgoing, indicator);
-      indicator.push(response);
-      if (response && response.success === true && response.id) {
-        operation.outgoing = response.id;
-      } else {
-        throw new Error('Agent could not create schema for: ' + operation.outgoing);
-      }
+        const outgoing = await this.resolveSchema(options.schemaAgentId, operation.outgoing, indicator);
+        if (outgoing) {
+          operation.outgoing = outgoing;
+        } else {
+          continue;
+        }
 
-      response = await this.invokeActionAgent(options.actionAgentId, operation.action, indicator);
-      indicator.push(response);
-      if (response && response.success === true && response.id) {
-        operation.action = response.id;
-      } else {
-        throw new Error('Agent could not create action for: ' + operation.action);
+        const action = await this.resolveAction(options.actionAgentId, operation.action, indicator);
+        if (action) {
+          operation.action = action;
+        } else {
+          continue;
+        }
+      } catch (error) {
+        indicator.push(this.error.convert(error));
+        continue;
       }
 
       let existing: BackendOperation|undefined = undefined;
@@ -140,6 +140,44 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
     return await this.database.execute(model, indicator, {
       connectionId: connectionId
     });
+  }
+
+  private async resolveSchema(agentId: number, prompt: string, indicator: ExecutionIndicator): Promise<string|undefined> {
+    const response = await this.invokeSchemaAgent(agentId, prompt, indicator);
+    if (!response) {
+      return;
+    }
+
+    if (response.success !== true) {
+      return;
+    }
+
+    if (!response.id) {
+      return;
+    }
+
+    const schema = await this.api.getClient().backend().schema().get(response.id);
+
+    return schema.name;
+  }
+
+  private async resolveAction(agentId: number, prompt: string, indicator: ExecutionIndicator): Promise<string|undefined> {
+    const response = await this.invokeActionAgent(agentId, prompt, indicator);
+    if (!response) {
+      return;
+    }
+
+    if (response.success !== true) {
+      return;
+    }
+
+    if (!response.id) {
+      return;
+    }
+
+    const schema = await this.api.getClient().backend().action().get(response.id);
+
+    return schema.name;
   }
 
 }
