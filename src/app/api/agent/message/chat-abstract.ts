@@ -162,9 +162,3 @@ export abstract class ChatAbstract<TModel, TOptions = undefined> {
   }
 
 }
-
-interface LogEntry
-{
-  level: Level,
-  message: string,
-}
