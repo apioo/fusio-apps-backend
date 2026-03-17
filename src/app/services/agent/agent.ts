@@ -1,10 +1,11 @@
 import {
-  BackendAgentContentBinary,
-  BackendAgentContentChoice,
-  BackendAgentContentObject,
-  BackendAgentContentText,
-  BackendAgentContentToolCall,
-  BackendAgentInput,
+  AgentInput,
+  AgentItem,
+  AgentItemBinary,
+  AgentItemChoice,
+  AgentItemObject,
+  AgentItemText,
+  AgentItemToolCall,
   CommonMessage
 } from "fusio-sdk";
 import {ApiService} from "../../api.service";
@@ -15,7 +16,7 @@ export interface Agent<TModel, TOptions = undefined> {
   /**
    * Sends a prompt to a specific agent and returns the content
    */
-  prompt(agentId: number, prompt: string, parent?: number): Promise<BackendAgentContent|undefined>;
+  prompt(agentId: number, prompt: string, chatId?: string): Promise<AgentItem|undefined>;
 
   /**
    * Transforms the agent content into a model
@@ -33,21 +34,21 @@ export abstract class AgentAbstract<TModel, TOptions = undefined> implements Age
 
   protected api = inject(ApiService);
 
-  async prompt(agentId: number, prompt: string, parent?: number): Promise<BackendAgentContent|undefined> {
-    const input: BackendAgentInput = {
-      input: {
+  async prompt(agentId: number, prompt: string, chatId?: string): Promise<BackendAgentContent|undefined> {
+    const input: AgentInput = {
+      previousId: chatId,
+      item: {
         type: 'text',
         content: prompt,
       }
     };
 
-    const output = await this.api.getClient().backend().agent().message().submit('' + agentId, input, parent);
-    const content = output.output;
-    if (!content) {
+    const output = await this.api.getClient().backend().agent().message().submit('' + agentId, input);
+    if (!output.item) {
       return;
     }
 
-    return content;
+    return output.item;
   }
 
   abstract transform(content: BackendAgentContent): TModel|undefined;
@@ -119,4 +120,4 @@ export interface Message
 
 export type Level = 'info'|'danger'|'success';
 
-export type BackendAgentContent = BackendAgentContentBinary | BackendAgentContentChoice | BackendAgentContentObject | BackendAgentContentText | BackendAgentContentToolCall;
+export type BackendAgentContent = AgentItemBinary | AgentItemChoice | AgentItemObject | AgentItemText | AgentItemToolCall;

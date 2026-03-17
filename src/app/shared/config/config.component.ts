@@ -1,10 +1,14 @@
 import {Component, effect, input, output, signal} from '@angular/core';
 import {
   CommonFormContainer,
+  CommonFormElementCheckbox,
+  CommonFormElementCollection,
   CommonFormElementInput,
+  CommonFormElementMap,
   CommonFormElementSelect,
-  CommonFormElementTag,
-  CommonFormElementTextArea
+  CommonFormElementTextArea,
+  CommonFormElementTypeAPI,
+  CommonFormElementTypeSchema
 } from "fusio-sdk";
 import {FormsModule} from "@angular/forms";
 import {EditorComponent} from "ngx-monaco-editor-v2-alternative";
@@ -30,7 +34,7 @@ export class ConfigComponent {
   disabled = input<boolean>(false);
   dataChange = output<Record<string, any>>();
 
-  elements = signal<Array<CommonFormElementInput | CommonFormElementSelect | CommonFormElementTag | CommonFormElementTextArea>>([]);
+  elements = signal<Array<CommonFormElementCheckbox | CommonFormElementCollection | CommonFormElementInput | CommonFormElementMap | CommonFormElementSelect | CommonFormElementTextArea | CommonFormElementTypeAPI | CommonFormElementTypeSchema>>([]);
 
   spec: Specification = {
     imports: [],
@@ -56,18 +60,18 @@ export class ConfigComponent {
 
   private loadElements(container?: CommonFormContainer): void {
     let data: Record<string, any> = {};
-    let elements: Array<CommonFormElementInput | CommonFormElementSelect | CommonFormElementTag | CommonFormElementTextArea> = [];
+    let elements: Array<CommonFormElementCheckbox | CommonFormElementCollection | CommonFormElementInput | CommonFormElementMap | CommonFormElementSelect | CommonFormElementTextArea | CommonFormElementTypeAPI | CommonFormElementTypeSchema> = [];
     container?.element?.forEach((element) => {
       if (!element.name) {
         return;
       }
 
       // BC layer
-      if (element.element === 'http://fusio-project.org/ns/2015/form/input') {
+      if (element.element === 'input') {
         element.element = 'input';
-      } else if (element.element === 'http://fusio-project.org/ns/2015/form/select') {
+      } else if (element.element === 'select') {
         element.element = 'select';
-      } else if (element.element === 'http://fusio-project.org/ns/2015/form/textarea') {
+      } else if (element.element === 'textarea') {
         element.element = 'textarea';
       }
 

@@ -7,7 +7,7 @@ import {TypeschemaEditorModule} from "ngx-typeschema-editor";
 import {FormsModule} from "@angular/forms";
 import {Input} from "../../../agent/message/input/input";
 import {Row} from "../../../agent/message/row/row";
-import {BackendAgentContentText, BackendAgentMessage, BackendConnection, CommonMessage} from "fusio-sdk";
+import {AgentItemText, BackendAgentMessage, BackendConnection, CommonMessage} from "fusio-sdk";
 
 @Component({
   selector: 'app-connection-agent',
@@ -54,7 +54,7 @@ export class AgentComponent implements OnInit {
       return;
     }
 
-    const content: BackendAgentContentText = {
+    const content: AgentItemText = {
       type: 'text',
       content: input,
     };
@@ -62,7 +62,7 @@ export class AgentComponent implements OnInit {
     this.messages.update((messages) => {
       messages.push({
         role: "user",
-        content: content,
+        item: content,
       });
       return messages;
     });
@@ -71,15 +71,14 @@ export class AgentComponent implements OnInit {
 
     try {
       const response = await this.api.getClient().backend().connection().agent().send('' + connectionId, {
-        input: content
+        item: content
       });
 
-      const output = response.output;
-      if (output) {
+      if (response.item) {
         this.messages.update((messages) => {
           messages.push({
             role: "assistant",
-            content: output,
+            item: response.item,
           });
           return messages;
         });

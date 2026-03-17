@@ -1,8 +1,8 @@
 import {Component, computed, inject, input, resource, signal} from '@angular/core';
-import {BackendAgent, BackendAgentMessage, CommonMessage} from "fusio-sdk";
+import {AgentItem, BackendAgent, BackendAgentMessage, CommonMessage} from "fusio-sdk";
 import {ApiService} from "../../../api.service";
 import {ErrorService} from "ngx-fusio-sdk";
-import {Agent, BackendAgentContent, ExecutionIndicator, Level, Message} from "../../../services/agent/agent";
+import {Agent, BackendAgentContent, ExecutionIndicator, Message} from "../../../services/agent/agent";
 
 @Component({
   selector: 'app-agent-chat-abstract',
@@ -11,44 +11,38 @@ import {Agent, BackendAgentContent, ExecutionIndicator, Level, Message} from "..
 export abstract class ChatAbstract<TModel, TOptions = undefined> {
 
   agent = input.required<BackendAgent>();
-  parent = input.required<BackendAgentMessage>();
+  chatId = input.required<string>();
 
   model = signal<TModel|undefined>(undefined);
 
-  output = signal<BackendAgentContent|undefined>(undefined);
+  output = signal<AgentItem|undefined>(undefined);
   loading = signal<boolean>(false);
   executeLoading = signal<boolean>(false);
   executeMessages = signal<Array<Message>>([]);
   response = signal<CommonMessage|undefined>(undefined);
 
-  messagesResource = resource<Array<BackendAgentMessage>, { agent: BackendAgent, parent: BackendAgentMessage, output: BackendAgentContent|undefined }>({
+  messagesResource = resource<Array<BackendAgentMessage>, { agent: BackendAgent, chatId: string, output: AgentItem|undefined }>({
     params: () => ({
       agent: this.agent(),
-      parent: this.parent(),
+      chatId: this.chatId(),
       output: this.output(),
     }),
     loader: async (params) => {
+      const collection = await this.api.getClient().backend().agent().message().getAll('' + params.params.agent.id, params.params.chatId);
+      const entries = collection.entry || [];
+
+      let lastMessage: BackendAgentMessage|undefined;
       const messages: Array<BackendAgentMessage> = [];
-      messages.push(params.params.parent);
+      entries.forEach((message) => {
+        messages.push(message);
 
-      const agentId = params.params.agent.id;
-      const parentId = params.params.parent.id;
-      if (agentId && parentId) {
-        const collection = await this.api.getClient().backend().agent().message().getAll('' + agentId, parentId);
-        const entries = collection.entry || [];
-
-        let lastMessage: BackendAgentMessage|undefined;
-        entries.forEach((message) => {
-          messages.push(message);
-
-          if (message.role === 'assistant') {
-            lastMessage = message;
-          }
-        });
-
-        if (lastMessage && lastMessage.content) {
-          this.load(lastMessage.content);
+        if (message.role === 'assistant') {
+          lastMessage = message;
         }
+      });
+
+      if (lastMessage && lastMessage.item) {
+        this.load(lastMessage.item);
       }
 
       return messages;
@@ -80,10 +74,8 @@ export abstract class ChatAbstract<TModel, TOptions = undefined> {
 
     this.loading.set(true);
 
-    const parentId = this.parent().id;
-
     try {
-      const content = await this.getAgent().prompt(agentId, message, parentId);
+      const content = await this.getAgent().prompt(agentId, message, this.chatId());
 
       this.output.set(content);
 

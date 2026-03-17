@@ -4,7 +4,7 @@ import {AgentService} from "../../../services/agent.service";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {NgbAlert} from "@ng-bootstrap/ng-bootstrap";
 import {ErrorService, MessageComponent} from "ngx-fusio-sdk";
-import {BackendAgent, BackendAgentInput, BackendAgentMessage, CommonMessage} from "fusio-sdk";
+import {AgentInput, BackendAgent, BackendAgentMessage, CommonMessage} from "fusio-sdk";
 import {Action} from "./action/action";
 import {General} from "./general/general";
 import {Schema} from "./schema/schema";
@@ -39,11 +39,11 @@ export class Message implements OnInit {
   loading = signal<boolean>(false);
   response = signal<CommonMessage|undefined>(undefined);
 
-  selectedId = signal<number|undefined>(undefined);
+  chatId = signal<string|undefined>(undefined);
   selected = computed<BackendAgentMessage|undefined>((): BackendAgentMessage|undefined => {
     let result = undefined;
     this.chats().forEach((chat) => {
-      if (chat.id === this.selectedId()) {
+      if (chat.id === this.chatId()) {
         result = chat;
       }
     });
@@ -63,9 +63,9 @@ export class Message implements OnInit {
         }
       }
       if (params['chat_id']) {
-        this.selectedId.set(parseInt(params['chat_id']));
+        this.chatId.set(params['chat_id']);
       } else {
-        this.selectedId.set(undefined);
+        this.chatId.set(undefined);
       }
     });
   }
@@ -93,7 +93,7 @@ export class Message implements OnInit {
       return;
     }
 
-    await this.router.navigate(['/agent', agent.id, 'message', chat.id]);
+    await this.router.navigate(['/agent', agent.id, 'message', chat.chatId]);
   }
 
   async doSend(message: string) {
@@ -102,10 +102,9 @@ export class Message implements OnInit {
       return;
     }
 
-    const selected = this.selectedId();
-
-    const payload: BackendAgentInput = {
-      input: {
+    const payload: AgentInput = {
+      previousId: this.chatId(),
+      item: {
         type: "text",
         content: message
       }
@@ -114,7 +113,7 @@ export class Message implements OnInit {
     this.loading.set(true);
 
     try {
-      const output = await this.api.getClient().backend().agent().message().submit('' + agentId, payload, selected);
+      const output = await this.api.getClient().backend().agent().message().submit('' + agentId, payload);
 
       this.loading.set(false);
 

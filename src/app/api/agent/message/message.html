@@ -13,28 +13,28 @@
       <button type="button" class="btn btn-success mb-3" [routerLink]="['/', 'agent', agent?.id, 'message']">New Chat</button>
       <div class="list-group">
         @for (chat of chats(); track chat.id) {
-          @if (chat.content && chat.content.type === 'text' && chat.content && 'content' in chat.content) {
-            <button type="button" class="list-group-item list-group-item-action overflow-hidden text-nowrap text-truncate" [ngClass]="{'active': chat.id === selectedId()}" [title]="chat.content.content" (click)="loadChat(chat)">{{ chat.content.content }}</button>
+          @if (chat.item && chat.item.type === 'text' && chat.item && 'content' in chat.item) {
+            <button type="button" class="list-group-item list-group-item-action overflow-hidden text-nowrap text-truncate" [ngClass]="{'active': chat.chatId === chatId()}" [title]="chat.item.content" (click)="loadChat(chat)">{{ chat.item.content }}</button>
           }
         }
       </div>
     </div>
     <div class="col-xl-10">
-      @if (selected(); as selected) {
+      @if (chatId(); as selected) {
         @if (agent.type === 0) {
-          <app-agent-message-general [agent]="agent" [parent]="selected"></app-agent-message-general>
+          <app-agent-message-general [agent]="agent" [chatId]="selected"></app-agent-message-general>
         }
         @else if (agent.type === 1) {
-          <app-agent-message-architect [agent]="agent" [parent]="selected"></app-agent-message-architect>
+          <app-agent-message-architect [agent]="agent" [chatId]="selected"></app-agent-message-architect>
         }
         @else if (agent.type === 2) {
-          <app-agent-message-action [agent]="agent" [parent]="selected"></app-agent-message-action>
+          <app-agent-message-action [agent]="agent" [chatId]="selected"></app-agent-message-action>
         }
         @else if (agent.type === 3) {
-          <app-agent-message-schema [agent]="agent" [parent]="selected"></app-agent-message-schema>
+          <app-agent-message-schema [agent]="agent" [chatId]="selected"></app-agent-message-schema>
         }
         @else if (agent.type === 4) {
-          <app-agent-message-database [agent]="agent" [parent]="selected"></app-agent-message-database>
+          <app-agent-message-database [agent]="agent" [chatId]="selected"></app-agent-message-database>
         }
         @else {
           <ngb-alert type="error">This agent contains a not supported agent type</ngb-alert>
