@@ -7,7 +7,7 @@ import {TypeschemaEditorModule} from "ngx-typeschema-editor";
 import {FormsModule} from "@angular/forms";
 import {Input} from "../../../agent/message/input/input";
 import {Row} from "../../../agent/message/row/row";
-import {AgentItemText, BackendAgentMessage, BackendConnection, CommonMessage} from "fusio-sdk";
+import {AgentItemText, AgentOutput, BackendAgentMessage, BackendConnection, CommonMessage} from "fusio-sdk";
 
 @Component({
   selector: 'app-connection-agent',
@@ -26,7 +26,8 @@ export class AgentComponent implements OnInit {
 
   selectedConnection = signal<BackendConnection|undefined>(undefined);
 
-  messages = signal<Array<BackendAgentMessage>>([]);
+  input = signal<BackendAgentMessage|undefined>(undefined);
+  output = signal<BackendAgentMessage|undefined>(undefined);
   loading = signal<boolean>(false);
   response = signal<CommonMessage|undefined>(undefined);
 
@@ -54,51 +55,32 @@ export class AgentComponent implements OnInit {
       return;
     }
 
-    const content: AgentItemText = {
+    const item: AgentItemText = {
       type: 'text',
       content: input,
     };
 
-    this.messages.update((messages) => {
-      messages.push({
-        role: "user",
-        item: content,
-      });
-      return messages;
-    });
-
     this.loading.set(true);
+
+    this.input.set({
+      role: 'user',
+      item: item
+    });
 
     try {
       const response = await this.api.getClient().backend().connection().agent().send('' + connectionId, {
-        item: content
+        item: item
       });
 
-      if (response.item) {
-        this.messages.update((messages) => {
-          messages.push({
-            role: "assistant",
-            item: response.item,
-          });
-          return messages;
-        });
-
-        this.scrollToBottom();
-      }
+      this.output.set({
+        role: 'assistant',
+        item: response.item
+      });
     } catch (error) {
       this.response.set(this.error.convert(error));
     }
 
     this.loading.set(false);
-  }
-
-  scrollToBottom(): void {
-    window.setTimeout(() => {
-      let messagesBottom = document.getElementById('messages-bottom');
-      if (messagesBottom !== null) {
-        messagesBottom.scrollIntoView();
-      }
-    }, 500);
   }
 
 }

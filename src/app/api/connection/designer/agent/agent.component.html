@@ -9,23 +9,14 @@
 
 <div class="row">
   <div class="col-xl-6">
-    <div style="max-width:1024px">
-      @for (message of messages(); track $index) {
-        <app-agent-message-row [message]="message"></app-agent-message-row>
-      }
-      <div id="messages-bottom"></div>
-      <app-agent-message-input [loading]="loading()" (send)="doSend($event)"></app-agent-message-input>
-    </div>
-
-    <div style="max-width:1024px">
-      @if (messages().length === 0) {
-        <div class="text-center p-4 fw-bold">
-          Send a message to this agent
-        </div>
-      }
-      <div id="messages-bottom"></div>
-      <app-agent-message-input [loading]="loading()" (send)="doSend($event)"></app-agent-message-input>
-    </div>
+    @if (input(); as input) {
+      <app-agent-message-row [message]="input"></app-agent-message-row>
+    }
+    @if (output(); as output) {
+      <app-agent-message-row [message]="output"></app-agent-message-row>
+    }
+    <div id="messages-bottom"></div>
+    <app-agent-message-input [loading]="loading()" (send)="doSend($event)"></app-agent-message-input>
   </div>
   <div class="col-xl-6">
   </div>
