@@ -66,6 +66,7 @@ export class AgentComponent implements OnInit {
       role: 'user',
       item: item
     });
+    this.output.set(undefined);
 
     try {
       const response = await this.api.getClient().backend().connection().agent().send('' + connectionId, {
