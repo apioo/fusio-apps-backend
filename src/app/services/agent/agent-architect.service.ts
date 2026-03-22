@@ -117,9 +117,9 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
       httpPath: operation.httpPath,
       httpCode: operation.httpCode,
       parameters: parameters,
-      incoming: incoming,
-      outgoing: outgoing,
-      action: action,
+      incoming: 'schema://' + incoming,
+      outgoing: 'schema://' + outgoing,
+      action: 'action://' + action,
     };
   }
 
