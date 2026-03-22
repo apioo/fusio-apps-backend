@@ -29,6 +29,8 @@ export class AgentDatabaseService extends AgentAbstract<Database, Options> {
       return;
     }
 
+    let success = 0;
+    let errorMessages: Array<string> = [];
     for (let i = 0; i < model.tables.length; i++) {
       try {
         const table = model.tables[i];
@@ -37,15 +39,37 @@ export class AgentDatabaseService extends AgentAbstract<Database, Options> {
 
         const response = await this.api.getClient().backend().connection().database().createTable('' + connectionId, table);
         indicator.response(response);
-      } catch (error) {
-        indicator.response(this.error.convert(error));
+
+        success++;
+      } catch (err) {
+        const error = this.error.convert(err);
+
+        indicator.response(error);
+
+        if (error.message) {
+          errorMessages.push(error.message);
+        }
       }
     }
 
-    return {
-      success: true,
-      message: 'Successfully created tables',
-    };
+    if (errorMessages.length === 0) {
+      return {
+        success: true,
+        message: 'Successfully created tables',
+      };
+    } else {
+      let message = '';
+      if (success > 0) {
+        message += 'Successfully created ' + success + ' tables, ';
+      }
+
+      message += errorMessages.length + ' tables produced the following errors: ' + errorMessages.join(', ');
+
+      return {
+        success: false,
+        message: message,
+      };
+    }
   }
 
 }
