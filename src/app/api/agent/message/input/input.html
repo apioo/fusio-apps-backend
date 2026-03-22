@@ -1,0 +1,16 @@
+
+<div class="sticky-bottom p-2 mt-3 bg-light">
+  @if (loading()) {
+    <div class="spinner-grow mb-3" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  }
+  <form>
+    <div class="mb-3">
+      <textarea id="input" name="input" [ngModel]="input()" (ngModelChange)="input.set($event)" placeholder="Send a message ..." class="form-control" rows="6"></textarea>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-primary" (click)="send.emit(input());input.set('');">Send</button>
+    </div>
+  </form>
+</div>

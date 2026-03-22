@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {Detail, ErrorService, MessageComponent} from "ngx-fusio-sdk";
 import {ActivatedRoute, Router} from "@angular/router";
-import {EditorComponent} from "ngx-monaco-editor-v2";
+import {EditorComponent} from "ngx-monaco-editor-v2-alternative";
 import {FormsModule} from "@angular/forms";
 import {JsonPipe} from "@angular/common";
 import {BundleService} from "../../../services/bundle.service";

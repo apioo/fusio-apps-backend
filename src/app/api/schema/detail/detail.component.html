@@ -9,6 +9,7 @@
 @if (selected(); as selected) {
   <div class="btn-group" role="group">
     <a (click)="doEdit(selected.id)" class="btn btn-primary fusio-btn-update">Update</a>
+    <a routerLink="/schema/commit/{{selected.id}}" class="btn btn-secondary fusio-btn-commits">Commits</a>
     <a (click)="doDelete(selected.id)" class="btn btn-danger fusio-btn-delete">Delete</a>
   </div>
   <div class="float-end">

@@ -5,6 +5,11 @@ import {CronjobService} from "../../../services/cronjob.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
 import {ActionLinkComponent} from "../../../shared/action-link/action-link.component";
+import {Mover, TaxonomyType} from "../../../services/taxonomy/mover.service";
+import {TaxonomyList} from "../../../abstract/taxonomy-list";
+import {Taxonomy} from "../../../shared/taxonomy/taxonomy";
+import {NgClass} from "@angular/common";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-cronjob-list',
@@ -13,11 +18,15 @@ import {ActionLinkComponent} from "../../../shared/action-link/action-link.compo
     NgbPagination,
     ActionLinkComponent,
     MessageComponent,
-    SearchComponent
+    SearchComponent,
+    Taxonomy,
+    NgClass,
+    ReactiveFormsModule,
+    FormsModule
   ],
   styleUrls: ['./list.component.css']
 })
-export class ListComponent extends List<BackendCronjob> {
+export class ListComponent extends TaxonomyList<BackendCronjob> {
 
   constructor(private service: CronjobService, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);
@@ -25,6 +34,10 @@ export class ListComponent extends List<BackendCronjob> {
 
   protected getService(): CronjobService {
     return this.service;
+  }
+
+  getTaxonomyType(): TaxonomyType {
+    return 'cronjobs';
   }
 
 }

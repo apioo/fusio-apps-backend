@@ -4,7 +4,7 @@ import {BackendTransaction} from "fusio-sdk";
 import {TransactionService} from "../../../services/transaction.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CurrencyPipe, DatePipe, JsonPipe} from "@angular/common";
-import {EditorComponent} from "ngx-monaco-editor-v2";
+import {EditorComponent} from "ngx-monaco-editor-v2-alternative";
 import {FormsModule} from "@angular/forms";
 
 @Component({

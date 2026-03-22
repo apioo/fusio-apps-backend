@@ -1,0 +1,82 @@
+
+<h1>
+  <a (click)="doList()">Agent</a> /
+  <a (click)="doDetail('~' + entity().name)">{{ entity().name }}</a> /
+  <app-form-breadcrump [mode]="mode"></app-form-breadcrump>
+</h1>
+
+<fusio-message [response]="response()"></fusio-message>
+
+<form>
+  <div class="mb-3 row">
+    <label for="connection" class="col-lg-2 col-form-label fw-bold">Connection</label>
+    <div class="col-lg-10">
+      <fusio-form-autocomplete name="connection" [service]="connection" [useId]="true" [data]="entity().connection" (dataChangeId)="set(entity, 'connection', $event)" [disabled]="mode === 3">
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="connectionHelp"><i class="bi bi-question"></i></button>
+        <ng-template #connectionHelp>Select an agent connection which is used by this agent</ng-template>
+      </fusio-form-autocomplete>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="type" class="col-lg-2 col-form-label fw-bold">Type</label>
+    <div class="col-lg-10">
+      <div class="input-group">
+        <select id="type" name="type" [ngModel]="entity().type" (ngModelChange)="set(entity, 'type', $event)" class="form-select">
+          @for (type of types; track type.key) {
+            <option [ngValue]="type.key">{{type.value}}</option>
+          }
+        </select>
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="typeHelp"><i class="bi bi-question"></i></button>
+        <ng-template #typeHelp>The agent type, depending on the type the agent messages behave differently i.e. </ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="name" class="col-lg-2 col-form-label fw-bold">Name</label>
+    <div class="col-lg-10">
+      <div class="input-group">
+        <input type="text" id="name" name="name" [ngModel]="entity().name" (ngModelChange)="set(entity, 'name', $event)" [disabled]="mode === 3" class="form-control">
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="nameHelp"><i class="bi bi-question"></i></button>
+        <ng-template #nameHelp>Unique name of the agent</ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="description" class="col-lg-2 col-form-label fw-bold">Description</label>
+    <div class="col-lg-10">
+      <div class="input-group">
+        <input type="text" id="description" name="description" [ngModel]="entity().description" (ngModelChange)="set(entity, 'description', $event)" [disabled]="mode === 3" class="form-control">
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="descriptionHelp"><i class="bi bi-question"></i></button>
+        <ng-template #descriptionHelp>Description of the agent</ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="introduction" class="col-lg-2 col-form-label fw-bold">Introduction</label>
+    <div class="col-lg-10">
+      <textarea id="introduction" name="introduction" [ngModel]="entity().introduction" (ngModelChange)="set(entity, 'introduction', $event)" [disabled]="mode === 3" rows="5" class="form-control"></textarea>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="tools" class="col-lg-2 col-form-label fw-bold">Tools</label>
+    <div class="col-lg-10">
+      <ul class="list-group" style="max-height:400px;overflow:auto">
+        @for (tool of tools(); track tool.name) {
+          @if (tool.name) {
+            <li class="list-group-item">
+              <input class="form-check-input me-1" type="checkbox" [ngModel]="selected()[tool.name]" (ngModelChange)="select(tool.name, $event)" [name]="'tool-' + tool.name" [id]="'tool-' + tool.name">
+              <label class="form-check-label" [for]="'tool-' + tool.name"><span class="badge text-bg-primary me-1">{{ tool.name }}</span><br>{{ tool.description }}</label>
+            </li>
+          }
+        }
+      </ul>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="outgoing" class="col-lg-2 col-form-label fw-bold">Outgoing</label>
+    <div class="col-lg-10">
+      <app-schema-selector name="outgoing" [data]="entity().outgoing" (dataChange)="set(entity, 'outgoing', $event)" [disabled]="mode === 3"></app-schema-selector>
+    </div>
+  </div>
+  <app-form-buttons [mode]="mode" (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="doList()" (onHelp)="showHelp('api/trigger')"></app-form-buttons>
+</form>

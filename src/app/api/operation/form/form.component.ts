@@ -35,9 +35,9 @@ import {ActionSelectorComponent} from "../../../shared/action-selector/action-se
 export class FormComponent extends Form<BackendOperation> {
 
   stabilities = [
-    {key: 0, value: 'Deprecated'},
     {key: 1, value: 'Experimental'},
     {key: 2, value: 'Stable'},
+    {key: 0, value: 'Deprecated'},
     {key: 3, value: 'Legacy'}
   ]
 
@@ -71,7 +71,7 @@ export class FormComponent extends Form<BackendOperation> {
       return false;
     }
 
-    return this.mode === 3 || (entity.stability === 2 || entity.stability === 3);
+    return this.mode === 3 || (entity.stability === 0 || entity.stability === 2 || entity.stability === 3);
   }
 
   changeHttpMethod(): void {

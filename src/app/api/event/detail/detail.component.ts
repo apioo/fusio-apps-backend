@@ -4,7 +4,7 @@ import {BackendEvent} from "fusio-sdk";
 import {EventService} from "../../../services/event.service";
 import {ActionService} from "../../../services/action.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {EditorComponent} from "ngx-monaco-editor-v2";
+import {EditorComponent} from "ngx-monaco-editor-v2-alternative";
 import {FormsModule} from "@angular/forms";
 import {JsonPipe} from "@angular/common";
 import {SchemaLinkComponent} from "../../../shared/schema-link/schema-link.component";

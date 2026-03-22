@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, signal} from '@angular/core';
 import {ErrorService, List, MessageComponent, SearchComponent} from "ngx-fusio-sdk";
 import {BackendOperation} from "fusio-sdk";
 import {OperationService} from "../../../services/operation.service";
@@ -8,6 +8,12 @@ import {ApiService} from "../../../api.service";
 import {ActionLinkComponent} from "../../../shared/action-link/action-link.component";
 import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
 import {OperationStatus} from "../../../shared/operation-status/operation-status";
+import {Taxonomy} from "../../../shared/taxonomy/taxonomy";
+import {FormsModule} from "@angular/forms";
+import {Mover, TaxonomyType} from "../../../services/taxonomy/mover.service";
+import {TreeBuilder} from "../../../services/taxonomy/tree-builder.service";
+import {NgClass} from "@angular/common";
+import {TaxonomyList} from "../../../abstract/taxonomy-list";
 
 @Component({
   selector: 'app-operation-list',
@@ -17,11 +23,14 @@ import {OperationStatus} from "../../../shared/operation-status/operation-status
     SearchComponent,
     ActionLinkComponent,
     NgbPagination,
-    OperationStatus
+    OperationStatus,
+    Taxonomy,
+    FormsModule,
+    NgClass
   ],
   styleUrls: ['./list.component.css']
 })
-export class ListComponent extends List<BackendOperation> {
+export class ListComponent extends TaxonomyList<BackendOperation> {
 
   baseUrl: string = '';
 
@@ -38,4 +47,9 @@ export class ListComponent extends List<BackendOperation> {
 
     this.baseUrl = this.fusio.getBaseUrl();
   }
+
+  getTaxonomyType(): TaxonomyType {
+    return 'operations';
+  }
+
 }

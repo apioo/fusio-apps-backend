@@ -18,9 +18,11 @@ import {ListComponent as ActionList} from "./api/action/list/list.component";
 import {DetailComponent as ActionDetail} from "./api/action/detail/detail.component";
 import {FormComponent as ActionForm} from "./api/action/form/form.component";
 import {DesignerComponent as ActionDesigner} from "./api/action/designer/designer.component";
+import {Commit as ActionCommit} from "./api/action/commit/commit";
 import {ListComponent as SchemaList} from "./api/schema/list/list.component";
 import {DetailComponent as SchemaDetail} from "./api/schema/detail/detail.component";
 import {FormComponent as SchemaForm} from "./api/schema/form/form.component";
+import {Commit as SchemaCommit} from "./api/schema/commit/commit";
 import {ListComponent as ConnectionList} from "./api/connection/list/list.component";
 import {DetailComponent as ConnectionDetail} from "./api/connection/detail/detail.component";
 import {FormComponent as ConnectionForm} from "./api/connection/form/form.component";
@@ -42,6 +44,10 @@ import {FormComponent as CronjobForm} from "./api/cronjob/form/form.component";
 import {ListComponent as TriggerList} from "./api/trigger/list/list.component";
 import {DetailComponent as TriggerDetail} from "./api/trigger/detail/detail.component";
 import {FormComponent as TriggerForm} from "./api/trigger/form/form.component";
+import {ListComponent as AgentList} from "./api/agent/list/list.component";
+import {DetailComponent as AgentDetail} from "./api/agent/detail/detail.component";
+import {FormComponent as AgentForm} from "./api/agent/form/form.component";
+import {Message as AgentMessage} from "./api/agent/message/message";
 import {GeneratorComponent} from "./development/generator/generator.component";
 import {ListComponent as MarketplaceList} from "./development/marketplace/list/list.component";
 import {ListComponent as MarketplaceBundleList} from "./development/marketplace/bundle/list/list.component";
@@ -92,6 +98,9 @@ import {DetailComponent as TransactionDetail} from "./monetization/transaction/d
 import {ListComponent as CategoryList} from "./system/category/list/list.component";
 import {DetailComponent as CategoryDetail} from "./system/category/detail/detail.component";
 import {FormComponent as CategoryForm} from "./system/category/form/form.component";
+import {ListComponent as TaxonomyList} from "./system/taxonomy/list/list.component";
+import {DetailComponent as TaxonomyDetail} from "./system/taxonomy/detail/detail.component";
+import {FormComponent as TaxonomyForm} from "./system/taxonomy/form/form.component";
 import {ListComponent as RoleList} from "./system/role/list/list.component";
 import {DetailComponent as RoleDetail} from "./system/role/detail/detail.component";
 import {FormComponent as RoleForm} from "./system/role/form/form.component";
@@ -124,7 +133,9 @@ export const routes: Routes = [
   { path: 'operation', canActivate: [isAuthenticated], children: EntityRoute.getAll(OperationList, OperationDetail, OperationForm) },
   { path: 'action', canActivate: [isAuthenticated], children: EntityRoute.getAll(ActionList, ActionDetail, ActionForm) },
   { path: 'action/designer/:id', component: ActionDesigner, canActivate: [isAuthenticated] },
+  { path: 'action/commit/:id', component: ActionCommit, canActivate: [isAuthenticated] },
   { path: 'schema', canActivate: [isAuthenticated], children: EntityRoute.getAll(SchemaList, SchemaDetail, SchemaForm) },
+  { path: 'schema/commit/:id', component: SchemaCommit, canActivate: [isAuthenticated] },
   { path: 'connection', canActivate: [isAuthenticated], children: [
       ...EntityRoute.getAll(ConnectionList, ConnectionDetail, ConnectionForm),
       { path: ':connection/database', canActivate: [isAuthenticated], children: EntityRoute.getAll(TableList, TableDetail, TableForm) },
@@ -138,6 +149,9 @@ export const routes: Routes = [
   { path: 'event', canActivate: [isAuthenticated], children: EntityRoute.getAll(EventList, EventDetail, EventForm) },
   { path: 'cronjob', canActivate: [isAuthenticated], children: EntityRoute.getAll(CronjobList, CronjobDetail, CronjobForm) },
   { path: 'trigger', canActivate: [isAuthenticated], children: EntityRoute.getAll(TriggerList, TriggerDetail, TriggerForm) },
+  { path: 'agent', canActivate: [isAuthenticated], children: EntityRoute.getAll(AgentList, AgentDetail, AgentForm) },
+  { path: 'agent/:id/message', canActivate: [isAuthenticated], component: AgentMessage },
+  { path: 'agent/:id/message/:chat_id', canActivate: [isAuthenticated], component: AgentMessage },
 
   { path: 'generator', component: GeneratorComponent, canActivate: [isAuthenticated] },
   { path: 'marketplace', component: MarketplaceList, canActivate: [isAuthenticated] },
@@ -168,6 +182,7 @@ export const routes: Routes = [
   { path: 'transaction', canActivate: [isAuthenticated], children: EntityRoute.getAll(TransactionList, TransactionDetail) },
 
   { path: 'category', canActivate: [isAuthenticated], children: EntityRoute.getAll(CategoryList, CategoryDetail, CategoryForm) },
+  { path: 'taxonomy', canActivate: [isAuthenticated], children: EntityRoute.getAll(TaxonomyList, TaxonomyDetail, TaxonomyForm) },
   { path: 'role', canActivate: [isAuthenticated], children: EntityRoute.getAll(RoleList, RoleDetail, RoleForm) },
   { path: 'identity', canActivate: [isAuthenticated], children: EntityRoute.getAll(IdentityList, IdentityDetail, IdentityForm) },
   { path: 'firewall', canActivate: [isAuthenticated], children: EntityRoute.getAll(FirewallList, FirewallDetail, FirewallForm) },

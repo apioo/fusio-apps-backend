@@ -5,7 +5,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {CronjobService} from "../../../services/cronjob.service";
 import {ActionLinkComponent} from "../../../shared/action-link/action-link.component";
 import {ErrorDetailsComponent} from "../../../shared/error-details/error-details.component";
-import {EditorComponent} from "ngx-monaco-editor-v2";
+import {EditorComponent} from "ngx-monaco-editor-v2-alternative";
 import {FormsModule} from "@angular/forms";
 import {DatePipe, JsonPipe} from "@angular/common";
 

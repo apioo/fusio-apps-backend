@@ -4,9 +4,9 @@ import {BackendIdentity} from "fusio-sdk";
 import {ApiService} from "../../../api.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {IdentityService} from "../../../services/identity.service";
-import {EditorComponent} from "ngx-monaco-editor-v2";
 import {FormsModule} from "@angular/forms";
 import {JsonPipe} from "@angular/common";
+import {EditorComponent} from "ngx-monaco-editor-v2-alternative";
 
 @Component({
   selector: 'app-identity-detail',

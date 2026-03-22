@@ -1,0 +1,15 @@
+
+@if (nodes(); as nodes) {
+  <div class="list-group">
+    <ng-template [ngTemplateOutlet]="treeNodes" [ngTemplateOutletContext]="{nodes: nodes}" />
+  </div>
+}
+
+<ng-template #treeNodes let-nodes="nodes">
+  @for (node of nodes; track node.value) {
+    <button type="button" class="list-group-item list-group-item-action" [ngClass]="{'active': node.value == selected()}" (click)="doSelect(node)">{{ node.name }}</button>
+    @if (node.children && node.children.length > 0) {
+      <ng-template [ngTemplateOutlet]="treeNodes" [ngTemplateOutletContext]="{nodes: node.children}" />
+    }
+  }
+</ng-template>

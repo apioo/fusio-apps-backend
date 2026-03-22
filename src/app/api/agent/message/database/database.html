@@ -1,0 +1,48 @@
+
+<fusio-message [response]="response()"></fusio-message>
+
+<div class="row">
+  <div class="col-xl-6">
+    <div style="max-width:1024px">
+      @for (message of messages(); track $index) {
+        @if (message.role === 'assistant' && message.item && message.item.type === 'object' && 'payload' in message.item && message.item.payload) {
+          <div class="mb-2">
+            <div class="d-grid">
+              <button class="btn btn-primary" type="button" (click)="load(message.item.payload)">Generated tables ({{(message.item.payload|json).length}} chars)</button>
+            </div>
+          </div>
+        }
+        @else {
+          <app-agent-message-row [message]="message"></app-agent-message-row>
+        }
+      }
+      <div id="messages-bottom"></div>
+      <app-agent-message-input [loading]="messagesResource.isLoading() || loading()" (send)="doSend($event)"></app-agent-message-input>
+    </div>
+  </div>
+  <div class="col-xl-6">
+    <div>
+      <label for="connection" class="form-label">Connection</label>
+      <fusio-form-autocomplete name="connection" id="connection" [service]="connection" [useId]="true" [data]="connectionId()" (dataChangeId)="connectionId.set($event)">
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="connectionHelp"><i class="bi bi-question"></i></button>
+        <ng-template #connectionHelp>The target database connection where all tables are created if you click on the "Create" button.</ng-template>
+      </fusio-form-autocomplete>
+    </div>
+    @if (model(); as model) {
+      @for (table of model.tables; track $index) {
+        <app-database-table [selected]="table" [connectionId]="connectionId()"></app-database-table>
+      }
+    }
+    <div class="btn-group mt-3 mb-3">
+      <button class="btn btn-primary" type="button" (click)="execute()" [disabled]="executeLoading()">
+        @if (executeLoading()) {
+          <span class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span>
+          <span role="status">Creating ...</span>
+        }
+        @else {
+          <span role="status">Create</span>
+        }
+      </button>
+    </div>
+  </div>
+</div>

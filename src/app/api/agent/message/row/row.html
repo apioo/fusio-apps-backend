@@ -1,0 +1,21 @@
+
+@if (message(); as message) {
+  <div class="mb-2" [ngClass]="{'bg-light p-3 rounded-4': message.role === 'user'}">
+    @if (message.item) {
+      @if (message.item.type === 'text' && 'content' in message.item && message.item.content) {
+        @if (message.role === 'user') {
+          {{message.item.content}}
+        }
+        @else {
+          <markdown [data]="message.item.content"></markdown>
+        }
+      }
+      @else if (message.item.type === 'object' && 'payload' in message.item && message.item.payload) {
+        <pre><code [highlight]="message.item.payload|json" language="json"></code></pre>
+      }
+      @else {
+        <pre>{{message.item|json}}</pre>
+      }
+    }
+  </div>
+}

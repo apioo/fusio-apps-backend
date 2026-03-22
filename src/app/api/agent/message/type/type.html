@@ -1,0 +1,19 @@
+
+@if (value() === 0) {
+  <span class="badge text-bg-primary">General</span>
+}
+@else if (value() === 1) {
+  <span class="badge text-bg-primary">Architect</span>
+}
+@else if (value() === 2) {
+  <span class="badge text-bg-primary">Action</span>
+}
+@else if (value() === 3) {
+  <span class="badge text-bg-primary">Schema</span>
+}
+@else if (value() === 4) {
+  <span class="badge text-bg-primary">Database</span>
+}
+@else {
+  <span class="badge text-bg-secondary">Unknown</span>
+}

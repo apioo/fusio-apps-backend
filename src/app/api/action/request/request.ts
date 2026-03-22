@@ -1,5 +1,5 @@
 import {Component, inject, Input, OnInit, signal} from '@angular/core';
-import {EditorComponent} from "ngx-monaco-editor-v2";
+import {EditorComponent} from "ngx-monaco-editor-v2-alternative";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgbActiveOffcanvas, NgbPopover} from "@ng-bootstrap/ng-bootstrap";
 import {BackendActionExecuteRequest} from "fusio-sdk";

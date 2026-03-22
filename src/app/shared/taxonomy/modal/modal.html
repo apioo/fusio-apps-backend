@@ -1,0 +1,20 @@
+
+<div class="modal-header">
+  <h4 class="modal-title">Assign taxonomy</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+  <form>
+    <div class="mb-3 row">
+      <div class="col-12">
+        <fusio-form-autocomplete name="taxonomy" [service]="service" [useId]="true" [data]="taxonomyId()" (dataChangeId)="taxonomyId.set($event)">
+          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="taxonomyHelp"><i class="bi bi-question"></i></button>
+          <ng-template #taxonomyHelp>Select a taxonomy to organize your entities. If no taxonomy is available you can create a new taxonomy under System / Taxonomy</ng-template>
+        </fusio-form-autocomplete>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" (click)="activeModal.close(taxonomyId())">Assign</button>
+</div>

@@ -1,9 +1,14 @@
 import {Component} from '@angular/core';
-import {ErrorService, List, MessageComponent, SearchComponent} from "ngx-fusio-sdk";
+import {ErrorService, MessageComponent, SearchComponent} from "ngx-fusio-sdk";
 import {BackendSchema} from "fusio-sdk";
 import {SchemaService} from "../../../services/schema.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
+import {TaxonomyType} from "../../../services/taxonomy/mover.service";
+import {TaxonomyList} from "../../../abstract/taxonomy-list";
+import {Taxonomy} from "../../../shared/taxonomy/taxonomy";
+import {NgClass} from "@angular/common";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-schema-list',
@@ -11,11 +16,16 @@ import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
   imports: [
     MessageComponent,
     SearchComponent,
-    NgbPagination
+    NgbPagination,
+    Taxonomy,
+    NgClass,
+    ReactiveFormsModule,
+    FormsModule,
+    RouterLink
   ],
   styleUrls: ['./list.component.css']
 })
-export class ListComponent extends List<BackendSchema> {
+export class ListComponent extends TaxonomyList<BackendSchema> {
 
   constructor(private service: SchemaService, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);
@@ -23,6 +33,10 @@ export class ListComponent extends List<BackendSchema> {
 
   protected getService(): SchemaService {
     return this.service;
+  }
+
+  getTaxonomyType(): TaxonomyType {
+    return 'schemas';
   }
 
 }

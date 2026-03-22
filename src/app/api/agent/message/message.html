@@ -1,0 +1,53 @@
+
+<h1>
+  <a [routerLink]="['/', 'agent']">Agent</a> /
+  <a [routerLink]="['/', 'agent', agent()?.id]">{{agent()?.name}}</a> /
+  Message
+</h1>
+
+<fusio-message [response]="response()"></fusio-message>
+
+@if (agent(); as agent) {
+  <div class="row">
+    <div class="col-xl-2">
+      <button type="button" class="btn btn-success mb-3" [routerLink]="['/', 'agent', agent?.id, 'message']">New Chat</button>
+      <div class="list-group">
+        @for (chat of chats(); track chat.id) {
+          @if (chat.item && chat.item.type === 'text' && chat.item && 'content' in chat.item) {
+            <button type="button" class="list-group-item list-group-item-action overflow-hidden text-nowrap text-truncate" [ngClass]="{'active': chat.chatId === chatId()}" [title]="chat.item.content" (click)="loadChat(chat)">{{ chat.item.content }}</button>
+          }
+        }
+      </div>
+    </div>
+    <div class="col-xl-10">
+      @if (chatId(); as selected) {
+        @if (agent.type === 0) {
+          <app-agent-message-general [agent]="agent" [chatId]="selected"></app-agent-message-general>
+        }
+        @else if (agent.type === 1) {
+          <app-agent-message-architect [agent]="agent" [chatId]="selected"></app-agent-message-architect>
+        }
+        @else if (agent.type === 2) {
+          <app-agent-message-action [agent]="agent" [chatId]="selected"></app-agent-message-action>
+        }
+        @else if (agent.type === 3) {
+          <app-agent-message-schema [agent]="agent" [chatId]="selected"></app-agent-message-schema>
+        }
+        @else if (agent.type === 4) {
+          <app-agent-message-database [agent]="agent" [chatId]="selected"></app-agent-message-database>
+        }
+        @else {
+          <ngb-alert type="error">This agent contains a not supported agent type</ngb-alert>
+        }
+      }
+      @else {
+        <div class="text-center p-4 fw-bold">
+          {{ agent.description }}<br>
+          <app-agent-message-type [value]="agent.type"></app-agent-message-type>
+        </div>
+        <div id="messages-bottom"></div>
+        <app-agent-message-input [loading]="loading()" (send)="doSend($event)"></app-agent-message-input>
+      }
+    </div>
+  </div>
+}
