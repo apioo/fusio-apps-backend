@@ -85,13 +85,13 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
 
   private async transformOperation(operation: Operation, indicator: ExecutionIndicator, options: Options): Promise<BackendOperation|undefined> {
     let incoming: string|undefined = undefined;
-    if (operation.incoming) {
+    if (operation.incoming && operation.incoming !== 'VOID') {
       incoming = await this.resolveSchema(options.schemaAgentId, operation.incoming, indicator);
     }
 
-    const outgoing = await this.resolveSchema(options.schemaAgentId, operation.outgoing, indicator);
-    if (!outgoing) {
-      return;
+    let outgoing: string|undefined = undefined;
+    if (operation.outgoing && operation.outgoing !== 'VOID') {
+      outgoing = await this.resolveSchema(options.schemaAgentId, operation.outgoing, indicator);
     }
 
     const action = await this.resolveAction(options.actionAgentId, operation.action, indicator);
@@ -117,9 +117,9 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
       httpPath: operation.httpPath,
       httpCode: operation.httpCode,
       parameters: parameters,
-      incoming: 'schema://' + incoming,
-      outgoing: 'schema://' + outgoing,
-      action: 'action://' + action,
+      incoming: incoming,
+      outgoing: outgoing,
+      action: action,
     };
   }
 
@@ -189,7 +189,7 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
 
     const schema = await this.api.getClient().backend().schema().get(response.id);
 
-    return schema.name;
+    return 'schema://' + schema.name;
   }
 
   private async resolveAction(agentId: number, prompt: string, indicator: ExecutionIndicator): Promise<string|undefined> {
@@ -206,9 +206,9 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
       return;
     }
 
-    const schema = await this.api.getClient().backend().action().get(response.id);
+    const action = await this.api.getClient().backend().action().get(response.id);
 
-    return schema.name;
+    return 'action://' + action.name;
   }
 
 }
