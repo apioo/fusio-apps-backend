@@ -85,12 +85,12 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
 
   private async transformOperation(operation: Operation, indicator: ExecutionIndicator, options: Options): Promise<BackendOperation|undefined> {
     let incoming: string|undefined = undefined;
-    if (operation.incoming && operation.incoming !== 'VOID') {
+    if (operation.incoming && operation.incoming !== 'Empty') {
       incoming = await this.resolveSchema(options.schemaAgentId, operation.incoming, indicator);
     }
 
     let outgoing: string|undefined = undefined;
-    if (operation.outgoing && operation.outgoing !== 'VOID') {
+    if (operation.outgoing && operation.outgoing !== 'Empty') {
       outgoing = await this.resolveSchema(options.schemaAgentId, operation.outgoing, indicator);
     }
 
@@ -174,6 +174,10 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
   }
 
   private async resolveSchema(agentId: number, prompt: string, indicator: ExecutionIndicator): Promise<string|undefined> {
+    if (prompt === 'Message') {
+      return 'schema://' + prompt;
+    }
+
     const response = await this.invokeSchemaAgent(agentId, prompt, indicator);
     if (!response) {
       return;
