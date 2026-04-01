@@ -4,7 +4,7 @@ import {BackendForm} from "fusio-sdk";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {FormService} from "../../../services/form.service";
 import {JsonPipe} from "@angular/common";
-import {EditorComponent} from "ngx-monaco-editor-v2-alternative";
+import {EditorComponent} from "ngx-monaco-editor-v2";
 import {FormsModule} from "@angular/forms";
 
 @Component({

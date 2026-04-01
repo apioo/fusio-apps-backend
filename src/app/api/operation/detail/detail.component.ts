@@ -9,7 +9,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {OperationService} from "../../../services/operation.service";
 import {SchemaLinkComponent} from "../../../shared/schema-link/schema-link.component";
 import {ActionLinkComponent} from "../../../shared/action-link/action-link.component";
-import {EditorComponent} from "ngx-monaco-editor-v2-alternative";
+import {EditorComponent} from "ngx-monaco-editor-v2";
 import {FormsModule} from "@angular/forms";
 import {JsonPipe, KeyValuePipe} from "@angular/common";
 import {OperationStatus} from "../../../shared/operation-status/operation-status";

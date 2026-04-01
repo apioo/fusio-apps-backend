@@ -3,7 +3,7 @@ import {BackendSchema, BackendSchemaCommit} from "fusio-sdk";
 import {CommitService} from "../../../services/schema/commit.service";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {ErrorService, List, MessageComponent, SearchComponent} from "ngx-fusio-sdk";
-import {DiffEditorComponent, DiffEditorModel} from "ngx-monaco-editor-v2-alternative";
+import {DiffEditorComponent, DiffEditorModel} from "ngx-monaco-editor-v2";
 import {SchemaService} from "../../../services/schema.service";
 import {DatePipe, SlicePipe} from "@angular/common";
 import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";

@@ -8,7 +8,7 @@ import {FormBreadcrump} from "../../../shared/form-breadcrump/form-breadcrump";
 import {FormButtons} from "../../../shared/form-buttons/form-buttons";
 import {FormsModule} from "@angular/forms";
 import {NgbPopover} from "@ng-bootstrap/ng-bootstrap";
-import {EditorComponent} from "ngx-monaco-editor-v2-alternative";
+import {EditorComponent} from "ngx-monaco-editor-v2";
 
 @Component({
   selector: 'app-form-form',

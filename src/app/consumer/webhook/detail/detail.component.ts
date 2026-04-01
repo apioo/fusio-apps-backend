@@ -4,7 +4,7 @@ import {BackendWebhook} from "fusio-sdk";
 import {ActivatedRoute, Router} from "@angular/router";
 import {WebhookService} from "../../../services/webhook.service";
 import {DatePipe, JsonPipe} from "@angular/common";
-import {EditorComponent} from "ngx-monaco-editor-v2-alternative";
+import {EditorComponent} from "ngx-monaco-editor-v2";
 import {FormsModule} from "@angular/forms";
 
 @Component({

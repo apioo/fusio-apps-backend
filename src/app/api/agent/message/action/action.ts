@@ -1,5 +1,5 @@
 import {Component, inject, signal} from '@angular/core';
-import {EditorComponent} from "ngx-monaco-editor-v2-alternative";
+import {EditorComponent} from "ngx-monaco-editor-v2";
 import {FormsModule} from "@angular/forms";
 import {Response} from "../../../action/designer/response/response";
 import {TypeschemaEditorModule} from "ngx-typeschema-editor";

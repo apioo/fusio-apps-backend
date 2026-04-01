@@ -2,7 +2,7 @@ import {Component, signal} from '@angular/core';
 import {Detail, ErrorService, MessageComponent} from "ngx-fusio-sdk";
 import {BackendAgent, BackendAgentTool} from "fusio-sdk";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
-import {EditorComponent} from "ngx-monaco-editor-v2-alternative";
+import {EditorComponent} from "ngx-monaco-editor-v2";
 import {FormsModule} from "@angular/forms";
 import {JsonPipe} from "@angular/common";
 import {AgentService} from "../../../services/agent.service";

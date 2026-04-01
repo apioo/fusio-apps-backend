@@ -2,7 +2,7 @@ import {Component, signal} from '@angular/core';
 import {ErrorService, MessageComponent} from "ngx-fusio-sdk";
 import {CommonMessage} from "fusio-sdk";
 import {ApiService} from "../../../api.service";
-import {EditorComponent} from "ngx-monaco-editor-v2-alternative";
+import {EditorComponent} from "ngx-monaco-editor-v2";
 import {FormsModule} from "@angular/forms";
 
 @Component({

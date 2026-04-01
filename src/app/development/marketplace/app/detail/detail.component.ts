@@ -3,7 +3,7 @@ import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {Detail, ErrorService, MessageComponent} from "ngx-fusio-sdk";
 import {MarketplaceApp} from "fusio-sdk";
 import {MarkdownComponent} from "ngx-markdown";
-import {EditorComponent} from "ngx-monaco-editor-v2-alternative";
+import {EditorComponent} from "ngx-monaco-editor-v2";
 import {JsonPipe} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {AppService} from "../../../../services/marketplace/app.service";

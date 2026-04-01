@@ -13,7 +13,7 @@ import {routes} from './app.routes';
 import {ConfigBuilder} from "./config-builder";
 import {provideMarkdown} from "ngx-markdown";
 import {ApiService as SDK, FUSIO_CONFIG} from "ngx-fusio-sdk";
-import {NGX_MONACO_EDITOR_CONFIG} from "ngx-monaco-editor-v2-alternative";
+import {NGX_MONACO_EDITOR_CONFIG} from "ngx-monaco-editor-v2";
 import {JavaCompletion} from "./editor/java-completion";
 import {PHPCompletion} from "./editor/php-completion";
 import {JavascriptCompletion} from "./editor/javascript-completion";

@@ -4,7 +4,7 @@ import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {BackendConnection, BackendDatabaseTable} from "fusio-sdk";
 import {TableService} from "../../../../../../services/connection/database/table.service";
 import {ConnectionService} from "../../../../../../services/connection.service";
-import {EditorComponent} from "ngx-monaco-editor-v2-alternative";
+import {EditorComponent} from "ngx-monaco-editor-v2";
 import {FormsModule} from "@angular/forms";
 import {JsonPipe} from "@angular/common";
 import {DatabaseTable} from "../../../../../../shared/database-table/database-table";

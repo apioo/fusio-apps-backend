@@ -5,7 +5,7 @@ import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {RowService} from "../../../../../../services/connection/database/row.service";
 import {TableService} from "../../../../../../services/connection/database/table.service";
 import {ConnectionService} from "../../../../../../services/connection.service";
-import {EditorComponent} from "ngx-monaco-editor-v2-alternative";
+import {EditorComponent} from "ngx-monaco-editor-v2";
 import {FormsModule} from "@angular/forms";
 import {JsonPipe} from "@angular/common";
 

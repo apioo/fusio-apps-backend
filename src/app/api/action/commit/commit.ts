@@ -7,7 +7,7 @@ import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ActionService} from "../../../services/action.service";
 import {DatePipe, SlicePipe} from "@angular/common";
-import {DiffEditorComponent, DiffEditorModel} from "ngx-monaco-editor-v2-alternative";
+import {DiffEditorComponent, DiffEditorModel} from "ngx-monaco-editor-v2";
 
 @Component({
   selector: 'app-action-commit',

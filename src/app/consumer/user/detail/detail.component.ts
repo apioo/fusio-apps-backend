@@ -5,7 +5,7 @@ import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {UserService} from "../../../services/user.service";
 import {NgbTooltip} from "@ng-bootstrap/ng-bootstrap";
 import {DatePipe, JsonPipe} from "@angular/common";
-import {EditorComponent} from "ngx-monaco-editor-v2-alternative";
+import {EditorComponent} from "ngx-monaco-editor-v2";
 import {FormsModule} from "@angular/forms";
 
 @Component({

@@ -5,7 +5,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {AppService} from "../../../services/app.service";
 import {ClipboardModule} from "ngx-clipboard";
 import {DatePipe, JsonPipe} from "@angular/common";
-import {EditorComponent} from "ngx-monaco-editor-v2-alternative";
+import {EditorComponent} from "ngx-monaco-editor-v2";
 import {FormsModule} from "@angular/forms";
 
 @Component({

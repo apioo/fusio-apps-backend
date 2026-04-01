@@ -4,7 +4,7 @@ import {BackendAudit} from "fusio-sdk";
 import {AuditService} from "../../../services/audit.service";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {DatePipe, JsonPipe} from "@angular/common";
-import {EditorComponent} from "ngx-monaco-editor-v2-alternative";
+import {EditorComponent} from "ngx-monaco-editor-v2";
 import {FormsModule} from "@angular/forms";
 
 @Component({
