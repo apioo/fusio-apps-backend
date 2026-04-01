@@ -47,7 +47,7 @@
     "ngx-gravatar": "^13.0.0",
     "ngx-highlightjs": "^12.0.0",
     "ngx-markdown": "^21.1.0",
-    "ngx-monaco-editor-v2-alternative": "^21.0.1",
+    "ngx-monaco-editor-v2": "^21.1.4",
     "ngx-typeschema-editor": "^5.0.0",
     "rxjs": "~7.8.0",
     "sdkgen-client": "^2.1.0",
