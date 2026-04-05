@@ -1,6 +1,6 @@
 
 @if (scheme() === 'schema') {
-  <a routerLink="/schema/~{{value()}}">{{value()}}</a>
+  <a routerLink="/schema/~{{schema()}}">{{value()}}</a>
 }
 @else if (scheme() === 'php+class') {
   <span>{{value()}}</span>

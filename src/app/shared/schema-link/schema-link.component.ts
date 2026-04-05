@@ -15,6 +15,7 @@ export class SchemaLinkComponent {
 
   scheme = signal<string>('');
   value = signal<string>('');
+  schema = signal<string>('');
 
   constructor() {
     effect(() => {
@@ -23,13 +24,23 @@ export class SchemaLinkComponent {
         return;
       }
 
-      const pos = data.indexOf('://');
+      let pos = data.indexOf('://');
       if (pos === -1) {
         return;
       }
 
       this.scheme.set(data.substring(0, pos));
-      this.value.set(data.substring(pos + 3));
+
+      let value = data.substring(pos + 3);
+      let schema = data.substring(pos + 3);
+      pos = schema.indexOf('@');
+      if (pos !== -1) {
+        schema = schema.substring(0, pos);
+        value = schema + '@' + value.substring(pos + 1).substring(0, 8);
+      }
+
+      this.value.set(value);
+      this.schema.set(schema);
     });
   }
 
