@@ -9,7 +9,10 @@
   </div>
   <div class="col-9">
     @if (scheme() === 'schema') {
-      <fusio-form-autocomplete [name]="name() + '_value'" [service]="schema" [useTilde]="true" [data]="value()" (dataChange)="value.set($event);changeValue()" [disabled]="disabled()">
+      <fusio-form-autocomplete [name]="name() + '_value'" [service]="schemaService" [useTilde]="true" [data]="value()" (dataChange)="value.set($event);changeValue()" [disabled]="disabled()">
+        @if (hash(); as hash  ) {
+          <span class="input-group-text">{{ hash }}</span>
+        }
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="schemeHelp"><i class="bi bi-question"></i></button>
         <ng-template #schemeHelp>Loads a schema from the internal schema store. Type a name to select a fitting schema. If you can not find a fitting schema you can also create a new schema at the schema panel.</ng-template>
       </fusio-form-autocomplete>

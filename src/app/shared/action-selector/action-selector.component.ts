@@ -24,6 +24,7 @@ export class ActionSelectorComponent {
   scheme = signal<string>('');
   value = signal<string>('');
   action = signal<string>('');
+  hash = signal<string>('');
 
   schemes = [{
     key: 'action',
@@ -52,12 +53,15 @@ export class ActionSelectorComponent {
           this.value.set(data.substring(pos + 3));
 
           let action = data.substring(pos + 3);
+          let hash = '';
           pos = action.indexOf('@');
           if (pos !== -1) {
+            hash = action.substring(pos + 1).substring(0, 8);
             action = action.substring(0, pos);
           }
 
           this.action.set(action);
+          this.hash.set(hash);
         }
       }
       if (!this.scheme()) {

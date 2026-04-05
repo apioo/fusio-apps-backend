@@ -23,6 +23,8 @@ export class SchemaSelectorComponent {
 
   scheme = signal<string>('');
   value = signal<string>('');
+  schema = signal<string>('');
+  hash = signal<string>('');
 
   schemes = [{
     key: 'schema',
@@ -47,14 +49,25 @@ export class SchemaSelectorComponent {
     value: 'TypeHub'
   }*/];
 
-  constructor(public schema: SchemaService) {
+  constructor(public schemaService: SchemaService) {
     effect(() => {
       const data = this.data();
       if (data) {
-        const pos = data.indexOf('://');
+        let pos = data.indexOf('://');
         if (pos > 0) {
           this.scheme.set(data.substring(0, pos));
           this.value.set(data.substring(pos + 3));
+
+          let schema = data.substring(pos + 3);
+          let hash = '';
+          pos = schema.indexOf('@');
+          if (pos !== -1) {
+            hash = schema.substring(pos + 1).substring(0, 8);
+            schema = schema.substring(0, pos);
+          }
+
+          this.schema.set(schema);
+          this.hash.set(hash);
         }
       }
       if (!this.scheme()) {
