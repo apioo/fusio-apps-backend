@@ -1,5 +1,5 @@
 import {Component, OnInit, signal} from '@angular/core';
-import {ErrorService} from "ngx-fusio-sdk";
+import {ErrorService, MessageComponent} from "ngx-fusio-sdk";
 import {BackendSdkTypes, CommonMessage} from "fusio-sdk";
 import {ApiService} from "../../../api.service";
 import {KeyValuePipe} from "@angular/common";
@@ -10,7 +10,8 @@ import {RouterLink} from "@angular/router";
   templateUrl: './list.component.html',
   imports: [
     KeyValuePipe,
-    RouterLink
+    RouterLink,
+    MessageComponent
   ],
   styleUrls: ['./list.component.css']
 })

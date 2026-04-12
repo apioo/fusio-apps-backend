@@ -1,0 +1,12 @@
+
+<h1>Specification</h1>
+
+<fusio-message [response]="response()"></fusio-message>
+
+@if (spec(); as spec) {
+  <div class="btn-group" role="group">
+    <a (click)="doPublish()" class="btn btn-primary fusio-btn-publish">Publish</a>
+  </div>
+  <hr>
+  <typeschema-editor [specification]="spec" [operationEnabled]="true" [readonly]="true"></typeschema-editor>
+}

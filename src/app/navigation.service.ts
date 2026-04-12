@@ -106,6 +106,12 @@ export class NavigationService {
               "scope": "backend.sdk"
             },
             {
+              "title": "Specification",
+              "icon": "bi-file-medical",
+              "path": "/specification",
+              "scope": "backend.specification"
+            },
+            {
               "title": "Generator",
               "icon": "bi-cpu",
               "path": "/generator",
