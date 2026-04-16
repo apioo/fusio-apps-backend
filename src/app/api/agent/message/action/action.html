@@ -42,7 +42,7 @@
       <app-action-designer-response [response]="actionResponse"></app-action-designer-response>
       @if (actionResponse.statusCode === 500 && actionResponse.body && getErrorMessage(actionResponse.body); as errorMessage) {
         <div class="btn-group mb-3">
-          <button class="btn btn-primary" (click)="doSend('Try to fix the following error: ' + errorMessage);">Try Fix</button>
+          <button class="btn btn-primary" (click)="doSend(errorMessage);">Try Fix</button>
         </div>
       }
     }
