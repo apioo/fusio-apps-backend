@@ -18,6 +18,7 @@ import {AgentArchitectService, Blueprint, Options} from "../../../../services/ag
 import {Agent} from "../../../../services/agent/agent";
 import {ConnectionService} from "../../../../services/connection.service";
 import {AgentService} from "../../../../services/agent.service";
+import {Loader} from "../../loader/loader";
 
 @Component({
   selector: 'app-agent-message-architect',
@@ -35,6 +36,7 @@ import {AgentService} from "../../../../services/agent.service";
     JsonPipe,
     FormAutocompleteComponent,
     NgbPopover,
+    Loader,
   ],
   templateUrl: './architect.html',
   styleUrl: './architect.css',

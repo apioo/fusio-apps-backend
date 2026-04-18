@@ -24,7 +24,7 @@
     @if (executeLoading()) {
       <p class="text-center mt-3 font-monospace">Executing blueprint ...</p>
       <div class="d-flex justify-content-center mt-3 mb-3">
-        <div class="spinner-border" role="status"></div>
+        <app-agent-loader></app-agent-loader>
       </div>
     }
     @if (executeMessages().length > 0 && executeMessages(); as messages) {

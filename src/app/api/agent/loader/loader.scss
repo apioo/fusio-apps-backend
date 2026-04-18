@@ -1,0 +1,64 @@
+$grey-logo: #545454; // From the Fusio logo background
+$white-logo: #eeeeee  ;
+$pixel-size: 6px;
+
+.swarm-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  background: transparent;
+}
+
+.pixel-field {
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+
+.pixel {
+  position: absolute;
+  width: $pixel-size;
+  height: $pixel-size;
+  top: 50%;
+  left: 50%;
+
+  &.white { background-color: $white-logo; box-shadow: 0 0 4px $white-logo; }
+  &.grey { background-color: $grey-logo; }
+}
+
+/* Logic for random movement */
+@keyframes random-move-1 {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(20px, -15px); }
+  50%  { transform: translate(-10px, 25px); }
+  75%  { transform: translate(-25px, -10px); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes random-move-2 {
+  0%   { transform: translate(0, 0); }
+  30%  { transform: translate(-30px, 10px); }
+  60%  { transform: translate(15px, -20px); }
+  90%  { transform: translate(10px, 20px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Apply staggered animations to create "Chaos" */
+.p1 { animation: random-move-1 1.2s infinite ease-in-out; }
+.p2 { animation: random-move-2 1.5s infinite ease-in-out; left: 40%; }
+.p3 { animation: random-move-1 1.8s infinite reverse; top: 40%; }
+.p4 { animation: random-move-2 1.1s infinite alternate; left: 60%; }
+.p5 { animation: random-move-1 2.2s infinite; top: 60%; }
+.p6 { animation: random-move-2 0.9s infinite reverse; left: 30%; top: 30%; }
+.p7 { animation: random-move-1 2.5s infinite; opacity: 0.5; }
+.p8 { animation: random-move-2 2.8s infinite; opacity: 0.3; top: 70%; }
+.p9 { animation: random-move-1 1.4s infinite; opacity: 0.4; left: 70%; }
+
+.loading-text {
+  font-family: 'Monaco', 'Consolas', monospace;
+  font-size: 11px;
+  color: $grey-logo;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
