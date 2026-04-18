@@ -49,5 +49,5 @@
     </div>
   </div>
   <app-scope-categories [scopes]="entity().scopes" (dataChange)="set(entity, 'scopes', $event)"></app-scope-categories>
-  <app-form-buttons [mode]="mode" (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="doList()" (onHelp)="showHelp('consumer/app')"></app-form-buttons>
+  <app-form-buttons [mode]="mode" [loading]="loading()" (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="doList()" (onHelp)="showHelp('consumer/app')"></app-form-buttons>
 </form>

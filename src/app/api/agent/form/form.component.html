@@ -78,5 +78,5 @@
       <app-schema-selector name="outgoing" [data]="entity().outgoing" (dataChange)="set(entity, 'outgoing', $event)" [disabled]="mode === 3"></app-schema-selector>
     </div>
   </div>
-  <app-form-buttons [mode]="mode" (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="doList()" (onHelp)="showHelp('api/trigger')"></app-form-buttons>
+  <app-form-buttons [mode]="mode" [loading]="loading()" (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="doList()" (onHelp)="showHelp('api/trigger')"></app-form-buttons>
 </form>

@@ -9,6 +9,7 @@ import {Component, EventEmitter, input, Input, Output} from '@angular/core';
 export class FormButtons {
 
   mode = input.required<number>();
+  loading = input.required<boolean>();
 
   @Output() onCreate = new EventEmitter<void>();
   @Output() onUpdate = new EventEmitter<void>();

@@ -102,5 +102,5 @@
       <fusio-form-list name="triggers" type="autocomplete" [service]="trigger" [useId]="true" [data]="getEntries('triggers')" (dataChange)="setEntries('triggers', $event)"></fusio-form-list>
     </div>
   </div>
-  <app-form-buttons [mode]="mode" (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="doList()" (onHelp)="showHelp('development/bundle')"></app-form-buttons>
+  <app-form-buttons [mode]="mode" [loading]="loading()" (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="doList()" (onHelp)="showHelp('development/bundle')"></app-form-buttons>
 </form>

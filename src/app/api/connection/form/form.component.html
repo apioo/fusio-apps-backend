@@ -46,5 +46,5 @@
     </div>
   </div>
   <app-config [container]="form()" [data]="entity().config" (dataChange)="set(entity, 'config', $event)" [disabled]="mode === 3"></app-config>
-  <app-form-buttons [mode]="mode" (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="doList()" (onHelp)="showHelp()"></app-form-buttons>
+  <app-form-buttons [mode]="mode" [loading]="loading()" (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="doList()" (onHelp)="showHelp()"></app-form-buttons>
 </form>

@@ -1,13 +1,37 @@
 
 <div class="btn-group mb-5" role="group">
   @if (mode() === 1) {
-    <button type="button" class="btn btn-primary" (click)="onCreate.emit()">Create</button>
+    <button type="button" class="btn btn-primary" (click)="onCreate.emit()" [disabled]="loading()">
+      @if (loading()) {
+        <span class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span>
+        <span role="status">Creating ...</span>
+      }
+      @else {
+        <span role="status">Create</span>
+      }
+    </button>
   }
   @else if (mode() === 2) {
-    <button type="button" class="btn btn-primary" (click)="onUpdate.emit()">Update</button>
+    <button type="button" class="btn btn-primary" (click)="onUpdate.emit()" [disabled]="loading()">
+      @if (loading()) {
+        <span class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span>
+        <span role="status">Updating ...</span>
+      }
+      @else {
+        <span role="status">Update</span>
+      }
+    </button>
   }
   @else if (mode() === 3) {
-    <button type="button" class="btn btn-danger" (click)="onDelete.emit()">Delete</button>
+    <button type="button" class="btn btn-danger" (click)="onDelete.emit()" [disabled]="loading()">
+      @if (loading()) {
+        <span class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span>
+        <span role="status">Deleting ...</span>
+      }
+      @else {
+        <span role="status">Delete</span>
+      }
+    </button>
   }
 
   @if (onBack.observed) {

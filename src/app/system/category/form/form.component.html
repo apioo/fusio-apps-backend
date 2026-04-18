@@ -18,5 +18,5 @@
       </div>
     </div>
   </div>
-  <app-form-buttons [mode]="mode" (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="doList()" (onHelp)="showHelp('system/category')"></app-form-buttons>
+  <app-form-buttons [mode]="mode" [loading]="loading()" (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="doList()" (onHelp)="showHelp('system/category')"></app-form-buttons>
 </form>

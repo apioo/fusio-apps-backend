@@ -99,5 +99,5 @@
       <button (click)="addAllocation()" [disabled]="mode === 3" class="btn btn-secondary"><i class="bi bi-plus"></i></button>
     </div>
   </div>
-  <app-form-buttons [mode]="mode" (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="doList()" (onHelp)="showHelp('consumer/rate')"></app-form-buttons>
+  <app-form-buttons [mode]="mode" [loading]="loading()" (onCreate)="doCreate(entity)" (onUpdate)="doUpdate(entity)" (onDelete)="doDelete(entity)" (onBack)="doList()" (onHelp)="showHelp('consumer/rate')"></app-form-buttons>
 </form>
