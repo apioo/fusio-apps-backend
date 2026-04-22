@@ -79,6 +79,8 @@ export class Connection extends List<BackendConnection> {
         variable = '$httpClient';
       } else if (connection.class === 'Fusio.Adapter.File.Connection.Filesystem') {
         variable = '$filesystem';
+      } else if (connection.class === 'Fusio.Adapter.Ai.Connection.Agent') {
+        variable = '$agent';
       }
 
       return variable + ' = $connector->getConnection(\'' + connection.name + '\');';
@@ -150,6 +152,13 @@ export class Connection extends List<BackendConnection> {
         });
       });
     } else if (connection.class === 'Fusio.Adapter.Worker.Connection.Worker') {
+    } else if (connection.class === 'Fusio.Adapter.Ai.Connection.Agent') {
+      ApiFactory.factory(lang).getAgentMethods().forEach((method) => {
+        items.push({
+          name: method.label,
+          link: method.link,
+        });
+      });
     } else if (connection.class?.startsWith('Fusio.Adapter.SdkFabric.Connection.')) {
       const className = connection.class;
       if (!className) {

@@ -170,4 +170,8 @@ export class Python implements API {
     return [];
   }
 
+  getAgentMethods(): Array<Method> {
+    return [];
+  }
+
 }

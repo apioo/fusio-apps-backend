@@ -42,6 +42,7 @@ export interface API {
   getConnectionMethods(): Array<Method>;
   getHttpClientMethods(): Array<Method>;
   getFilesystemMethods(): Array<Method>;
+  getAgentMethods(): Array<Method>;
 }
 
 export interface Method {

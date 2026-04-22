@@ -180,4 +180,8 @@ export class Java implements API {
     return [];
   }
 
+  getAgentMethods(): Array<Method> {
+    return [];
+  }
+
 }

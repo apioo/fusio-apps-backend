@@ -178,4 +178,8 @@ export class Javascript implements API {
     return [];
   }
 
+  getAgentMethods(): Array<Method> {
+    return [];
+  }
+
 }

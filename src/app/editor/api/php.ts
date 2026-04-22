@@ -307,4 +307,12 @@ export class PHP implements API {
     }];
   }
 
+  getAgentMethods(): Array<Method> {
+    return [{
+      label: "call(MessageBag $messages)",
+      insertText: "call(new MessageBag(Message::ofUser('')))",
+      link: 'https://symfony.com/doc/current/ai/components/agent.html#basic-usage',
+    }];
+  }
+
 }
