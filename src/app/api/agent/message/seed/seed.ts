@@ -1,6 +1,6 @@
 import {Component, inject, signal} from '@angular/core';
 import {FormsModule} from "@angular/forms";
-import {JsonPipe, KeyValuePipe} from "@angular/common";
+import {JsonPipe} from "@angular/common";
 import {FormAutocompleteComponent, MessageComponent} from "ngx-fusio-sdk";
 import {TypeschemaEditorModule} from "ngx-typeschema-editor";
 import {ChatAbstract} from "../chat-abstract";
@@ -11,7 +11,9 @@ import {
   NgbAccordionBody,
   NgbAccordionButton,
   NgbAccordionCollapse,
-  NgbAccordionDirective, NgbAccordionHeader, NgbAccordionItem,
+  NgbAccordionDirective,
+  NgbAccordionHeader,
+  NgbAccordionItem,
   NgbPopover
 } from "@ng-bootstrap/ng-bootstrap";
 import {Agent} from "../../../../services/agent/agent";
@@ -28,7 +30,6 @@ import {AgentSeedService, Options, SeedData} from "../../../../services/agent/ag
     Row,
     FormAutocompleteComponent,
     NgbPopover,
-    KeyValuePipe,
     NgbAccordionBody,
     NgbAccordionButton,
     NgbAccordionCollapse,

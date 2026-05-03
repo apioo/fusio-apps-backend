@@ -32,12 +32,12 @@ export class AgentSeedService extends AgentAbstract<SeedData, Options> {
     let success = 0;
     let errorMessages: Array<string> = [];
 
-    for (const [tableName, rows] of Object.entries(model.tables)) {
-      rows.forEach(async (row) => {
+    model.tables.forEach((table) => {
+      table.rows.forEach(async (row) => {
         try {
-          indicator.request('Insert seed: ' + tableName);
+          indicator.request('Insert seed: ' + table.name);
 
-          const response = await this.api.getClient().backend().connection().database().createRow('' + connectionId, tableName, row);
+          const response = await this.api.getClient().backend().connection().database().createRow('' + connectionId, table.name, row);
           indicator.response(response);
 
           success++;
@@ -51,7 +51,7 @@ export class AgentSeedService extends AgentAbstract<SeedData, Options> {
           }
         }
       });
-    }
+    });
 
     if (errorMessages.length === 0) {
       return {
@@ -76,7 +76,12 @@ export class AgentSeedService extends AgentAbstract<SeedData, Options> {
 }
 
 export interface SeedData {
-  tables: Record<string, Array<Record<string, any>>>
+  tables: Array<SeedTable>
+}
+
+export interface SeedTable {
+  name: string
+  rows: Array<Record<string, any>>
 }
 
 export interface Options {

@@ -29,18 +29,18 @@
       </fusio-form-autocomplete>
     </div>
     @if (model(); as model) {
-      @for (table of model.tables|keyvalue; track $index) {
+      @for (table of model.tables; track $index) {
         <div ngbAccordion>
           <div ngbAccordionItem class="rounded-0" [collapsed]="true">
             <h2 ngbAccordionHeader>
-              <button ngbAccordionButton>{{ table.key }}</button>
+              <button ngbAccordionButton>{{ table.name }}</button>
             </h2>
             <div ngbAccordionCollapse>
               <div ngbAccordionBody>
                 <ng-template>
                   <table class="table table-striped">
                     <tbody>
-                      @for (row of table.value; track $index) {
+                      @for (row of table.rows; track $index) {
                         <tr>
                           <td><pre class="overflow-hidden">{{ row|json }}</pre></td>
                         </tr>
