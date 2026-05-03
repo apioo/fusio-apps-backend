@@ -1,0 +1,69 @@
+
+<fusio-message [response]="response()"></fusio-message>
+
+<div class="row">
+  <div class="col-xl-6">
+    <div style="max-width:1024px">
+      @for (message of messages(); track $index) {
+        @if (message.role === 'assistant' && message.item && message.item.type === 'object' && 'payload' in message.item && message.item.payload) {
+          <div class="mb-2">
+            <div class="d-grid">
+              <button class="btn btn-primary" type="button" (click)="load(message.item)">Generated seeds ({{(message.item.payload|json).length}} chars)</button>
+            </div>
+          </div>
+        }
+        @else {
+          <app-agent-message-row [message]="message"></app-agent-message-row>
+        }
+      }
+      <div id="messages-bottom"></div>
+      <app-agent-message-input [loading]="messagesResource.isLoading() || loading()" (send)="doSend($event)"></app-agent-message-input>
+    </div>
+  </div>
+  <div class="col-xl-6">
+    <div class="mb-3">
+      <label for="connection" class="form-label">Connection</label>
+      <fusio-form-autocomplete name="connection" id="connection" [service]="connection" [useId]="true" [data]="connectionId()" (dataChangeId)="connectionId.set($event)">
+        <button class="btn btn-outline-secondary" type="button" [ngbPopover]="connectionHelp"><i class="bi bi-question"></i></button>
+        <ng-template #connectionHelp>The target database connection where all data is inserted if you click on the "Seed" button.</ng-template>
+      </fusio-form-autocomplete>
+    </div>
+    @if (model(); as model) {
+      @for (table of model.tables|keyvalue; track $index) {
+        <div ngbAccordion>
+          <div ngbAccordionItem class="rounded-0" [collapsed]="true">
+            <h2 ngbAccordionHeader>
+              <button ngbAccordionButton>{{ table.key }}</button>
+            </h2>
+            <div ngbAccordionCollapse>
+              <div ngbAccordionBody>
+                <ng-template>
+                  <table class="table table-striped">
+                    <tbody>
+                      @for (row of table.value; track $index) {
+                        <tr>
+                          <td><pre class="overflow-hidden">{{ row|json }}</pre></td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    }
+    <div class="btn-group mt-3 mb-3">
+      <button class="btn btn-primary" type="button" (click)="execute()" [disabled]="executeLoading()">
+        @if (executeLoading()) {
+          <span class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span>
+          <span role="status">Seeding ...</span>
+        }
+        @else {
+          <span role="status">Seed</span>
+        }
+      </button>
+    </div>
+  </div>
+</div>

@@ -13,6 +13,7 @@ import {NgClass} from "@angular/common";
 import {Input} from "./input/input";
 import {Type} from "./type/type";
 import {Database} from "./database/database";
+import {Seed} from "./seed/seed";
 
 @Component({
   selector: 'app-message',
@@ -27,7 +28,8 @@ import {Database} from "./database/database";
     NgClass,
     Input,
     Type,
-    Database
+    Database,
+    Seed
   ],
   templateUrl: './message.html',
   styleUrl: './message.css',

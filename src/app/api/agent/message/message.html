@@ -36,6 +36,9 @@
         @else if (agent.type === 4) {
           <app-agent-message-database [agent]="agent" [chatId]="selected"></app-agent-message-database>
         }
+        @else if (agent.type === 5) {
+          <app-agent-message-seed [agent]="agent" [chatId]="selected"></app-agent-message-seed>
+        }
         @else {
           <ngb-alert type="error">This agent contains a not supported agent type</ngb-alert>
         }
