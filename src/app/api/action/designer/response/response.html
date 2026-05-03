@@ -5,9 +5,16 @@
       @if (response().statusCode; as statusCode) {
         <div class="card-header" [ngClass]="{'text-bg-success': statusCode >= 200 && statusCode < 300, 'text-bg-warning': statusCode >= 400 && statusCode < 500, 'text-bg-danger': statusCode >= 500 && statusCode < 600}">Response @if (statusCode > 0) {<span> - {{statusCode}}</span>}</div>
       }
-      <div class="card-body">
-        <pre>{{ response().body|json }}</pre>
-      </div>
+      @if (response().body; as body) {
+        <div class="card-body">
+          @if (typeof body === 'string') {
+            <pre>{{ body }}</pre>
+          }
+          @else {
+            <pre>{{ body|json }}</pre>
+          }
+        </div>
+      }
     </div>
   </div>
 </div>
