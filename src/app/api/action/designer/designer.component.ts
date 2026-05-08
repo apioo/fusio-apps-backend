@@ -13,7 +13,6 @@ import {ApiService} from "../../../api.service";
 import {ConfigComponent} from "../../../shared/config/config.component";
 import {FormsModule} from "@angular/forms";
 import {NgbOffcanvas} from "@ng-bootstrap/ng-bootstrap";
-import {JsonPipe, NgClass} from "@angular/common";
 import {Request} from "../request/request";
 import {Editor} from "./editor/editor";
 import {Response} from "./response/response";
@@ -40,6 +39,7 @@ export class DesignerComponent implements OnInit {
   message = signal<CommonMessage|undefined>(undefined);
   response = signal<BackendActionExecuteResponse|undefined>(undefined);
   actionClass = signal<string>('');
+  loading = signal<boolean>(false);
 
   request: BackendActionExecuteRequest = {
     method: 'GET',
@@ -66,6 +66,8 @@ export class DesignerComponent implements OnInit {
       return;
     }
 
+    this.loading.set(true);
+
     try {
       await this.fusio.getClient().backend().action().update('' + action.id, action);
 
@@ -73,6 +75,8 @@ export class DesignerComponent implements OnInit {
     } catch (error) {
       this.message.set(this.error.convert(error));
     }
+
+    this.loading.set(false);
   }
 
   async loadAction(id: string) {
