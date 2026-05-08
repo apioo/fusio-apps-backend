@@ -3,18 +3,14 @@
   <div class="col-md-12">
     <div class="card">
       @if (response().statusCode; as statusCode) {
-        <div class="card-header" [ngClass]="{'text-bg-success': statusCode >= 200 && statusCode < 300, 'text-bg-warning': statusCode >= 400 && statusCode < 500, 'text-bg-danger': statusCode >= 500 && statusCode < 600}">Response @if (statusCode > 0) {<span> - {{statusCode}}</span>}</div>
-      }
-      @if (response().body; as body) {
-        <div class="card-body">
-          @if (typeof body === 'string') {
-            <pre>{{ body }}</pre>
-          }
-          @else {
-            <pre>{{ body|json }}</pre>
-          }
+        <div class="card-header" [ngClass]="{'text-bg-success': statusCode >= 200 && statusCode < 300, 'text-bg-warning': statusCode >= 400 && statusCode < 500, 'text-bg-danger': statusCode >= 500 && statusCode < 600}">
+          <span>Response @if (statusCode > 0) {<span> - {{statusCode}}</span>}</span>
         </div>
       }
+      <div class="card-body">
+        <button type="button" class="btn btn-secondary float-end" ngxClipboard [cbContent]="body()"><i class="bi bi-clipboard"></i></button>
+        <pre class="card-text">{{ body() }}</pre>
+      </div>
     </div>
   </div>
 </div>
