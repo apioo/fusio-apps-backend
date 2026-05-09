@@ -1,8 +1,11 @@
-import {Component, EventEmitter, input, Input, Output} from '@angular/core';
+import {Component, EventEmitter, input, Output} from '@angular/core';
+import {FormButton} from "../form-button/form-button";
 
 @Component({
   selector: 'app-form-buttons',
-  imports: [],
+  imports: [
+    FormButton
+  ],
   templateUrl: './form-buttons.html',
   styleUrl: './form-buttons.css',
 })

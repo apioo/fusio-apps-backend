@@ -5,6 +5,7 @@ import {ActivatedRoute, RouterLink} from "@angular/router";
 import {ApiService} from "../../../api.service";
 import {FormsModule} from "@angular/forms";
 import {KeyValuePipe} from "@angular/common";
+import {FormButton} from "../../../shared/form-button/form-button";
 
 @Component({
   selector: 'app-sdk-generator',
@@ -13,7 +14,8 @@ import {KeyValuePipe} from "@angular/common";
     RouterLink,
     MessageComponent,
     FormsModule,
-    KeyValuePipe
+    KeyValuePipe,
+    FormButton
   ],
   styleUrls: ['./generator.component.css']
 })
@@ -24,6 +26,7 @@ export class GeneratorComponent implements OnInit {
 
   type = signal<string|undefined>(undefined);
   namespace = signal<string|undefined>(undefined);
+  loading = signal<boolean>(false);
 
   constructor(private fusio: ApiService, private route: ActivatedRoute, private error: ErrorService) { }
 
@@ -45,6 +48,8 @@ export class GeneratorComponent implements OnInit {
   }
 
   async generate() {
+    this.loading.set(true);
+
     try {
       const config: Record<string, string> = {};
       const namespace = this.namespace();
@@ -65,6 +70,8 @@ export class GeneratorComponent implements OnInit {
     } catch (error) {
       this.response.set(this.error.convert(error));
     }
+
+    this.loading.set(false);
   }
 
 }

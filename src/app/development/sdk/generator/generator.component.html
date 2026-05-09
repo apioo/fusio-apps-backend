@@ -33,7 +33,7 @@
             </div>
           </div>
           <div class="btn-group">
-            <button type="button" class="btn btn-primary" (click)="generate()">Generate</button>
+            <app-form-button type="primary" title="Generate" titleLoading="Generating" (onAction)="generate()" [loading]="loading()"></app-form-button>
           </div>
         </form>
       </div>

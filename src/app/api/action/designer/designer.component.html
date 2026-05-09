@@ -29,15 +29,7 @@
             <div class="card-body">
               <app-config [container]="form" [data]="action.config" (dataChange)="setConfig($event)"></app-config>
               <div class="btn-group">
-                <button type="button" class="btn btn-primary" (click)="submit()" [disabled]="loading()">
-                  @if (loading()) {
-                    <span class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span>
-                    <span role="status">Executing ...</span>
-                  }
-                  @else {
-                    <span role="status">Execute</span>
-                  }
-                </button>
+                <app-form-button type="primary" title="Execute" titleLoading="Executing" (onAction)="submit()" [loading]="loading()"></app-form-button>
                 <button class="btn btn-secondary" (click)="openRequest()">Request</button>
               </div>
             </div>

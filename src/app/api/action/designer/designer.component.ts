@@ -16,6 +16,7 @@ import {NgbOffcanvas} from "@ng-bootstrap/ng-bootstrap";
 import {Request} from "../request/request";
 import {Editor} from "./editor/editor";
 import {Response} from "./response/response";
+import {FormButton} from "../../../shared/form-button/form-button";
 
 @Component({
   selector: 'app-action-designer',
@@ -26,7 +27,8 @@ import {Response} from "./response/response";
     ConfigComponent,
     FormsModule,
     Response,
-    Editor
+    Editor,
+    FormButton
   ],
   styleUrls: ['./designer.component.css']
 })

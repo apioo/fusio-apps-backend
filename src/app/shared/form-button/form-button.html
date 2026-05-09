@@ -1,0 +1,10 @@
+
+<button type="button" class="btn btn-{{ type() }}" (click)="doClick()" [disabled]="loading()">
+  @if (loading()) {
+    <span class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span>
+    <span role="status">{{ titleLoading() }} ...</span>
+  }
+  @else {
+    <span role="status">{{ title() }}</span>
+  }
+</button>
