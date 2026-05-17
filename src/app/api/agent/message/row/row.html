@@ -4,17 +4,21 @@
     @if (message.item) {
       @if (message.item.type === 'text' && 'content' in message.item && message.item.content) {
         @if (message.role === 'user') {
-          {{message.item.content}}
+          {{ message.item.content }}
         }
         @else {
-          <markdown [data]="message.item.content"></markdown>
+          <markdown emoji katex [katexOptions]="katexOptions" [data]="message.item.content"></markdown>
         }
       }
       @else if (message.item.type === 'object' && 'payload' in message.item && message.item.payload) {
-        <pre><code [highlight]="message.item.payload|json" language="json"></code></pre>
+        <markdown>```json
+{{ message.item.payload|json }}
+```</markdown>
       }
       @else {
-        <pre>{{message.item|json}}</pre>
+        <markdown>```json
+{{ message.item|json }}
+```</markdown>
       }
     }
   </div>
