@@ -13,6 +13,7 @@
 <table class="table table-striped">
   <thead>
   <tr>
+    <th style="width:100px">Status</th>
     <th style="width:50%">Name</th>
     <th style="width:50%">Description</th>
     <th></th>
@@ -21,6 +22,16 @@
   <tbody>
   @for (entry of entries(); track entry.id) {
     <tr>
+      <td>
+        <div class="text-nowrap">
+          @if (entry.public) {
+            <span class="badge bg-primary fusio-operation-public"><i class="bi bi-eye" title="Public"></i></span>
+          }
+          @else {
+            <span class="badge bg-info fusio-operation-public"><i class="bi bi-shield-lock" title="Private"></i></span>
+          }
+        </div>
+      </td>
       <td>{{entry.name}}</td>
       <td>{{entry.description}}</td>
       <td>
