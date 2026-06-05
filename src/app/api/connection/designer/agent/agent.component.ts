@@ -1,12 +1,10 @@
 import {Component, OnInit, signal} from '@angular/core';
-import {ErrorService, MessageComponent} from "ngx-fusio-sdk";
+import {ErrorService, Input, MessageComponent, Row} from "ngx-fusio-sdk";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {ApiService} from "../../../../api.service";
 import {ConnectionService} from "../../../../services/connection.service";
 import {TypeschemaEditorModule} from "ngx-typeschema-editor";
 import {FormsModule} from "@angular/forms";
-import {Input} from "../../../agent/message/input/input";
-import {Row} from "../../../agent/message/row/row";
 import {AgentItemText, AgentOutput, BackendAgentMessage, BackendConnection, CommonMessage} from "fusio-sdk";
 
 @Component({
@@ -18,7 +16,7 @@ import {AgentItemText, AgentOutput, BackendAgentMessage, BackendConnection, Comm
     TypeschemaEditorModule,
     FormsModule,
     Input,
-    Row
+    Row,
   ],
   styleUrls: ['./agent.component.css']
 })

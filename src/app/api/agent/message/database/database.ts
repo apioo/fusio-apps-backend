@@ -1,15 +1,11 @@
 import {Component, inject, signal} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {JsonPipe} from "@angular/common";
-import {FormAutocompleteComponent, MessageComponent} from "ngx-fusio-sdk";
+import {Agent, ChatAbstract, FormAutocompleteComponent, Input, MessageComponent, Row} from "ngx-fusio-sdk";
 import {TypeschemaEditorModule} from "ngx-typeschema-editor";
-import {ChatAbstract} from "../chat-abstract";
-import {Input} from "../input/input";
-import {Row} from "../row/row";
 import {DatabaseTable} from "../../../../shared/database-table/database-table";
 import {ConnectionService} from "../../../../services/connection.service";
 import {NgbPopover} from "@ng-bootstrap/ng-bootstrap";
-import {Agent} from "../../../../services/agent/agent";
 import {
   AgentDatabaseService,
   Database as DatabaseModel,
@@ -23,11 +19,11 @@ import {
     JsonPipe,
     MessageComponent,
     TypeschemaEditorModule,
-    Input,
-    Row,
     DatabaseTable,
     FormAutocompleteComponent,
-    NgbPopover
+    NgbPopover,
+    Row,
+    Input
   ],
   templateUrl: './database.html',
   styleUrl: './database.css',

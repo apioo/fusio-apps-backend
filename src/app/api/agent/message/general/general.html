@@ -4,9 +4,9 @@
 <div class="row">
   <div class="col-12">
     @for (message of messages(); track message.id) {
-      <app-agent-message-row [message]="message"></app-agent-message-row>
+      <fusio-agent-message-row [message]="message"></fusio-agent-message-row>
     }
     <div id="messages-bottom"></div>
-    <app-agent-message-input [loading]="messagesResource.isLoading() || loading()" (send)="doSend($event)"></app-agent-message-input>
+    <fusio-agent-message-input [loading]="messagesResource.isLoading() || loading()" (send)="doSend($event)"></fusio-agent-message-input>
   </div>
 </div>

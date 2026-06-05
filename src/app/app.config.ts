@@ -12,12 +12,13 @@ import {ApiService} from "./api.service";
 import {routes} from './app.routes';
 import {ConfigBuilder} from "./config-builder";
 import {provideMarkdown} from "ngx-markdown";
-import {ApiService as SDK, FUSIO_CONFIG} from "ngx-fusio-sdk";
+import {ApiService as SDK, AgentConnectionService as AgentConnection, FUSIO_CONFIG} from "ngx-fusio-sdk";
 import {NGX_MONACO_EDITOR_CONFIG} from "ngx-monaco-editor-v2";
 import {JavaCompletion} from "./editor/java-completion";
 import {PHPCompletion} from "./editor/php-completion";
 import {JavascriptCompletion} from "./editor/javascript-completion";
 import {PythonCompletion} from "./editor/python-completion";
+import {AgentConnectionService} from "./services/agent/agent-connection.service";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -29,6 +30,10 @@ export const appConfig: ApplicationConfig = {
     {
       provide: SDK,
       useExisting: ApiService
+    },
+    {
+      provide: AgentConnection,
+      useExisting: AgentConnectionService
     },
     {
       provide: FUSIO_CONFIG,

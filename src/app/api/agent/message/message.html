@@ -46,10 +46,10 @@
       @else {
         <div class="text-center p-4 fw-bold">
           {{ agent.description }}<br>
-          <app-agent-message-type [value]="agent.type"></app-agent-message-type>
+          <fusio-agent-message-type [value]="agent.type"></fusio-agent-message-type>
         </div>
         <div id="messages-bottom"></div>
-        <app-agent-message-input [loading]="loading()" (send)="doSend($event)"></app-agent-message-input>
+        <fusio-agent-message-input [loading]="loading()" (send)="doSend($event)"></fusio-agent-message-input>
       }
     </div>
   </div>

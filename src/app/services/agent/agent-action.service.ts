@@ -1,13 +1,15 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {BackendAction, CommonMessage} from "fusio-sdk";
-import {AgentAbstract, BackendAgentContent, ExecutionIndicator} from "./agent";
+import {AgentAbstract, AgentContent, ExecutionIndicator, FusioService} from "ngx-fusio-sdk";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AgentActionService extends AgentAbstract<Action> {
 
-  transform(content: BackendAgentContent): Action|undefined {
+  private api = inject(FusioService);
+
+  transform(content: AgentContent): Action|undefined {
     const text = this.getText(content);
     if (!text) {
       return;

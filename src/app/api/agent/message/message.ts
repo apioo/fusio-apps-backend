@@ -3,15 +3,13 @@ import {ApiService} from "../../../api.service";
 import {AgentService} from "../../../services/agent.service";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {NgbAlert} from "@ng-bootstrap/ng-bootstrap";
-import {ErrorService, MessageComponent} from "ngx-fusio-sdk";
+import {ErrorService, Input, MessageComponent, Type} from "ngx-fusio-sdk";
 import {AgentInput, BackendAgent, BackendAgentMessage, CommonMessage} from "fusio-sdk";
 import {Action} from "./action/action";
 import {General} from "./general/general";
 import {Schema} from "./schema/schema";
 import {Architect} from "./architect/architect";
 import {NgClass} from "@angular/common";
-import {Input} from "./input/input";
-import {Type} from "./type/type";
 import {Database} from "./database/database";
 import {Seed} from "./seed/seed";
 
@@ -26,10 +24,10 @@ import {Seed} from "./seed/seed";
     MessageComponent,
     NgbAlert,
     NgClass,
-    Input,
-    Type,
     Database,
-    Seed
+    Seed,
+    Type,
+    Input
   ],
   templateUrl: './message.html',
   styleUrl: './message.css',

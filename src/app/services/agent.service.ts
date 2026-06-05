@@ -1,13 +1,6 @@
 import {Injectable} from '@angular/core';
 import {FusioService, Service} from "ngx-fusio-sdk";
-import {
-  BackendAgent, BackendAgentCreate, BackendAgentUpdate,
-  BackendCategory,
-  BackendCategoryCreate,
-  BackendCategoryUpdate,
-  CommonCollection,
-  CommonMessage
-} from "fusio-sdk";
+import {BackendAgent, BackendAgentCreate, BackendAgentUpdate, CommonCollection, CommonMessage} from "fusio-sdk";
 
 @Injectable({
   providedIn: 'root'

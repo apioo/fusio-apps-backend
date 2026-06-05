@@ -1,16 +1,17 @@
 import {inject, Injectable} from '@angular/core';
-import {AgentAbstract, BackendAgentContent, ExecutionIndicator} from "./agent";
 import {BackendSchema, CommonMessage} from "fusio-sdk";
 import {ExportService, Specification} from "ngx-typeschema-editor";
+import {AgentAbstract, AgentContent, ExecutionIndicator, FusioService} from "ngx-fusio-sdk";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AgentSchemaService extends AgentAbstract<Schema> {
 
-  protected exportService = inject(ExportService);
+  private api = inject(FusioService);
+  private exportService = inject(ExportService);
 
-  transform(content: BackendAgentContent): Schema|undefined {
+  transform(content: AgentContent): Schema|undefined {
     const object = this.getJson(content) as Schema;
     if (!object || !object.name || !object.types || !Array.isArray(object.types)) {
       return;

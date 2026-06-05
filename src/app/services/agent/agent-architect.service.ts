@@ -1,22 +1,22 @@
 import {inject, Injectable} from '@angular/core';
-import {AgentAbstract, BackendAgentContent, ExecutionIndicator} from "./agent";
 import {BackendOperation, BackendOperationParameters, CommonMessage} from "fusio-sdk";
 import {AgentActionService} from "./agent-action.service";
 import {AgentSchemaService} from "./agent-schema.service";
 import {AgentDatabaseService} from "./agent-database.service";
-import {ErrorService} from "ngx-fusio-sdk";
+import {AgentAbstract, AgentContent, ErrorService, ExecutionIndicator, FusioService} from "ngx-fusio-sdk";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
 
-  protected action = inject(AgentActionService);
-  protected schema = inject(AgentSchemaService);
-  protected database = inject(AgentDatabaseService);
-  protected error = inject(ErrorService);
+  private api = inject(FusioService);
+  private action = inject(AgentActionService);
+  private schema = inject(AgentSchemaService);
+  private database = inject(AgentDatabaseService);
+  private error = inject(ErrorService);
 
-  transform(content: BackendAgentContent): Blueprint|undefined {
+  transform(content: AgentContent): Blueprint|undefined {
     const object = this.getJson(content) as Blueprint;
     if (!object || !object.operations || !Array.isArray(object.operations)) {
       return;

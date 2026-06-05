@@ -1,16 +1,16 @@
 import {inject, Injectable} from '@angular/core';
-import {AgentAbstract, BackendAgentContent, ExecutionIndicator} from "./agent";
 import {CommonMessage} from "fusio-sdk";
-import {ErrorService} from "ngx-fusio-sdk";
+import {AgentAbstract, AgentContent, ErrorService, ExecutionIndicator, FusioService} from "ngx-fusio-sdk";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AgentSeedService extends AgentAbstract<SeedData, Options> {
 
-  protected error = inject(ErrorService);
+  private api = inject(FusioService);
+  private error = inject(ErrorService);
 
-  transform(content: BackendAgentContent): SeedData|undefined {
+  transform(content: AgentContent): SeedData|undefined {
     const object = this.getJson(content) as SeedData;
     if (!object || !object.tables) {
       return;

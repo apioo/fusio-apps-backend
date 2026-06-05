@@ -13,11 +13,11 @@
           </div>
         }
         @else {
-          <app-agent-message-row [message]="message"></app-agent-message-row>
+          <fusio-agent-message-row [message]="message"></fusio-agent-message-row>
         }
       }
       <div id="messages-bottom"></div>
-      <app-agent-message-input [loading]="messagesResource.isLoading() || loading()" (send)="doSend($event)"></app-agent-message-input>
+      <fusio-agent-message-input [loading]="messagesResource.isLoading() || loading()" (send)="doSend($event)"></fusio-agent-message-input>
     </div>
   </div>
   <div class="col-xl-6">

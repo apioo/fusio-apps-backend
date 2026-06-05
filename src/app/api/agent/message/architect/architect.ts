@@ -1,8 +1,13 @@
 import {Component, inject, signal} from '@angular/core';
-import {ChatAbstract} from "../chat-abstract";
-import {Input} from "../input/input";
-import {FormAutocompleteComponent, MessageComponent} from "ngx-fusio-sdk";
-import {Row} from "../row/row";
+import {
+  Agent,
+  ChatAbstract,
+  FormAutocompleteComponent,
+  FusioService,
+  Input,
+  MessageComponent,
+  Row
+} from "ngx-fusio-sdk";
 import {JsonPipe} from "@angular/common";
 import {
   NgbAccordionBody,
@@ -15,7 +20,6 @@ import {
 } from "@ng-bootstrap/ng-bootstrap";
 import {OperationStatus} from "../../../../shared/operation-status/operation-status";
 import {AgentArchitectService, Blueprint, Options} from "../../../../services/agent/agent-architect.service";
-import {Agent} from "../../../../services/agent/agent";
 import {ConnectionService} from "../../../../services/connection.service";
 import {AgentService} from "../../../../services/agent.service";
 import {Loader} from "../../loader/loader";
@@ -23,9 +27,7 @@ import {Loader} from "../../loader/loader";
 @Component({
   selector: 'app-agent-message-architect',
   imports: [
-    Input,
     MessageComponent,
-    Row,
     NgbAccordionBody,
     NgbAccordionButton,
     NgbAccordionCollapse,
@@ -37,6 +39,8 @@ import {Loader} from "../../loader/loader";
     FormAutocompleteComponent,
     NgbPopover,
     Loader,
+    Row,
+    Input,
   ],
   templateUrl: './architect.html',
   styleUrl: './architect.css',
@@ -48,6 +52,7 @@ export class Architect extends ChatAbstract<Blueprint, Options> {
   schemaAgentId = signal<number|undefined>(undefined);
   databaseAgentId = signal<number|undefined>(undefined);
 
+  api = inject(FusioService);
   architectAgent = inject(AgentArchitectService);
   connection = inject(ConnectionService);
   agentService = inject(AgentService);

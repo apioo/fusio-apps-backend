@@ -1,11 +1,8 @@
 import {Component, inject, signal} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {JsonPipe} from "@angular/common";
-import {FormAutocompleteComponent, MessageComponent} from "ngx-fusio-sdk";
+import {Agent, ChatAbstract, FormAutocompleteComponent, Input, MessageComponent, Row} from "ngx-fusio-sdk";
 import {TypeschemaEditorModule} from "ngx-typeschema-editor";
-import {ChatAbstract} from "../chat-abstract";
-import {Input} from "../input/input";
-import {Row} from "../row/row";
 import {ConnectionService} from "../../../../services/connection.service";
 import {
   NgbAccordionBody,
@@ -16,7 +13,6 @@ import {
   NgbAccordionItem,
   NgbPopover
 } from "@ng-bootstrap/ng-bootstrap";
-import {Agent} from "../../../../services/agent/agent";
 import {AgentSeedService, Options, SeedData} from "../../../../services/agent/agent-seed.service";
 
 @Component({
@@ -26,8 +22,6 @@ import {AgentSeedService, Options, SeedData} from "../../../../services/agent/ag
     JsonPipe,
     MessageComponent,
     TypeschemaEditorModule,
-    Input,
-    Row,
     FormAutocompleteComponent,
     NgbPopover,
     NgbAccordionBody,
@@ -35,7 +29,9 @@ import {AgentSeedService, Options, SeedData} from "../../../../services/agent/ag
     NgbAccordionCollapse,
     NgbAccordionDirective,
     NgbAccordionHeader,
-    NgbAccordionItem
+    NgbAccordionItem,
+    Row,
+    Input
   ],
   templateUrl: './seed.html',
   styleUrl: './seed.css',

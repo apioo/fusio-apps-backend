@@ -4,12 +4,8 @@ import {FormsModule} from "@angular/forms";
 import {Response} from "../../../action/designer/response/response";
 import {TypeschemaEditorModule} from "ngx-typeschema-editor";
 import {BackendActionExecuteResponse, BackendActionExecuteResponseBody, CommonMessage} from "fusio-sdk";
-import {ChatAbstract} from "../chat-abstract";
-import {MessageComponent} from "ngx-fusio-sdk";
-import {Input} from "../input/input";
-import {Row} from "../row/row";
+import {Agent, ChatAbstract, FusioService, Input, MessageComponent, Row} from "ngx-fusio-sdk";
 import {Action as ActionModel, AgentActionService} from "../../../../services/agent/agent-action.service";
-import {Agent} from "../../../../services/agent/agent";
 
 @Component({
   selector: 'app-agent-message-action',
@@ -19,8 +15,8 @@ import {Agent} from "../../../../services/agent/agent";
     Response,
     TypeschemaEditorModule,
     MessageComponent,
+    Row,
     Input,
-    Row
   ],
   templateUrl: './action.html',
   styleUrl: './action.css',
@@ -29,6 +25,7 @@ export class Action extends ChatAbstract<ActionModel> {
 
   actionResponse = signal<BackendActionExecuteResponse|undefined>(undefined);
 
+  api = inject(FusioService);
   actionAgent = inject(AgentActionService);
 
   getAgent(): Agent<ActionModel> {
