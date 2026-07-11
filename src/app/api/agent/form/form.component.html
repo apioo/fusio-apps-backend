@@ -72,6 +72,12 @@
     </div>
   </div>
   <div class="mb-3 row">
+    <label for="costs" class="col-lg-2 col-form-label fw-bold">Costs</label>
+    <div class="col-lg-10">
+      <input type="number" id="costs" name="costs" step="1" min="0" [ngModel]="entity().costs" (ngModelChange)="set(entity, 'costs', $event)" [disabled]="mode === 3" class="form-control">
+    </div>
+  </div>
+  <div class="mb-3 row">
     <label for="tools" class="col-lg-2 col-form-label fw-bold">Tools</label>
     <div class="col-lg-10">
       <ul class="list-group" style="max-height:400px;overflow:auto">
