@@ -44,6 +44,7 @@
     "ngx-apexcharts": "^0.9.0",
     "ngx-captcha": "^14.0.0",
     "ngx-clipboard": "^16.0.0",
+    "ngx-diff": "^13.0.0",
     "ngx-fusio-sdk": "^8.1.1",
     "ngx-gravatar": "^13.0.0",
     "ngx-markdown": "^21.3.0",
@@ -53,7 +54,8 @@
     "rxjs": "~7.8.0",
     "sdkgen-client": "^2.1.0",
     "tslib": "^2.3.0",
-    "typehub-javascript-sdk": "^1.2.0"
+    "typehub-javascript-sdk": "^1.2.0",
+    "diff-match-patch-ts": "^2.0.0"
   },
   "devDependencies": {
     "@angular/build": "^21.1.3",

@@ -6,6 +6,7 @@
 @if (spec(); as spec) {
   <div class="btn-group" role="group">
     <a (click)="doPublish()" class="btn btn-primary fusio-btn-publish">Publish</a>
+    <a (click)="doTag()" class="btn btn-secondary fusio-btn-tag">Tag</a>
   </div>
   <hr>
   <typeschema-editor [specification]="spec" [operationEnabled]="true" [readonly]="true"></typeschema-editor>

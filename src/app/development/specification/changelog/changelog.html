@@ -1,0 +1,16 @@
+<div class="modal-header">
+  <h4 class="modal-title">New Tag</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+  <h4>Version: {{ version() }}</h4>
+  <h5>Changelog</h5>
+  <pre>{{ changelog() }}</pre>
+  <hr>
+  @if (master() && tag()) {
+    <ngx-unified-diff [before]="tag()" [after]="master()" [lineContextSize]="4" class="ngx-diff-light-theme"></ngx-unified-diff>
+  }
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="modal.close(true)">Save</button>
+</div>

@@ -1,8 +1,10 @@
 import {Component, OnInit, signal} from '@angular/core';
-import {CommonMessage} from "fusio-sdk";
+import {BackendSpecificationChangelog, CommonMessage} from "fusio-sdk";
 import {ApiService} from "../../../api.service";
 import {ErrorService, MessageComponent} from "ngx-fusio-sdk";
 import {ImportService, Specification, TypeschemaEditorModule} from "ngx-typeschema-editor";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {Changelog} from "../changelog/changelog";
 
 @Component({
   selector: 'app-specification-list',
@@ -18,7 +20,7 @@ export class List implements OnInit {
   spec = signal<Specification|undefined>(undefined);
   response = signal<CommonMessage|undefined>(undefined);
 
-  constructor(private fusio: ApiService, private importService: ImportService, private error: ErrorService) { }
+  constructor(private fusio: ApiService, private importService: ImportService, private error: ErrorService, private modalService: NgbModal) { }
 
   async ngOnInit(): Promise<void> {
     try {
@@ -35,6 +37,30 @@ export class List implements OnInit {
       const response = await this.fusio.getClient().backend().specification().publish({});
 
       this.response.set(response);
+    } catch (error) {
+      this.response.set(this.error.convert(error));
+    }
+  }
+
+  async doTag() {
+    try {
+      const changelog = await this.fusio.getClient().backend().specification().getChangelog();
+
+      const modalRef = this.modalService.open(Changelog, {
+        size: 'lg'
+      });
+      modalRef.componentInstance.input = changelog;
+      modalRef.closed.subscribe(async (confirm: boolean) => {
+        if (confirm === true) {
+          try {
+            const response = await this.fusio.getClient().backend().specification().tag({});
+
+            this.response.set(response);
+          } catch (error) {
+            this.response.set(this.error.convert(error));
+          }
+        }
+      });
     } catch (error) {
       this.response.set(this.error.convert(error));
     }
