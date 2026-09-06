@@ -21,7 +21,7 @@ export class Changelog implements OnInit {
   master = signal<string>('');
   tag = signal<string>('');
   version = signal<string>('');
-  changelog = signal<Array<string>>([]);
+  changelog = signal<string>('');
 
   modal = inject(NgbActiveModal);
 
@@ -29,7 +29,7 @@ export class Changelog implements OnInit {
     this.master.set(JSON.stringify(this.input.master, null, 4));
     this.tag.set(JSON.stringify(this.input.tag, null, 4));
     this.version.set(this.input.version || '');
-    this.changelog.set(this.input.changelog || []);
+    this.changelog.set(this.input.changelog || '');
   }
 
 }
