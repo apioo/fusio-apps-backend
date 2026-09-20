@@ -22,7 +22,7 @@
     <div class="col-lg-10">
       <div class="input-group">
         <select id="type" name="type" [ngModel]="entity().type" (ngModelChange)="set(entity, 'type', $event)" class="form-select">
-          @for (type of types; track type.key) {
+          @for (type of types(); track type.key) {
             <option [ngValue]="type.key">{{type.value}}</option>
           }
         </select>

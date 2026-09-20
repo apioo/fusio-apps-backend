@@ -3,7 +3,7 @@ import {BackendOperation, BackendOperationParameters, CommonMessage} from "fusio
 import {AgentActionService} from "./agent-action.service";
 import {AgentSchemaService} from "./agent-schema.service";
 import {AgentDatabaseService} from "./agent-database.service";
-import {AgentAbstract, AgentContent, ErrorService, ExecutionIndicator, FusioService} from "ngx-fusio-sdk";
+import {AgentAbstract, AgentContent, Connection, ErrorService, ExecutionIndicator, FusioService} from "ngx-fusio-sdk";
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +25,7 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
     return object;
   }
 
-  async execute(model: Blueprint, indicator: ExecutionIndicator, options: Options): Promise<CommonMessage|undefined> {
+  async execute(connection: Connection, model: Blueprint, indicator: ExecutionIndicator, options: Options): Promise<CommonMessage|undefined> {
     const connectionId = options.connectionId;
     if (!connectionId) {
       return;
@@ -43,13 +43,13 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
     }
 
     if (model.database) {
-      await this.invokeDatabaseAgent(options.databaseAgentId, model.database, options.connectionId, indicator);
+      await this.invokeDatabaseAgent(connection, options.databaseAgentId, model.database, options.connectionId, indicator);
     }
 
     let response: CommonMessage|undefined;
     for (let i = 0; i < model.operations.length; i++) {
       try {
-        const operation = await this.transformOperation(model.operations[i], indicator, options);
+        const operation = await this.transformOperation(connection, model.operations[i], indicator, options);
         if (!operation) {
           continue;
         }
@@ -83,18 +83,18 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
     };
   }
 
-  private async transformOperation(operation: Operation, indicator: ExecutionIndicator, options: Options): Promise<BackendOperation|undefined> {
+  private async transformOperation(connection: Connection, operation: Operation, indicator: ExecutionIndicator, options: Options): Promise<BackendOperation|undefined> {
     let incoming: string|undefined = undefined;
     if (operation.incoming && operation.incoming !== 'Empty') {
-      incoming = await this.resolveSchema(options.schemaAgentId, operation.incoming, indicator);
+      incoming = await this.resolveSchema(connection, options.schemaAgentId, operation.incoming, indicator);
     }
 
     let outgoing: string|undefined = undefined;
     if (operation.outgoing && operation.outgoing !== 'Empty') {
-      outgoing = await this.resolveSchema(options.schemaAgentId, operation.outgoing, indicator);
+      outgoing = await this.resolveSchema(connection, options.schemaAgentId, operation.outgoing, indicator);
     }
 
-    const action = await this.resolveAction(options.actionAgentId, operation.action, indicator);
+    const action = await this.resolveAction(connection, options.actionAgentId, operation.action, indicator);
     if (!action) {
       return;
     }
@@ -123,10 +123,10 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
     };
   }
 
-  private async invokeSchemaAgent(agentId: number, prompt: string, indicator: ExecutionIndicator): Promise<CommonMessage|undefined> {
+  private async invokeSchemaAgent(connection: Connection, agentId: number, prompt: string, indicator: ExecutionIndicator): Promise<CommonMessage|undefined> {
     indicator.request('Schema agent request: ' + prompt);
 
-    const content = await this.schema.prompt(agentId, prompt);
+    const content = await this.schema.prompt(connection, agentId, prompt, 0);
     if (!content) {
       return;
     }
@@ -136,13 +136,13 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
       return;
     }
 
-    return await this.schema.execute(model, indicator);
+    return await this.schema.execute(connection, model, indicator);
   }
 
-  private async invokeActionAgent(agentId: number, prompt: string, indicator: ExecutionIndicator): Promise<CommonMessage|undefined> {
+  private async invokeActionAgent(connection: Connection, agentId: number, prompt: string, indicator: ExecutionIndicator): Promise<CommonMessage|undefined> {
     indicator.request('Action agent request: ' + prompt);
 
-    const content = await this.action.prompt(agentId, prompt);
+    const content = await this.action.prompt(connection, agentId, prompt, 0);
     if (!content) {
       return;
     }
@@ -152,13 +152,13 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
       return;
     }
 
-    return await this.action.execute(model, indicator);
+    return await this.action.execute(connection, model, indicator);
   }
 
-  private async invokeDatabaseAgent(agentId: number, prompt: string, connectionId: number, indicator: ExecutionIndicator): Promise<CommonMessage|undefined> {
+  private async invokeDatabaseAgent(connection: Connection, agentId: number, prompt: string, connectionId: number, indicator: ExecutionIndicator): Promise<CommonMessage|undefined> {
     indicator.request('Database agent request: ' + prompt);
 
-    const content = await this.database.prompt(agentId, prompt);
+    const content = await this.database.prompt(connection, agentId, prompt, 0);
     if (!content) {
       return;
     }
@@ -168,17 +168,17 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
       return;
     }
 
-    return await this.database.execute(model, indicator, {
+    return await this.database.execute(connection, model, indicator, {
       connectionId: connectionId
     });
   }
 
-  private async resolveSchema(agentId: number, prompt: string, indicator: ExecutionIndicator): Promise<string|undefined> {
+  private async resolveSchema(connection: Connection, agentId: number, prompt: string, indicator: ExecutionIndicator): Promise<string|undefined> {
     if (prompt === 'Message') {
       return 'schema://' + prompt;
     }
 
-    const response = await this.invokeSchemaAgent(agentId, prompt, indicator);
+    const response = await this.invokeSchemaAgent(connection, agentId, prompt, indicator);
     if (!response) {
       return;
     }
@@ -196,8 +196,8 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
     return 'schema://' + schema.name;
   }
 
-  private async resolveAction(agentId: number, prompt: string, indicator: ExecutionIndicator): Promise<string|undefined> {
-    const response = await this.invokeActionAgent(agentId, prompt, indicator);
+  private async resolveAction(connection: Connection, agentId: number, prompt: string, indicator: ExecutionIndicator): Promise<string|undefined> {
+    const response = await this.invokeActionAgent(connection, agentId, prompt, indicator);
     if (!response) {
       return;
     }

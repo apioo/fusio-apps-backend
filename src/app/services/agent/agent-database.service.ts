@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {BackendDatabaseTable, CommonMessage} from "fusio-sdk";
-import {AgentAbstract, AgentContent, ErrorService, ExecutionIndicator, FusioService} from "ngx-fusio-sdk";
+import {AgentAbstract, AgentContent, Connection, ErrorService, ExecutionIndicator, FusioService} from "ngx-fusio-sdk";
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +19,7 @@ export class AgentDatabaseService extends AgentAbstract<Database, Options> {
     return object;
   }
 
-  async execute(model: Database, indicator: ExecutionIndicator, options: Options): Promise<CommonMessage|undefined> {
+  async execute(connection: Connection, model: Database, indicator: ExecutionIndicator, options: Options): Promise<CommonMessage|undefined> {
     const connectionId = options.connectionId;
     if (!connectionId) {
       return;

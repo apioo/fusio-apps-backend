@@ -1,0 +1,8 @@
+
+<h1>
+  <a [routerLink]="['/', 'agent']">Agent</a> /
+  <a [routerLink]="['/', 'agent', agent()?.id]">{{agent()?.name}}</a> /
+  Chat
+</h1>
+
+<fusio-agent-container [connection]="connection" [basePath]="['/agent']" (agentLoad)="agent.set($event)"></fusio-agent-container>

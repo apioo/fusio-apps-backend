@@ -47,7 +47,7 @@ import {FormComponent as TriggerForm} from "./api/trigger/form/form.component";
 import {ListComponent as AgentList} from "./api/agent/list/list.component";
 import {DetailComponent as AgentDetail} from "./api/agent/detail/detail.component";
 import {FormComponent as AgentForm} from "./api/agent/form/form.component";
-import {Message as AgentMessage} from "./api/agent/message/message";
+import {Chat as AgentChat} from "./api/agent/chat/chat";
 import {GeneratorComponent} from "./development/generator/generator.component";
 import {ListComponent as MarketplaceList} from "./development/marketplace/list/list.component";
 import {ListComponent as MarketplaceBundleList} from "./development/marketplace/bundle/list/list.component";
@@ -119,6 +119,7 @@ import {DetailComponent as AuditDetail} from "./system/audit/detail/detail.compo
 import {ListComponent as BackupList} from "./system/backup/list/list.component";
 import {ListComponent as TrashList} from "./system/trash/list/list.component";
 import {AgentComponent} from "./api/connection/designer/agent/agent.component";
+import {Redirect as AgentRedirect} from "./api/agent/redirect/redirect";
 
 export const routes: Routes = [
   { path: '', component: DashboardList, canActivate: [isAuthenticated] },
@@ -151,8 +152,9 @@ export const routes: Routes = [
   { path: 'cronjob', canActivate: [isAuthenticated], children: EntityRoute.getAll(CronjobList, CronjobDetail, CronjobForm) },
   { path: 'trigger', canActivate: [isAuthenticated], children: EntityRoute.getAll(TriggerList, TriggerDetail, TriggerForm) },
   { path: 'agent', canActivate: [isAuthenticated], children: EntityRoute.getAll(AgentList, AgentDetail, AgentForm) },
-  { path: 'agent/:id/message', canActivate: [isAuthenticated], component: AgentMessage },
-  { path: 'agent/:id/message/:chat_id', canActivate: [isAuthenticated], component: AgentMessage },
+  { path: 'agent/:id/chat', canActivate: [isAuthenticated], component: AgentChat },
+  { path: 'agent/:id/chat/:chat_id', canActivate: [isAuthenticated], component: AgentChat },
+  { path: 'agent/redirect/:type/:ref', canActivate: [isAuthenticated], component: AgentRedirect },
 
   { path: 'generator', component: GeneratorComponent, canActivate: [isAuthenticated] },
   { path: 'marketplace', component: MarketplaceList, canActivate: [isAuthenticated] },

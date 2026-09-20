@@ -1,5 +1,13 @@
-import {Component, signal} from '@angular/core';
-import {ErrorService, Form, FormAutocompleteComponent, HelpService, MessageComponent} from "ngx-fusio-sdk";
+import {Component, computed, inject, signal, Type} from '@angular/core';
+import {
+  Chat, ChatType,
+  ErrorService,
+  Form,
+  FormAutocompleteComponent,
+  FUSIO_AGENT_CHAT_REGISTRY,
+  HelpService,
+  MessageComponent
+} from "ngx-fusio-sdk";
 import {BackendAgent, BackendAgentTool} from "fusio-sdk";
 import {ActivatedRoute, Router} from "@angular/router";
 import {EventService} from "../../../services/event.service";
@@ -28,17 +36,22 @@ import {ApiService} from "../../../api.service";
 })
 export class FormComponent extends Form<BackendAgent> {
 
-  types = [
-    {key: 0, value: 'General'},
-    {key: 1, value: 'Architect'},
-    {key: 2, value: 'Action'},
-    {key: 3, value: 'Schema'},
-    {key: 4, value: 'Database'}
-  ]
+  types = computed(() => {
+    const result: Array<{key: number, value: string}> = [];
+    this.registry.forEach((value: ChatType, key: number) => {
+      result.push({
+        key: key,
+        value: value.label,
+      });
+    });
+    return result;
+  });
 
   tools = signal<Array<BackendAgentTool>>([]);
 
   selected = signal<Record<string, boolean>>({});
+
+  private registry = inject(FUSIO_AGENT_CHAT_REGISTRY);
 
   constructor(private service: AgentService, private api: ApiService, private help: HelpService, public connection: ConnectionService, public event: EventService, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);

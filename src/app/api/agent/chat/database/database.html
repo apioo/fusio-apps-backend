@@ -23,7 +23,7 @@
   <div class="col-xl-6">
     <div>
       <label for="connection" class="form-label">Connection</label>
-      <fusio-form-autocomplete name="connection" id="connection" [service]="connection" [useId]="true" [data]="connectionId()" (dataChangeId)="connectionId.set($event)">
+      <fusio-form-autocomplete name="connection" id="connection" [service]="connectionService" [useId]="true" [data]="connectionId()" (dataChangeId)="connectionId.set($event)">
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="connectionHelp"><i class="bi bi-question"></i></button>
         <ng-template #connectionHelp>The target database connection where all tables are created if you click on the "Create" button.</ng-template>
       </fusio-form-autocomplete>

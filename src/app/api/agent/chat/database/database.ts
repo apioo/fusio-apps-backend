@@ -1,7 +1,7 @@
 import {Component, inject, signal} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {JsonPipe} from "@angular/common";
-import {Agent, ChatAbstract, FormAutocompleteComponent, Input, MessageComponent, Row} from "ngx-fusio-sdk";
+import {Agent, Chat, FormAutocompleteComponent, Input, MessageComponent, Row} from "ngx-fusio-sdk";
 import {TypeschemaEditorModule} from "ngx-typeschema-editor";
 import {DatabaseTable} from "../../../../shared/database-table/database-table";
 import {ConnectionService} from "../../../../services/connection.service";
@@ -13,7 +13,7 @@ import {
 } from "../../../../services/agent/agent-database.service";
 
 @Component({
-  selector: 'app-agent-message-database',
+  selector: 'app-agent-chat-database',
   imports: [
     FormsModule,
     JsonPipe,
@@ -28,12 +28,12 @@ import {
   templateUrl: './database.html',
   styleUrl: './database.css',
 })
-export class Database extends ChatAbstract<DatabaseModel, Options> {
+export class Database extends Chat<DatabaseModel, Options> {
 
   connectionId = signal<number|undefined>(undefined);
 
   databaseAgent = inject(AgentDatabaseService);
-  connection = inject(ConnectionService);
+  connectionService = inject(ConnectionService);
 
   getAgent(): Agent<DatabaseModel, Options> {
     return this.databaseAgent;

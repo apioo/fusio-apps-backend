@@ -1,12 +1,12 @@
 import {Component, inject} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {JsonPipe} from "@angular/common";
-import {Agent, ChatAbstract, Input, MessageComponent, Row} from "ngx-fusio-sdk";
+import {Agent, Chat, Input, MessageComponent, Row} from "ngx-fusio-sdk";
 import {TypeschemaEditorModule} from "ngx-typeschema-editor";
 import {AgentSchemaService, Schema as SchemaModel} from "../../../../services/agent/agent-schema.service";
 
 @Component({
-  selector: 'app-agent-message-schema',
+  selector: 'app-agent-chat-schema',
   imports: [
     FormsModule,
     JsonPipe,
@@ -18,7 +18,7 @@ import {AgentSchemaService, Schema as SchemaModel} from "../../../../services/ag
   templateUrl: './schema.html',
   styleUrl: './schema.css',
 })
-export class Schema extends ChatAbstract<SchemaModel> {
+export class Schema extends Chat<SchemaModel> {
 
   schemaAgent = inject(AgentSchemaService);
 

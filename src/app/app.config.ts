@@ -8,17 +8,20 @@ import {provideRouter} from '@angular/router';
 import {provideHttpClient, withFetch} from "@angular/common/http";
 import {PathLocationStrategy} from "@angular/common";
 import {ApiService} from "./api.service";
-
 import {routes} from './app.routes';
 import {ConfigBuilder} from "./config-builder";
 import {provideMarkdown} from "ngx-markdown";
-import {ApiService as SDK, AgentConnectionService as AgentConnection, FUSIO_CONFIG} from "ngx-fusio-sdk";
+import {ApiService as SDK, FUSIO_CONFIG, provideAgentChatTypes} from "ngx-fusio-sdk";
 import {NGX_MONACO_EDITOR_CONFIG} from "ngx-monaco-editor-v2";
 import {JavaCompletion} from "./editor/java-completion";
 import {PHPCompletion} from "./editor/php-completion";
 import {JavascriptCompletion} from "./editor/javascript-completion";
 import {PythonCompletion} from "./editor/python-completion";
-import {AgentConnectionService} from "./services/agent/agent-connection.service";
+import {Architect} from "./api/agent/chat/architect/architect";
+import {Action} from "./api/agent/chat/action/action";
+import {Schema} from "./api/agent/chat/schema/schema";
+import {Database} from "./api/agent/chat/database/database";
+import {Seed} from "./api/agent/chat/seed/seed";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -26,14 +29,17 @@ export const appConfig: ApplicationConfig = {
     provideZonelessChangeDetection(),
     provideRouter(routes),
     provideHttpClient(withFetch()),
+    provideAgentChatTypes([
+      [1, {type: Architect, label: 'Architect'}],
+      [2, {type: Action, label: 'Action'}],
+      [3, {type: Schema, label: 'Schema'}],
+      [4, {type: Database, label: 'Database'}],
+      [5, {type: Seed, label: 'Seed'}],
+    ]),
     provideMarkdown(),
     {
       provide: SDK,
       useExisting: ApiService
-    },
-    {
-      provide: AgentConnection,
-      useExisting: AgentConnectionService
     },
     {
       provide: FUSIO_CONFIG,

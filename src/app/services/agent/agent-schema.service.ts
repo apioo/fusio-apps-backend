@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {BackendSchema, CommonMessage} from "fusio-sdk";
 import {ExportService, Specification} from "ngx-typeschema-editor";
-import {AgentAbstract, AgentContent, ExecutionIndicator, FusioService} from "ngx-fusio-sdk";
+import {AgentAbstract, AgentContent, Connection, ExecutionIndicator, FusioService} from "ngx-fusio-sdk";
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,7 @@ export class AgentSchemaService extends AgentAbstract<Schema> {
     return object;
   }
 
-  async execute(model: Schema, indicator: ExecutionIndicator): Promise<CommonMessage|undefined> {
+  async execute(connection: Connection, model: Schema, indicator: ExecutionIndicator): Promise<CommonMessage|undefined> {
     const name = model.name;
     if (!name) {
       return;

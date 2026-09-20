@@ -40,30 +40,9 @@
     @else if (!executeLoading()) {
       <div class="mb-3">
         <label for="connection" class="form-label">Connection</label>
-        <fusio-form-autocomplete name="connection" id="connection" [service]="connection" [useId]="true" [data]="connectionId()" (dataChangeId)="connectionId.set($event)">
+        <fusio-form-autocomplete name="connection" id="connection" [service]="connectionService" [useId]="true" [data]="connectionId()" (dataChangeId)="connectionId.set($event)">
           <button class="btn btn-outline-secondary" type="button" [ngbPopover]="connectionHelp"><i class="bi bi-question"></i></button>
           <ng-template #connectionHelp>The target database connection where all tables are created.</ng-template>
-        </fusio-form-autocomplete>
-      </div>
-      <div class="mb-3">
-        <label for="actionAgent" class="form-label">Action-Agent</label>
-        <fusio-form-autocomplete name="actionAgent" id="actionAgent" [service]="agentService" [useId]="true" [data]="actionAgentId()" (dataChangeId)="actionAgentId.set($event)">
-          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="actionAgentHelp"><i class="bi bi-question"></i></button>
-          <ng-template #actionAgentHelp>The agent which is used to create actions.</ng-template>
-        </fusio-form-autocomplete>
-      </div>
-      <div class="mb-3">
-        <label for="schemaAgent" class="form-label">Schema-Agent</label>
-        <fusio-form-autocomplete name="schemaAgent" id="schemaAgent" [service]="agentService" [useId]="true" [data]="schemaAgentId()" (dataChangeId)="schemaAgentId.set($event)">
-          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="schemaAgentHelp"><i class="bi bi-question"></i></button>
-          <ng-template #schemaAgentHelp>The agent which is used to create schemas.</ng-template>
-        </fusio-form-autocomplete>
-      </div>
-      <div class="mb-3">
-        <label for="databaseAgent" class="form-label">Database-Agent</label>
-        <fusio-form-autocomplete name="databaseAgent" id="databaseAgent" [service]="agentService" [useId]="true" [data]="databaseAgentId()" (dataChangeId)="databaseAgentId.set($event)">
-          <button class="btn btn-outline-secondary" type="button" [ngbPopover]="databaseAgentHelp"><i class="bi bi-question"></i></button>
-          <ng-template #databaseAgentHelp>The agent which is used to create tables.</ng-template>
         </fusio-form-autocomplete>
       </div>
       @if (model(); as blueprint) {

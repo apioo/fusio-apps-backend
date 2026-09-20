@@ -4,11 +4,11 @@ import {FormsModule} from "@angular/forms";
 import {Response} from "../../../action/designer/response/response";
 import {TypeschemaEditorModule} from "ngx-typeschema-editor";
 import {BackendActionExecuteResponse, BackendActionExecuteResponseBody, CommonMessage} from "fusio-sdk";
-import {Agent, ChatAbstract, FusioService, Input, MessageComponent, Row} from "ngx-fusio-sdk";
+import {Agent, Chat, FusioService, Input, MessageComponent, Row} from "ngx-fusio-sdk";
 import {Action as ActionModel, AgentActionService} from "../../../../services/agent/agent-action.service";
 
 @Component({
-  selector: 'app-agent-message-action',
+  selector: 'app-agent-chat-action',
   imports: [
     EditorComponent,
     FormsModule,
@@ -21,7 +21,7 @@ import {Action as ActionModel, AgentActionService} from "../../../../services/ag
   templateUrl: './action.html',
   styleUrl: './action.css',
 })
-export class Action extends ChatAbstract<ActionModel> {
+export class Action extends Chat<ActionModel> {
 
   actionResponse = signal<BackendActionExecuteResponse|undefined>(undefined);
 
@@ -30,6 +30,18 @@ export class Action extends ChatAbstract<ActionModel> {
 
   getAgent(): Agent<ActionModel> {
     return this.actionAgent;
+  }
+
+  protected override async onEmpty() {
+    const refId = this.refId();
+    if (refId > 0) {
+      const action = await this.api.getClient().backend().action().get('' + refId);
+
+      this.model.set({
+        name: action.name || '',
+        code: action.config?.['code'] || '',
+      })
+    }
   }
 
   override async onExecute(message: CommonMessage) {

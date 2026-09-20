@@ -1,13 +1,5 @@
 import {Component, inject, signal} from '@angular/core';
-import {
-  Agent,
-  ChatAbstract,
-  FormAutocompleteComponent,
-  FusioService,
-  Input,
-  MessageComponent,
-  Row
-} from "ngx-fusio-sdk";
+import {Agent, Chat, FormAutocompleteComponent, FusioService, Input, MessageComponent, Row} from "ngx-fusio-sdk";
 import {JsonPipe} from "@angular/common";
 import {
   NgbAccordionBody,
@@ -20,12 +12,11 @@ import {
 } from "@ng-bootstrap/ng-bootstrap";
 import {OperationStatus} from "../../../../shared/operation-status/operation-status";
 import {AgentArchitectService, Blueprint, Options} from "../../../../services/agent/agent-architect.service";
-import {ConnectionService} from "../../../../services/connection.service";
-import {AgentService} from "../../../../services/agent.service";
 import {Loader} from "../../loader/loader";
+import {ConnectionService} from "../../../../services/connection.service";
 
 @Component({
-  selector: 'app-agent-message-architect',
+  selector: 'app-agent-chat-architect',
   imports: [
     MessageComponent,
     NgbAccordionBody,
@@ -45,7 +36,7 @@ import {Loader} from "../../loader/loader";
   templateUrl: './architect.html',
   styleUrl: './architect.css',
 })
-export class Architect extends ChatAbstract<Blueprint, Options> {
+export class Architect extends Chat<Blueprint, Options> {
 
   connectionId = signal<number|undefined>(undefined);
   actionAgentId = signal<number|undefined>(undefined);
@@ -54,8 +45,7 @@ export class Architect extends ChatAbstract<Blueprint, Options> {
 
   api = inject(FusioService);
   architectAgent = inject(AgentArchitectService);
-  connection = inject(ConnectionService);
-  agentService = inject(AgentService);
+  connectionService = inject(ConnectionService);
 
   getAgent(): Agent<Blueprint, Options> {
     return this.architectAgent;
