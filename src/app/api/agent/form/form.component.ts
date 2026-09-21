@@ -19,7 +19,6 @@ import {AgentService} from "../../../services/agent.service";
 import {SchemaSelectorComponent} from "../../../shared/schema-selector/schema-selector.component";
 import {ConnectionService} from "../../../services/connection.service";
 import {ApiService} from "../../../api.service";
-import {ActionService} from "../../../services/action.service";
 import {ActionSelectorComponent} from "../../../shared/action-selector/action-selector.component";
 
 @Component({
@@ -55,7 +54,6 @@ export class FormComponent extends Form<BackendAgent> {
   selected = signal<Record<string, boolean>>({});
 
   private registry = inject(FUSIO_AGENT_CHAT_REGISTRY);
-  actionService = inject(ActionService);
 
   constructor(private service: AgentService, private api: ApiService, private help: HelpService, public connection: ConnectionService, public event: EventService, route: ActivatedRoute, router: Router, error: ErrorService) {
     super(route, router, error);
