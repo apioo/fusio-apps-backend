@@ -8,6 +8,7 @@ import {JsonPipe} from "@angular/common";
 import {AgentService} from "../../../services/agent.service";
 import {SchemaLinkComponent} from "../../../shared/schema-link/schema-link.component";
 import {ApiService} from "../../../api.service";
+import {ActionLinkComponent} from "../../../shared/action-link/action-link.component";
 
 @Component({
   selector: 'app-agent-detail',
@@ -18,7 +19,8 @@ import {ApiService} from "../../../api.service";
     FormsModule,
     JsonPipe,
     SchemaLinkComponent,
-    RouterLink
+    RouterLink,
+    ActionLinkComponent
   ],
   styleUrls: ['./detail.component.css']
 })

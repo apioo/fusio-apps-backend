@@ -66,6 +66,12 @@
     </div>
   </div>
   <div class="mb-3 row">
+    <label for="introductionAction" class="col-lg-2 col-form-label fw-bold">Introduction-Action</label>
+    <div class="col-lg-10">
+      <app-action-selector name="introductionActionHelp" [data]="entity().introductionAction" (dataChange)="set(entity, 'introductionAction', $event)" [disabled]="mode === 3"></app-action-selector>
+    </div>
+  </div>
+  <div class="mb-3 row">
     <label for="temperature" class="col-lg-2 col-form-label fw-bold">Temperature</label>
     <div class="col-lg-10">
       <input type="number" id="temperature" name="temperature" step="0.10" min="0" max="9.99" [ngModel]="entity().temperature" (ngModelChange)="set(entity, 'temperature', $event)" [disabled]="mode === 3" class="form-control">
