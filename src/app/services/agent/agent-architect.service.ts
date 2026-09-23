@@ -126,7 +126,8 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
   private async invokeSchemaAgent(connection: Connection, agentId: number, prompt: string, indicator: ExecutionIndicator): Promise<CommonMessage|undefined> {
     indicator.request('Schema agent request: ' + prompt);
 
-    const content = await this.schema.prompt(connection, agentId, prompt, 0);
+    const output = await this.schema.prompt(connection, agentId, prompt, 0);
+    const content = output?.item;
     if (!content) {
       return;
     }
@@ -142,7 +143,8 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
   private async invokeActionAgent(connection: Connection, agentId: number, prompt: string, indicator: ExecutionIndicator): Promise<CommonMessage|undefined> {
     indicator.request('Action agent request: ' + prompt);
 
-    const content = await this.action.prompt(connection, agentId, prompt, 0);
+    const output = await this.action.prompt(connection, agentId, prompt, 0);
+    const content = output?.item;
     if (!content) {
       return;
     }
@@ -158,7 +160,8 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
   private async invokeDatabaseAgent(connection: Connection, agentId: number, prompt: string, connectionId: number, indicator: ExecutionIndicator): Promise<CommonMessage|undefined> {
     indicator.request('Database agent request: ' + prompt);
 
-    const content = await this.database.prompt(connection, agentId, prompt, 0);
+    const output = await this.database.prompt(connection, agentId, prompt, 0);
+    const content = output?.item;
     if (!content) {
       return;
     }

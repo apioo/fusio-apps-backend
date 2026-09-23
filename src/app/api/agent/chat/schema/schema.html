@@ -4,17 +4,24 @@
 <div class="row">
   <div class="col-xl-6">
     <div style="max-width:1024px">
-      @for (message of messages(); track $index) {
-        @if (message.role === 'assistant' && message.item && message.item.type === 'object' && 'payload' in message.item && message.item.payload) {
-          <div class="mb-2">
-            <div class="d-grid">
-              <button class="btn btn-primary" type="button" (click)="load(message.item)">Generated schema ({{(message.item.payload|json).length}} chars)</button>
+      @if (chatId()) {
+        @for (message of messages(); track $index) {
+          @if (message.role === 'assistant' && message.item && message.item.type === 'object' && 'payload' in message.item && message.item.payload) {
+            <div class="mb-2">
+              <div class="d-grid">
+                <button class="btn btn-primary" type="button" (click)="load(message.item)">Generated schema ({{(message.item.payload|json).length}} chars)</button>
+              </div>
             </div>
-          </div>
+          }
+          @else {
+            <fusio-agent-message-row [message]="message"></fusio-agent-message-row>
+          }
         }
-        @else {
-          <fusio-agent-message-row [message]="message"></fusio-agent-message-row>
-        }
+      }
+      @else {
+        <div class="text-center p-4 fw-bold">
+          {{ agent().description }}<br>
+        </div>
       }
       <div id="messages-bottom"></div>
       <fusio-agent-message-input [loading]="messagesResource.isLoading() || loading()" (send)="doSend($event)"></fusio-agent-message-input>
