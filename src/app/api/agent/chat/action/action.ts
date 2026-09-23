@@ -40,7 +40,7 @@ export class Action extends Chat<ActionModel> {
       this.model.set({
         name: action.name || '',
         code: action.config?.['code'] || '',
-      })
+      });
     }
   }
 
