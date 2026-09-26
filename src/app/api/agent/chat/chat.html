@@ -5,4 +5,4 @@
   Chat
 </h1>
 
-<fusio-agent-container [connection]="connection" [basePath]="['/agent']" (agentLoad)="agent.set($event)"></fusio-agent-container>
+<fusio-agent-container [connection]="connection" [basePath]="['/agent', '{agent_id}', 'chat']" (agentLoad)="agent.set($event)"></fusio-agent-container>
