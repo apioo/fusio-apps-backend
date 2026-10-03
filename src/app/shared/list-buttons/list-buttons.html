@@ -1,0 +1,16 @@
+
+<div class="btn-group float-end" role="group">
+  <a (click)="onDetail.emit()" title="Details" class="btn btn-primary"><i class="bi bi-search"></i></a>
+  <a (click)="onEdit.emit()" title="Edit" class="btn btn-secondary"><i class="bi bi-pen"></i></a>
+  @for (button of buttons(); track $index) {
+    @if (button.link.length > 0) {
+      @if (button.type) {
+        <a [routerLink]="button.link" [title]="button?.title" class="btn btn-{{button.type}}"><i class="bi {{button.icon}}"></i></a>
+      }
+      @else {
+        <a [routerLink]="button.link" [title]="button?.title" class="btn btn-secondary"><i class="bi {{button.icon}}"></i></a>
+      }
+    }
+  }
+  <a (click)="onDelete.emit()" title="Delete" class="btn btn-danger"><i class="bi bi-x"></i></a>
+</div>

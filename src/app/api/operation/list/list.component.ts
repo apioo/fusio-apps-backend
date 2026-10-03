@@ -14,6 +14,7 @@ import {Mover, TaxonomyType} from "../../../services/taxonomy/mover.service";
 import {TreeBuilder} from "../../../services/taxonomy/tree-builder.service";
 import {NgClass} from "@angular/common";
 import {TaxonomyList} from "../../../abstract/taxonomy-list";
+import {ListButtons} from "../../../shared/list-buttons/list-buttons";
 
 @Component({
   selector: 'app-operation-list',
@@ -26,7 +27,8 @@ import {TaxonomyList} from "../../../abstract/taxonomy-list";
     OperationStatus,
     Taxonomy,
     FormsModule,
-    NgClass
+    NgClass,
+    ListButtons
   ],
   styleUrls: ['./list.component.css']
 })

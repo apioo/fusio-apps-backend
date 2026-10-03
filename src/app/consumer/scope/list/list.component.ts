@@ -4,6 +4,7 @@ import {BackendScope} from "fusio-sdk";
 import {ScopeService} from "../../../services/scope.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
+import {ListButtons} from "../../../shared/list-buttons/list-buttons";
 
 @Component({
   selector: 'app-scope-list',
@@ -11,7 +12,8 @@ import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
   imports: [
     MessageComponent,
     SearchComponent,
-    NgbPagination
+    NgbPagination,
+    ListButtons
   ],
   styleUrls: ['./list.component.css']
 })

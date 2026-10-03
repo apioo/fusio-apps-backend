@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {FirewallService} from "../../../services/firewall.service";
 import {DatePipe} from "@angular/common";
 import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
+import {ListButtons} from "../../../shared/list-buttons/list-buttons";
 
 @Component({
   selector: 'app-firewall-list',
@@ -13,7 +14,8 @@ import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
     MessageComponent,
     SearchComponent,
     DatePipe,
-    NgbPagination
+    NgbPagination,
+    ListButtons
   ],
   styleUrls: ['./list.component.css']
 })

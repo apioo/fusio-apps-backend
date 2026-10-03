@@ -1,15 +1,15 @@
-import {Component, inject, signal} from '@angular/core';
-import {ErrorService, List, MessageComponent, SearchComponent} from "ngx-fusio-sdk";
+import {Component} from '@angular/core';
+import {ErrorService, MessageComponent, SearchComponent} from "ngx-fusio-sdk";
 import {BackendAction} from "fusio-sdk";
 import {ActionService} from "../../../services/action.service";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
-import {Mover, TaxonomyType} from "../../../services/taxonomy/mover.service";
+import {TaxonomyType} from "../../../services/taxonomy/mover.service";
 import {Taxonomy} from "../../../shared/taxonomy/taxonomy";
 import {NgClass} from "@angular/common";
-import {TreeBuilder} from "../../../services/taxonomy/tree-builder.service";
 import {TaxonomyList} from "../../../abstract/taxonomy-list";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {ListButtons} from "../../../shared/list-buttons/list-buttons";
 
 @Component({
   selector: 'app-action-list',
@@ -17,12 +17,12 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
   imports: [
     MessageComponent,
     SearchComponent,
-    RouterLink,
     NgbPagination,
     Taxonomy,
     NgClass,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    ListButtons
   ],
   styleUrls: ['./list.component.css']
 })

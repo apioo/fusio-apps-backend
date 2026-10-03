@@ -38,14 +38,17 @@
             <td>{{entry.name}}</td>
             <td>{{entry.class}}</td>
             <td>
-              <div class="btn-group" role="group">
-                <a (click)="doDetail(entry.id)" class="btn btn-primary"><i class="bi bi-search"></i></a>
-                <a (click)="doEdit(entry.id)" class="btn btn-secondary"><i class="bi bi-pen"></i></a>
-                <a [routerLink]="['/', 'action', 'designer', entry.id]" class="btn btn-secondary"><i class="bi bi-terminal"></i></a>
-                <a [routerLink]="['/', 'action', 'commit', entry.id]" class="btn btn-secondary"><i class="bi bi-clock-history"></i></a>
-                <a [routerLink]="['/', 'agent', 'redirect', 2, entry.id]" class="btn btn-secondary"><i class="bi bi-robot"></i></a>
-                <a (click)="doDelete(entry.id)" class="btn btn-danger"><i class="bi bi-x"></i></a>
-              </div>
+              <app-list-buttons
+                (onDetail)="doDetail(entry.id)"
+                (onEdit)="doEdit(entry.id)"
+                (onDelete)="doDelete(entry.id)"
+                [buttons]="[
+                  {link: ['/', 'action', 'designer', entry.id], icon: 'bi-terminal', title: 'Designer'},
+                  {link: ['/', 'action', 'commit', entry.id], icon: 'bi-clock-history', title: 'Commits'},
+                  {link: ['/', 'agent', 'redirect', 2, entry.id], icon: 'bi-robot', title: 'Agent'},
+                ]"
+              >
+              </app-list-buttons>
             </td>
           </tr>
         }

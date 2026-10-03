@@ -5,6 +5,7 @@ import {PlanService} from "../../../services/plan.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CurrencyPipe} from "@angular/common";
 import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
+import {ListButtons} from "../../../shared/list-buttons/list-buttons";
 
 @Component({
   selector: 'app-plan-list',
@@ -12,7 +13,8 @@ import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
   imports: [
     SearchComponent,
     CurrencyPipe,
-    NgbPagination
+    NgbPagination,
+    ListButtons
   ],
   styleUrls: ['./list.component.css']
 })

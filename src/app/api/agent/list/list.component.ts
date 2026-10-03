@@ -1,9 +1,10 @@
 import {Component} from '@angular/core';
 import {ErrorService, List, MessageComponent, SearchComponent} from "ngx-fusio-sdk";
 import {BackendAgent} from "fusio-sdk";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
 import {AgentService} from "../../../services/agent.service";
+import {ListButtons} from "../../../shared/list-buttons/list-buttons";
 
 @Component({
   selector: 'app-agent-list',
@@ -12,7 +13,7 @@ import {AgentService} from "../../../services/agent.service";
     MessageComponent,
     SearchComponent,
     NgbPagination,
-    RouterLink
+    ListButtons
   ],
   styleUrls: ['./list.component.css']
 })

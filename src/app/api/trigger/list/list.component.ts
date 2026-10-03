@@ -10,6 +10,7 @@ import {TaxonomyType} from "../../../services/taxonomy/mover.service";
 import {Taxonomy} from "../../../shared/taxonomy/taxonomy";
 import {NgClass} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {ListButtons} from "../../../shared/list-buttons/list-buttons";
 
 @Component({
   selector: 'app-trigger-list',
@@ -22,7 +23,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     Taxonomy,
     NgClass,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    ListButtons
   ],
   styleUrls: ['./list.component.css']
 })

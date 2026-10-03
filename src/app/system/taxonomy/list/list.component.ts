@@ -4,6 +4,7 @@ import {BackendTaxonomy} from "fusio-sdk";
 import {ActivatedRoute, Router} from "@angular/router";
 import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
 import {TaxonomyService} from "../../../services/taxonomy.service";
+import {ListButtons} from "../../../shared/list-buttons/list-buttons";
 
 @Component({
   selector: 'app-taxonomy-list',
@@ -11,7 +12,8 @@ import {TaxonomyService} from "../../../services/taxonomy.service";
   imports: [
     MessageComponent,
     SearchComponent,
-    NgbPagination
+    NgbPagination,
+    ListButtons
   ],
   styleUrls: ['./list.component.css']
 })

@@ -1,10 +1,11 @@
 import {Component} from '@angular/core';
 import {ErrorService, List, MessageComponent, SearchComponent} from "ngx-fusio-sdk";
 import {BackendConnection} from "fusio-sdk";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {ConnectionService} from "../../../services/connection.service";
 import {LinkService} from "../../../services/connection/link.service";
 import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
+import {ListButtons} from "../../../shared/list-buttons/list-buttons";
 
 @Component({
   selector: 'app-connection-list',
@@ -12,8 +13,8 @@ import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
   imports: [
     MessageComponent,
     SearchComponent,
-    RouterLink,
-    NgbPagination
+    NgbPagination,
+    ListButtons
   ],
   styleUrls: ['./list.component.css']
 })
@@ -27,11 +28,11 @@ export class ListComponent extends List<BackendConnection> {
     return this.service;
   }
 
-  hasDesignerLink(connection: BackendConnection): boolean {
-    return this.link.hasDesignerLink(connection);
-  }
-
   getDesignerLink(connection: BackendConnection): Array<string> {
+    if (!this.link.hasDesignerLink(connection)) {
+      return [];
+    }
+
     return this.link.getDesignerLink(connection);
   }
 
