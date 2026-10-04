@@ -8,7 +8,7 @@ export class VersionService {
   constructor() { }
 
   public get() {
-    return '7.1.0';
+    return '7.2.0';
   }
 
 }
