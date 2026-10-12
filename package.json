@@ -38,7 +38,7 @@
     "bootstrap-icons": "^1.10.5",
     "emoji-toolkit": "^10.0.0",
     "fusio-sdk": "^7.0.14",
-    "katex": "^0.16.47",
+    "katex": "^0.18.2",
     "marked": "^18.0.0",
     "monaco-editor": "^0.55.1",
     "ngx-apexcharts": "^0.9.0",
