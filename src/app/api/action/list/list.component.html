@@ -22,8 +22,7 @@
       <thead>
       <tr>
         <th style="width:20px"><input type="checkbox" class="form-check-input" [ngModel]="selectAll()" (ngModelChange)="toggleSelectAll()"></th>
-        <th style="width:50%">Name</th>
-        <th style="width:50%">Class</th>
+        <th style="width:100%">Name</th>
         <th></th>
       </tr>
       </thead>
@@ -36,7 +35,6 @@
               }
             </td>
             <td>{{entry.name}}</td>
-            <td>{{entry.class}}</td>
             <td>
               <app-list-buttons
                 (onDetail)="doDetail(entry.id)"
