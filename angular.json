@@ -32,6 +32,7 @@
               "node_modules/bootstrap-icons/font/bootstrap-icons.css",
               "node_modules/@vscode/codicons/dist/codicon.css",
               "node_modules/ngx-diff/styles/default-theme.css",
+              "node_modules/ngx-fusio-sdk/styles/theme.css",
               "node_modules/prismjs/themes/prism.css",
               "node_modules/katex/dist/katex.min.css",
               "src/styles.css"
