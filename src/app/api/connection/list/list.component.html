@@ -13,8 +13,7 @@
 <table class="table table-striped">
   <thead>
   <tr>
-    <th style="width:50%">Name</th>
-    <th style="width:50%">Class</th>
+    <th style="width:100%">Name</th>
     <th></th>
   </tr>
   </thead>
@@ -22,7 +21,6 @@
   @for (entry of entries(); track entry.id) {
     <tr>
       <td>{{entry.name}}</td>
-      <td>{{entry.class}}</td>
       <td>
         <app-list-buttons
           (onDetail)="doDetail(entry.id)"
