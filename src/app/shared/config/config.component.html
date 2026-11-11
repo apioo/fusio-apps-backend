@@ -5,18 +5,18 @@
     @if (data(); as data) {
       <div class="col-lg-10">
         @if (element.name && element.element === 'input') {
-          <input [ngModel]="data[element.name]" (ngModelChange)="doChange(element.name, $event)" [id]="'config-' + element.name" [name]="element.name" [type]="element.type" [disabled]="disabled()" class="form-control">
+          <input [id]="'config-' + element.name" [name]="'config-' + element.name" [ngModel]="data[element.name]" (ngModelChange)="doChange(element.name, $event)" [type]="element.type" [disabled]="disabled()" class="form-control">
           <div class="form-text" [innerHTML]="element.help"></div>
         }
         @else if (element.name && element.element === 'checkbox') {
           <div class="form-check form-switch">
-            <input [ngModel]="data[element.name]" (ngModelChange)="doChange(element.name, $event)" [id]="'config-' + element.name" [name]="element.name" [disabled]="disabled()" type="checkbox" class="form-check-input">
+            <input [id]="'config-' + element.name" [name]="'config-' + element.name" [ngModel]="data[element.name]" (ngModelChange)="doChange(element.name, $event)" [disabled]="disabled()" type="checkbox" class="form-check-input">
           </div>
           <div class="form-text" [innerHTML]="element.help"></div>
         }
         @else if (element.name && element.element === 'select') {
           @if ("options" in element) {
-            <select [ngModel]="data[element.name]" (ngModelChange)="doChange(element.name, $event)" [id]="'config-' + element.name" [name]="element.name" [disabled]="disabled()" class="form-select">
+            <select [id]="'config-' + element.name" [name]="'config-' + element.name" [ngModel]="data[element.name]" (ngModelChange)="doChange(element.name, $event)" [disabled]="disabled()" class="form-select">
               @for (opt of element?.options; track opt.key) {
                 <option [value]="opt.key">{{opt.value}}</option>
               }
@@ -27,28 +27,37 @@
         @else if (element.name && element.element === 'textarea') {
           @if ("mode" in element) {
             <div style="width:100%;height:500px;border:1px solid #ced4da">
-              <ngx-monaco-editor [ngModel]="data[element.name]" (ngModelChange)="doChange(element.name, $event)" [options]="{theme: 'vs-light', language: element.mode, readOnly: disabled()}" [id]="'config-' + element.name" [name]="element.name" style="height:100%"></ngx-monaco-editor>
+              <ngx-monaco-editor [id]="'config-' + element.name" [name]="'config-' + element.name" [ngModel]="data[element.name]" (ngModelChange)="doChange(element.name, $event)" [options]="{theme: 'vs-light', language: element.mode, readOnly: disabled()}" style="height:100%"></ngx-monaco-editor>
             </div>
           }
           <div class="form-text" [innerHTML]="element.help"></div>
         }
         @else if (element.name && element.element === 'collection') {
-          <fusio-form-list [data]="data[element.name]" (dataChange)="doChange(element.name, $event)" [id]="'config-' + element.name" [name]="element.name" [disabled]="disabled()"></fusio-form-list>
+          <fusio-form-list [id]="'config-' + element.name" [name]="'config-' + element.name" [data]="data[element.name]" (dataChange)="doChange(element.name, $event)" [disabled]="disabled()"></fusio-form-list>
           <div class="form-text" [innerHTML]="element.help"></div>
         }
         @else if (element.name && element.element === 'map') {
-          <fusio-form-map [data]="data[element.name]" (dataChange)="doChange(element.name, $event)" [id]="'config-' + element.name" [name]="element.name" [disabled]="disabled()"></fusio-form-map>
+          <fusio-form-map [id]="'config-' + element.name" [name]="'config-' + element.name" [data]="data[element.name]" (dataChange)="doChange(element.name, $event)" [disabled]="disabled()"></fusio-form-map>
           <div class="form-text" [innerHTML]="element.help"></div>
         }
         @else if (element.name && element.element === 'typeschema') {
           <div style="width:100%;min-height:500px;border:1px solid #ced4da">
-            <typeschema-editor [specification]="spec" (change)="doChange(element.name, $event)" [importEnabled]="false" [readonly]="disabled()"></typeschema-editor>
+            <typeschema-editor [id]="'config-' + element.name" [specification]="spec" (change)="doChange(element.name, $event)" [importEnabled]="false" [readonly]="disabled()"></typeschema-editor>
           </div>
         }
         @else if (element.name && element.element === 'typeapi') {
           <div style="width:100%;min-height:500px;border:1px solid #ced4da">
-            <typeschema-editor [specification]="spec" [operationEnabled]="true" [importEnabled]="false" (change)="doChange(element.name, $event)" [readonly]="disabled()"></typeschema-editor>
+            <typeschema-editor [id]="'config-' + element.name" [specification]="spec" [operationEnabled]="true" [importEnabled]="false" (change)="doChange(element.name, $event)" [readonly]="disabled()"></typeschema-editor>
           </div>
+        }
+        @else if (element.name && element.element === 'action') {
+          <fusio-form-autocomplete [name]="'config-' + element.name" [service]="actionService" [useTilde]="false" [data]="data[element.name]" (dataChangeId)="doChange(element.name, $event)" [disabled]="disabled()"></fusio-form-autocomplete>
+        }
+        @else if (element.name && element.element === 'connection') {
+          <fusio-form-autocomplete [name]="'config-' + element.name" [service]="connectionService" [useTilde]="false" [data]="data[element.name]" (dataChangeId)="doChange(element.name, $event)" [disabled]="disabled()"></fusio-form-autocomplete>
+        }
+        @else if (element.name && element.element === 'agent') {
+          <fusio-form-autocomplete [name]="'config-' + element.name" [service]="agentService" [useTilde]="false" [data]="data[element.name]" (dataChangeId)="doChange(element.name, $event)" [disabled]="disabled()"></fusio-form-autocomplete>
         }
       </div>
     }

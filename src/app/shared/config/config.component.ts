@@ -1,8 +1,11 @@
-import {Component, effect, input, output, signal} from '@angular/core';
+import {Component, effect, inject, input, output, signal} from '@angular/core';
 import {
   CommonFormContainer,
+  CommonFormElementAction,
+  CommonFormElementAgent,
   CommonFormElementCheckbox,
   CommonFormElementCollection,
+  CommonFormElementConnection,
   CommonFormElementInput,
   CommonFormElementMap,
   CommonFormElementSelect,
@@ -13,7 +16,10 @@ import {
 import {FormsModule} from "@angular/forms";
 import {EditorComponent} from "ngx-monaco-editor-v2";
 import {Specification, TypeschemaEditorModule} from "ngx-typeschema-editor";
-import {FormListComponent, FormMapComponent} from "ngx-fusio-sdk";
+import {FormAutocompleteComponent, FormListComponent, FormMapComponent} from "ngx-fusio-sdk";
+import {ActionService} from "../../services/action.service";
+import {ConnectionService} from "../../services/connection.service";
+import {AgentService} from "../../services/agent.service";
 
 @Component({
   selector: 'app-config',
@@ -22,6 +28,7 @@ import {FormListComponent, FormMapComponent} from "ngx-fusio-sdk";
     FormsModule,
     EditorComponent,
     TypeschemaEditorModule,
+    FormAutocompleteComponent,
     FormListComponent,
     FormMapComponent
   ],
@@ -34,13 +41,17 @@ export class ConfigComponent {
   disabled = input<boolean>(false);
   dataChange = output<Record<string, any>>();
 
-  elements = signal<Array<CommonFormElementCheckbox | CommonFormElementCollection | CommonFormElementInput | CommonFormElementMap | CommonFormElementSelect | CommonFormElementTextArea | CommonFormElementTypeAPI | CommonFormElementTypeSchema>>([]);
+  elements = signal<Array<FormElement>>([]);
 
   spec: Specification = {
     imports: [],
     operations: [],
     types: []
   };
+
+  actionService = inject(ActionService);
+  agentService = inject(AgentService);
+  connectionService = inject(ConnectionService);
 
   constructor() {
     effect(() => {
@@ -60,18 +71,18 @@ export class ConfigComponent {
 
   private loadElements(container?: CommonFormContainer): void {
     let data: Record<string, any> = {};
-    let elements: Array<CommonFormElementCheckbox | CommonFormElementCollection | CommonFormElementInput | CommonFormElementMap | CommonFormElementSelect | CommonFormElementTextArea | CommonFormElementTypeAPI | CommonFormElementTypeSchema> = [];
+    let elements: Array<FormElement> = [];
     container?.element?.forEach((element) => {
       if (!element.name) {
         return;
       }
 
       // BC layer
-      if (element.element === 'input') {
+      if (element.element === 'http://fusio-project.org/ns/2015/form/input') {
         element.element = 'input';
-      } else if (element.element === 'select') {
+      } else if (element.element === 'http://fusio-project.org/ns/2015/form/select') {
         element.element = 'select';
-      } else if (element.element === 'textarea') {
+      } else if (element.element === 'http://fusio-project.org/ns/2015/form/textarea') {
         element.element = 'textarea';
       }
 
@@ -103,3 +114,6 @@ export class ConfigComponent {
   }
 
 }
+
+type FormElement = CommonFormElementCheckbox | CommonFormElementCollection | CommonFormElementInput | CommonFormElementMap | CommonFormElementSelect | CommonFormElementTextArea | CommonFormElementTypeAPI | CommonFormElementTypeSchema | CommonFormElementAction | CommonFormElementAgent | CommonFormElementConnection;
+
