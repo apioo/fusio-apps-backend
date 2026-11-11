@@ -1,10 +1,10 @@
-import {Component, signal} from '@angular/core';
-import {ErrorService, Form, HelpComponent, MessageComponent} from "ngx-fusio-sdk";
+import {Component, computed, signal} from '@angular/core';
+import {ErrorService, Form, HelpComponent, MessageComponent, Mode} from "ngx-fusio-sdk";
 import {BackendAction, BackendActionIndexEntry, CommonFormContainer} from "fusio-sdk";
 import {ActionService} from "../../../services/action.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ApiService} from "../../../api.service";
-import {NgbModal, NgbPopover} from "@ng-bootstrap/ng-bootstrap";
+import {NgbDropdown, NgbDropdownMenu, NgbDropdownToggle, NgbModal, NgbPopover} from "@ng-bootstrap/ng-bootstrap";
 import {FormsModule} from "@angular/forms";
 import {ConfigComponent} from "../../../shared/config/config.component";
 import {FormBreadcrump} from "../../../shared/form-breadcrump/form-breadcrump";
@@ -19,15 +19,37 @@ import {FormButtons} from "../../../shared/form-buttons/form-buttons";
     NgbPopover,
     ConfigComponent,
     FormBreadcrump,
-    FormButtons
+    FormButtons,
+    NgbDropdown,
+    NgbDropdownToggle,
+    NgbDropdownMenu
   ],
   styleUrls: ['./form.component.css']
 })
 export class FormComponent extends Form<BackendAction> {
 
-  actions = signal<Array<BackendActionIndexEntry>>([]);
+  localActions = signal<Array<BackendActionIndexEntry>>([]);
+  localSearch = signal<string>('');
+  localFilter = computed(() => {
+    const search = this.localSearch().toLowerCase();
+    const list = this.localActions();
+    if (!search) {
+      return list;
+    }
+
+    return list.filter(action =>
+      action.name?.toLowerCase().includes(search) ||
+      action.class?.toLowerCase().includes(search)
+    );
+  });
+
+  marketplaceActions = signal<Array<BackendActionIndexEntry>>([]);
+  marketplaceSearch = signal<string>('');
+
   form = signal<CommonFormContainer|undefined>(undefined);
-  custom = signal<boolean>(false);
+  source = signal<SourceType>('local');
+
+  selectedAction = signal<BackendActionIndexEntry|undefined>(undefined);
 
   entityClass? = '';
 
@@ -42,8 +64,11 @@ export class FormComponent extends Form<BackendAction> {
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
 
-    const response = await this.fusio.getClient().backend().action().getClasses();
-    this.actions.set(response.actions || []);
+    if (this.mode === Mode.Update || this.mode === Mode.Delete) {
+      this.source.set('custom');
+    }
+
+    this.loadActions();
   }
 
   protected override async onLoad() {
@@ -57,6 +82,16 @@ export class FormComponent extends Form<BackendAction> {
 
     this.set(this.entity, 'config', {});
     this.loadConfig(classString);
+  }
+
+  async loadActions() {
+    if (this.source() === 'local') {
+      const response = await this.fusio.getClient().backend().action().getClasses();
+      this.localActions.set(response.actions || []);
+    } else if (this.source() === 'marketplace') {
+      const response = await this.fusio.getClient().backend().action().getClasses(true, 0, this.marketplaceSearch());
+      this.marketplaceActions.set(response.actions || []);
+    }
   }
 
   async loadConfig(classString?: string) {
@@ -78,6 +113,17 @@ export class FormComponent extends Form<BackendAction> {
     }
   }
 
+  changeSource(source: SourceType) {
+    this.source.set(source);
+    this.loadActions();
+  }
+
+  selectAction(action: BackendActionIndexEntry) {
+    this.selectedAction.set(action);
+    this.set(this.entity, 'class', action.class);
+    this.changeClass(action.class);
+  }
+
   showHelp() {
     if (!this.entity) {
       return;
@@ -85,7 +131,7 @@ export class FormComponent extends Form<BackendAction> {
 
     let className = this.entity().class;
     if (className) {
-      let action = this.actions()?.find((action) => {
+      let action = this.localActions()?.find((action) => {
         return action.class === className;
       })
 
@@ -98,3 +144,5 @@ export class FormComponent extends Form<BackendAction> {
     }
   }
 }
+
+type SourceType = 'local'|'marketplace'|'custom';

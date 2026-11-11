@@ -22,17 +22,59 @@
     <label for="class" class="col-lg-2 col-form-label fw-bold">Class</label>
     <div class="col-lg-10">
       <div class="input-group">
-        @if (custom()) {
-          <input type="text" id="class" name="class" [ngModel]="entity().class" (ngModelChange)="set(entity, 'class', $event);changeClass($event)" [disabled]="mode === 3" class="form-control">
+        <select name="actionSource" id="actionSource" [ngModel]="source()" (ngModelChange)="changeSource($event)" [disabled]="mode === 2 || mode === 3" class="form-select flex-grow-0 w-auto">
+          <option ngValue="local">Local</option>
+          <option ngValue="marketplace">Marketplace</option>
+          <option ngValue="custom">Custom</option>
+        </select>
+        @if (source() === 'custom') {
+          <input type="text" id="class" name="class" [ngModel]="entity().class" (ngModelChange)="set(entity, 'class', $event);changeClass($event)" [disabled]="mode === 2 || mode === 3" class="form-control">
         }
-        @if (!custom()) {
-          <select id="class" name="class" [ngModel]="entity().class" (ngModelChange)="set(entity, 'class', $event);changeClass($event)" [disabled]="mode === 3" class="form-select">
-            @for (action of actions(); track action.class) {
-              <option [ngValue]="action.class">{{action.name}}</option>
-            }
-          </select>
+        @else {
+          <div class="dropdown flex-grow-1" ngbDropdown>
+            <button class="btn w-100 text-start d-flex justify-content-between align-items-center rounded-0" type="button" ngbDropdownToggle [disabled]="mode === 2 || mode === 3" style="border-color:var(--bs-border-color)!important;">
+              <span class="text-truncate">
+                @if (selectedAction(); as selectedAction) {
+                  {{ selectedAction.name }}
+                }
+                @else {
+                  Select an action ...
+                }
+              </span>
+            </button>
+            <div class="dropdown-menu w-100 p-0 shadow-sm" ngbDropdownMenu style="max-height:400px;overflow-y:auto;">
+              @if (source() === 'marketplace') {
+                <div class="p-2 border-bottom bg-light sticky-top" (click)="$event.stopPropagation()">
+                  <input type="text" class="form-control form-control-sm" placeholder="Search marketplace actions (press enter) ..." name="marketplaceSearch" id="marketplaceSearch" [ngModel]="marketplaceSearch()" (ngModelChange)="marketplaceSearch.set($event)" (keyup.enter)="loadActions()">
+                </div>
+                @for (action of marketplaceActions(); track action.class) {
+                  <button class="dropdown-item py-2 border-bottom" type="button" (click)="selectAction(action)">
+                    <div class="fw-bold">{{ action.name }}</div>
+                    <div class="small opacity-75 text-wrap">{{ action.description }}</div>
+                  </button>
+                }
+                @empty {
+                  <div class="px-3 py-3 text-muted small text-center">No marketplace actions found</div>
+                }
+              } @else {
+                <div class="p-2 border-bottom bg-light sticky-top" (click)="$event.stopPropagation()">
+                  <input type="text" class="form-control form-control-sm" placeholder="Search local actions ..." name="localSearch" id="localSearch" [ngModel]="localSearch()" (ngModelChange)="localSearch.set($event)">
+                </div>
+                @for (action of localFilter(); track action.class) {
+                  <button class="dropdown-item py-2 border-bottom text-wrap" type="button" (click)="selectAction(action)">
+                    <div>
+                      <div class="fw-bold">{{ action.name }}</div>
+                      <div class="small opacity-75 text-wrap">{{ action.class }}</div>
+                    </div>
+                  </button>
+                }
+                @empty {
+                  <div class="px-3 py-3 text-muted small text-center">No local actions found</div>
+                }
+              }
+            </div>
+          </div>
         }
-        <button class="btn btn-outline-secondary" type="button" (click)="custom.set(!custom())" [disabled]="mode === 3"><i class="bi bi-pen"></i></button>
         <button class="btn btn-outline-secondary" type="button" [ngbPopover]="classHelp"><i class="bi bi-question"></i></button>
         <ng-template #classHelp>Action class which gets executed. Each action can provide additional configuration parameters which are loaded if a class was selected</ng-template>
       </div>
