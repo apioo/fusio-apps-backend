@@ -66,7 +66,8 @@ export class AgentActionService extends AgentAbstract<Action> {
   }
 
   private extractName(content: string): string {
-    const result = content.match(/Action: ([A-Za-z0-9-]+)/im);
+    // tolerates markdown formatting around the name i.e. "**Action:** `Todo-Get`" or "## Action: Todo-Get"
+    const result = content.match(/^[\s#>*_`]*Action\s*:[\s*_`]*([A-Za-z0-9_-]+)/im);
     if (!result) {
       return '';
     }
@@ -75,26 +76,35 @@ export class AgentActionService extends AgentAbstract<Action> {
   }
 
   private extractCode(content: string): string {
-    let captured = false;
-    let code = '';
+    const lines = content.replace(/\r\n?/g, "\n").split("\n");
 
-    const lines = content.split("\n");
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i];
-      if (line === '<?php') {
-        captured = true;
-      }
+    const start = lines.findIndex((line) => line.trim().startsWith('<?php'));
+    if (start === -1) {
+      return '';
+    }
 
-      if (captured) {
-        code+= line + "\n";
-      }
-
-      if (line === '};') {
+    // the end of the code is the last closing line of the closure, we search from the bottom since the code itself
+    // can contain other closures which also end with "};"
+    let end = -1;
+    for (let i = lines.length - 1; i > start; i--) {
+      if (lines[i].trim() === '};') {
+        end = i;
         break;
       }
     }
 
-    return code;
+    let code: Array<string>;
+    if (end !== -1) {
+      code = lines.slice(start, end + 1);
+    } else {
+      // fallback in case the closing line is missing, take everything except a trailing markdown fence
+      code = lines.slice(start).filter((line) => !line.trim().startsWith('```'));
+    }
+
+    // normalize the opening tag i.e. "<?php " or "<?php use ..." on the same line
+    code[0] = code[0].trim();
+
+    return code.join("\n").trimEnd() + "\n";
   }
 
 }
