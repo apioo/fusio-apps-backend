@@ -42,14 +42,33 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
       return;
     }
 
+    const context: ExecutionContext = {
+      connectionName: await this.getConnectionName(connectionId),
+      schemaCache: new Map<string, string>(),
+      errors: [],
+    };
+
     if (model.database) {
-      await this.invokeDatabaseAgent(connection, options.databaseAgentId, model.database, options.connectionId, indicator);
+      try {
+        const result = await this.invokeDatabaseAgent(connection, options.databaseAgentId, this.withConnection(model.database, context), options.connectionId, indicator);
+        if (!result) {
+          context.errors.push('database: the database agent returned no valid tables');
+        } else if (result.success !== true) {
+          // we continue since i.e. a table may already exist from a previous run, the error is reported at the end
+          context.errors.push('database: ' + result.message);
+        }
+      } catch (error) {
+        const message = this.error.convert(error);
+        indicator.response(message);
+        context.errors.push('database: ' + (message.message || 'unknown error'));
+      }
     }
 
-    let response: CommonMessage|undefined;
+    let created = 0;
     for (let i = 0; i < model.operations.length; i++) {
+      const name = model.operations[i].name;
       try {
-        const operation = await this.transformOperation(connection, model.operations[i], indicator, options);
+        const operation = await this.transformOperation(connection, model.operations[i], indicator, options, context);
         if (!operation) {
           continue;
         }
@@ -61,6 +80,7 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
           // operation does not exist
         }
 
+        let response: CommonMessage;
         if (existing) {
           indicator.request('Operation update: ' + existing.name);
 
@@ -72,35 +92,60 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
         }
 
         indicator.response(response);
+
+        if (response.success === true) {
+          created++;
+        } else {
+          context.errors.push(name + ': ' + (response.message || 'could not save operation'));
+        }
       } catch (error) {
-        indicator.response(this.error.convert(error));
+        const message = this.error.convert(error);
+        indicator.response(message);
+        context.errors.push(name + ': ' + (message.message || 'unknown error'));
       }
     }
 
+    const total = model.operations.length;
+    if (context.errors.length === 0) {
+      return {
+        success: true,
+        message: 'Successfully executed blueprint, created ' + created + ' of ' + total + ' operations',
+      };
+    }
+
     return {
-      success: true,
-      message: 'Successfully executed blueprint',
+      success: false,
+      message: 'Executed blueprint, created ' + created + ' of ' + total + ' operations, the following errors occurred: ' + context.errors.join(', '),
     };
   }
 
-  private async transformOperation(connection: Connection, operation: Operation, indicator: ExecutionIndicator, options: Options): Promise<BackendOperation|undefined> {
+  private async transformOperation(connection: Connection, operation: Operation, indicator: ExecutionIndicator, options: Options, context: ExecutionContext): Promise<BackendOperation|undefined> {
     let incoming: string|undefined = undefined;
     if (operation.incoming && operation.incoming !== 'Empty') {
-      incoming = await this.resolveSchema(connection, options.schemaAgentId, operation.incoming, indicator);
+      incoming = await this.resolveSchema(connection, options.schemaAgentId, operation.incoming, indicator, context);
+      if (!incoming) {
+        context.errors.push(operation.name + ': could not generate incoming schema "' + this.getSchemaName(operation.incoming) + '"');
+        return;
+      }
     }
 
     let outgoing: string|undefined = undefined;
     if (operation.outgoing && operation.outgoing !== 'Empty') {
-      outgoing = await this.resolveSchema(connection, options.schemaAgentId, operation.outgoing, indicator);
+      outgoing = await this.resolveSchema(connection, options.schemaAgentId, operation.outgoing, indicator, context);
+      if (!outgoing) {
+        context.errors.push(operation.name + ': could not generate outgoing schema "' + this.getSchemaName(operation.outgoing) + '"');
+        return;
+      }
     }
 
-    const action = await this.resolveAction(connection, options.actionAgentId, operation.action, indicator);
+    const action = await this.resolveAction(connection, options.actionAgentId, this.buildActionPrompt(operation, context), indicator);
     if (!action) {
+      context.errors.push(operation.name + ': could not generate action "' + this.getSchemaName(operation.action) + '"');
       return;
     }
 
     const parameters: BackendOperationParameters = {};
-    operation.parameters.forEach((parameter) => {
+    (operation.parameters || []).forEach((parameter) => {
       parameters[parameter.name] = {
         type: parameter.type,
         description: parameter.description,
@@ -109,7 +154,7 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
 
     return {
       name: operation.name,
-      active: operation.active,
+      active: true,
       public: operation.public,
       stability: 1,
       description: operation.description,
@@ -176,9 +221,17 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
     });
   }
 
-  private async resolveSchema(connection: Connection, agentId: number, prompt: string, indicator: ExecutionIndicator): Promise<string|undefined> {
+  private async resolveSchema(connection: Connection, agentId: number, prompt: string, indicator: ExecutionIndicator, context: ExecutionContext): Promise<string|undefined> {
     if (prompt === 'Message') {
       return 'schema://' + prompt;
+    }
+
+    // a schema name can be used by multiple operations, we generate every schema only once per blueprint since
+    // otherwise a later agent call would overwrite the schema which was already assigned to a previous operation
+    const cacheKey = this.getSchemaName(prompt);
+    const cached = context.schemaCache.get(cacheKey);
+    if (cached) {
+      return cached;
     }
 
     const response = await this.invokeSchemaAgent(connection, agentId, prompt, indicator);
@@ -195,8 +248,55 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
     }
 
     const schema = await this.api.getClient().backend().schema().get(response.id);
+    const uri = 'schema://' + schema.name;
 
-    return 'schema://' + schema.name;
+    context.schemaCache.set(cacheKey, uri);
+
+    return uri;
+  }
+
+  private buildActionPrompt(operation: Operation, context: ExecutionContext): string {
+    const parameters = (operation.parameters || []).map((parameter) => parameter.name + ' (' + parameter.type + ')');
+
+    const lines = [
+      'Operation: ' + operation.httpMethod + ' ' + operation.httpPath + ' (' + (operation.public ? 'public, the user may be anonymous' : 'private, requires an authenticated user') + ')',
+      'Parameters: ' + (parameters.length > 0 ? parameters.join(', ') : 'none'),
+      'Request schema: ' + this.getSchemaName(operation.incoming || 'Empty'),
+      'Response schema: ' + this.getSchemaName(operation.outgoing || 'Empty'),
+      'Success status code: ' + operation.httpCode,
+    ];
+
+    if (context.connectionName) {
+      lines.push('Connection: ' + context.connectionName);
+    }
+
+    return operation.action + '\n\n' + lines.join('\n');
+  }
+
+  private withConnection(prompt: string, context: ExecutionContext): string {
+    if (!context.connectionName) {
+      return prompt;
+    }
+
+    return prompt + '\n\nConnection: ' + context.connectionName;
+  }
+
+  private getSchemaName(prompt: string): string {
+    const result = prompt.match(/^\s*NAME:\s*([^.\s]+)\s*\./);
+    if (result && result[1]) {
+      return result[1];
+    }
+
+    return prompt.trim();
+  }
+
+  private async getConnectionName(connectionId: number): Promise<string|undefined> {
+    try {
+      const connection = await this.api.getClient().backend().connection().get('' + connectionId);
+      return connection.name;
+    } catch (error) {
+      return undefined;
+    }
   }
 
   private async resolveAction(connection: Connection, agentId: number, prompt: string, indicator: ExecutionIndicator): Promise<string|undefined> {
@@ -227,9 +327,7 @@ export interface Blueprint {
 
 interface Operation {
   name: string
-  active: boolean
   public: boolean
-  stability: number
   description: string
   httpMethod: string
   httpPath: string
@@ -244,6 +342,12 @@ interface Parameter {
   name: string
   type: string
   description: string
+}
+
+interface ExecutionContext {
+  connectionName?: string
+  schemaCache: Map<string, string>
+  errors: Array<string>
 }
 
 export interface Options {
