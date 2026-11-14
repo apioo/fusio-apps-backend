@@ -37,7 +37,12 @@ export class AgentSeedService extends AgentAbstract<SeedData, Options> {
         try {
           indicator.request('Insert seed: ' + table.name);
 
-          const response = await this.api.getClient().backend().connection().database().createRow('' + connectionId, table.name, row);
+          const result: Record<string, string> = {};
+          table.columns.forEach((column, index) => {
+            result[column] = row.values[index];
+          });
+
+          const response = await this.api.getClient().backend().connection().database().createRow('' + connectionId, table.name, result);
           indicator.response(response);
 
           success++;
@@ -81,7 +86,12 @@ export interface SeedData {
 
 export interface SeedTable {
   name: string
-  rows: Array<Record<string, any>>
+  columns: Array<string>
+  rows: Array<SeedRow>
+}
+
+export interface SeedRow {
+  values: Array<string>
 }
 
 export interface Options {
