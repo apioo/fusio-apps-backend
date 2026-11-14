@@ -234,6 +234,16 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
       return cached;
     }
 
+    // the architect references an existing schema by its plain name (without the "NAME:" prefix), in this case we
+    // reuse the schema as it is and do not invoke the schema agent which would overwrite the schema
+    if (!/^\s*NAME:/.test(prompt)) {
+      const existing = await this.getExistingSchema(prompt.trim());
+      if (existing) {
+        context.schemaCache.set(cacheKey, existing);
+        return existing;
+      }
+    }
+
     const response = await this.invokeSchemaAgent(connection, agentId, prompt, indicator);
     if (!response) {
       return;
@@ -288,6 +298,19 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
     }
 
     return prompt.trim();
+  }
+
+  private async getExistingSchema(name: string): Promise<string|undefined> {
+    if (!/^[A-Za-z0-9_-]+$/.test(name)) {
+      return undefined;
+    }
+
+    try {
+      const schema = await this.api.getClient().backend().schema().get('~' + name);
+      return schema.name ? 'schema://' + schema.name : undefined;
+    } catch (error) {
+      return undefined;
+    }
   }
 
   private async getConnectionName(connectionId: number): Promise<string|undefined> {
