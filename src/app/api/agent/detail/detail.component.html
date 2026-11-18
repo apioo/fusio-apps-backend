@@ -53,6 +53,10 @@
         <div class="col-lg-2 fw-bold">Outgoing</div>
         <div class="col-lg-8"><app-schema-link [data]="selected.outgoing"></app-schema-link></div>
       </div>
+      <div class="row">
+        <div class="col-lg-2 fw-bold">Action</div>
+        <div class="col-lg-10"><span class="fusio-operation-action"><app-action-link [data]="selected.action"></app-action-link></span></div>
+      </div>
     </div>
   }
   @if (jsonView()) {

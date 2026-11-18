@@ -14,6 +14,7 @@ import {OperationStatus} from "../../../../shared/operation-status/operation-sta
 import {AgentArchitectService, Blueprint, Options} from "../../../../services/agent/agent-architect.service";
 import {Loader} from "../../loader/loader";
 import {ConnectionService} from "../../../../services/connection.service";
+import {AgentTaskService} from "../../../../services/agent/agent-task.service";
 
 @Component({
   selector: 'app-agent-chat-architect',
@@ -55,6 +56,19 @@ export class Architect extends Chat<Blueprint, Options> {
     const connectionId = this.connectionId();
     if (!connectionId) {
       throw new Error('Please select a connection where the database schema will be created');
+    }
+
+    // if the architect agent has an action the blueprint is executed at the backend which resolves the sub-agents
+    const agent = this.agent();
+    if (AgentTaskService.hasAction(agent) && agent.id) {
+      return {
+        connectionId: connectionId,
+        actionAgentId: this.actionAgentId() ?? 0,
+        schemaAgentId: this.schemaAgentId() ?? 0,
+        databaseAgentId: this.databaseAgentId() ?? 0,
+        agentId: agent.id,
+        useTask: true,
+      };
     }
 
     const actionAgentId = this.actionAgentId();

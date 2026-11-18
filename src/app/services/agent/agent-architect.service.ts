@@ -1,5 +1,6 @@
 import {inject, Injectable} from '@angular/core';
-import {BackendOperation, BackendOperationParameters, CommonMessage} from "fusio-sdk";
+import {AgentItemObject, BackendOperation, BackendOperationParameters, CommonMessage} from "fusio-sdk";
+import {AgentTaskService} from "./agent-task.service";
 import {AgentActionService} from "./agent-action.service";
 import {AgentSchemaService} from "./agent-schema.service";
 import {AgentDatabaseService} from "./agent-database.service";
@@ -15,6 +16,7 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
   private schema = inject(AgentSchemaService);
   private database = inject(AgentDatabaseService);
   private error = inject(ErrorService);
+  private task = inject(AgentTaskService);
 
   transform(content: AgentContent): Blueprint|undefined {
     const object = this.getJson(content) as Blueprint;
@@ -29,6 +31,17 @@ export class AgentArchitectService extends AgentAbstract<Blueprint, Options> {
     const connectionId = options.connectionId;
     if (!connectionId) {
       return;
+    }
+
+    // if the architect agent has an action we execute the blueprint as background task at the backend, the backend
+    // then invokes all sub-agents, so the execution continues also if the user closes the browser
+    if (options.useTask && options.agentId) {
+      const item: AgentItemObject = {
+        type: 'object',
+        payload: model,
+      };
+
+      return await this.task.run(options.agentId, item, indicator, connectionId);
     }
 
     const actionAgentId = options.actionAgentId;
@@ -378,4 +391,15 @@ export interface Options {
   actionAgentId: number
   schemaAgentId: number
   databaseAgentId: number
+
+  /**
+   * The id of the architect agent, required to execute the blueprint as background task
+   */
+  agentId?: number
+
+  /**
+   * If true the blueprint is executed as background task at the backend, this requires that the agent has an action.
+   * In this case the backend resolves the sub-agents, the agent ids above are only used for the frontend execution
+   */
+  useTask?: boolean
 }
